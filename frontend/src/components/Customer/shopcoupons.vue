@@ -123,7 +123,7 @@
                         </div>
                       </div>
                     </div>
-                    <p
+                    <button
                       style="
                         background: teal;
                         width: fit-content;
@@ -132,10 +132,12 @@
                         border-radius: 4px;
                         font-size: 16px;
                         float: right;
+                        border:none;
+                        margin:20px
                       "
                     >
                       Add selected items to cart
-                    </p>
+                    </button>
                   </b-tab>
                   <b-tab style="color: #666666">
                     <template #title>
