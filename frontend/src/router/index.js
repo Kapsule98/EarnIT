@@ -53,6 +53,18 @@ const routes = [
     name: 'RegisterSellerDetails',
     component: () => import('../components/Seller/RegisterDetails.vue')
   },
+  {
+    path: '/verifycoupon',
+    name: 'verifycoupon',
+    component: () => import('../components/Seller/verifycoupon.vue')
+  },
+  {
+    path: '/shop',
+    name: 'shop',
+    component: () => import('../components/Customer/shopcoupons.vue')
+  },
+ 
+
 ]
 
 const router = new VueRouter({
