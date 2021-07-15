@@ -1,12 +1,16 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">| Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link v-if="seller" to="/sellerhome">Seller Home |</router-link> 
-      <router-link v-if="customer" to="/customerhome">Customer Home |</router-link>
-      <router-link v-if="!login" to="/login">Login |</router-link>
-      <router-link v-if="login" to="/logout">Logout |</router-link>
+    <div class="topstrip">
+      <div class="leftstrip"><i class="fa fa-map-marker"></i> <div class="city">select location</div> <button class="location"> select city <i class="fa fa-caret-down"></i></button></div>
+      <div class="welcome"> Welcome to lemmebuy.in !</div>
+      <div class="rightstrip">
+      <div class="topstriplink active"><router-link to="/"><i class="fa fa-home"></i> |</router-link></div> 
+      <div class="topstriplink"><router-link to="/about"> <i class="fa fa-info-circle" aria-hidden="true"></i> About |</router-link> </div> 
+      <div class="topstriplink"><router-link v-if="seller" to="/sellerhome">Seller Home </router-link> </div> 
+      <div class="topstriplink"><router-link v-if="customer" to="/customerhome">Customer Home </router-link></div> 
+      <div class="topstriplink"><router-link v-if="!login" to="/login"><i class="fa fa-lock"></i> Login </router-link></div> 
+      <div class="topstriplink"><router-link v-if="login" to="/logout">Logout </router-link></div> 
+      </div>
     </div>
     <router-view/>
   </div>
@@ -53,24 +57,79 @@ export default {
 }
 </script>
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
+.topstrip {
+  width: 100%;
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
+  padding:  5px 0px;
+  height:35px;
+  font-size: 13px;
+  margin-bottom:0px;
+  background: rgb(46, 46, 46);
+}
+
+.topstriplink a{
+  color: rgb(212, 212, 212) !important;
+  width: fit-content;
+  padding: 1px 5px !important;
+  text-decoration: none;
+  transition: 0.1s ease-in-out;
+}
+
+.topstriplink a:hover{
+  color: aliceblue !important;
+}
+
+.leftstrip {
+  float: left !important;
+  font-size: 14px;
+  color: rgb(192, 192, 192);
+  padding: 0px 10px;
+}
+.leftstrip a:hover{
+background: none !important;
+color: rgb(0, 0, 0) !important;
+border: none !important;
+}
+
+.rightstrip {
+  margin: 0px 10px;
+  float: right;
+  display: flex;
+}
+.active a{
+    color: rgb(238, 238, 238) !important;
+}
+.location{
+  border: none;
+  border-radius: 6px;
+}
+.welcome{
   text-align: center;
-  color: #2c3e50;
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  font-size: 14px;
+  padding-top: 5px;
+}
+.city{
+  display: inline;
+}
+@media screen and (max-width:600px){
+  .welcome{
+    display: none;
+  }
+  .topstrip {
+  display: none;
+}
+.topstriplink a{
+  padding: 1px 5px !important;
+}
+.city{
+  display: none;
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>

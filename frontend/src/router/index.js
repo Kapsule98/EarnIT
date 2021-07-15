@@ -53,6 +53,39 @@ const routes = [
     name: 'RegisterSellerDetails',
     component: () => import('../components/Seller/RegisterDetails.vue')
   },
+  {
+    path: '/verifycoupon',
+    name: 'verifycoupon',
+    component: () => import('../components/Seller/verifycoupon.vue')
+  },
+  {
+    path: '/shop',
+    name: 'shop',
+    component: () => import('../components/Customer/shopcoupons.vue')
+  },
+  {
+    path: '/land',
+    name: 'landingpage',
+    component: () => import('../components/Customer/landing.vue')
+  },
+  {
+    path: '/customerbill',
+    name: 'customerbill',
+    component: () => import('../components/Seller/customerbill.vue')
+  },
+  {
+    path: '/account',
+    name: 'account',
+    component: () => import('../components/Seller/account.vue')
+  },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: () => import('../components/Customer/cart.vue')
+  },
+ 
+ 
+
 ]
 
 const router = new VueRouter({
