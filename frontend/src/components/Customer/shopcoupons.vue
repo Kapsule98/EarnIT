@@ -128,12 +128,13 @@
                         background: teal;
                         width: fit-content;
                         color: white;
-                        padding: 7px 7px;
+                        padding: 8px 10px;
                         border-radius: 4px;
-                        font-size: 16px;
+                        font-size: 18px;
                         float: right;
                         border:none;
-                        margin:20px
+                        margin:20px;
+                        font-weight:500;
                       "
                     >
                       Add selected items to cart
@@ -217,6 +218,7 @@
         style="width: 60%; margin-left: 20%; margin-top: -2%"
       />
     </div>
+    <div class="c2-footer">FOOTER</div>
   </div>
 </template>
 <script>
@@ -226,6 +228,14 @@ export default {
 };
 </script>
 <style scoped>
+.c2-footer{
+  height: 300px;
+  width: 100%;
+  background: rgb(0, 128, 100);
+  text-align: center;
+  font-size: 50px;
+  font-weight: 900;
+}
 .greyback {
   position: fixed;
   top: -20%;
@@ -262,11 +272,12 @@ export default {
 
 .card_item {
   font-size: 20px;
-  color: rgba(0, 128, 128, 0.836);
+  color: #003100;
   float: left;
   margin-top: -5px;
   width: fit-content;
   display: block;
+  font-weight: 400;
 }
 .card_discount {
   padding: 20px;

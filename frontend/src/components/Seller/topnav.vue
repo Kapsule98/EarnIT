@@ -1,9 +1,10 @@
 <template>
   <div id="app">
     <div id="nav" class="topnav">
-      <div class="topnavlink left" style=" font-weight: 900;"><router-link to="/"><i class="fa fa-map-marker" style="color:teal;"></i> Lemmebuy.in</router-link>
+      <i class="fa fa-bars menubtn"  v-on:click="openmenu" ></i>
+      <div class="topnavlink left" style=" font-weight: 900;"><router-link to="/"><i class="fa fa-map-marker" style="color:#008cff;"></i><span style="color:black">  Lemmebuy.in </span></router-link>
       </div> 
-      <div class="left">
+      <div class="left searchbar">
         <form class="example" action="action_page.php">
   <input type="text" placeholder="Search.." name="search">
   <button type="submit"><i class="fa fa-search"></i></button>
@@ -12,15 +13,16 @@
 
       <div class="right">
      <i class="fa fa-times closebtn" v-on:click="closemenu" ></i>
-      <div class="topnavlink active"><router-link to="/"><span v-html="link1"></span></router-link></div> 
-      <div class="topnavlink"><router-link to="/about"><span v-html="link2"></span></router-link> </div> 
-      <div class="topnavlink"><router-link to="/about"><span v-html="link3"></span></router-link> </div> 
-       <div class="topnavlink"><router-link to="/about"><span v-html="link4"></span></router-link> </div> 
-       <div class="topnavlink"><router-link to="/about"><span v-html="link5"></span></router-link> </div> 
-       <div class="topnavlink"><router-link to="/about"><span v-html="link6"></span></router-link> </div> 
+     
+      <div class="resp"><div class="topnavlink active"><router-link to="/"><span v-html="link1"></span></router-link></div> </div>
+      <div class="resp"><div class="topnavlink"><router-link to="/about"><span v-html="link2"></span></router-link> </div> </div>
+      <div class="resp"><div class="topnavlink"><router-link to="/about"><span v-html="link3"></span></router-link> </div> </div>
+       <div class="resp"><div class="topnavlink"><router-link to="/about"><span v-html="link4"></span></router-link> </div> </div>
+       <div class="resp"><div class="topnavlink"><router-link to="/about"><span v-html="link5"></span></router-link> </div> </div>
+       <div class="resp"><div class="topnavlink"><router-link to="/about"><span v-html="link6"></span></router-link> </div> </div>
 
       </div>
-     <i class="fa fa-bars menubtn"  v-on:click="openmenu" ></i>
+     
     </div>
     <router-view/>
   </div>
@@ -47,7 +49,7 @@ methods: {
 form.example input[type=text] {
   padding: 10px;
   font-size: 14px;
-  border: 2px 0px 2px 2px solid rgb(197, 197, 197);
+  border:none;
   float: left;
   display: flex;
   width: 240px;
@@ -63,7 +65,7 @@ form.example button {
   background: teal;
   color: white;
   font-size: 14px;
-  border: 2px solid teal;
+  border:none;
   border-left: none; /* Prevent double borders */
   cursor: pointer;
   margin-top: 0px;
@@ -72,7 +74,6 @@ form.example button {
 
 form.example button:hover {
   background: rgba(0, 128, 128, 0.678);
-  border: 2px solid rgba(0, 128, 128, 0.678);
 }
 
 /* Clear floats */
@@ -89,12 +90,12 @@ form.example::after {
   height: 70px;
   font-size: 18px;
   margin-bottom: 30px;
-  background: rgb(255, 255, 255);
+  background: linear-gradient(90deg,rgb(93, 217, 255),rgb(169, 255, 219));
   
 }
 
 .topnavlink a{
-  color: rgb(85, 85, 85) !important;
+  color: rgb(68, 68, 68) !important;
   width: fit-content;
   padding: 8px 16px !important;
   margin: 0px 2px;
@@ -129,7 +130,7 @@ border: none !important;
 .menubtn{
   display: none;
   font-size: 25px;
-  color: teal;
+  color: black;
   float: right;
   padding-top: 10px;
 }
@@ -139,6 +140,7 @@ border: none !important;
 @media screen and (max-width:820px){
   .topnav{
     height: 120px;
+    margin: 0 0 30px 0px;
   }
 .right{
   position: fixed;
@@ -147,10 +149,13 @@ border: none !important;
   display: block;
   top: -10%;
   left: -70%;
-  background-color: rgb(238, 238, 238);
-  z-index: 20;
+  background-color: rgb(248, 248, 248);
+  z-index: 2000;
   padding-top: 30%;
-
+}
+.topnavlink.left{
+font-size: 25px;
+color: white !important;
 }
 .right a{
   padding: 20px 36px !important;
@@ -167,7 +172,37 @@ border: none !important;
   color: teal;
   font-size: 20px;
 }
-
+form.example input[type=text] {
+  padding: 10px;
+  font-size: 14px;
+  border: 2px 0px 2px 2px solid rgb(197, 197, 197);
+  float: left;
+  display: flex;
+  width: 83%;
+  background: #ffffff;
+  margin-top: 10px;
+  border: none;
+}
+.searchbar{
+width: 100%;
+}
+form.example button {
+  float: left;
+  width: 15%;
+  padding: 10px;
+  background: #008cff;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-left: none; /* Prevent double borders */
+  cursor: pointer;
+  margin-top: 9px;
+  border-radius: 0 5px 5px 0;
+}
+.resp{
+  padding: 4px 0px;
+  font-size: 20px;
+}
 }
 
 
