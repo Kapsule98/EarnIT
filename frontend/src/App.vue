@@ -121,7 +121,9 @@ border: none !important;
   .welcome{
     display: none;
   }
-  
+  .topstrip {
+  display: none;
+}
 .topstriplink a{
   padding: 1px 5px !important;
 }

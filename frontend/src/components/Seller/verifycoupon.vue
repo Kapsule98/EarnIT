@@ -1,6 +1,11 @@
 <template>
   <div>
-    <topnav link1='<i class="fa fa-home"></i> Home' link2='<i class="fa fa-rupee"></i> Customer Bill' link3='<i class="fa fa-user"></i> Account' link4='<i class="fa fa-lock"></i> logout'></topnav>
+    <topnav
+      link1='<i class="fa fa-home"></i> Home'
+      link2='<i class="fa fa-rupee"></i> Customer Bill'
+      link3='<i class="fa fa-user"></i> Account'
+      link4='<i class="fa fa-lock"></i> logout'
+    ></topnav>
     <div class="w3-container">
       <div class="w3-row">
         <div class="w3-third form">
@@ -60,71 +65,115 @@
               ></b-form-input>
             </b-form-group>
 
-            <b-button type="submit" variant="primary" style="float: right;background:teal;"
+            <b-button
+              type="submit"
+              variant="primary"
+              style="float: right; background: teal"
               >Save</b-button
             >
           </b-form>
         </div>
-        <div class=" w3-twothird" style="padding:20px">
-          <h2 style="color:#4f4f4f">
-            <div class="percent">
-            Live Offers
-            </div>
+        <div class="w3-twothird" style="padding: 20px">
+          <h2 style="color: #4f4f4f">
+            <div class="percent">Live Offers</div>
           </h2>
           <div class="w3-row">
             <div class="w3-third">
               <couponcard name="ELECTRONICS" discount="50%"></couponcard>
-              </div>
-              <div class="w3-third">
+            </div>
+            <div class="w3-third">
               <couponcard name="Vegetables" discount="30%"></couponcard>
-              </div><div class="w3-third">
+            </div>
+            <div class="w3-third">
               <couponcard name="Beauty products" discount="20%"></couponcard>
-              </div>
-              <div class="w3-third">
+            </div>
+            <div class="w3-third">
               <couponcard name="NCERT Books" discount="40%"></couponcard>
-              </div>
-              <div class="w3-third">
+            </div>
+            <div class="w3-third">
               <couponcard name="Grocery" discount="10%"></couponcard>
+            </div>
+            <div class="w3-third">
+              <div class="addoffer">
+                <button
+                  onclick="document.getElementById('id01').style.display='block'"
+                  class="w3-large"
+                >
+                  <div class="plus"><i class="fa fa-plus"></i></div>
+                </button>
               </div>
-              <div class="w3-third">
-              <div class="addoffer"><button onclick="document.getElementById('id01').style.display='block'" class=" w3-large"><div class="plus"> <i class="fa fa-plus"></i></div> </button></div>
-              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-
-  <div id="id01" class="w3-modal">
-    <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-
-      <div class="w3-center"><br>
-        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
-        <h2>Add Coupon</h2>
-      </div>
-
-      <form class="w3-container" action="/action_page.php">
-        <div class="w3-section">
-          <label><b>Item</b></label>
-          <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Item name or category" name="itemname" required>
-
-          <label><b>Discount</b></label>
-          <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter percentage off" name="discount" required>
-
-          <label><b>Validity</b></label>
-          <input class="w3-input w3-border w3-margin-bottom" type="date" placeholder="Enter validity of coupon" name="itemname" required>
-         
-          <button class="w3-button w3-block w3-green w3-section w3-padding" type="submit">Add Coupon</button>
+    <div id="id01" class="w3-modal">
+      <div
+        class="w3-modal-content w3-card-4 w3-animate-zoom"
+        style="max-width: 600px"
+      >
+        <div class="w3-center">
+          <br />
+          <span
+            onclick="document.getElementById('id01').style.display='none'"
+            class="w3-button w3-xlarge w3-hover-red w3-display-topright"
+            title="Close Modal"
+            >&times;</span
+          >
+          <h2>Add Coupon</h2>
         </div>
-      </form>
 
-      <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-        <button onclick="document.getElementById('id01').style.display='none'" type="button" class="w3-button w3-red">Cancel</button>
+        <form class="w3-container" action="/action_page.php">
+          <div class="w3-section">
+            <label><b>Item</b></label>
+            <input
+              class="w3-input w3-border w3-margin-bottom"
+              type="text"
+              placeholder="Enter Item name or category"
+              name="itemname"
+              required
+            />
+
+            <label><b>Discount</b></label>
+            <input
+              class="w3-input w3-border w3-margin-bottom"
+              type="text"
+              placeholder="Enter percentage off"
+              name="discount"
+              required
+            />
+
+            <label><b>Validity</b></label>
+            <input
+              class="w3-input w3-border w3-margin-bottom"
+              type="date"
+              placeholder="Enter validity of coupon"
+              name="itemname"
+              required
+            />
+
+            <button
+              class="w3-button w3-block w3-green w3-section w3-padding"
+              type="submit"
+            >
+              Add Coupon
+            </button>
+          </div>
+        </form>
+
+        <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+          <button
+            onclick="document.getElementById('id01').style.display='none'"
+            type="button"
+            class="w3-button w3-red"
+          >
+            Cancel
+          </button>
+        </div>
       </div>
-
     </div>
-  </div>
-
+    <div class="c2-footer">FOOTER</div>
   </div>
 </template>
 
@@ -133,7 +182,7 @@ import topnav from "./topnav.vue";
 import couponcard from "./couponcard.vue";
 
 export default {
-  components: { couponcard,topnav },
+  components: { couponcard, topnav },
   data() {
     return {
       form: {
@@ -175,6 +224,14 @@ export default {
 </script>
 
 <style scoped>
+.c2-footer {
+  height: 300px;
+  width: 100%;
+  background: rgb(0, 128, 100);
+  text-align: center;
+  font-size: 50px;
+  font-weight: 900;
+}
 body {
   margin: 0;
   overflow-x: hidden;
@@ -200,33 +257,33 @@ h4 {
     transform: scale(1.2);
   }
 }
-.form{
+.form {
   position: sticky;
   padding: 0px 30px;
-  border-right:1px solid rgb(233, 233, 233) ;
+  border-right: 1px solid rgb(233, 233, 233);
 }
-.percent{
+.percent {
   letter-spacing: 2px;
   font-weight: 700;
   text-align: center;
   border-bottom: 1px solid rgb(233, 233, 233);
   padding-bottom: 20px;
 }
-.addoffer{
-  width: 80%;
- border-radius: 7px;
+.addoffer {
+  width: 100%;
+  border-radius: 7px;
   padding: auto;
   padding-top: 70px;
   text-align: center;
   color: rgb(226, 226, 226);
-  font-family: 'Tahoma', sans-serif;
+  font-family: "Tahoma", sans-serif;
   position: relative;
   margin: 40px auto;
   height: 250px;
   transition: 0.5s ease-in-out;
   background: rgb(241, 241, 241);
 }
-.plus{
+.plus {
   margin: auto;
   font-size: 50px;
   padding: 12px 30px;
@@ -235,23 +292,29 @@ h4 {
   background: rgb(199, 199, 199);
   color: white;
 }
-.plus:hover{
+.plus:hover {
   animation: spin 1s 1;
 }
 
-.addoffer button{
-  border:none;
+.addoffer button {
+  border: none;
   background: none;
 }
 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
+@media screen and (max-width: 600px) {
 
-@keyframes spin{
-    0%{
-        transform:rotate(0deg);
-    }
-    100%{
-        transform:rotate(360deg);
-    }
+  .w3-container{
+    padding: 0px 0px 10px 0px !important;
+  }
+
 }
 </style>

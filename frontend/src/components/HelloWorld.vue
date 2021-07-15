@@ -1,5 +1,13 @@
 <template>
   <div class="hello">
+
+    <li><a href="/land">Customer home page</a></li>
+     <li><a href="/shop">View Shop</a></li>
+     <li><a href="/cart">cart</a></li>
+     <li><a href="/verifycoupon">seller add coupons</a></li>
+     <li><a href="/customerbill">customerbill</a></li>
+     <li><a href="/account">account</a></li>
+
     <h1>{{ msg }}</h1>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
