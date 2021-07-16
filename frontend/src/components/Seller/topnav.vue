@@ -90,7 +90,8 @@ form.example::after {
   height: 70px;
   font-size: 18px;
   margin-bottom: 30px;
-  background: linear-gradient(90deg,rgb(93, 217, 255),rgb(169, 255, 219));
+  background: linear-gradient(90deg,rgb(93, 217, 255),rgb(93, 217, 255),rgb(169, 255, 219));
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 30%);
   
 }
 
@@ -124,7 +125,7 @@ border: none !important;
   transition: 0.5s ease-in-out;
 }
 .active a{
-    color: teal !important;
+    color: #08041f!important;
 }
 
 .menubtn{

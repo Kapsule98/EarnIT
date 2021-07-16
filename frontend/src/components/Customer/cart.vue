@@ -129,28 +129,21 @@
         </div>
       </div>
     </div>
-    <div class="c2-footer">FOOTER</div>
+    <sitefooter></sitefooter>
   </div>
 </template>
 <script>
 import topnav from "../Seller/topnav.vue";
+import Sitefooter from './sitefooter.vue';
 export default {
-  components: { topnav },
+  components: { topnav, Sitefooter },
 };
 </script>
 <style scoped>
 .p-card{
   padding: 0px 10px;
 }
-.c2-footer {
-  height: 300px;
-  width: 100%;
-  background: rgb(0, 128, 100);
-  text-align: center;
-  font-size: 50px;
-  font-weight: 900;
-  margin-top: 40px;
-}
+
 .greyback {
   position: fixed;
   top: -20%;
