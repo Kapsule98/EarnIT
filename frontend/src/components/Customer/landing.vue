@@ -240,7 +240,7 @@
           </div>
         </div>
       </b-card>
-      <div class="c2-footer">FOOTER!</div>
+      <sitefooter></sitefooter>
     </div>
   </div>
 </template>
@@ -248,8 +248,9 @@
 import topnav from "../Seller/topnav.vue";
 import Carousel from "./carousel.vue";
 import carousel2 from "./carousel2.vue";
+import Sitefooter from './sitefooter.vue';
 export default {
-  components: { topnav, Carousel, carousel2 },
+  components: { topnav, Carousel, carousel2, Sitefooter },
 };
 </script>
 
@@ -276,14 +277,6 @@ export default {
   z-index: 1;
   background: rgb(224, 224, 224);
   text-align: center;
-}
-.c2-footer {
-  height: 300px;
-  width: 100%;
-  background: rgb(0, 128, 100);
-  text-align: center;
-  font-size: 50px;
-  font-weight: 900;
 }
 .backwrap {
   background-color: rgb(160, 160, 160);

@@ -173,16 +173,17 @@
         </div>
       </div>
     </div>
-    <div class="c2-footer">FOOTER</div>
+    <sitefooter></sitefooter>
   </div>
 </template>
 
 <script>
 import topnav from "./topnav.vue";
 import couponcard from "./couponcard.vue";
+import Sitefooter from '../Customer/sitefooter.vue';
 
 export default {
-  components: { couponcard, topnav },
+  components: { couponcard, topnav, Sitefooter },
   data() {
     return {
       form: {
@@ -224,14 +225,7 @@ export default {
 </script>
 
 <style scoped>
-.c2-footer {
-  height: 300px;
-  width: 100%;
-  background: rgb(0, 128, 100);
-  text-align: center;
-  font-size: 50px;
-  font-weight: 900;
-}
+
 body {
   margin: 0;
   overflow-x: hidden;
