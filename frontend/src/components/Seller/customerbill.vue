@@ -68,29 +68,23 @@
     </div>
    
    
-    <div class="c2-footer">FOOTER!</div>
+    <sitefooter></sitefooter>
   </div>
 </template>
 
 <script>
+import Sitefooter from '../Customer/sitefooter.vue';
 import Ctable from "./ctable.vue";
 import topnav from "./topnav.vue";
 
 export default {
-  components: { topnav, Ctable },
+  components: { topnav, Ctable, Sitefooter },
   
 };
 </script>
 
 <style scoped>
-.c2-footer {
-  height: 300px;
-  width: 100%;
-  background: teal;
-  text-align: center;
-  font-size: 50px;
-  font-weight: 900;
-}
+
 
 .c-data {
   background-color: teal;

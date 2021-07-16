@@ -65,26 +65,21 @@
         </div>
       </div>
     </div>
-    <div class="c2-footer">FOOTER!</div>
+    <sitefooter></sitefooter>
   </div>
 </template>
 <script>
+import Sitefooter from '../Customer/sitefooter.vue';
 import topnav from "./topnav.vue";
 export default {
   components: {
     topnav,
+    Sitefooter,
   },
 };
 </script>
 <style scoped>
-.c2-footer {
-  height: 300px;
-  width: 100%;
-  background: rgb(0, 128, 100);
-  text-align: center;
-  font-size: 50px;
-  font-weight: 900;
-}
+
 .c-domain {
   color: rgb(90, 90, 90);
   font-weight: 600;
