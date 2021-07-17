@@ -30,6 +30,7 @@
         />
 
         <button @click="login()" class="login-button">Login</button>
+        <a href="" style="float:right">dont have an account? Register here</a>
       </div>
     </div>
     <sitefooter></sitefooter>

@@ -24,7 +24,7 @@
             onclick="document.getElementById('id02').style.display='block'"
             class="w3-button"
           >
-            <i class="fa fa-address-card" style="color: teal;font-size:20px"></i>
+            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
           </button>
         </td>
       </tr>
@@ -38,7 +38,7 @@
             onclick="document.getElementById('id02').style.display='block'"
             class="w3-button"
           >
-            <i class="fa fa-address-card" style="color: teal;font-size:20px"></i>
+            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
           </button>
         </td>
       </tr>
@@ -52,7 +52,7 @@
             onclick="document.getElementById('id02').style.display='block'"
             class="w3-button"
           >
-            <i class="fa fa-address-card" style="color: teal;font-size:20px"></i>
+            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
           </button>
         </td>
       </tr>
@@ -66,7 +66,7 @@
             onclick="document.getElementById('id02').style.display='block'"
             class="w3-button"
           >
-            <i class="fa fa-address-card" style="color: teal;font-size:20px"></i>
+            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
           </button>
         </td>
       </tr>
@@ -80,7 +80,7 @@
             onclick="document.getElementById('id02').style.display='block'"
             class="w3-button"
           >
-            <i class="fa fa-address-card" style="color: teal;font-size:20px"></i>
+            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
           </button>
         </td>
       </tr>
@@ -94,7 +94,7 @@
             onclick="document.getElementById('id02').style.display='block'"
             class="w3-button"
           >
-            <i class="fa fa-address-card" style="color: teal;font-size:20px"></i>
+            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
           </button>
         </td>
       </tr>
@@ -107,7 +107,7 @@
             onclick="document.getElementById('id02').style.display='block'"
             class="w3-button"
           >
-            <i class="fa fa-address-card" style="color: teal;font-size:20px"></i>
+            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
           </button>
         </td>
       </tr>
@@ -121,7 +121,7 @@
             onclick="document.getElementById('id02').style.display='block'"
             class="w3-button"
           >
-            <i class="fa fa-address-card" style="color: teal;font-size:20px"></i>
+            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
           </button>
         </td>
       </tr>
@@ -135,7 +135,7 @@
             onclick="document.getElementById('id02').style.display='block'"
             class="w3-button"
           >
-            <i class="fa fa-address-card" style="color: teal;font-size:20px"></i>
+            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
           </button>
         </td>
       </tr>
@@ -278,8 +278,8 @@ th {
   border-bottom: 0.5pt solid rgb(219, 219, 219);
 }
 .c-table th {
-  background-color: teal;
-  color: rgb(255, 255, 255);
+  background-color: #5dd9ff;
+  color: rgb(24, 24, 24)
 }
 .c-table tr:hover {
   background-color: rgb(219, 219, 219);
