@@ -79,11 +79,25 @@ const routes = [
     component: () => import('../components/Seller/account.vue')
   },
   {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import('../components/Customer/account.vue')
+  },
+  {
     path: '/cart',
     name: 'cart',
     component: () => import('../components/Customer/cart.vue')
   },
- 
+  {
+    path: '/contact',
+    name: 'contact',
+    component: () => import('../components/Customer/contact.vue')
+  },
+  {
+    path: '/profile',
+    name: 'customerprofile',
+    component: () => import('../components/Customer/profile.vue')
+  },
  
 
 ]

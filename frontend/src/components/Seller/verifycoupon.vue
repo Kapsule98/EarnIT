@@ -95,10 +95,7 @@
             </div>
             <div class="w3-third">
               <div class="addoffer">
-                <button
-                  onclick="document.getElementById('id01').style.display='block'"
-                  class="w3-large"
-                >
+                <button @click="showAddCouponModal()">
                   <div class="plus"><i class="fa fa-plus"></i></div>
                 </button>
               </div>
@@ -108,71 +105,42 @@
       </div>
     </div>
 
-    <div id="id01" class="w3-modal">
-      <div
-        class="w3-modal-content w3-card-4 w3-animate-zoom"
-        style="max-width: 600px"
-      >
-        <div class="w3-center">
-          <br />
-          <span
-            onclick="document.getElementById('id01').style.display='none'"
-            class="w3-button w3-xlarge w3-hover-red w3-display-topright"
-            title="Close Modal"
-            >&times;</span
-          >
-          <h2>Add Coupon</h2>
-        </div>
 
-        <form class="w3-container" action="/action_page.php">
-          <div class="w3-section">
-            <label><b>Item</b></label>
-            <input
-              class="w3-input w3-border w3-margin-bottom"
-              type="text"
-              placeholder="Enter Item name or category"
-              name="itemname"
-              required
-            />
-
-            <label><b>Discount</b></label>
-            <input
-              class="w3-input w3-border w3-margin-bottom"
-              type="text"
-              placeholder="Enter percentage off"
-              name="discount"
-              required
-            />
-
-            <label><b>Validity</b></label>
-            <input
-              class="w3-input w3-border w3-margin-bottom"
-              type="date"
-              placeholder="Enter validity of coupon"
-              name="itemname"
-              required
-            />
-
-            <button
-              class="w3-button w3-block w3-green w3-section w3-padding"
-              type="submit"
-            >
-              Add Coupon
-            </button>
-          </div>
-        </form>
-
-        <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-          <button
-            onclick="document.getElementById('id01').style.display='none'"
-            type="button"
-            class="w3-button w3-red"
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    </div>
+            <b-modal ref="couponModal" hide-footer title="Add coupon details">
+                <div class="d-block text-center">
+                    <h3>Add Coupon details </h3>
+                        <b-form-group label="Discount type" v-slot="{ ariaDescribedby }" style="padding:20px 5px">
+                            <b-form-radio-group
+                                v-model="discountType"
+                                :options="dTypeoptions"
+                                :aria-describedby="ariaDescribedby"
+                                name="radio-options"
+                            ></b-form-radio-group>
+                        </b-form-group>
+                        <div v-if="discountType === 'ditem'">
+                        
+                            <label for="range-1">Discount percent on item</label>
+                            <b-form-input id="range-1" v-model="itemdiscountpercent" type="range" min="0" max="100"></b-form-input>
+                            <div class="mt-2">Value: {{ itemdiscountpercent }} %</div>
+                        
+                        </div>
+                        <div v-if="discountType === 'dbill'">
+                            <label for="range-2">Discount percent on total bill</label>
+                            <b-form-input id="range-2" v-model="billdiscountpercent" type="range" min="0" max="100"></b-form-input>
+                            <div class="mt-2"><span >Value: {{ billdiscountpercent }} %</span></div>
+                            <br/>
+                        </div>
+                        <div v-if="discountType === 'dextraitem'">
+                            <label><span style="padding:2px 5px">Enter offer :</span></label><input type="text" v-model="customdiscount"/>
+                        </div>
+                        <div v-if="discountType != ''">
+                            <label><span style="padding:2px 5px">Validity</span> </label>
+                            <date-picker v-model="validity" type="date" range></date-picker>
+                        </div>
+                </div>
+                <b-button class="login-button" block @click="addCouponDetails();">Add Coupon</b-button>
+           
+            </b-modal>
     <sitefooter></sitefooter>
   </div>
 </template>
@@ -180,10 +148,12 @@
 <script>
 import topnav from "./topnav.vue";
 import couponcard from "./couponcard.vue";
-import Sitefooter from '../Customer/sitefooter.vue';
+import Sitefooter from "../Customer/sitefooter.vue";
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
 
 export default {
-  components: { couponcard, topnav, Sitefooter },
+  components: { couponcard, topnav, Sitefooter,DatePicker },
   data() {
     return {
       form: {
@@ -200,6 +170,16 @@ export default {
         "Corn",
       ],
       show: true,
+      discountType: "",
+      dTypeoptions: [
+        { text: "Discount on item", value: "ditem" },
+        { text: "Discount on total bill", value: "dbill" },
+        { text: "Extra Items", value: "dextraitem" },
+      ],
+      itemdiscountpercent: "",
+      billdiscountpercent: "",
+      customdiscount: "",
+      validity: [],
     };
   },
   methods: {
@@ -220,12 +200,46 @@ export default {
         this.show = true;
       });
     },
+    registerSellerDetails() {
+      this.$router.push("/seller/registerdetails");
+    },
+    showAddCouponModal() {
+      this.$refs["couponModal"].show();
+    },
+    addCouponDetails() {
+      //TODO validate input and store in db
+
+      console.log("discount type = ", this.discountType);
+
+      console.log(
+        this.itemdiscountpercent,
+        this.billdiscountpercent,
+        this.customdiscount,
+        this.validity
+      );
+      this.$refs["couponModal"].hide();
+    },
   },
 };
 </script>
 
 <style scoped>
-
+.login-button{
+    width:100%;
+    padding:6px;
+    text-align: center;
+    border-radius: 5px;
+    border:1px solid rgb(0, 153, 255);
+    color: rgb(0, 153, 255);
+    font-size: 20px;
+    background: none;
+    margin: 20px 0px;
+    transition: 0.2s ease-in-out;
+}
+.login-button:hover{
+    background:rgb(0, 153, 255);
+    color: white;
+}
 body {
   margin: 0;
   overflow-x: hidden;
@@ -305,10 +319,8 @@ h4 {
 }
 
 @media screen and (max-width: 600px) {
-
-  .w3-container{
+  .w3-container {
     padding: 0px 0px 10px 0px !important;
   }
-
 }
 </style>
