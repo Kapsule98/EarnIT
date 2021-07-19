@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import topnav from "../components/Seller/topnav.vue";
-import Sitefooter from '../components/Customer/sitefooter.vue';
+import topnav from "../Seller/topnav.vue";
+import Sitefooter from './sitefooter.vue';
 export default {
   components: { topnav, Sitefooter },
 };

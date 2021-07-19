@@ -39,4 +39,12 @@ export default {
    z-index: 1000;
    padding: 10px 20px;
 }
+a{
+  text-decoration: none;
+  
+}
+a:hover{
+  text-decoration: none;
+  
+}
 </style>
