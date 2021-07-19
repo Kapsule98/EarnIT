@@ -130,6 +130,7 @@ export default {
   text-transform: lowercase;
   font-weight: 400;
   display: block;
+  padding-left: 10px;
 }
 .c2-shop {
   font-size: 17px;
@@ -137,7 +138,7 @@ export default {
   font-weight: 400;
   display: block;
   padding: 10px;
-  border-bottom: 1px solid teal;
+  border-bottom: none;
 }
 .c2-location {
   top: 5px;
@@ -149,7 +150,7 @@ export default {
   font-weight: 400;
   display: block;
   background: white;
-  border: 2px solid rgba(0, 128, 128, 0.767);
+  border: 2px solid rgba(0, 162, 255, 0.719);
   padding: 2px 3px;
   border-radius: 9px;
 }
@@ -158,7 +159,7 @@ export default {
   color: rgb(255, 255, 255);
   text-transform: lowercase;
   font-weight: 600;
-  background: rgba(0, 128, 128, 0.719);
+  background: rgba(0, 162, 255, 0.719);
   width: fit-content;
   border-radius: 6px;
   padding: 2px 14px;
@@ -169,5 +170,12 @@ export default {
   top: 0;
   left: 0;
   z-index: -1;
+}
+a{
+  text-decoration: none;
+}
+a:hover{
+  text-decoration: none;
+  
 }
 </style>

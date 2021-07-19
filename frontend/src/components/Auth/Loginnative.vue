@@ -30,7 +30,7 @@
         />
 
         <button @click="login()" class="login-button">Login</button>
-        <a href="" style="float:right">dont have an account? Register here</a>
+        <a href="/registernative" style="float:right">dont have an account? Register here</a>
       </div>
     </div>
     <sitefooter></sitefooter>
@@ -41,8 +41,10 @@ import db from "../../firebase";
 import eventBus from "../../utils/eventBus";
 import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "../Seller/topnav.vue";
+
 // import bcrypt from 'bcryptjs'
 export default {
+  
   components: { topnav, Sitefooter },
   data() {
     return {

@@ -94,14 +94,16 @@
       </div>
 
       <b-card style="margin-top: 5px; border: none; border-radius: 0">
-        <h3 style="padding: 0px">Top Offers</h3>
+        <h3 style="padding: 0px">Top Offers <a href="" style="font-size:11px">View all</a></h3>
+       
         <div class="w3-container" style="padding: 20px 0px">
           <carousel2></carousel2>
         </div>
       </b-card>
 
       <b-card style="margin-top: 5px; border: none; border-radius: 0">
-        <h2 style="padding: 20px">Tagline for Apparels</h2>
+        <h2 style="padding: 20px">Tagline for Apparels <a href="" style="font-size:11px">View all</a></h2>
+
         <carousel2></carousel2>
         <div class="w3-row" style="padding: 10px 0px">
           <div class="w3-half">
@@ -179,7 +181,7 @@
       </b-card>
 
       <b-card style="margin-top: 5px; border: none; border-radius: 0">
-        <h2 style="padding: 20px">Tagline for Food</h2>
+        <h2 style="padding: 20px">Tagline for Food <a href="" style="font-size:11px">View all</a></h2>
         <carousel2></carousel2>
 
         <div class="w3-row" style="padding: 10px 0px">
@@ -292,5 +294,11 @@ export default {
 
 a{
   text-decoration: none;
+  
 }
+a:hover{
+  text-decoration: none;
+  
+}
+
 </style>

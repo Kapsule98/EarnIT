@@ -1,55 +1,78 @@
 <template>
-  <div id="app">
+  <div id="app"  v-on:scroll="scrollFunction">
     <div id="nav" class="topnav">
-      <i class="fa fa-bars menubtn"  v-on:click="openmenu" ></i>
-      <div class="topnavlink left" style=" font-weight: 900;"><router-link to="/"><i class="fa fa-map-marker" style="color:#008cff;"></i><span style="color:black">  Lemmebuy.in </span></router-link>
-      </div> 
+      <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
+      <div class="topnavlink left" style="font-weight: 900">
+        <router-link to="/"
+          ><i class="fa fa-map-marker" style="color: rgb(0, 119, 255)"></i
+          ><span style="color: black"> Lemmebuy.in </span></router-link
+        >
+      </div>
       <div class="left searchbar">
         <form class="example" action="action_page.php">
-  <input type="text" placeholder="Search.." name="search">
-  <button type="submit"><i class="fa fa-search"></i></button>
-</form>
+          <input type="text" placeholder="Search.." name="search" />
+          <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
       </div>
 
       <div class="right">
-     <i class="fa fa-times closebtn" v-on:click="closemenu" ></i>
-     
-      <div class="resp"><div class="topnavlink active"><router-link to="/"><span v-html="link1"></span></router-link></div> </div>
-      <div class="resp"><div class="topnavlink"><router-link to="/about"><span v-html="link2"></span></router-link> </div> </div>
-      <div class="resp"><div class="topnavlink"><router-link to="/about"><span v-html="link3"></span></router-link> </div> </div>
-       <div class="resp"><div class="topnavlink"><router-link to="/about"><span v-html="link4"></span></router-link> </div> </div>
-       <div class="resp"><div class="topnavlink"><router-link to="/about"><span v-html="link5"></span></router-link> </div> </div>
-       <div class="resp"><div class="topnavlink"><router-link to="/about"><span v-html="link6"></span></router-link> </div> </div>
+        <i class="fa fa-times closebtn" v-on:click="closemenu"></i>
 
+        <div class="resp">
+          <div class="topnavlink active">
+            <router-link to="/"><span v-html="link1"></span></router-link>
+          </div>
+        </div>
+        <div class="resp">
+          <div class="topnavlink">
+            <router-link to="/about"><span v-html="link2"></span></router-link>
+          </div>
+        </div>
+        <div class="resp">
+          <div class="topnavlink">
+            <router-link to="/about"><span v-html="link3"></span></router-link>
+          </div>
+        </div>
+        <div class="resp">
+          <div class="topnavlink">
+            <router-link to="/about"><span v-html="link4"></span></router-link>
+          </div>
+        </div>
+        <div class="resp">
+          <div class="topnavlink">
+            <router-link to="/about"><span v-html="link5"></span></router-link>
+          </div>
+        </div>
+        <div class="resp">
+          <div class="topnavlink">
+            <router-link to="/about"><span v-html="link6"></span></router-link>
+          </div>
+        </div>
       </div>
-     
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 <script>
-
+window.onload
 export default {
-  
-    props :['link1',
-    'link2','link3','link4','link5','link6',],
-
-methods: {
+  props: ["link1", "link2", "link3", "link4", "link5", "link6"],
+  methods: {
     openmenu: function () {
-      document.getElementsByClassName("right")[0].style.left="0%";
-      },
-      closemenu: function () {
-      document.getElementsByClassName("right")[0].style.left="-70%";
-      }
-}
-}
+      document.getElementsByClassName("right")[0].style.left = "0%";
+    },
+    closemenu: function () {
+      document.getElementsByClassName("right")[0].style.left = "-70%";
+    },
+   
+  },
+};
 </script>
 <style>
-
-form.example input[type=text] {
+form.example input[type="text"] {
   padding: 10px;
   font-size: 14px;
-  border:none;
+  border: none;
   float: left;
   display: flex;
   width: 240px;
@@ -62,10 +85,10 @@ form.example button {
   float: left;
   width: 50px;
   padding: 10px;
-  background: teal;
-  color: white;
+  background: rgb(0, 119, 255);
+  color: rgb(255, 255, 255);
   font-size: 14px;
-  border:none;
+  border: none;
   border-left: none; /* Prevent double borders */
   cursor: pointer;
   margin-top: 0px;
@@ -90,12 +113,16 @@ form.example::after {
   height: 70px;
   font-size: 18px;
   margin-bottom: 30px;
-  background: linear-gradient(90deg,rgb(93, 217, 255),rgb(93, 217, 255),rgb(169, 255, 219));
+  background: linear-gradient(
+    90deg,
+    rgb(93, 217, 255),
+    rgb(93, 217, 255),
+    rgb(169, 255, 219)
+  );
   box-shadow: 0 0 10px 0 rgb(0 0 0 / 30%);
-  
 }
 
-.topnavlink a{
+.topnavlink a {
   color: rgb(68, 68, 68) !important;
   width: fit-content;
   padding: 8px 16px !important;
@@ -104,7 +131,7 @@ form.example::after {
   transition: 1s ease-in-out;
 }
 
-.topnavlink a:hover{
+.topnavlink a:hover {
   border: 1px solid rgb(136, 136, 136);
 }
 
@@ -112,10 +139,10 @@ form.example::after {
   float: left !important;
   font-size: 30px;
 }
-.left a:hover{
-background: none !important;
-color: rgb(0, 0, 0) !important;
-border: none !important;
+.left a:hover {
+  background: none !important;
+  color: rgb(0, 0, 0) !important;
+  border: none !important;
 }
 
 .right {
@@ -124,87 +151,85 @@ border: none !important;
   display: flex;
   transition: 0.5s ease-in-out;
 }
-.active a{
-    color: #08041f!important;
+.active a {
+  color: #08041f !important;
 }
 
-.menubtn{
+.menubtn {
   display: none;
   font-size: 25px;
   color: black;
   float: right;
   padding-top: 10px;
 }
-.closebtn{
+.closebtn {
   display: none;
 }
-@media screen and (max-width:820px){
-  .topnav{
+@media screen and (max-width: 820px) {
+  .topnav {
     height: 120px;
     margin: 0 0 30px 0px;
   }
-.right{
-  position: fixed;
-  width: 70%;
-  height: 120%;
-  display: block;
-  top: -10%;
-  left: -70%;
-  background-color: rgb(248, 248, 248);
-  z-index: 2000;
-  padding-top: 30%;
-}
-.topnavlink.left{
-font-size: 25px;
-color: white !important;
-}
-.right a{
-  padding: 20px 36px !important;
-}
+  .right {
+    position: fixed;
+    width: 70%;
+    height: 120%;
+    display: block;
+    top: -10%;
+    left: -70%;
+    background-color: rgb(248, 248, 248);
+    z-index: 2000;
+    padding-top: 30%;
+  }
+  .topnavlink.left {
+    font-size: 25px;
+    color: white !important;
+  }
+  .right a {
+    padding: 20px 36px !important;
+  }
 
-.menubtn{
-  display: block;
+  .menubtn {
+    display: block;
+  }
+  .closebtn {
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 10%;
+    color: teal;
+    font-size: 20px;
+  }
+  form.example input[type="text"] {
+    padding: 10px;
+    font-size: 14px;
+    border: 2px 0px 2px 2px solid rgb(197, 197, 197);
+    float: left;
+    display: flex;
+    width: 83%;
+    background: #ffffff;
+    margin-top: 10px;
+    border: none;
+  }
+  .searchbar {
+    width: 100%;
+  }
+  form.example button {
+    float: left;
+    width: 15%;
+    padding: 10px;
+    background: #008cff;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-left: none; /* Prevent double borders */
+    cursor: pointer;
+    margin-top: 9px;
+    border-radius: 0 5px 5px 0;
+  }
+  .resp {
+    padding: 4px 0px;
+    font-size: 20px;
+  }
 }
-.closebtn{
-  display: block;
-  position: absolute;
-  right: 20px;
-  top: 10%;
-  color: teal;
-  font-size: 20px;
-}
-form.example input[type=text] {
-  padding: 10px;
-  font-size: 14px;
-  border: 2px 0px 2px 2px solid rgb(197, 197, 197);
-  float: left;
-  display: flex;
-  width: 83%;
-  background: #ffffff;
-  margin-top: 10px;
-  border: none;
-}
-.searchbar{
-width: 100%;
-}
-form.example button {
-  float: left;
-  width: 15%;
-  padding: 10px;
-  background: #008cff;
-  color: white;
-  font-size: 14px;
-  border: none;
-  border-left: none; /* Prevent double borders */
-  cursor: pointer;
-  margin-top: 9px;
-  border-radius: 0 5px 5px 0;
-}
-.resp{
-  padding: 4px 0px;
-  font-size: 20px;
-}
-}
-
-
 </style>
