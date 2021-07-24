@@ -18,11 +18,10 @@
               label="Customer ID  "
               label-for="input-1"
               description=""
+              
             >
               <b-form-input
                 id="input-1"
-                v-model="form.email"
-                type="email"
                 placeholder="Enter Customer Id"
                 required
               ></b-form-input>
@@ -35,21 +34,24 @@
             >
               <b-form-input
                 id="input-2"
-                v-model="form.name"
                 placeholder="enter coupon code"
                 required
               ></b-form-input>
             </b-form-group>
 
             <b-form-group
+            
               id="input-group-3"
               label="Total Amount:"
               label-for="input-3"
+              
             >
               <b-form-input
+               type="number"
                 id="input-3"
                 placeholder="enter total amount"
                 required
+                
               ></b-form-input>
             </b-form-group>
 
@@ -57,19 +59,21 @@
               id="input-group-4"
               label="Discounted Amount:"
               label-for="input-4"
+  
             >
               <b-form-input
                 id="input-4"
                 placeholder="enter discounted amount"
                 required
+                type="number"
               ></b-form-input>
             </b-form-group>
 
             <b-button
               type="submit"
               variant="primary"
-              style="float: right; background: teal"
-              >Save</b-button
+              style="float: right; background: #008cff"
+              >Verify</b-button
             >
           </b-form>
         </div>
@@ -109,6 +113,13 @@
             <b-modal ref="couponModal" hide-footer title="Add coupon details">
                 <div class="d-block text-center">
                     <h3>Add Coupon details </h3>
+                      <label for="range-3">Select no. of Coupons</label>
+    <b-form-input id="range-3" v-model="value3" type="range" min="0" max="50" step="1"></b-form-input>
+    <div class="mt-2">Value: {{ value3 }}</div>
+    <br>
+                    <label for="range-1">Minimum Purchase</label>
+    <b-form-input id="range-1" v-model="value" type="range" min="0" max="5000" step="100"></b-form-input>
+    <div class="mt-2">Value: Rs {{ value }}</div>
                         <b-form-group label="Discount type" v-slot="{ ariaDescribedby }" style="padding:20px 5px">
                             <b-form-radio-group
                                 v-model="discountType"
@@ -117,6 +128,7 @@
                                 name="radio-options"
                             ></b-form-radio-group>
                         </b-form-group>
+                         
                         <div v-if="discountType === 'ditem'">
                         
                             <label for="range-1">Discount percent on item</label>
@@ -137,6 +149,7 @@
                             <label><span style="padding:2px 5px">Validity</span> </label>
                             <date-picker v-model="validity" type="date" range></date-picker>
                         </div>
+                        
                 </div>
                 <b-button class="login-button" block @click="addCouponDetails();">Add Coupon</b-button>
            
@@ -162,13 +175,6 @@ export default {
         food: null,
         checked: [],
       },
-      foods: [
-        { text: "Select One", value: null },
-        "Carrots",
-        "Beans",
-        "Tomatoes",
-        "Corn",
-      ],
       show: true,
       discountType: "",
       dTypeoptions: [
@@ -180,6 +186,8 @@ export default {
       billdiscountpercent: "",
       customdiscount: "",
       validity: [],
+       value: '500',
+       value3: '20'
     };
   },
   methods: {
@@ -278,7 +286,7 @@ h4 {
   padding-bottom: 20px;
 }
 .addoffer {
-  width: 100%;
+  width: 80%;
   border-radius: 7px;
   padding: auto;
   padding-top: 70px;
@@ -286,8 +294,8 @@ h4 {
   color: rgb(226, 226, 226);
   font-family: "Tahoma", sans-serif;
   position: relative;
-  margin: 40px auto;
-  height: 250px;
+  margin: 20px auto;
+  height: 280px;
   transition: 0.5s ease-in-out;
   background: rgb(241, 241, 241);
 }

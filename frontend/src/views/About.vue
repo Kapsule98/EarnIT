@@ -7,6 +7,8 @@
       link4='<i class="fa fa-shopping-cart"></i> Cart'
       link5='<i class="fa fa-lock"></i> Logout'
     ></topnav>
+    <h1>About page</h1>
+    <br><br><br><br>
     <sitefooter></sitefooter>
     </div>
 </template>

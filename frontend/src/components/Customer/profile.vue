@@ -13,7 +13,7 @@
 
       <div class="w3-col m8">
         <b-card style="margin: 20px 0px">
-          <b-breadcrumb :items="items" style="background: none"></b-breadcrumb>
+         
           <h1>Your Account</h1>
           <table style="width: 100%" class="accountable">
             <tr>
@@ -47,6 +47,13 @@
             <tr>
               <td class="detail">Location</td>
               <td class="description">Bhilai</td>
+              <td>
+                <button class="edit"><i class="fa fa-edit"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td class="detail">Phone no.</td>
+              <td class="description">5876986798</td>
               <td>
                 <button class="edit"><i class="fa fa-edit"></i></button>
               </td>

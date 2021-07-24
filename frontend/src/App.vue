@@ -1,17 +1,6 @@
 <template>
   <div id="app">
-    <div class="topstrip">
-      <div class="leftstrip"><i class="fa fa-map-marker"></i> <div class="city">select location</div> <button class="location"> select city <i class="fa fa-caret-down"></i></button></div>
-      <div class="welcome"> Welcome to lemmebuy.in !</div>
-      <div class="rightstrip">
-      <div class="topstriplink active"><router-link to="/"><i class="fa fa-home"></i> |</router-link></div> 
-      <div class="topstriplink"><router-link to="/about"> <i class="fa fa-info-circle" aria-hidden="true"></i> About |</router-link> </div> 
-      <div class="topstriplink"><router-link v-if="seller" to="/sellerhome">Seller Home </router-link> </div> 
-      <div class="topstriplink"><router-link v-if="customer" to="/customerhome">Customer Home </router-link></div> 
-      <div class="topstriplink"><router-link v-if="!login" to="/login"><i class="fa fa-lock"></i> Login </router-link></div> 
-      <div class="topstriplink"><router-link v-if="login" to="/logout">Logout </router-link></div> 
-      </div>
-    </div>
+    
     <router-view/>
   </div>
 </template>

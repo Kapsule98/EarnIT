@@ -43,7 +43,7 @@
                 <b-tabs card>
                   <b-tab active style="font-size: 15px">
                     <template #title>
-                      <span style="color: teal">Offers</span>
+                      <span style="color: #008cff">Offers</span>
                     </template>
 
                     <div class="couponcard">
@@ -125,7 +125,7 @@
                     </div>
                     <button
                       style="
-                        background: teal;
+                        background: #008cff;
                         width: fit-content;
                         color: white;
                         padding: 8px 10px;
@@ -142,7 +142,7 @@
                   </b-tab>
                   <b-tab style="color: #666666">
                     <template #title>
-                      <span style="color: teal">About</span>
+                      <span style="color: #008cff">About</span>
                     </template>
                     <h5
                       class="domain"
@@ -180,25 +180,25 @@
           <div class="w3-third" style="padding: 20px">
             <div class="w3-card" style="padding: 20px; box-shadow: none">
               <h4>
-                <i class="fa fa-share-alt" style="color: teal"></i> Share this
+                <i class="fa fa-share-alt" style="color: #008cff"></i> Share this
                 page
               </h4>
               <h3>
                 <i
                   class="fa fa-instagram"
-                  style="color: teal; padding: 10px"
+                  style="color:#008cff; padding: 10px"
                 ></i>
                 <i
                   class="fa fa-facebook"
-                  style="color: teal; padding: 10px"
+                  style="color: #008cff; padding: 10px"
                 ></i>
                 <i
                   class="fa fa-snapchat"
-                  style="color: teal; padding: 10px"
+                  style="color: #008cff; padding: 10px"
                 ></i>
                 <i
                   class="fa fa-pinterest"
-                  style="color: teal; padding: 10px"
+                  style="color: #008cff; padding: 10px"
                 ></i>
               </h3>
             </div>
@@ -266,7 +266,7 @@ export default {
 
 .card_item {
   font-size: 20px;
-  color: #003100;
+  color: teal;
   float: left;
   margin-top: -5px;
   width: fit-content;
