@@ -6,7 +6,7 @@
           <a href=""><i class="fa fa-map-marker"></i> Lemmebuy.in </a>
         </div>
         <div style="float: right">
-          <a href="/registernative"><button class="f-register" style="background: #fad319">
+          <a href="/registernative"><button class="f-register" style="background: #008cff;color:white">
             Register
           </button></a>
           <a href="/loginnative"><button class="f-register" style="background: white">Login</button></a>

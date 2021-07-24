@@ -17,16 +17,11 @@
             </h2>
 
             <div class="couponcard">
-              <div class="card_remaining">Hurry only 9 left!</div>
-              <b-form-checkbox
-                id="checkbox-1"
-                v-model="status"
-                name="checkbox-1"
-                value="accepted"
-                unchecked-value="not_accepted"
-              >
-                <div class="card_item">40% off on Samsung Fast Chargers</div>
-              </b-form-checkbox>
+              <div class="w3-row">
+                <div class="w3-col m9">
+                   <div class="card_remaining">Hurry only 9 left!</div>
+
+              <div class="card_item">40% off on Samsung Fast Chargers</div>
 
               <div class="w3-row">
                 <div class="w3-third">
@@ -38,70 +33,31 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="couponcard">
-              <div class="card_remaining">Hurry only 9 left!</div>
-              <b-form-checkbox
-                id="checkbox-2"
-                v-model="status"
-                name="checkbox-1"
-                value="accepted"
-                unchecked-value="not_accepted"
-              >
-                <div class="card_item">40% off on Samsung Fast Chargers</div>
-              </b-form-checkbox>
-
-              <div class="w3-row">
-                <div class="w3-third">
-                  <div class="card_leftcoupons">9/30 Coupons Left</div>
                 </div>
-                <div class="w3-third">
-                  <div class="card_validity">
-                    valid till 4 jun 2021 <i class="fa fa-info-circle"></i>
-                  </div>
+                <div class="w3-col m3">
+                  <button v-on:click="reedem" id='reedem'
+                    class="w3-button"
+                    style="
+                      width: 90%;
+                      margin: 30px 10px;
+                      background: #008cff;
+                      color: white;
+                    "
+                  >
+                    Rreedem coupon
+                  </button>
                 </div>
               </div>
+             
             </div>
-            <div class="couponcard">
-              <div class="card_remaining">Hurry only 9 left!</div>
-              <b-form-checkbox
-                id="checkbox-3"
-                v-model="status"
-                name="checkbox-1"
-                value="accepted"
-                unchecked-value="not_accepted"
-              >
-                <div class="card_item">40% off on Samsung Fast Chargers</div>
-              </b-form-checkbox>
+           
+            <div>
 
-              <div class="w3-row">
-                <div class="w3-third">
-                  <div class="card_leftcoupons">9/30 Coupons Left</div>
-                </div>
-                <div class="w3-third">
-                  <div class="card_validity">
-                    valid till 4 jun 2021 <i class="fa fa-info-circle"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
+</div>
           </b-card>
         </div>
-        <div class="w3-quarter p-card" >
-          <b-card>
-            <h4>Get 5 free coupons</h4>
-            <p>Then charges will be applied</p>
-            items selected : 3
-            <center>
-              <button
-                class="w3-button w3-teal"
-                style="width: 90%; margin: 10px"
-              >
-                Proceed to buy
-              </button>
-            </center>
-          </b-card>
-          <b-card style="margin-top: 10px">
+        <div class="w3-quarter p-card">
+          <b-card style="margin-top: 0px">
             <h4>You may be intrested in</h4>
             <div class="couponhome">
               <div class="c2-back">
@@ -134,13 +90,24 @@
 </template>
 <script>
 import topnav from "../Seller/topnav.vue";
-import Sitefooter from './sitefooter.vue';
+import Sitefooter from "./sitefooter.vue";
 export default {
   components: { topnav, Sitefooter },
+  methods : {
+    reedem : function(){
+      
+var r = confirm("Note that once you reedem a code it will be valid for 5 minutes only");
+if (r == true) {
+  document.getElementById("reedem").style.display="none";
+} else {
+ document.getElementById("reedem").style.color="white";
+}
+    }
+  }
 };
 </script>
 <style scoped>
-.p-card{
+.p-card {
   padding: 0px 10px;
 }
 
@@ -167,6 +134,7 @@ export default {
   margin-top: -5px;
   width: fit-content;
   display: block;
+  padding-left: 20px;
 }
 .card_discount {
   padding: 20px;
@@ -263,11 +231,11 @@ export default {
   .card_validity {
     padding: 0px 22px;
   }
-  .w3-container{
+  .w3-container {
     padding: 0px 10px 10px 10px !important;
   }
-  .p-card{
-  padding: 10px 0px;
-}
+  .p-card {
+    padding: 10px 0px;
+  }
 }
 </style>

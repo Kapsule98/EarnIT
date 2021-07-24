@@ -1,13 +1,19 @@
 <template>
   <div class="hello">
-
+<ol>
+  <li><a href="/registernative">Register</a></li>
+  <li><a href="/loginnative">Login</a></li>
     <li><a href="/land">Customer home page</a></li>
      <li><a href="/shop">View Shop</a></li>
      <li><a href="/cart">cart</a></li>
+     <li><a href="/dashboard">shopping details</a></li>
+     <li><a href="/profile">User account</a></li>
+     <li><a href="/about">about</a></li>
+     <li><a href="/contact">contact</a></li>
      <li><a href="/verifycoupon">seller add coupons</a></li>
      <li><a href="/customerbill">customerbill</a></li>
      <li><a href="/account">account</a></li>
-
+</ol>
     <h1>{{ msg }}</h1>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
@@ -28,7 +34,7 @@
       <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
     </ul>
     <h3>Ecosystem</h3>
-    <ul>
+    <ul >
       <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
       <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
       <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
@@ -57,7 +63,7 @@ ul {
   padding: 0;
 }
 li {
-  display: inline-block;
+  display:block;
   margin: 0 10px;
 }
 a {

@@ -165,6 +165,9 @@
             <div class="a-spend" style="font-size: 20px">
               total Money Spent: <i class="fa fa-rupee"></i> 1250.
             </div>
+            <div class="a-spend" style="font-size: 20px">
+              total Coins Earned:  <i class="fa fa-bolt" style="color: gold"></i> 300.
+            </div>
           </b-card>
         </div>
       </div>
@@ -207,13 +210,13 @@ export default {
   text-decoration: none;
   border: none;
   padding: 7px 10px;
-  background: #5edaff;
+  background: #008cff;
   font-size: 16px;
   width: fit-content;
   float: right;
   border-radius: 6px;
-  font-weight: 500;
-  color: rgb(66, 66, 66);
+  font-weight: 400;
+  color: rgb(255, 255, 255);
   margin: 10px 0px 10px 0px;
 }
 .a-btn a:hover {
