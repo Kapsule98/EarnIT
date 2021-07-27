@@ -1,5 +1,5 @@
 <template>
-  <div id="app"  v-on:scroll="scrollFunction">
+  <div id="app">
     <div id="nav" class="topnav">
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
       <div class="topnavlink left" style="font-weight: 900">
