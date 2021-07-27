@@ -20,18 +20,13 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'Login',
-    component: () => import('../components/Auth/Login.vue')
+    name:'Login',
+    component: () => import ('../components/Auth/Login.vue')
   },
   {
-    path: '/loginnative',
-    name:'LoginNative',
-    component: () => import ('../components/Auth/Loginnative.vue')
-  },
-  {
-    path: '/registernative',
-    name: 'RegisterNative',
-    component: () => import('../components/Auth/Registernative.vue')
+    path: '/register',
+    name: 'Register',
+    component: () => import('../components/Auth/Register.vue')
   },
   {
     path: '/logout',
@@ -44,7 +39,7 @@ const routes = [
     component: () => import('../components/Auth/Newuser.vue')
   },
   {
-    path: '/sellerhome',
+    path: '/seller/home',
     name: 'SellerHome',
     component: () => import('../components/Seller/home.vue')
   },

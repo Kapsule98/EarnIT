@@ -14,11 +14,11 @@
         <div class="login-header" style="border-bottom: none">Register as</div>
 
         <div class="w3-row">
-          <a href="javascript:void(0)" v-on:click="openCity('London')" id="defaultOpen">
+          <a href="javascript:void(0)" v-on:click="openTab('customer')" id="defaultOpen">
             <div class="reghead">Customer</div>
           </a>
 
-          <a href="javascript:void(0)" v-on:click="openCity('Paris')">
+          <a href="javascript:void(0)" v-on:click="openTab('shop')">
             <div class="reghead">Shop</div>
           </a>
         </div>
@@ -28,7 +28,7 @@
       </div>
       <div class="login-content-box">
         <div
-          id="London"
+          id="customer"
           class=" regtab w3-animate-opacity"
           style="display: none"
         >
@@ -62,12 +62,12 @@
         />
 
 
-        <button @click="signup()" class="login-button">Register</button>
+        <button @click="CustomerSignup()" class="login-button">Register</button>
          <a href="/loginnative" style="float: right">already have an account? login here</a>
         </div>
 
         <div
-          id="Paris"
+          id="shop"
           class=" regtab w3-animate-opacity"
           style="display: none"
         >
@@ -93,51 +93,70 @@
           style="border-top: none;border-radius:  0px"
         />
         <input
+          v-model="contact_no"
+          type="text"
+          class="login-input"
+          placeholder="Contact number"
+          style="border-top: none;border-radius:  0px"
+        />
+        <input
+          v-model="address"
+          type="text"
+          class="login-input"
+          placeholder="address"
+          style="border-top: none;border-radius:  0px"
+        />
+        <input
           v-model="email"
           type="email"
           placeholder="Email"
           class="login-input"
           style="border-top: none; border-radius: 0px 0px 5px 5px"
         />
+        <multiselect
+          v-model="shop_category"
+          :options="categories"
+          :multiple ='true'
+        />
+        <input
+          v-model="shop_name"
+          type="text"
+          placeholder="Shop name"
+          class="login-input"
+          style="border-top: none; border-radius: 0px 0px 5px 5px"
+        />
 
-        <button @click="signup()" class="login-button">Register</button>
+        <button @click="Sellersignup()" class="login-button">Register</button>
         <a href="/loginnative" style="float: right">already have an account? login here</a>
         </div>
       </div>
     </div>
 
-<!--
-    <b-form-group label="Seller or customer??" v-slot="{ ariaDescribedby }">
-      <b-form-checkbox-group
-        id="checkbox-group-1"
-        v-model="selected"
-        :options="options"
-        :aria-describedby="ariaDescribedby"
-        name="flavour-1"
-      ></b-form-checkbox-group>
-    </b-form-group>
-
-    -->
-
     <sitefooter></sitefooter>
   </div>
 </template>
 <script>
-import db from "../../firebase";
 import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "../Seller/topnav.vue";
-// import bcrypt from 'bcryptjs'
-
+import bcrypt from 'bcryptjs'
+import Multiselect from 'vue-multiselect'
+import axios from 'axios'
+import {BASE_URL} from '../../utils/constants'
 export default {
     
-  components: { topnav, Sitefooter },
+  components: { topnav, Sitefooter , Multiselect},
   data() {
     return {
       username: "",
       password: "",
       displayname: "",
       email: "",
-      selected: [],
+      contact_no:'',
+      address:'',
+      shop_category:[],
+      shop_name:'',
+      location:'',
+      categories: ['food','electronics','fashion','medical','sports'],
       options: [
         {
           text: "Seller",
@@ -154,49 +173,93 @@ export default {
   },
   
   methods: {
-    signup() {
+    Sellersignup() {
       if (
         this.username === "" ||
         this.password === "" ||
         this.displayname === "" ||
-        !this.selected ||
-        this.selected.length === 0
-      ) {
-        alert("validation failed");
+        this.contact_no === "" || 
+        this.address === "" ||
+        this.email === "" ||
+        this.shop_category.length === 0 ||
+        this.shop_name === ""
+        ) {
+        alert("Please fill mandatory fields");
       } else {
-        const userref = db.collection("users").doc(this.username);
-        userref.get().then((snapshot) => {
-          if (snapshot.exists) {
-            alert("Username taken");
-            this.init();
+        
+        navigator.geolocation.getCurrentPosition (
+          position => {
+            this.location = position
+          },
+          error => {
+            console.log(error.message);
+            alert(error.message)
+          },
+        )
+        const hash_pass = this.encryptPassword(this.password)
+        console.log(hash_pass)
+        const seller = {
+          'password':this.password,
+          'username':this.username,
+          'display_name':this.displayname,
+          'contact_no':this.contact_no,
+          'address':this.address,
+          'category':this.shop_category,
+          'shop_name':this.shop_name,
+          'location':this.location,
+        }
+        const url = BASE_URL + '/seller/register';
+        const payload = seller;
+        axios.post(url,payload).then(res => {
+          alert(res.data.msg)
+          if(res.data.status === 200) {
+            this.$router.push('/login')
           } else {
-            // const saltRounds = 10;
-            console.log(this.password);
-            const userprofile = {
-              uid: this.username,
-              displayName: this.displayname,
-              email: this.email,
-              seller: this.selected.includes("seller"),
-              customer: this.selected.includes("customer"),
-              c_saving: 0,
-              s_earning: 0,
-              password: this.password,
-            };
-            db.collection("users").doc(this.username).set(userprofile);
-            this.$router.push("/loginnative");
+            this.init()
           }
-        });
+        }).catch(err => {
+          console.log(err)
+        })
       }
     },
-    openCity: function opencity(cityName) {
+    CustomerSignup() {
+      if(this.username === '' || this.password === '' || this.displayname === '') {
+        alert("pls fill mandaatory fields")
+        this.init()
+        return;
+      }
+      else {
+        const hash_pass = this.encryptPassword(this.password)
+        console.log(hash_pass)
+        const user = {
+          "username" : this.username,
+          "password" : this.password,
+          "display_name": this.displayname,
+          "email": this.email
+        }
+        const url = BASE_URL + '/register';
+        axios.post(url,user).then(res => {
+          console.log(res)
+          alert(res.data.msg)
+          if(res.data.status === 200) {
+            this.$router.push('/login')
+          } else {
+            this.init();
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      }
+    },
+    openTab(type) {
       var i, x;
       x = document.getElementsByClassName("regtab");
       for (i = 0; i < x.length; i++) {
         x[i].style.display = "none";
       }
-      document.getElementById(cityName).style.display = "block";
+      document.getElementById(type).style.display = "block";
 
-      if (cityName == "London") {
+      if (type == "customer") {
         document.getElementsByClassName("actvtab")[0].style.right = "50%";
       } else {
         document.getElementsByClassName("actvtab")[0].style.right = "0%";
@@ -204,10 +267,26 @@ export default {
       }
       
     },
+    init() {
+      this.username = '';
+      this.password = "";
+      this.displayname = "";
+      this.email =  "";
+      this.contact_no = '';
+      this.address = '';
+      this.shop_category =[];
+      this.shop_name = '';
+      this.location = '';
+    },
+    encryptPassword(password) {       
+      const salt = bcrypt.genSaltSync(10)
+      return bcrypt.hashSync(password, salt)
+    },
   },
 };
 window.onload= function(){document.getElementById("defaultOpen").click();}
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 .login-box {
   margin: 80px auto;

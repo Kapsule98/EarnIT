@@ -1,8 +1,8 @@
 <template>
   <div class="hello">
 <ol>
-  <li><a href="/registernative">Register</a></li>
-  <li><a href="/loginnative">Login</a></li>
+  <li><a href="/register">Register</a></li>
+  <li><a href="/login">Login</a></li>
     <li><a href="/land">Customer home page</a></li>
      <li><a href="/shop">View Shop</a></li>
      <li><a href="/cart">cart</a></li>
