@@ -18,7 +18,6 @@
               label="Customer ID  "
               label-for="input-1"
               description=""
-              
             >
               <b-form-input
                 id="input-1"
@@ -40,18 +39,15 @@
             </b-form-group>
 
             <b-form-group
-            
               id="input-group-3"
               label="Total Amount:"
               label-for="input-3"
-              
             >
               <b-form-input
-               type="number"
+                type="number"
                 id="input-3"
                 placeholder="enter total amount"
                 required
-                
               ></b-form-input>
             </b-form-group>
 
@@ -59,7 +55,6 @@
               id="input-group-4"
               label="Discounted Amount:"
               label-for="input-4"
-  
             >
               <b-form-input
                 id="input-4"
@@ -83,19 +78,12 @@
           </h2>
           <div class="w3-row">
             <div class="w3-third">
-              <couponcard name="ELECTRONICS" discount="50%"></couponcard>
-            </div>
-            <div class="w3-third">
-              <couponcard name="Vegetables" discount="30%"></couponcard>
-            </div>
-            <div class="w3-third">
-              <couponcard name="Beauty products" discount="20%"></couponcard>
-            </div>
-            <div class="w3-third">
-              <couponcard name="NCERT Books" discount="40%"></couponcard>
-            </div>
-            <div class="w3-third">
-              <couponcard name="Grocery" discount="10%"></couponcard>
+              <couponcard
+                name="ELECTRONICS"
+                discount="50%"
+                left="5/10"
+                validity="2 jun 2021"
+              ></couponcard>
             </div>
             <div class="w3-third">
               <div class="addoffer">
@@ -109,51 +97,85 @@
       </div>
     </div>
 
+    <b-modal ref="couponModal" hide-footer title="Add coupon details">
+      <div class="d-block text-center">
+        <h3>Add Coupon details</h3>
+        <label for="range-3">Select no. of Coupons</label>
+        <b-form-input
+          id="range-3"
+          v-model="value3"
+          type="range"
+          min="0"
+          max="50"
+          step="1"
+        ></b-form-input>
+        <div class="mt-2">Value: {{ value3 }}</div>
+        <br />
+        <label for="range-1">Minimum Purchase</label>
+        <b-form-input
+          id="range-1"
+          v-model="value"
+          type="range"
+          min="0"
+          max="5000"
+          step="100"
+        ></b-form-input>
+        <div class="mt-2">Value: Rs {{ value }}</div>
+        <b-form-group
+          label="Discount type"
+          v-slot="{ ariaDescribedby }"
+          style="padding: 20px 5px"
+        >
+          <b-form-radio-group
+            v-model="discountType"
+            :options="dTypeoptions"
+            :aria-describedby="ariaDescribedby"
+            name="radio-options"
+          ></b-form-radio-group>
+        </b-form-group>
 
-            <b-modal ref="couponModal" hide-footer title="Add coupon details">
-                <div class="d-block text-center">
-                    <h3>Add Coupon details </h3>
-                      <label for="range-3">Select no. of Coupons</label>
-    <b-form-input id="range-3" v-model="value3" type="range" min="0" max="50" step="1"></b-form-input>
-    <div class="mt-2">Value: {{ value3 }}</div>
-    <br>
-                    <label for="range-1">Minimum Purchase</label>
-    <b-form-input id="range-1" v-model="value" type="range" min="0" max="5000" step="100"></b-form-input>
-    <div class="mt-2">Value: Rs {{ value }}</div>
-                        <b-form-group label="Discount type" v-slot="{ ariaDescribedby }" style="padding:20px 5px">
-                            <b-form-radio-group
-                                v-model="discountType"
-                                :options="dTypeoptions"
-                                :aria-describedby="ariaDescribedby"
-                                name="radio-options"
-                            ></b-form-radio-group>
-                        </b-form-group>
-                         
-                        <div v-if="discountType === 'ditem'">
-                        
-                            <label for="range-1">Discount percent on item</label>
-                            <b-form-input id="range-1" v-model="itemdiscountpercent" type="range" min="0" max="100"></b-form-input>
-                            <div class="mt-2">Value: {{ itemdiscountpercent }} %</div>
-                        
-                        </div>
-                        <div v-if="discountType === 'dbill'">
-                            <label for="range-2">Discount percent on total bill</label>
-                            <b-form-input id="range-2" v-model="billdiscountpercent" type="range" min="0" max="100"></b-form-input>
-                            <div class="mt-2"><span >Value: {{ billdiscountpercent }} %</span></div>
-                            <br/>
-                        </div>
-                        <div v-if="discountType === 'dextraitem'">
-                            <label><span style="padding:2px 5px">Enter offer :</span></label><input type="text" v-model="customdiscount"/>
-                        </div>
-                        <div v-if="discountType != ''">
-                            <label><span style="padding:2px 5px">Validity</span> </label>
-                            <date-picker v-model="validity" type="date" range></date-picker>
-                        </div>
-                        
-                </div>
-                <b-button class="login-button" block @click="addCouponDetails();">Add Coupon</b-button>
-           
-            </b-modal>
+        <div v-if="discountType === 'ditem'">
+          <label for="range-1">Discount percent on item</label>
+          <b-form-input
+            id="range-1"
+            v-model="itemdiscountpercent"
+            type="range"
+            min="0"
+            max="100"
+          ></b-form-input>
+          <div class="mt-2">Value: {{ itemdiscountpercent }} %</div>
+        </div>
+        <div v-if="discountType === 'dbill'">
+          <label for="range-2">Discount percent on total bill</label>
+          <b-form-input
+            id="range-2"
+            v-model="billdiscountpercent"
+            type="range"
+            min="0"
+            max="100"
+          ></b-form-input>
+          <div class="mt-2">
+            <span>Value: {{ billdiscountpercent }} %</span>
+          </div>
+          <br />
+        </div>
+        <div v-if="discountType === 'dextraitem'">
+          <label><span style="padding: 2px 5px">Enter offer :</span></label
+          ><input type="text" v-model="customdiscount" />
+        </div>
+        <div v-if="discountType != ''">
+          <label><span style="padding: 2px 5px">Validity</span> </label>
+          <date-picker v-model="validity" type="date" range></date-picker>
+        </div>
+      </div>
+      <b-button class="login-button" block @click="addCouponDetails()"
+        >Add Coupon</b-button
+      >
+    </b-modal>
+    <p v-for="item in list" v-bind:key="item.id">
+      {{ item.employee_name }}
+    </p>
+    <br /><br /><br />
     <sitefooter></sitefooter>
   </div>
 </template>
@@ -162,11 +184,17 @@
 import topnav from "./topnav.vue";
 import couponcard from "./couponcard.vue";
 import Sitefooter from "../Customer/sitefooter.vue";
-import DatePicker from 'vue2-datepicker';
-import 'vue2-datepicker/index.css';
+import DatePicker from "vue2-datepicker";
+import "vue2-datepicker/index.css";
+import axios from "axios";
+import Vue from "vue";
+import VueAxios from "vue-axios";
+import { BASE_URL } from "../../utils/constants";
+Vue.use(VueAxios, axios);
 
 export default {
-  components: { couponcard, topnav, Sitefooter,DatePicker },
+  components: { couponcard, topnav, Sitefooter, DatePicker },
+
   data() {
     return {
       form: {
@@ -186,9 +214,19 @@ export default {
       billdiscountpercent: "",
       customdiscount: "",
       validity: [],
-       value: '500',
-       value3: '20'
+      value: "500",
+      value3: "20",
+      list: undefined,
     };
+  },
+
+  mounted() {
+    Vue.axios
+      .get("http://dummy.restapiexample.com/api/v1/employees")
+      .then((resp) => {
+        this.list = resp.data.data;
+        console.warn(resp.data.data);
+      });
   },
   methods: {
     onSubmit(event) {
@@ -216,6 +254,28 @@ export default {
     },
     addCouponDetails() {
       //TODO validate input and store in db
+      // POST request using axios with error handling
+      const payload = {
+        itemdiscountpercent: this.itemdiscountpercent,
+        billdiscountpercent: this.billdiscountpercent,
+        customdiscount: this.customdiscount,
+        validity: this.validity,
+      };
+      const url = BASE_URL + "/seller/offer";
+      const accessToken = this.$session.get("token");
+      const options = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+
+      axios
+        .post(url, payload, options)
+        .then((response) => console.warn(response))
+        .catch((error) => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
 
       console.log("discount type = ", this.discountType);
 
@@ -232,21 +292,21 @@ export default {
 </script>
 
 <style scoped>
-.login-button{
-    width:100%;
-    padding:6px;
-    text-align: center;
-    border-radius: 5px;
-    border:1px solid rgb(0, 153, 255);
-    color: rgb(0, 153, 255);
-    font-size: 20px;
-    background: none;
-    margin: 20px 0px;
-    transition: 0.2s ease-in-out;
+.login-button {
+  width: 100%;
+  padding: 6px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid rgb(0, 153, 255);
+  color: rgb(0, 153, 255);
+  font-size: 20px;
+  background: none;
+  margin: 20px 0px;
+  transition: 0.2s ease-in-out;
 }
-.login-button:hover{
-    background:rgb(0, 153, 255);
-    color: white;
+.login-button:hover {
+  background: rgb(0, 153, 255);
+  color: white;
 }
 body {
   margin: 0;

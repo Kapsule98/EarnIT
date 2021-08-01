@@ -6,8 +6,8 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
+    path: '/list',
+    name: 'list',
     component: Home
   },
   {
@@ -59,7 +59,7 @@ const routes = [
     component: () => import('../components/Customer/shopcoupons.vue')
   },
   {
-    path: '/land',
+    path: '/',
     name: 'landingpage',
     component: () => import('../components/Customer/landing.vue')
   },
@@ -92,6 +92,11 @@ const routes = [
     path: '/profile',
     name: 'customerprofile',
     component: () => import('../components/Customer/profile.vue')
+  },
+  {
+    path: '/category',
+    name: 'category',
+    component: () => import('../components/Customer/category.vue')
   },
  
 

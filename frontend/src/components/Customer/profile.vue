@@ -13,7 +13,6 @@
 
       <div class="w3-col m8">
         <b-card style="margin: 20px 0px">
-         
           <h1>Your Account</h1>
           <table style="width: 100%" class="accountable">
             <tr>
@@ -25,7 +24,7 @@
             </tr>
             <tr>
               <td class="detail">Full Name</td>
-              <td class="description">Narendra Modi</td>
+              <td class="description">{{ user.display_name }}</td>
               <td>
                 <button class="edit"><i class="fa fa-edit"></i></button>
               </td>
@@ -71,8 +70,11 @@
 <script>
 import topnav from "../Seller/topnav.vue";
 import Sitefooter from "./sitefooter.vue";
+import axios from "axios";
+import { BASE_URL } from "../../utils/constants";
 export default {
   components: { topnav, Sitefooter },
+
   data() {
     return {
       items: [
@@ -89,7 +91,19 @@ export default {
           active: true,
         },
       ],
+      topoffers: undefined,
+      user: {},
     };
+  },
+
+  mounted() {
+    this.user = this.$session.get("user_data");
+    console.log(this.user);
+    const topoffersurl = BASE_URL + "/seller/add_category";
+    axios.get(topoffersurl).then((resp) => {
+      this.topoffers = resp.data.data;
+      console.warn(resp.data.data);
+    });
   },
 };
 </script>
