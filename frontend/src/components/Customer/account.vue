@@ -11,6 +11,8 @@
       <div class="w3-row">
         <div class="w3-twothird">
           <h1>Your Coupons</h1>
+
+          <!---->
           <b-card style="margin: 10px 0px">
             <template #header>
               <div class="w3-row">
@@ -58,102 +60,10 @@
               </div>
             </div>
           </b-card>
-
-          <b-card style="margin: 10px 0px">
-             <template #header>
-              <div class="w3-row">
-                <div class="w3-threequarter">
-                  <h6 class="mb-0" style="width: fit-content">
-                    50% off on Earphones
-                  </h6>
-                </div>
-                <div class="w3-quarter">
-                  <div>
-                    <i class="fa fa-bolt" style="color: gold"></i> 50 Lemme
-                    coins earned
-                  </div>
-                </div>
-              </div>
-             </template>
-            <div class="a-date">Reedemed 26-jul-2021</div>
-            <div>
-              <div class="w3-row">
-                <div class="w3-col" style="width: 30%">
-                  <img
-                    src="https://images.unsplash.com/photo-1560243562-f480284a881f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjZ8fHNob3B8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"
-                    width="100%"
-                    alt=""
-                    style="float: left; padding: 10px"
-                  />
-                </div>
-                <div class="w3-col" style="width: 70%">
-                  <div class="a-seller">
-                    Sold by - Rakesh Digital shop no-142, Supela, Bhilai
-                  </div>
-                  <div class="a-spend">
-                    Money Spend: <i class="fa fa-rupee"></i> 680
-                  </div>
-                  <div class="a-spend">
-                    Money Saved: <i class="fa fa-rupee"></i> 680
-                  </div>
-                  <div class="a-btn">
-                    <a href=""
-                      ><i class="fa fa-list-alt" aria-hidden="true"></i> View
-                      Similar Coupons</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </b-card>
-          <b-card style="margin: 10px 0px">
-              <template #header>
-              <div class="w3-row">
-                <div class="w3-threequarter">
-                  <h6 class="mb-0" style="width: fit-content">
-                    50% off on Earphones
-                  </h6>
-                </div>
-                <div class="w3-quarter">
-                  <div>
-                    <i class="fa fa-bolt" style="color: gold"></i> 50 Lemme
-                    coins earned
-                  </div>
-                </div>
-              </div>
-              </template>
-            <div class="a-date">Reedemed 26-jul-2021</div>
-            <div>
-              <div class="w3-row">
-                <div class="w3-col" style="width: 30%">
-                  <img
-                    src="https://images.unsplash.com/photo-1560243562-f480284a881f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjZ8fHNob3B8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"
-                    width="100%"
-                    alt=""
-                    style="float: left; padding: 10px"
-                  />
-                </div>
-                <div class="w3-col" style="width: 70%">
-                  <div class="a-seller">
-                    Sold by - Rakesh Digital shop no-142, Supela, Bhilai
-                  </div>
-                  <div class="a-spend">
-                    Money Spend: <i class="fa fa-rupee"></i> 680
-                  </div>
-                  <div class="a-spend">
-                    Money Saved: <i class="fa fa-rupee"></i> 680
-                  </div>
-                  <div class="a-btn">
-                    <a href=""
-                      ><i class="fa fa-list-alt" aria-hidden="true"></i> View
-                      Similar Coupons</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </b-card>
+          <!---->
         </div>
+
+        <!---->
         <div class="w3-third">
           <b-card style="overflow-x: scroll" class="g-card">
             <div style="margin-left: -80px; margin-top: -70px">
@@ -166,10 +76,12 @@
               total Money Spent: <i class="fa fa-rupee"></i> 1250.
             </div>
             <div class="a-spend" style="font-size: 20px">
-              total Coins Earned:  <i class="fa fa-bolt" style="color: gold"></i> 300.
+              total Coins Earned:
+              <i class="fa fa-bolt" style="color: gold"></i> 300.
             </div>
           </b-card>
         </div>
+        <!---->
       </div>
     </div>
     <sitefooter></sitefooter>

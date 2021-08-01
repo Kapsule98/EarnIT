@@ -11,8 +11,8 @@
         </h2>
         <h3>OFF</h3>
       </div>
-      <div class="usecode">12/20 Left</div>
-      <div class="validity">Valid till 2 jun 2021</div>
+      <div class="usecode">{{ left }}</div>
+      <div class="validity">Valid till {{ validity }}</div>
     </div>
     <b-modal id="modal-2" title="Reedem Coupon">
       <b-alert show variant="warning">
@@ -25,12 +25,10 @@
 
 <script>
 export default {
-  props: ["name", "discount"],
+  props: ["name", "discount", "left", "validity"],
   methods: {
     remove: function () {
-      var r = confirm(
-        "permanently remove coupon"
-      );
+      var r = confirm("permanently remove coupon");
       if (r == true) {
         document.getElementById("reedem").style.display = "none";
       } else {

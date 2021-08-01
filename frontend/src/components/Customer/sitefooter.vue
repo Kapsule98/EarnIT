@@ -1,19 +1,36 @@
 <template>
   <div>
     <div class="l-footer">
-        <div class="f-box">
+      <div class="f-box">
         <div style="float: left; color: white; font-size: 25px" class="f-logo">
-          <a href=""><i class="fa fa-map-marker"></i> Lemmebuy.in </a>
+          <a href="/"
+            ><img
+              :src="images.logo"
+              alt="logo"
+              height="200px"
+              style="margin-top: -65px; margin-bottom: -85px"
+          /></a>
         </div>
         <div style="float: right">
-          <a href="/registernative"><button class="f-register" style="background: #008cff;color:white">
-            Register
-          </button></a>
-          <a href="/loginnative"><button class="f-register" style="background: white">Login</button></a>
+          <a href="/registernative"
+            ><button
+              class="f-register"
+              style="background: #008cff; color: white"
+            >
+              Register
+            </button></a
+          >
+          <a href="/loginnative"
+            ><button class="f-register" style="background: white">
+              Login
+            </button></a
+          >
         </div>
-        </div>
+      </div>
       <div
-        class="w3-row" style="margin-top: 50px; border-bottom: 1px solid white; padding: 20px">
+        class="w3-row"
+        style="margin-top: 50px; border-bottom: 1px solid white; padding: 20px"
+      >
         <div class="w3-col m2 s6" style="margin-top: 10px">
           <a href=""><div class="coltop">ABOUT</div></a>
           <a href=""><div>Contact Us</div></a>
@@ -22,35 +39,39 @@
         </div>
         <div class="w3-col m3 s6" style="margin-top: 10px">
           <a href=""><div class="coltop">HELP</div></a>
-          <a href=""><div>Payments</div></a>
-          <a href=""><div>Shipping</div></a>
-          <a href=""><div>Cancellations & Refunds</div></a>
           <a href=""><div>FAQs</div></a>
-          <a href=""><div>Report Infringement</div></a>
         </div>
         <div class="w3-col m3 s6" style="margin-top: 10px">
           <a href=""><div class="coltop">POLICY</div></a>
-          <a href=""><div>Return Podivcy</div></a>
-          <a href=""><div>Terms of Use</div></a>
-          <a href=""><div>Security</div></a>
           <a href=""><div>Privacy</div></a>
-          <a href=""><div>Site Map</div></a>
         </div>
         <div class="w3-col m4 s6 f-address">
           <div class="coltop">Registered office at:</div>
           <p>
             Shop 182, Zonal Market, Sector-10, Bhilai, Chhattisgarh, pin-490006
           </p>
-           <a href=""><i class="fa fa-facebook" style="margin-right:10px"></i></a>
-            <a href=""><i class="fa fa-instagram" style="margin-right:10px"></i></a>
-             <a href=""><i class="fa fa-twitter" style="margin-right:10px"></i></a>
+          <a href=""
+            ><i class="fa fa-facebook" style="margin-right: 10px"></i
+          ></a>
+          <a href=""
+            ><i class="fa fa-instagram" style="margin-right: 10px"></i
+          ></a>
+          <a href=""
+            ><i class="fa fa-twitter" style="margin-right: 10px"></i
+          ></a>
         </div>
       </div>
       <div class="w3-row" style="margin-top: 20px">
         <div class="w3-col m8">
-          <a href=""><span style="padding: 0px 40px 0px 0px"> Sell on Lemmebuy</span></a>
-          <a href=""><span style="padding: 0px 40px 0px 0px"> Advertise</span></a>
-          <a href=""><span style="padding: 0px 40px 0px 0px">Gift Card </span></a>
+          <a href=""
+            ><span style="padding: 0px 40px 0px 0px"> Sell on Lemmebuy</span></a
+          >
+          <a href=""
+            ><span style="padding: 0px 40px 0px 0px"> Advertise</span></a
+          >
+          <a href=""
+            ><span style="padding: 0px 40px 0px 0px">Gift Card </span></a
+          >
           <a href=""><span style="padding: 0px 40px 0px 0px">Center</span></a>
         </div>
         <div class="w3-col m4">
@@ -61,7 +82,15 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      images: {
+        logo: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
+      },
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -112,11 +141,11 @@ export default {};
     display: none;
   }
 }
-.l-footer a{
-    text-decoration: none;
-    color: white;
+.l-footer a {
+  text-decoration: none;
+  color: white;
 }
-.l-footer a:hover{
-    color: rgb(0, 183, 255);
+.l-footer a:hover {
+  color: rgb(0, 183, 255);
 }
 </style>

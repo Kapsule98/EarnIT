@@ -4,9 +4,12 @@
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
       <div class="topnavlink left" style="font-weight: 900">
         <router-link to="/"
-          ><i class="fa fa-map-marker" style="color: rgb(0, 119, 255)"></i
-          ><span style="color: black"> Lemmebuy.in </span></router-link
-        >
+          ><img
+            :src="images.sample"
+            alt="logo"
+            height="200px"
+            style="margin-top: -65px; margin-bottom: -85px"
+        /></router-link>
       </div>
       <div class="left searchbar">
         <form class="example" action="action_page.php">
@@ -20,32 +23,32 @@
 
         <div class="resp">
           <div class="topnavlink active">
-            <router-link to="/"><span v-html="link1"></span></router-link>
+            <router-link :to="url1"><span v-html="link1"></span></router-link>
           </div>
         </div>
         <div class="resp">
           <div class="topnavlink">
-            <router-link to="/about"><span v-html="link2"></span></router-link>
+            <router-link :to="url2"><span v-html="link2"></span></router-link>
           </div>
         </div>
         <div class="resp">
           <div class="topnavlink">
-            <router-link to="/about"><span v-html="link3"></span></router-link>
+            <router-link :to="url3"><span v-html="link3"></span></router-link>
           </div>
         </div>
         <div class="resp">
           <div class="topnavlink">
-            <router-link to="/about"><span v-html="link4"></span></router-link>
+            <router-link :to="url4"><span v-html="link4"></span></router-link>
           </div>
         </div>
         <div class="resp">
           <div class="topnavlink">
-            <router-link to="/about"><span v-html="link5"></span></router-link>
+            <router-link :to="url5"><span v-html="link5"></span></router-link>
           </div>
         </div>
         <div class="resp">
           <div class="topnavlink">
-            <router-link to="/about"><span v-html="link6"></span></router-link>
+            <router-link :to="url6"><span v-html="link6"></span></router-link>
           </div>
         </div>
       </div>
@@ -54,9 +57,29 @@
   </div>
 </template>
 <script>
-window.onload
 export default {
-  props: ["link1", "link2", "link3", "link4", "link5", "link6"],
+  data() {
+    return {
+      images: {
+        sample: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
+      },
+    };
+  },
+  props: [
+    "link1",
+    "link2",
+    "link3",
+    "link4",
+    "link5",
+    "link6",
+    "url1",
+    "url2",
+    "url3",
+    "url4",
+    "url5",
+    "url6",
+  ],
+
   methods: {
     openmenu: function () {
       document.getElementsByClassName("right")[0].style.left = "0%";
@@ -64,7 +87,6 @@ export default {
     closemenu: function () {
       document.getElementsByClassName("right")[0].style.left = "-70%";
     },
-   
   },
 };
 </script>
