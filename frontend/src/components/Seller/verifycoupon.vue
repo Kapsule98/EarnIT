@@ -103,24 +103,24 @@
         <label for="range-3">Select no. of Coupons</label>
         <b-form-input
           id="range-3"
-          v-model="value3"
+          v-model="quantity"
           type="range"
           min="0"
           max="50"
           step="1"
         ></b-form-input>
-        <div class="mt-2">Value: {{ value3 }}</div>
+        <div class="mt-2">Value: {{ quantity }}</div>
         <br />
         <label for="range-1">Minimum Purchase</label>
         <b-form-input
           id="range-1"
-          v-model="value"
+          v-model="min_val"
           type="range"
           min="0"
           max="5000"
           step="100"
         ></b-form-input>
-        <div class="mt-2">Value: Rs {{ value }}</div>
+        <div class="mt-2">Value: Rs {{ min_val }}</div>
         <b-form-group
           label="Discount type"
           v-slot="{ ariaDescribedby }"
@@ -134,28 +134,28 @@
           ></b-form-radio-group>
         </b-form-group>
 
-        <div v-if="discountType === 'ditem'">
+        <div v-if="discountType === 'ITEM_DISCOUNT'">
           <label for="range-1">Discount percent on item</label>
           <b-form-input
             id="range-1"
-            v-model="itemdiscountpercent"
+            v-model="discount_percent"
             type="range"
             min="0"
             max="100"
           ></b-form-input>
-          <div class="mt-2">Value: {{ itemdiscountpercent }} %</div>
+          <div class="mt-2">Value: {{ discount_percent }} %</div>
         </div>
-        <div v-if="discountType === 'dbill'">
+        <div v-if="discountType === 'BILL_DISCOUNT'">
           <label for="range-2">Discount percent on total bill</label>
           <b-form-input
             id="range-2"
-            v-model="billdiscountpercent"
+            v-model="discount_percent"
             type="range"
             min="0"
             max="100"
           ></b-form-input>
           <div class="mt-2">
-            <span>Value: {{ billdiscountpercent }} %</span>
+            <span>Value: {{ discount_percent }} %</span>
           </div>
           <br />
         </div>
@@ -197,6 +197,12 @@ export default {
 
   data() {
     return {
+      min_val:'',
+      quantity:'',
+      offer_text:'To be added',
+      discount_percent:'',
+      offer_type:'',
+      validity: [],
       form: {
         email: "",
         name: "",
@@ -206,14 +212,13 @@ export default {
       show: true,
       discountType: "",
       dTypeoptions: [
-        { text: "Discount on item", value: "ditem" },
-        { text: "Discount on total bill", value: "dbill" },
-        { text: "Extra Items", value: "dextraitem" },
+        { text: "Discount on item", value: "ITEM_DISCOUNT" },
+        { text: "Discount on total bill", value: "BILL_DISCOUNT" },
+        { text: "Extra Items", value: "ITEM_FREE" },
       ],
       itemdiscountpercent: "",
       billdiscountpercent: "",
       customdiscount: "",
-      validity: [],
       value: "500",
       value3: "20",
       list: undefined,
@@ -256,10 +261,14 @@ export default {
       //TODO validate input and store in db
       // POST request using axios with error handling
       const payload = {
-        itemdiscountpercent: this.itemdiscountpercent,
-        billdiscountpercent: this.billdiscountpercent,
-        customdiscount: this.customdiscount,
-        validity: this.validity,
+        "offer":{
+          "validity":this.validity,
+          "type":this.discountType,
+          "discount_percent":this.discount_percent,
+          "offer_text":this.offer_text,
+          "quantity":this.quantity,
+          "min_val":this.min_val,
+        }
       };
       const url = BASE_URL + "/seller/offer";
       const accessToken = this.$session.get("token");

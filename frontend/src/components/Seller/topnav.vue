@@ -3,13 +3,13 @@
     <div id="nav" class="topnav">
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
       <div class="topnavlink left" style="font-weight: 900">
-        <router-link to="/"
+        <!-- <router-link to="/"
           ><img
             :src="images.sample"
             alt="logo"
             height="200px"
             style="margin-top: -65px; margin-bottom: -85px"
-        /></router-link>
+        /></router-link> -->
       </div>
       <div class="left searchbar">
         <form class="example" action="action_page.php">
@@ -60,9 +60,9 @@
 export default {
   data() {
     return {
-      images: {
-        sample: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
-      },
+      // images: {
+      //   sample: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
+      // },
     };
   },
   props: [

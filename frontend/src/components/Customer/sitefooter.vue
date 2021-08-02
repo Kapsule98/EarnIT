@@ -3,13 +3,13 @@
     <div class="l-footer">
       <div class="f-box">
         <div style="float: left; color: white; font-size: 25px" class="f-logo">
-          <a href="/"
+          <!-- <a href="/"
             ><img
               :src="images.logo"
               alt="logo"
               height="200px"
               style="margin-top: -65px; margin-bottom: -85px"
-          /></a>
+          /></a> -->
         </div>
         <div style="float: right">
           <a href="/registernative"
@@ -85,9 +85,9 @@
 export default {
   data() {
     return {
-      images: {
-        logo: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
-      },
+      // images: {
+      //   logo: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
+      // },
     };
   },
 };
