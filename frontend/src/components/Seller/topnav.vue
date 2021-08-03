@@ -3,13 +3,7 @@
     <div id="nav" class="topnav">
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
       <div class="topnavlink left" style="font-weight: 900">
-        <!-- <router-link to="/"
-          ><img
-            :src="images.sample"
-            alt="logo"
-            height="200px"
-            style="margin-top: -65px; margin-bottom: -85px"
-        /></router-link> -->
+        <router-link to="/">Lemmebuy.in</router-link>
       </div>
       <div class="left searchbar">
         <form class="example" action="action_page.php">
@@ -20,7 +14,15 @@
 
       <div class="right">
         <i class="fa fa-times closebtn" v-on:click="closemenu"></i>
-
+        <div
+          class="resp hiwel"
+          style="font-weight: 500; color: black; padding-right: 20px"
+        >
+          Hi {{ user.shop_name }}!
+          <div class="topnavlink">
+            <router-link :to="url6"><span v-html="link6"></span></router-link>
+          </div>
+        </div>
         <div class="resp">
           <div class="topnavlink active">
             <router-link :to="url1"><span v-html="link1"></span></router-link>
@@ -48,12 +50,6 @@
             ></router-link>
           </div>
         </div>
-        <div class="resp">
-          Hi {{ user.shop_name }}!
-          <div class="topnavlink">
-            <router-link :to="url6"><span v-html="link6"></span></router-link>
-          </div>
-        </div>
       </div>
     </div>
     <router-view />
@@ -65,12 +61,10 @@ import axios from "axios";
 export default {
   data() {
     return {
-
       images: {
         sample: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
       },
       user: {},
-
     };
   },
   props: [
@@ -114,8 +108,8 @@ form.example input[type="text"] {
   border: none;
   float: left;
   display: flex;
-  width: 240px;
-  background: #ffffff;
+  width: 200px;
+  background: #cfeeff;
   margin-top: 0px;
 }
 
@@ -135,7 +129,7 @@ form.example button {
 }
 
 form.example button:hover {
-  background: rgba(0, 128, 128, 0.678);
+  opacity: 0.6;
 }
 
 /* Clear floats */
@@ -167,11 +161,12 @@ form.example::after {
   padding: 8px 16px !important;
   margin: 0px 2px;
   text-decoration: none;
-  transition: 1s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 .topnavlink a:hover {
-  border: 1px solid rgb(136, 136, 136);
+  background: #008cff;
+  color: white !important;
 }
 
 .left {
@@ -204,7 +199,7 @@ form.example::after {
 .closebtn {
   display: none;
 }
-@media screen and (max-width: 820px) {
+@media screen and (max-width: 1050px) {
   .topnav {
     height: 120px;
     margin: 0 0 30px 0px;
@@ -218,7 +213,7 @@ form.example::after {
     left: -70%;
     background-color: rgb(248, 248, 248);
     z-index: 2000;
-    padding-top: 30%;
+    padding-top: 20%;
   }
   .topnavlink.left {
     font-size: 25px;
@@ -226,8 +221,12 @@ form.example::after {
   }
   .right a {
     padding: 20px 36px !important;
+    width: 100%;
   }
-
+  .hiwel {
+    margin: 20px;
+    font-size: 30px !important;
+  }
   .menubtn {
     display: block;
   }
