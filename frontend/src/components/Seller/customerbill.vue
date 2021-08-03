@@ -7,6 +7,7 @@
       url1="/verifycoupon"
       url2="/customerbill"
       url3="/account"
+      active2="active_nav"
     ></topnav>
     <div class="w3-row">
       <div class="w3-col m4 l4">

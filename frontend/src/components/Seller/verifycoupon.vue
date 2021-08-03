@@ -7,27 +7,17 @@
       url1="/verifycoupon"
       url2="/customerbill"
       url3="/account"
+      active1="active_nav"
     ></topnav>
     <div class="w3-container">
       <div class="w3-row">
         <div class="w3-third form">
-          <p class="heading">Rakesh Digital</p>
+          <p class="heading" style="text-transform: capitalize">
+            {{ user.shop_name }}
+          </p>
           <h4>Fill coustomer details</h4>
 
           <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-            <b-form-group
-              id="input-group-1"
-              label="Customer ID  "
-              label-for="input-1"
-              description=""
-            >
-              <b-form-input
-                id="input-1"
-                placeholder="Enter Customer Id"
-                required
-              ></b-form-input>
-            </b-form-group>
-
             <b-form-group
               id="input-group-2"
               label="Coupon Code"
@@ -227,7 +217,6 @@ export default {
       user: {},
     };
   },
-
   mounted() {
     const offersurl = BASE_URL + "/seller/offer";
     // Simple GET request using axios
@@ -239,7 +228,10 @@ export default {
           (this.get_offers = response.data), console.log(response.data)
         )
       );
+    this.user = this.$session.get("user_data");
+    console.log(this.user);
   },
+
   methods: {
     onSubmit(event) {
       event.preventDefault();

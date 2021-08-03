@@ -7,6 +7,7 @@
       url1="/verifycoupon"
       url2="/customerbill"
       url3="/account"
+      active3="active_nav"
     ></topnav>
 
     <div class="w3-card c-m" style="background: white; margin-top: -30px">
@@ -63,7 +64,6 @@
               <li><a href="">Verify a coupon</a></li>
               <li><a href="">Report a problem</a></li>
               <li><a href="">Give feedback</a></li>
-              <li><a href="" v-on:click="this.$session.end()">logout</a></li>
             </ul>
           </b-card>
         </div>
@@ -83,6 +83,7 @@ export default {
   data() {
     return {
       user: {},
+      status: undefined,
     };
   },
   mounted() {
