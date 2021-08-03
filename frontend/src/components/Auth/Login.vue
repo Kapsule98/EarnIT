@@ -6,7 +6,13 @@
       link3='<i class="fa fa-user"></i> Account'
       link4='<i class="fa fa-shopping-cart"></i> Cart'
       link5='<i class="fa fa-lock"></i> Logout'
+      url1="/"
+      url2="/about"
+      url3="/account"
+      url4="/cart"
+      url5="/logout"
     >
+      <div id="sucess"></div>
     </topnav>
 
     <div class="login-box">
@@ -140,7 +146,7 @@ export default {
                 this.$session.set("token", seller_data.jwt);
                 this.$session.set("user_type", "seller");
                 this.$session.set("user_data", seller_data.seller);
-                this.$router.push("/seller/home");
+                this.$router.push("/account");
               } else {
                 alert(res.data.msg);
                 console.log(res.data.msg);
@@ -167,11 +173,15 @@ export default {
         document.getElementsByClassName("actvtab")[0].style.right = "0%";
       }
     },
+
     encryptPassword(password) {
       const salt = bcrypt.genSaltSync(10);
       return bcrypt.hashSync(password, salt);
     },
   },
+};
+window.onload = function () {
+  document.getElementById("defaultOpen").click();
 };
 </script>
 <style scoped>

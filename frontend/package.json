@@ -16,6 +16,7 @@
     "core-js": "^3.6.5",
     "firebase": "^8.6.7",
     "vue": "^2.6.11",
+    "vue-axios": "^3.2.5",
     "vue-carousel": "^0.18.0",
     "vue-chartjs": "^3.5.1",
     "vue-flux": "^6.4.0",

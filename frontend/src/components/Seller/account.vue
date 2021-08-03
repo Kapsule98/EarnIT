@@ -5,6 +5,11 @@
       link2='<i class="fa fa-rupee"></i> Customer Bill'
       link3='<i class="fa fa-user"></i> Account'
       link4='<i class="fa fa-lock"></i> logout'
+      url1="/"
+      url2="/about"
+      url3="/account"
+      url4="/cart"
+      url5="/logout"
     ></topnav>
 
     <div class="w3-card c-m" style="background: white; margin-top: -30px">
@@ -14,26 +19,25 @@
             <button class="w3-button w3-teal" style="font-weight: 600">
               ACTIVE
             </button>
-            <p class="c-domain">Electronics</p>
-            <p class="c-shopname">Rakesh Digitals</p>
-            <p class="c-shoplocation">Address : 342, West Bank, Amroli, C.G</p>
-            <p class="c-shoplocation">Phone No. : +91888**939</p>
+            <p class="c-domain">{{ user.category[0] }}</p>
+            <p class="c-shopname">{{ user.shop_name }}</p>
+            <p class="c-shoplocation">{{ user.address }}</p>
+            <p class="c-shoplocation">Phone No. : {{ user.contact_no }}</p>
             <p class="s-details">
               Date Joined : 2 jun 2021 | user since 2 months
             </p>
             <div class="w3-row">
               <div class="w3-third">
-                <b-card style="margin: 10px;text-align:center">
-                 
-                    <span class="tealbg">67</span>
-                 
+                <b-card style="margin: 10px; text-align: center">
+                  <span class="tealbg">67</span>
+
                   <template #footer>
                     <div class="c-head">Number of Customers</div>
                   </template>
                 </b-card>
               </div>
               <div class="w3-third">
-                <b-card style="margin: 10px;text-align:center">
+                <b-card style="margin: 10px; text-align: center">
                   <span class="tealbg">654</span>
                   <template #footer>
                     <div class="c-head">Number of Coupons Sold</div>
@@ -41,8 +45,10 @@
                 </b-card>
               </div>
               <div class="w3-third">
-                <b-card style="margin: 10px;text-align:center">
-                  <span class="tealbg"><i class="fa fa-rupee"></i> 65,466</span>
+                <b-card style="margin: 10px; text-align: center">
+                  <span class="tealbg"
+                    ><i class="fa fa-rupee"></i> {{ user.earning }}</span
+                  >
                   <template #footer>
                     <div class="c-head">Revenue Generated Through Us:</div>
                   </template>
@@ -69,17 +75,25 @@
   </div>
 </template>
 <script>
-import Sitefooter from '../Customer/sitefooter.vue';
+import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "./topnav.vue";
 export default {
   components: {
     topnav,
     Sitefooter,
   },
+  data() {
+    return {
+      user: {},
+    };
+  },
+  mounted() {
+    this.user = this.$session.get("user_data");
+    console.log(this.user);
+  },
 };
 </script>
 <style scoped>
-
 .c-domain {
   color: rgb(90, 90, 90);
   font-weight: 600;
@@ -127,10 +141,8 @@ export default {
   }
 }
 @media screen and (max-width: 600px) {
-
-  .w3-container{
+  .w3-container {
     padding: 0px 0px 10px 0px !important;
   }
-
 }
 </style>

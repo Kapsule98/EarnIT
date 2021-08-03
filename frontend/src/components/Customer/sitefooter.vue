@@ -12,7 +12,7 @@
           /></a> -->
         </div>
         <div style="float: right">
-          <a href="/registernative"
+          <a href="/register"
             ><button
               class="f-register"
               style="background: #008cff; color: white"
@@ -20,7 +20,8 @@
               Register
             </button></a
           >
-          <a href="/loginnative"
+
+          <a href="/login"
             ><button class="f-register" style="background: white">
               Login
             </button></a
@@ -85,10 +86,15 @@
 export default {
   data() {
     return {
-      // images: {
-      //   logo: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
-      // },
+      images: {
+        logo: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
+      },
+      user: {}
     };
+  },
+  mounted() {
+    this.user = this.$session.get("user_data");
+    console.log(this.user);
   },
 };
 </script>

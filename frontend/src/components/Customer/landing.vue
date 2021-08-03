@@ -11,8 +11,7 @@
         url2="/about"
         url3="/dashboard"
         url4="/cart"
-        url5="/"
-        url6="/"
+        url5="/logout"
       >
       </topnav>
 
@@ -99,7 +98,6 @@ import Vue from "vue";
 import VueAxios from "vue-axios";
 import { BASE_URL } from "../../utils/constants";
 Vue.use(VueAxios, axios);
-
 export default {
   components: { topnav, Carousel, Sitefooter, topoffers },
   data() {

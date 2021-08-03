@@ -5,6 +5,11 @@
       link2='<i class="fa fa-rupee"></i> Customer Bill'
       link3='<i class="fa fa-user"></i> Account'
       link4='<i class="fa fa-lock"></i> logout'
+      url1="/"
+      url2="/about"
+      url3="/account"
+      url4="/cart"
+      url5="/logout"
     ></topnav>
     <div class="w3-container">
       <div class="w3-row">
@@ -172,9 +177,7 @@
         >Add Coupon</b-button
       >
     </b-modal>
-    <p v-for="item in list" v-bind:key="item.id">
-      {{ item.employee_name }}
-    </p>
+
     <br /><br /><br />
     <sitefooter></sitefooter>
   </div>
@@ -187,10 +190,7 @@ import Sitefooter from "../Customer/sitefooter.vue";
 import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
 import axios from "axios";
-import Vue from "vue";
-import VueAxios from "vue-axios";
 import { BASE_URL } from "../../utils/constants";
-Vue.use(VueAxios, axios);
 
 export default {
   components: { couponcard, topnav, Sitefooter, DatePicker },
@@ -225,14 +225,6 @@ export default {
     };
   },
 
-  mounted() {
-    Vue.axios
-      .get("http://dummy.restapiexample.com/api/v1/employees")
-      .then((resp) => {
-        this.list = resp.data.data;
-        console.warn(resp.data.data);
-      });
-  },
   methods: {
     onSubmit(event) {
       event.preventDefault();

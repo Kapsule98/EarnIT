@@ -43,10 +43,13 @@
         </div>
         <div class="resp">
           <div class="topnavlink">
-            <router-link :to="url5"><span v-html="link5"></span></router-link>
+            <router-link :to="url5" v-on:click="this.$session.end()"
+              ><span v-html="link5"></span
+            ></router-link>
           </div>
         </div>
         <div class="resp">
+          Hi {{ user.shop_name }}!
           <div class="topnavlink">
             <router-link :to="url6"><span v-html="link6"></span></router-link>
           </div>
@@ -57,12 +60,17 @@
   </div>
 </template>
 <script>
+import { BASE_URL } from "../../utils/constants";
+import axios from "axios";
 export default {
   data() {
     return {
-      // images: {
-      //   sample: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
-      // },
+
+      images: {
+        sample: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
+      },
+      user: {},
+
     };
   },
   props: [
@@ -87,6 +95,15 @@ export default {
     closemenu: function () {
       document.getElementsByClassName("right")[0].style.left = "-70%";
     },
+  },
+  mounted() {
+    this.user = this.$session.get("user_data");
+    console.log(this.user);
+    const topoffersurl = BASE_URL + "/seller/add_category";
+    axios.get(topoffersurl).then((resp) => {
+      this.topoffers = resp.data.data;
+      console.warn(resp.data.data);
+    });
   },
 };
 </script>
