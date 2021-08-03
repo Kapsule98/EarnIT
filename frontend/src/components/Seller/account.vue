@@ -1,15 +1,12 @@
 <template>
   <div>
     <topnav
-      link1='<i class="fa fa-home"></i> Home'
-      link2='<i class="fa fa-rupee"></i> Customer Bill'
+      link1='<i class="fa fa-cubes"></i> Dashboard'
+      link2='<i class="fa fa-money"></i> Customer Bill'
       link3='<i class="fa fa-user"></i> Account'
-      link4='<i class="fa fa-lock"></i> logout'
-      url1="/"
-      url2="/about"
+      url1="/verifycoupon"
+      url2="/customerbill"
       url3="/account"
-      url4="/cart"
-      url5="/logout"
     ></topnav>
 
     <div class="w3-card c-m" style="background: white; margin-top: -30px">
@@ -66,6 +63,7 @@
               <li><a href="">Verify a coupon</a></li>
               <li><a href="">Report a problem</a></li>
               <li><a href="">Give feedback</a></li>
+              <li><a href="" v-on:click="this.$session.end()">logout</a></li>
             </ul>
           </b-card>
         </div>
@@ -106,6 +104,7 @@ export default {
   font-weight: 700;
   font-size: 30px;
   line-height: 0.9;
+  text-transform: capitalize;
 }
 
 .c-shoplocation {

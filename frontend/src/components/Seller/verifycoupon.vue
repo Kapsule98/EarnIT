@@ -1,15 +1,12 @@
 <template>
   <div>
     <topnav
-      link1='<i class="fa fa-home"></i> Home'
-      link2='<i class="fa fa-rupee"></i> Customer Bill'
+      link1='<i class="fa fa-cubes"></i> Dashboard'
+      link2='<i class="fa fa-money"></i> Customer Bill'
       link3='<i class="fa fa-user"></i> Account'
-      link4='<i class="fa fa-lock"></i> logout'
-      url1="/"
-      url2="/about"
+      url1="/verifycoupon"
+      url2="/customerbill"
       url3="/account"
-      url4="/cart"
-      url5="/logout"
     ></topnav>
     <div class="w3-container">
       <div class="w3-row">
@@ -173,6 +170,10 @@
           <date-picker v-model="validity" type="date" range></date-picker>
         </div>
       </div>
+      <div>
+        <label><span style="padding: 2px 5px">Offer Text :</span></label
+        ><input type="text" v-model="offer_text" />
+      </div>
       <b-button class="login-button" block @click="addCouponDetails()"
         >Add Coupon</b-button
       >
@@ -197,11 +198,11 @@ export default {
 
   data() {
     return {
-      min_val:'',
-      quantity:'',
-      offer_text:'To be added',
-      discount_percent:'',
-      offer_type:'',
+      min_val: "",
+      quantity: "",
+      offer_text: "To be added",
+      discount_percent: "",
+      offer_type: "",
       validity: [],
       form: {
         email: "",
@@ -222,9 +223,23 @@ export default {
       value: "500",
       value3: "20",
       list: undefined,
+      get_offers: undefined,
+      user: {},
     };
   },
 
+  mounted() {
+    const offersurl = BASE_URL + "/seller/offer";
+    // Simple GET request using axios
+    let JWTToken = this.$session.get("token");
+    axios
+      .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+      .then(
+        (response) => (
+          (this.get_offers = response.data), console.log(response.data)
+        )
+      );
+  },
   methods: {
     onSubmit(event) {
       event.preventDefault();
@@ -253,14 +268,14 @@ export default {
       //TODO validate input and store in db
       // POST request using axios with error handling
       const payload = {
-        "offer":{
-          "validity":this.validity,
-          "type":this.discountType,
-          "discount_percent":this.discount_percent,
-          "offer_text":this.offer_text,
-          "quantity":this.quantity,
-          "min_val":this.min_val,
-        }
+        offer: {
+          validity: this.validity,
+          type: this.discountType,
+          discount_percent: this.discount_percent,
+          offer_text: this.offer_text,
+          quantity: this.quantity,
+          min_val: this.min_val,
+        },
       };
       const url = BASE_URL + "/seller/offer";
       const accessToken = this.$session.get("token");
@@ -272,7 +287,7 @@ export default {
 
       axios
         .post(url, payload, options)
-        .then((response) => console.warn(response))
+        .then((response) => console.log(response))
         .catch((error) => {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
