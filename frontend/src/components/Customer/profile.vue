@@ -6,62 +6,52 @@
       link3='<i class="fa fa-user"></i> Account'
       link4='<i class="fa fa-shopping-cart"></i> Cart'
       link5='<i class="fa fa-lock"></i> Logout'
+      url1="/"
+      url2="/about"
+      url3="/dashboard"
+      url4="/cart"
+      url5="/login"
     ></topnav>
 
     <div class="w3-row">
-      <div class="w3-col m2" style="padding: 1px"></div>
+      <div class="w3-col m3" style="padding: 1px"></div>
 
-      <div class="w3-col m8">
+      <div class="w3-col m6">
         <b-card style="margin: 20px 0px">
           <h1>Your Account</h1>
-          <table style="width: 100%" class="accountable">
-            <tr>
-              <td class="detail">User ID</td>
-              <td class="description">narendramodi1</td>
-              <td>
-                <button class="edit"><i class="fa fa-edit"></i></button>
-              </td>
-            </tr>
-            <tr>
-              <td class="detail">Full Name</td>
-              <td class="description">{{ user.display_name }}</td>
-              <td>
-                <button class="edit"><i class="fa fa-edit"></i></button>
-              </td>
-            </tr>
-            <tr>
-              <td class="detail">Email</td>
-              <td class="description">narendramodi@gmail.com</td>
-              <td>
-                <button class="edit"><i class="fa fa-edit"></i></button>
-              </td>
-            </tr>
-            <tr>
-              <td class="detail">Password</td>
-              <td class="description">******</td>
-              <td>
-                <button class="edit"><i class="fa fa-edit"></i></button>
-              </td>
-            </tr>
-            <tr>
-              <td class="detail">Location</td>
-              <td class="description">Bhilai</td>
-              <td>
-                <button class="edit"><i class="fa fa-edit"></i></button>
-              </td>
-            </tr>
-            <tr>
-              <td class="detail">Phone no.</td>
-              <td class="description">5876986798</td>
-              <td>
-                <button class="edit"><i class="fa fa-edit"></i></button>
-              </td>
-            </tr>
-          </table>
+          <center>
+            <table style="width: 80%; text-align: center" class="accountable">
+              <tr>
+                <td class="detail">Full Name</td>
+                <td class="description">{{ user.display_name }}</td>
+              </tr>
+              <tr>
+                <td class="detail">Email</td>
+                <td class="description">{{ user.email }}</td>
+              </tr>
+              <tr>
+                <td class="detail">Password</td>
+                <td class="description">******</td>
+              </tr>
+              <tr>
+                <td class="detail">Location</td>
+                <td class="description">
+                  <select name="location" id="">
+                    <option value="Bhilai">Bhilai</option>
+                    <option value="Raipur">Raipur</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td class="detail">Phone no.</td>
+                <td class="description">{{ user.phone }}</td>
+              </tr>
+            </table>
+          </center>
         </b-card>
       </div>
 
-      <div class="w3-col m2" style="padding: 1px"></div>
+      <div class="w3-col m3" style="padding: 1px"></div>
     </div>
     <sitefooter></sitefooter>
   </div>
