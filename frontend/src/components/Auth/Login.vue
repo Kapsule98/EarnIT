@@ -146,6 +146,7 @@ export default {
                 this.$session.set("token", seller_data.jwt);
                 this.$session.set("user_type", "seller");
                 this.$session.set("user_data", seller_data.seller);
+                this.$session.set("logged_in", "true");
                 this.$router.push("/account");
               } else {
                 alert(res.data.msg);

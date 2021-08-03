@@ -19,35 +19,33 @@
           style="font-weight: 500; color: black; padding-right: 20px"
         >
           Hi {{ user.shop_name }}!
-          <div class="topnavlink">
+          <div v-bind:class="'topnavlink ' + active6">
             <router-link :to="url6"><span v-html="link6"></span></router-link>
           </div>
         </div>
         <div class="resp">
-          <div class="topnavlink active">
+          <div v-bind:class="'topnavlink ' + active1">
             <router-link :to="url1"><span v-html="link1"></span></router-link>
           </div>
         </div>
         <div class="resp">
-          <div class="topnavlink">
+          <div v-bind:class="'topnavlink ' + active2">
             <router-link :to="url2"><span v-html="link2"></span></router-link>
           </div>
         </div>
         <div class="resp">
-          <div class="topnavlink">
+          <div v-bind:class="'topnavlink ' + active3">
             <router-link :to="url3"><span v-html="link3"></span></router-link>
           </div>
         </div>
         <div class="resp">
-          <div class="topnavlink">
+          <div v-bind:class="'topnavlink ' + active4">
             <router-link :to="url4"><span v-html="link4"></span></router-link>
           </div>
         </div>
         <div class="resp">
-          <div class="topnavlink">
-            <router-link :to="url5" v-on:click="this.$session.end()"
-              ><span v-html="link5"></span
-            ></router-link>
+          <div v-bind:class="'topnavlink ' + active5">
+            <router-link :to="url5"><span v-html="link5"></span></router-link>
           </div>
         </div>
       </div>
@@ -61,9 +59,6 @@ import axios from "axios";
 export default {
   data() {
     return {
-      images: {
-        sample: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
-      },
       user: {},
     };
   },
@@ -80,6 +75,12 @@ export default {
     "url4",
     "url5",
     "url6",
+    "active1",
+    "active2",
+    "active3",
+    "active4",
+    "active5",
+    "active6",
   ],
 
   methods: {
@@ -156,9 +157,9 @@ form.example::after {
 }
 
 .topnavlink a {
-  color: rgb(68, 68, 68) !important;
+  color: rgb(68, 68, 68);
   width: fit-content;
-  padding: 8px 16px !important;
+  padding: 8px 16px;
   margin: 0px 2px;
   text-decoration: none;
   transition: 0.2s ease-in-out;
@@ -166,7 +167,11 @@ form.example::after {
 
 .topnavlink a:hover {
   background: #008cff;
-  color: white !important;
+  color: rgb(233, 255, 234);
+}
+.active_nav a {
+  background: #008cff;
+  color: rgb(233, 255, 234);
 }
 
 .left {
