@@ -94,10 +94,8 @@ import Carousel from "./homeposters.vue";
 import topoffers from "./topoffers.vue";
 import Sitefooter from "./sitefooter.vue";
 import axios from "axios";
-import Vue from "vue";
-import VueAxios from "vue-axios";
 import { BASE_URL } from "../../utils/constants";
-Vue.use(VueAxios, axios);
+
 export default {
   components: { topnav, Carousel, Sitefooter, topoffers },
   data() {
@@ -106,10 +104,10 @@ export default {
     };
   },
   mounted() {
-    const url = BASE_URL + "/seller/add_category";
-    Vue.axios.get(url).then((resp) => {
+    const url = BASE_URL + "/all_offers";
+    axios.get(url).then((resp) => {
       this.list = resp.data.data;
-      console.warn(resp.data.data);
+      console.log(resp.data.data);
     });
   },
 };

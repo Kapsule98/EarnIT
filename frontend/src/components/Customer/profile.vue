@@ -60,8 +60,6 @@
 <script>
 import topnav from "../Seller/topnav.vue";
 import Sitefooter from "./sitefooter.vue";
-import axios from "axios";
-import { BASE_URL } from "../../utils/constants";
 export default {
   components: { topnav, Sitefooter },
 
@@ -81,7 +79,6 @@ export default {
           active: true,
         },
       ],
-      topoffers: undefined,
       user: {},
     };
   },
@@ -89,11 +86,6 @@ export default {
   mounted() {
     this.user = this.$session.get("user_data");
     console.log(this.user);
-    const topoffersurl = BASE_URL + "/seller/add_category";
-    axios.get(topoffersurl).then((resp) => {
-      this.topoffers = resp.data.data;
-      console.warn(resp.data.data);
-    });
   },
 };
 </script>

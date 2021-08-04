@@ -3,7 +3,7 @@
     <div id="nav" class="topnav">
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
       <div class="topnavlink left" style="font-weight: 900">
-        <router-link to="/">Lemmebuy.in</router-link>
+        <router-link to="/s">Lemmebuy.in</router-link>
       </div>
       <div class="left searchbar">
         <form class="example" action="action_page.php">
@@ -54,12 +54,11 @@
   </div>
 </template>
 <script>
-import { BASE_URL } from "../../utils/constants";
-import axios from "axios";
 export default {
   data() {
     return {
       user: {},
+      status: undefined,
     };
   },
   props: [
@@ -94,11 +93,6 @@ export default {
   mounted() {
     this.user = this.$session.get("user_data");
     console.log(this.user);
-    const topoffersurl = BASE_URL + "/seller/add_category";
-    axios.get(topoffersurl).then((resp) => {
-      this.topoffers = resp.data.data;
-      console.warn(resp.data.data);
-    });
   },
 };
 </script>
