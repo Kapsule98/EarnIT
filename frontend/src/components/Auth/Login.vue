@@ -147,6 +147,7 @@ export default {
                 this.$session.set("user_type", "seller");
                 this.$session.set("user_data", seller_data.seller);
                 this.$session.set("logged_in", "true");
+                localStorage.setItem("log", this.$session.get("logged_in"));
                 this.$router.push("/account");
               } else {
                 alert(res.data.msg);
