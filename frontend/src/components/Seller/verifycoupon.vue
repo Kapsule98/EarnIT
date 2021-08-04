@@ -219,17 +219,8 @@ export default {
     };
   },
   mounted() {
-    this.user = this.$session.get("user_data");
-    const offersurl = BASE_URL + "/seller/offer";
-    // Simple GET request using axios
-    let JWTToken = this.$session.get("token");
-    console.log(JWTToken);
-    axios
-      .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
-      .then((response) => {
-        this.getoffers = response.data;
-        console.log(this.getoffers);
-      });
+    this.getUser();
+    this.getSellerOffers();
   },
 
   methods: {
@@ -295,6 +286,22 @@ export default {
       );
       this.$refs["couponModal"].hide();
     },
+    getUser() {
+      this.user = this.$session.get("user_data");
+    },
+    getSellerOffers() {
+      const offersurl = BASE_URL + "/seller/offer";
+      let JWTToken = this.$session.get("token");
+      console.log(JWTToken);
+      axios
+        .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .then((response) => {
+          this.getoffers = response.data;
+          console.log(this.getoffers);
+        }).catch(err => {
+          console.log(err);
+        });
+    }
   },
 };
 </script>

@@ -86,9 +86,9 @@
 export default {
   data() {
     return {
-      images: {
-        logo: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
-      },
+      // images: {
+      //   logo: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
+      // },
       user: {},
     };
   },
