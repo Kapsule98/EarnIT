@@ -16,10 +16,7 @@
 <script>
 import carousel from "vue-owl-carousel";
 import axios from "axios";
-import Vue from "vue";
-import VueAxios from "vue-axios";
 import { BASE_URL } from "../../utils/constants";
-Vue.use(VueAxios, axios);
 export default {
   components: { carousel },
   data() {
@@ -28,8 +25,8 @@ export default {
     };
   },
   mounted() {
-    const homepostersurl = BASE_URL + "/seller/add_category";
-    Vue.axios.get(homepostersurl).then((resp) => {
+    const homepostersurl = BASE_URL + "/seller/offer";
+    axios.get(homepostersurl).then((resp) => {
       this.homeposters = resp.data.data;
       console.warn(resp.data.data);
     });

@@ -89,12 +89,13 @@ export default {
       images: {
         logo: require("/Users/adity/Desktop/EarnIT/frontend/src/assets/flogo.png"),
       },
-      user: {}
+      user: {},
     };
   },
   mounted() {
     this.user = this.$session.get("user_data");
     console.log(this.user);
+    localStorage.setItem("log", this.$session.get("logged_in"));
   },
 };
 </script>

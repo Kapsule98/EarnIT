@@ -1,7 +1,5 @@
 <template></template>
 
 <script>
-export default {
-  props: [datalist],
-};
+export default {};
 </script>

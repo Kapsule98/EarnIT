@@ -47,7 +47,7 @@ export default {
     };
   },
   mounted() {
-    const topoffersurl = BASE_URL + "/seller/add_category";
+    const topoffersurl = BASE_URL + "/seller/offer";
     axios.get(topoffersurl).then((resp) => {
       this.topoffers = resp.data.data;
       console.warn(resp.data.data);

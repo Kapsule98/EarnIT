@@ -14,8 +14,9 @@
         <div class="w3-third form">
           <p class="heading" style="text-transform: capitalize">
             {{ user.shop_name }}
+            {{}}
           </p>
-          <h4>Fill coustomer details</h4>
+          <h4>Verify a Coupon</h4>
 
           <b-form @submit="onSubmit" @reset="onReset" v-if="show">
             <b-form-group
@@ -213,23 +214,22 @@ export default {
       value: "500",
       value3: "20",
       list: undefined,
-      get_offers: undefined,
+      getoffers: {},
       user: {},
     };
   },
   mounted() {
+    this.user = this.$session.get("user_data");
     const offersurl = BASE_URL + "/seller/offer";
     // Simple GET request using axios
     let JWTToken = this.$session.get("token");
+    console.log(JWTToken);
     axios
       .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
-      .then(
-        (response) => (
-          (this.get_offers = response.data), console.log(response.data)
-        )
-      );
-    this.user = this.$session.get("user_data");
-    console.log(this.user);
+      .then((response) => {
+        this.getoffers = response.data;
+        console.log(this.getoffers);
+      });
   },
 
   methods: {
