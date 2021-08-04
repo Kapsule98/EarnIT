@@ -6,7 +6,7 @@ import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
-
+/*
 function guardMyroute(to, from, next)
 
 {
@@ -27,7 +27,7 @@ if(localStorage.getItem('log')===true)
  }
 
 }
-
+*/
 
 const routes = [
   {
@@ -74,7 +74,7 @@ const routes = [
     component: () => import('../components/Seller/RegisterDetails.vue')
   },
   {
-    beforeEnter : guardMyroute,
+    //beforeEnter : guardMyroute,
     path: '/verifycoupon',
     name: 'verifycoupon',
     component: () => import('../components/Seller/verifycoupon.vue'),
@@ -91,25 +91,25 @@ const routes = [
     component: () => import('../components/Customer/landing.vue')
   },
   {
-    beforeEnter : guardMyroute,
+    //beforeEnter : guardMyroute,
     path: '/customerbill',
     name: 'customerbill',
     component: () => import('../components/Seller/customerbill.vue')
   },
   {
-    beforeEnter : guardMyroute,
+    //beforeEnter : guardMyroute,
     path: '/account',
     name: 'account',
     component: () => import('../components/Seller/account.vue')
   },
   {
-    beforeEnter : guardMyroute,
+    //beforeEnter : guardMyroute,
     path: '/dashboard',
     name: 'dashboard',
     component: () => import('../components/Customer/account.vue')
   },
   {
-    beforeEnter : guardMyroute,
+    //beforeEnter : guardMyroute,
     path: '/cart',
     name: 'cart',
     component: () => import('../components/Customer/cart.vue')
@@ -120,14 +120,14 @@ const routes = [
     component: () => import('../components/Customer/contact.vue')
   },
   {
-    beforeEnter : guardMyroute,
+    //beforeEnter : guardMyroute,
     path: '/profile',
     name: 'customerprofile',
     component: () => import('../components/Customer/profile.vue')
     
   },
   {
-    beforeEnter : guardMyroute,
+    //beforeEnter : guardMyroute,
     path: '/category',
     name: 'category',
     component: () => import('../components/Customer/category.vue')
