@@ -2,7 +2,12 @@
   <div>
     <div class="coupon_box">
       <div class="body">
-        <div class="remove" v-on:click="remove">&#x2212;</div>
+        <div
+          class="remove"
+          v-on:click="removeOffer(getoffers.active_offers_offer_text)"
+        >
+          &#x2212;
+        </div>
         <div class="bodyback">{{ discount }}</div>
         <h4 class="title">{{ name }}</h4>
 
@@ -24,18 +29,33 @@
 </template>
 
 <script>
+import { BASE_URL } from "../../utils/constants";
+import axios from "axios";
 export default {
   props: ["name", "discount", "left", "validity"],
+  data() {
+    return {
+      getoffers: [],
+    };
+  },
   methods: {
-    remove: function () {
+    removeOffer: function () {
       var r = confirm("permanently remove coupon");
       if (r == true) {
-        document.getElementById("reedem").style.display = "none";
+        const offersurl = BASE_URL + "/seller/offer";
+        let JWTToken = this.$session.get("token");
+        axios
+          .delete(offersurl, {
+            headers: { Authorization: `Bearer ${JWTToken}` },
+          })
+          .then(() => {});
       } else {
         document.getElementById("reedem").style.color = "white";
       }
     },
   },
+
+  mounted() {},
 };
 </script>
 

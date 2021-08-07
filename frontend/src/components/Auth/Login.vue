@@ -1,7 +1,7 @@
 <template>
   <div>
     <topnav
-      link1='<i class="fa fa-home"></i> Home'
+      link1='<i class="fa fa-home"></i>'
       link2='<i class="fa fa-info-circle"></i> About'
       link3='<i class="fa fa-user"></i> Account'
       link4='<i class="fa fa-shopping-cart"></i> Cart'
@@ -11,6 +11,7 @@
       url3="/account"
       url4="/cart"
       url5="/logout"
+      url6="/"
     >
       <div id="sucess"></div>
     </topnav>
