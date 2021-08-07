@@ -7,6 +7,9 @@
       url1="/verifycoupon"
       url2="/customerbill"
       url3="/account"
+      url4="/"
+      url5="/"
+      url6="/"
       active3="active_nav"
     ></topnav>
 
@@ -58,7 +61,7 @@
         <div class="w3-third" style="padding: 20px">
           <b-card>
             <ul style="list-style-type: none">
-              <li><a href="">Edit shop details</a></li>
+              <li><a href="/editsellerdetails">Edit account details</a></li>
               <li><a href="">View your customers</a></li>
               <li><a href="">Add or delete coupons</a></li>
               <li><a href="">Verify a coupon</a></li>

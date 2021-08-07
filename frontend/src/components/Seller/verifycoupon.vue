@@ -7,6 +7,9 @@
       url1="/verifycoupon"
       url2="/customerbill"
       url3="/account"
+      url4="/"
+      url5="/"
+      url6="/"
       active1="active_nav"
     ></topnav>
     <div class="w3-container">
@@ -14,7 +17,6 @@
         <div class="w3-third form">
           <p class="heading" style="text-transform: capitalize">
             {{ user.shop_name }}
-            {{}}
           </p>
           <h4>Verify a Coupon</h4>
 
@@ -70,12 +72,16 @@
             <div class="percent">Live Offers</div>
           </h2>
           <div class="w3-row">
-            <div class="w3-third">
+            <div
+              class="w3-third"
+              v-for="offer in getoffers.active_offers"
+              :key="offer.length"
+            >
               <couponcard
                 name="ELECTRONICS"
-                discount="50%"
-                left="5/10"
-                validity="2 jun 2021"
+                v-bind:discount="offer.discount_percent + '%'"
+                v-bind:left="'5/' + offer.quantity"
+                v-bind:validity="' ' + offer.validity"
               ></couponcard>
             </div>
             <div class="w3-third">
@@ -189,10 +195,10 @@ export default {
 
   data() {
     return {
-      min_val: "",
-      quantity: "",
+      min_val: "500",
+      quantity: "20",
       offer_text: "To be added",
-      discount_percent: "",
+      discount_percent: "50",
       offer_type: "",
       validity: [],
       form: {
@@ -213,7 +219,7 @@ export default {
       customdiscount: "",
       value: "500",
       value3: "20",
-      list: undefined,
+      list: [],
       getoffers: {},
       user: {},
     };
@@ -285,6 +291,8 @@ export default {
         this.validity
       );
       this.$refs["couponModal"].hide();
+      alert("Coupon added Sucessfully");
+      this.$router.go();
     },
     getUser() {
       this.user = this.$session.get("user_data");
@@ -292,16 +300,16 @@ export default {
     getSellerOffers() {
       const offersurl = BASE_URL + "/seller/offer";
       let JWTToken = this.$session.get("token");
-      console.log(JWTToken);
       axios
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.getoffers = response.data;
-          console.log(this.getoffers);
-        }).catch(err => {
+          console.log(this.getoffers.active_offers);
+        })
+        .catch((err) => {
           console.log(err);
         });
-    }
+    },
   },
 };
 </script>

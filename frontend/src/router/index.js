@@ -130,6 +130,12 @@ const routes = [
     name: 'category',
     component: () => import('../components/Customer/category.vue')
   },
+  {
+    beforeEnter : guardMyroute,
+    path: '/editsellerdetails',
+    name: 'editsellerdetails',
+    component: () => import('../components/Seller/editsellerdetails.vue')
+  },
  
 
 ]
