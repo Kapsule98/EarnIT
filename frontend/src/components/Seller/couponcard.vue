@@ -4,7 +4,7 @@
       <div class="body">
         <div
           class="remove"
-          v-on:click="removeOffer(getoffers.active_offers_offer_text)"
+          v-on:click="removeOffer(offer_text)"
         >
           &#x2212;
         </div>
@@ -32,23 +32,32 @@
 import { BASE_URL } from "../../utils/constants";
 import axios from "axios";
 export default {
-  props: ["name", "discount", "left", "validity"],
+  props: ["name", "discount", "left", "validity","offer_text"],
   data() {
     return {
       getoffers: [],
     };
   },
   methods: {
-    removeOffer: function () {
+    removeOffer(offer_text) {
       var r = confirm("permanently remove coupon");
       if (r == true) {
         const offersurl = BASE_URL + "/seller/offer";
         let JWTToken = this.$session.get("token");
+        const config = {
+          data:{
+            "offer_text":offer_text
+          },
+          headers: {
+            Authorization: `Bearer ${JWTToken}`
+          }
+        }
         axios
-          .delete(offersurl, {
-            headers: { Authorization: `Bearer ${JWTToken}` },
+          .delete(offersurl,config).then(res => {
+            console.log(res);
+          }).catch(err => {
+            console.log(err);
           })
-          .then(() => {});
       } else {
         document.getElementById("reedem").style.color = "white";
       }
