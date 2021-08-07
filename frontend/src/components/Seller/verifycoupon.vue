@@ -82,6 +82,7 @@
                 v-bind:discount="offer.discount_percent + '%'"
                 v-bind:left="'5/' + offer.quantity"
                 v-bind:validity="' ' + offer.validity"
+                v-bind:offer_text="offer.offer_text"
               ></couponcard>
             </div>
             <div class="w3-third">

@@ -81,9 +81,9 @@
               </tr>
             </table>
             <b-button
-              type="submit"
               variant="primary"
               style="float: right; margin: 10px"
+              @click="updateDetails()"
               >Edit</b-button
             >
           </form>
@@ -127,19 +127,33 @@ export default {
   },
 
   mounted() {
-    this.updateLocation();
-    this.updateShopName();
-    this.updateOwnerName();
-    this.updateEmail();
-    this.updateAddress();
-    this.updateContact();
     this.user = this.$session.get("user_data");
   },
   methods: {
+    updateDetails() {
+      if (this.shop_name) {
+        this.updateShopName();
+      }
+      if (this.shop_location) {
+        this.updateLocation();
+      }
+      if (this.shop_email){
+        this.updateEmail();
+      }
+      if (this.shop_contact) {
+        this.updateContact();
+      }
+      if (this.address) {
+        this.updateAddress();
+      }
+      if (this.shop_owner_name) {
+        this.updateOwnerName();
+      }
+    },
     updateShopName() {
       const payload = {
         offer: {
-          shop_name: this.shop_name,
+          "shop_name": this.shop_name,
         },
       };
       const url = BASE_URL + "/seller/update_shop_name";
@@ -164,7 +178,7 @@ export default {
     updateLocation() {
       const payload = {
         offer: {
-          shop_location: this.shop_location,
+          "shop_location": this.shop_location,
         },
       };
       const url = BASE_URL + "/seller/update_location";
@@ -187,9 +201,7 @@ export default {
     },
     updateEmail() {
       const payload = {
-        offer: {
-          shop_location: this.shop_email,
-        },
+        "email":this.shop_email
       };
       const url = BASE_URL + "/seller/update_email";
       const accessToken = this.$session.get("token");
@@ -198,7 +210,7 @@ export default {
           Authorization: `Bearer ${accessToken}`,
         },
       };
-
+      console.log(payload);
       axios
         .post(url, payload, options)
         .then((response) => console.log(response))
@@ -212,7 +224,7 @@ export default {
     updateContact() {
       const payload = {
         offer: {
-          shop_contact: this.shop_contact,
+          "contact": this.shop_contact,
         },
       };
       const url = BASE_URL + "/seller/update_contact";
@@ -236,7 +248,7 @@ export default {
     updateAddress() {
       const payload = {
         offer: {
-          shop_address: this.shop_adress,
+          "address": this.shop_adress,
         },
       };
       const url = BASE_URL + "/seller/update_address";
@@ -260,7 +272,7 @@ export default {
     updateOwnerName() {
       const payload = {
         offer: {
-          shop_owner_name: this.shop_owner_name,
+          "owner_name": this.shop_owner_name,
         },
       };
       const url = BASE_URL + "/seller/update_owner_name";
