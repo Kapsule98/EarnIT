@@ -81,7 +81,9 @@
                 name="ELECTRONICS"
                 v-bind:discount="offer.discount_percent + '%'"
                 v-bind:left="'5/' + offer.quantity"
-                v-bind:validity="' ' + offer.validity"
+                v-bind:validity="
+                  ' ' + moment(offer.validity[1]).format('DD-MM-YYYY')
+                "
                 v-bind:offer_text="offer.offer_text"
               ></couponcard>
             </div>

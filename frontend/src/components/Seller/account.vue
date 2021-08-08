@@ -20,12 +20,12 @@
             <button class="w3-button w3-teal" style="font-weight: 600">
               ACTIVE
             </button>
-            <p class="c-domain">{{ user.category[0] }}</p>
+            <p class="c-domain">{{ category.category }}</p>
             <p class="c-shopname">{{ user.shop_name }}</p>
             <p class="c-shoplocation">{{ user.address }}</p>
             <p class="c-shoplocation">Phone No. : {{ user.contact_no }}</p>
             <p class="s-details">
-              Date Joined : 2 jun 2021 | user since 2 months
+              <!-- Date Joined : 2 jun 2021 | user since 2 months-->
             </p>
             <div class="w3-row">
               <div class="w3-third">
@@ -78,6 +78,8 @@
 <script>
 import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "./topnav.vue";
+import axios from "axios";
+import { BASE_URL } from "../../utils/constants";
 export default {
   components: {
     topnav,
@@ -87,11 +89,23 @@ export default {
     return {
       user: {},
       status: undefined,
+      category: [],
     };
   },
   mounted() {
     this.user = this.$session.get("user_data");
     console.log(this.user);
+    const offersurl = BASE_URL + "/seller/category";
+    let JWTToken = this.$session.get("token");
+    axios
+      .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+      .then((response) => {
+        this.category = response.data;
+        console.log(this.category);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>
