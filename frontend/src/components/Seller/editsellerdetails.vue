@@ -73,11 +73,16 @@
                     v-model="shop_address"
                   ></b-form-input>
                 </td>
-                <multiselect
-                  v-model="shop_category"
-                  :options="categories"
-                  :multiple="true"
-                />
+              </tr>
+              <tr>
+                <td class="detail">Categories</td>
+                <td class="description">
+                  <multiselect
+                    v-model="shop_category"
+                    :options="categories"
+                    :multiple="true"
+                  />
+                </td>
               </tr>
             </table>
             <b-button
@@ -101,6 +106,7 @@ import topnav from "../Seller/topnav.vue";
 import Sitefooter from "../Customer/sitefooter.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+
 export default {
   components: { topnav, Sitefooter },
 
@@ -137,7 +143,7 @@ export default {
       if (this.shop_location) {
         this.updateLocation();
       }
-      if (this.shop_email){
+      if (this.shop_email) {
         this.updateEmail();
       }
       if (this.shop_contact) {
@@ -149,12 +155,13 @@ export default {
       if (this.shop_owner_name) {
         this.updateOwnerName();
       }
+      if (this.shop_category) {
+        this.updateCategory();
+      }
     },
     updateShopName() {
       const payload = {
-        offer: {
-          "shop_name": this.shop_name,
-        },
+        shop_name: this.shop_name,
       };
       const url = BASE_URL + "/seller/update_shop_name";
       const accessToken = this.$session.get("token");
@@ -177,9 +184,7 @@ export default {
 
     updateLocation() {
       const payload = {
-        offer: {
-          "shop_location": this.shop_location,
-        },
+        shop_location: this.shop_location,
       };
       const url = BASE_URL + "/seller/update_location";
       const accessToken = this.$session.get("token");
@@ -201,7 +206,7 @@ export default {
     },
     updateEmail() {
       const payload = {
-        "email":this.shop_email
+        email: this.shop_email,
       };
       const url = BASE_URL + "/seller/update_email";
       const accessToken = this.$session.get("token");
@@ -223,9 +228,7 @@ export default {
     },
     updateContact() {
       const payload = {
-        offer: {
-          "contact": this.shop_contact,
-        },
+        contact: this.shop_contact,
       };
       const url = BASE_URL + "/seller/update_contact";
       const accessToken = this.$session.get("token");
@@ -247,9 +250,7 @@ export default {
     },
     updateAddress() {
       const payload = {
-        offer: {
-          "address": this.shop_adress,
-        },
+        address: this.shop_adress,
       };
       const url = BASE_URL + "/seller/update_address";
       const accessToken = this.$session.get("token");
@@ -271,9 +272,7 @@ export default {
     },
     updateOwnerName() {
       const payload = {
-        offer: {
-          "owner_name": this.shop_owner_name,
-        },
+        owner_name: this.shop_owner_name,
       };
       const url = BASE_URL + "/seller/update_owner_name";
       const accessToken = this.$session.get("token");
@@ -293,16 +292,38 @@ export default {
 
       console.log(this.shop_location);
     },
+    updateCategory() {
+      const payload = {
+        category: {
+          categories: this.shop_category,
+        },
+      };
+      const url = BASE_URL + "/seller/category";
+      const accessToken = this.$session.get("token");
+      const options = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+
+      axios
+        .post(url, payload, options)
+        .then((response) => console.log(response))
+        .catch((error) => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+    },
   },
 };
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 .accountable td {
   padding: 20px 10px;
 }
 .accountable tr {
-  border-bottom: 1px solid rgb(228, 228, 228);
+  border-bottom: 0px solid rgb(228, 228, 228);
 }
 .detail {
   color: black;
