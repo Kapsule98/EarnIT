@@ -1,57 +1,77 @@
 <template>
-  <carousel
-    :autoplayTimeout="3000"
-    :responsive="{
-      0: { items: 1, nav: false },
-      600: { items: 3, nav: true },
-      1200: { items: 4 },
-    }"
-    :stagePadding="0"
-    :loop="true"
-    :autoplay="true"
-    :nav="false"
-    :dots="false"
-  >
+  <div>
     <!---->
-    <a href="">
-      <div class="couponhome" v-for="item in topoffers" v-bind:key="item.id">
-        <div class="c2-back">
-          <img :src="item.img_url" />
-        </div>
-        <div class="c2-off">{{ item.discount }} on {{ item.product }}</div>
-        <div class="c2-left">{{ item.coupon_left }} coupons left</div>
-        <div class="c2-shop">{{ item.shop_name }}</div>
-        <div class="c2-location">
-          <i class="fa fa-map-marker"></i> {{ item.shop_location }}
-        </div>
-        <div class="c2-validity">
-          offer valid til {{ item.Coupon_validity }}
-        </div>
-      </div>
-    </a>
 
-    <!---->
-  </carousel>
+    <carousel
+      v-if="list.active_offers.length > 0"
+      :autoplayTimeout="3000"
+      :responsive="{
+        0: { items: 1, nav: false },
+        600: { items: 3, nav: true },
+        1200: { items: 4 },
+      }"
+      :stagePadding="0"
+      :loop="true"
+      :autoplay="true"
+      :nav="false"
+      :dots="false"
+    >
+      <div v-for="offer in list.active_offers" :key="offer.length">
+        <a href="">
+          <div class="couponhome">
+            <div class="c2-back">
+              <!-- <img :src="item.img_url" />-->
+            </div>
+            <div class="c2-off">
+              {{ offer.discount_percent }}% on
+              <!--{{ product }}-->
+            </div>
+            <div class="c2-left">{{ offer.quantity }} coupons left</div>
+            <div class="c2-shop"><!--{{ shop_name }}--></div>
+            <div class="c2-location">
+              <i class="fa fa-map-marker"></i>
+              <!--{{ shop_location }}-->
+            </div>
+            <div class="c2-validity">
+              offer valid till
+              {{ moment(offer.validity[1]).format("DD-MM-YYYY") }}
+            </div>
+          </div>
+        </a>
+      </div>
+    </carousel>
+  </div>
+  <!---->
 </template>
 
 <script>
 import carousel from "vue-owl-carousel";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
-
 export default {
   components: { carousel },
   data() {
     return {
-      topoffers: undefined,
+      list: [],
     };
   },
   mounted() {
-    const topoffersurl = BASE_URL + "/seller/offer";
-    axios.get(topoffersurl).then((resp) => {
-      this.topoffers = resp.data.data;
-      console.warn(resp.data.data);
-    });
+    this.getAllOffers();
+  },
+  methods: {
+    getAllOffers() {
+      const offersurl = BASE_URL + "/get_all_offers";
+      let JWTToken = this.$session.get("token");
+      axios
+        .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .then((response) => {
+          this.list = response.data;
+          console.log(this.list.active_offers);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>
@@ -61,7 +81,7 @@ export default {
   width: 98%;
   height: 220px;
   margin: 10px auto;
-  background: rgba(0, 0, 0, 0.479);
+  background: rgb(4, 87, 62);
   padding: 10px;
   overflow: hidden;
 }

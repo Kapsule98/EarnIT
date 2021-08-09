@@ -7,24 +7,40 @@ import Home from '../views/Home.vue'
 Vue.use(VueRouter)
 
 
-function guardMyroute(to, from, next){
- var isAuthenticated= false;
+function guardMyroute(to, from, next) {
+  var isAuthenticated = false;
 
-if(localStorage.getItem('log')==="true"){
-  isAuthenticated = true;
-}else{
-  isAuthenticated= false;
+  if (localStorage.getItem('log') === "true" && localStorage.getItem('user_type') === "seller") {
+    isAuthenticated = true;
+  } else {
+    isAuthenticated = false;
+  }
+  if (isAuthenticated === true) {
+    next(); // allow to enter route
+  }
+  else {
+    next('/login'); // go to '/login';
+  }
+
 }
- if(isAuthenticated===true) 
- {
-  next(); // allow to enter route
- } 
- else
- {
-  next('/login'); // go to '/login';
- }
- 
+
+function guardMyrouteCustomer(to, from, next) {
+  var isAuthenticated = false;
+
+  if (localStorage.getItem('log') === "true" && localStorage.getItem('user_type') === "customer") {
+    isAuthenticated = true;
+  } else {
+    isAuthenticated = false;
+  }
+  if (isAuthenticated === true) {
+    next(); // allow to enter route
+  }
+  else {
+    next('/login'); // go to '/login';
+  }
+
 }
+
 
 
 const routes = [
@@ -37,14 +53,14 @@ const routes = [
     path: '/about',
     name: 'About',
     // route level code-splitting
-     //this generates a separate chunk (about.[hash].js) for this route
+    //this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
     path: '/login',
-    name:'Login',
-    component: () => import ('../components/Auth/Login.vue')
+    name: 'Login',
+    component: () => import('../components/Auth/Login.vue')
   },
   {
     path: '/register',
@@ -72,7 +88,7 @@ const routes = [
     component: () => import('../components/Seller/RegisterDetails.vue')
   },
   {
-    beforeEnter : guardMyroute,
+    beforeEnter: guardMyroute,
     path: '/verifycoupon',
     name: 'verifycoupon',
     component: () => import('../components/Seller/verifycoupon.vue'),
@@ -89,25 +105,25 @@ const routes = [
     component: () => import('../components/Customer/landing.vue')
   },
   {
-    beforeEnter : guardMyroute,
+    beforeEnter: guardMyroute,
     path: '/customerbill',
     name: 'customerbill',
     component: () => import('../components/Seller/customerbill.vue')
   },
   {
-    beforeEnter : guardMyroute,
+    beforeEnter: guardMyroute,
     path: '/account',
     name: 'account',
     component: () => import('../components/Seller/account.vue')
   },
   {
-    beforeEnter : guardMyroute,
+    beforeEnter: guardMyrouteCustomer,
     path: '/dashboard',
     name: 'dashboard',
     component: () => import('../components/Customer/account.vue')
   },
   {
-    beforeEnter : guardMyroute,
+    beforeEnter: guardMyrouteCustomer,
     path: '/cart',
     name: 'cart',
     component: () => import('../components/Customer/cart.vue')
@@ -118,25 +134,25 @@ const routes = [
     component: () => import('../components/Customer/contact.vue')
   },
   {
-    beforeEnter : guardMyroute,
+    beforeEnter: guardMyrouteCustomer,
     path: '/profile',
     name: 'customerprofile',
     component: () => import('../components/Customer/profile.vue')
-    
+
   },
   {
-    beforeEnter : guardMyroute,
+    beforeEnter: guardMyroute,
     path: '/category',
     name: 'category',
     component: () => import('../components/Customer/category.vue')
   },
   {
-    beforeEnter : guardMyroute,
+    beforeEnter: guardMyroute,
     path: '/editsellerdetails',
     name: 'editsellerdetails',
     component: () => import('../components/Seller/editsellerdetails.vue')
   },
- 
+
 
 ]
 
@@ -149,4 +165,4 @@ const router = new VueRouter({
 
 
 
-export default router 
+export default router

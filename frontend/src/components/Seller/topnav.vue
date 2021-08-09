@@ -3,7 +3,7 @@
     <div id="nav" class="topnav">
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
       <div class="topnavlink left" style="font-weight: 900">
-        <router-link to="/s">Lemmebuy.in</router-link>
+        <router-link to="/">Lemmebuy.in</router-link>
       </div>
       <div class="left searchbar">
         <form class="example" action="action_page.php">
@@ -18,7 +18,22 @@
           class="resp hiwel"
           style="font-weight: 500; color: black; padding-right: 20px"
         >
-          Hi {{ user.shop_name }}!
+          <div
+            v-if="
+              this.$session.get('logged_in') === 'true' &&
+              this.$session.get('user_type') === 'customer'
+            "
+          >
+            Hi {{ user.display_name }}!
+          </div>
+          <div
+            v-else-if="
+              this.$session.get('logged_in') === 'true' &&
+              this.$session.get('user_type') === 'seller'
+            "
+          >
+            Hi {{ user.shop_name }}!
+          </div>
           <div v-bind:class="'topnavlink ' + active6">
             <router-link :to="url6"><span v-html="link6"></span></router-link>
           </div>
@@ -44,7 +59,10 @@
           </div>
         </div>
         <div class="resp">
-          <div v-bind:class="'topnavlink ' + active5">
+          <div
+            v-bind:class="'topnavlink ' + active5"
+            v-if="this.$session.get('logged_in') !== 'true'"
+          >
             <router-link :to="url5"><span v-html="link5"></span></router-link>
           </div>
         </div>

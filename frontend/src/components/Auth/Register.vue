@@ -136,7 +136,7 @@
           />
 
           <button @click="Sellersignup()" class="login-button">Register</button>
-          <a href="/loginnative" style="float: right"
+          <a href="/login" style="float: right"
             >already have an account? login here</a
           >
         </div>

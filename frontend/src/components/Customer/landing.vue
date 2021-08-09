@@ -2,16 +2,16 @@
   <div>
     <div class="backwrap">
       <topnav
-        link1='<i class="fa fa-home"></i>'
+        link1='<i class="fa fa-home"></i> Home'
         link2='<i class="fa fa-info-circle"></i> About'
         link3='<i class="fa fa-user"></i> Account'
         link4='<i class="fa fa-shopping-cart"></i> Cart'
-        link5='<i class="fa fa-lock"></i> Logout'
+        link5='<i class="fa fa-user"></i> Login'
         url1="/"
         url2="/about"
         url3="/account"
         url4="/cart"
-        url5="/logout"
+        url5="/login"
         url6="/"
       ></topnav>
 
@@ -19,7 +19,7 @@
 
       <div class="lessm">
         <div class="w3-row">
-          <!--5-6 Categories like pharmacy etc on clicking on it more products of this kind will be shown-->
+          <!--5-6 Categories like pharmacy etc on clicking on it more products of this kind will be shown
           <div class="w3-col m4 s6">
             <a href="" v-for="item in list" v-bind:key="item.id">
               <b-card class="top_categories">
@@ -29,7 +29,7 @@
                 </p>
               </b-card>
             </a>
-          </div>
+          </div>-->
         </div>
       </div>
 
@@ -45,7 +45,171 @@
 
       <b-card style="margin-top: 5px; border: none; border-radius: 0">
         <h2 style="padding: 20px">
-          Tagline for Apparels <a href="" style="font-size: 11px">View all</a>
+          Food <a href="" style="font-size: 11px">View all</a>
+        </h2>
+
+        <topoffers></topoffers>
+
+        <div class="w3-row" style="padding: 10px 0px">
+          <div class="w3-half">
+            <div class="c-grid">
+              <a href="">
+                <img
+                  src="https://images-na.ssl-images-amazon.com/images/G/31/img21/MA2021/EOSS21June/BRANDtiles/USPA._SY530_QL85_.jpg"
+                  alt="ss"
+                  width="100%"
+                  class="c-img"
+                  style="padding: 5px"
+                />
+              </a>
+            </div>
+
+            <div class="c-grid">
+              <a href="">
+                <img
+                  src="https://images-na.ssl-images-amazon.com/images/G/31/img21/MA2021/EOSS21June/SBC/Ess-9card_01._SY530_QL85_.jpg"
+                  alt="ss"
+                  width="100%"
+                  class="c-img"
+                  style="padding: 5px"
+                />
+              </a>
+            </div>
+            <div class="c-grid" style="padding: 0px 10px">
+              <a href=""> 30% 0ff on U.S polo T-shirts </a>
+            </div>
+            <div class="c-grid" style="padding: 0px 10px">
+              <a href=""> 30% 0ff on U.S polo T-shirts </a>
+            </div>
+          </div>
+        </div>
+      </b-card>
+      <b-card style="margin-top: 5px; border: none; border-radius: 0">
+        <h2 style="padding: 20px">
+          Electronics<a href="" style="font-size: 11px">View all</a>
+        </h2>
+
+        <topoffers></topoffers>
+
+        <div class="w3-row" style="padding: 10px 0px">
+          <div class="w3-half">
+            <div class="c-grid">
+              <a href="">
+                <img
+                  src="https://images-na.ssl-images-amazon.com/images/G/31/img21/MA2021/EOSS21June/BRANDtiles/USPA._SY530_QL85_.jpg"
+                  alt="ss"
+                  width="100%"
+                  class="c-img"
+                  style="padding: 5px"
+                />
+              </a>
+            </div>
+
+            <div class="c-grid">
+              <a href="">
+                <img
+                  src="https://images-na.ssl-images-amazon.com/images/G/31/img21/MA2021/EOSS21June/SBC/Ess-9card_01._SY530_QL85_.jpg"
+                  alt="ss"
+                  width="100%"
+                  class="c-img"
+                  style="padding: 5px"
+                />
+              </a>
+            </div>
+            <div class="c-grid" style="padding: 0px 10px">
+              <a href=""> 30% 0ff on U.S polo T-shirts </a>
+            </div>
+            <div class="c-grid" style="padding: 0px 10px">
+              <a href=""> 30% 0ff on U.S polo T-shirts </a>
+            </div>
+          </div>
+        </div>
+      </b-card>
+      <b-card style="margin-top: 5px; border: none; border-radius: 0">
+        <h2 style="padding: 20px">
+          Fashion <a href="" style="font-size: 11px">View all</a>
+        </h2>
+
+        <topoffers></topoffers>
+
+        <div class="w3-row" style="padding: 10px 0px">
+          <div class="w3-half">
+            <div class="c-grid">
+              <a href="">
+                <img
+                  src="https://images-na.ssl-images-amazon.com/images/G/31/img21/MA2021/EOSS21June/BRANDtiles/USPA._SY530_QL85_.jpg"
+                  alt="ss"
+                  width="100%"
+                  class="c-img"
+                  style="padding: 5px"
+                />
+              </a>
+            </div>
+
+            <div class="c-grid">
+              <a href="">
+                <img
+                  src="https://images-na.ssl-images-amazon.com/images/G/31/img21/MA2021/EOSS21June/SBC/Ess-9card_01._SY530_QL85_.jpg"
+                  alt="ss"
+                  width="100%"
+                  class="c-img"
+                  style="padding: 5px"
+                />
+              </a>
+            </div>
+            <div class="c-grid" style="padding: 0px 10px">
+              <a href=""> 30% 0ff on U.S polo T-shirts </a>
+            </div>
+            <div class="c-grid" style="padding: 0px 10px">
+              <a href=""> 30% 0ff on U.S polo T-shirts </a>
+            </div>
+          </div>
+        </div>
+      </b-card>
+      <b-card style="margin-top: 5px; border: none; border-radius: 0">
+        <h2 style="padding: 20px">
+          Medical <a href="" style="font-size: 11px">View all</a>
+        </h2>
+
+        <topoffers></topoffers>
+
+        <div class="w3-row" style="padding: 10px 0px">
+          <div class="w3-half">
+            <div class="c-grid">
+              <a href="">
+                <img
+                  src="https://images-na.ssl-images-amazon.com/images/G/31/img21/MA2021/EOSS21June/BRANDtiles/USPA._SY530_QL85_.jpg"
+                  alt="ss"
+                  width="100%"
+                  class="c-img"
+                  style="padding: 5px"
+                />
+              </a>
+            </div>
+
+            <div class="c-grid">
+              <a href="">
+                <img
+                  src="https://images-na.ssl-images-amazon.com/images/G/31/img21/MA2021/EOSS21June/SBC/Ess-9card_01._SY530_QL85_.jpg"
+                  alt="ss"
+                  width="100%"
+                  class="c-img"
+                  style="padding: 5px"
+                />
+              </a>
+            </div>
+            <div class="c-grid" style="padding: 0px 10px">
+              <a href=""> 30% 0ff on U.S polo T-shirts </a>
+            </div>
+            <div class="c-grid" style="padding: 0px 10px">
+              <a href=""> 30% 0ff on U.S polo T-shirts </a>
+            </div>
+          </div>
+        </div>
+      </b-card>
+      <b-card style="margin-top: 5px; border: none; border-radius: 0">
+        <h2 style="padding: 20px">
+          Sports<a href="" style="font-size: 11px">View all</a>
         </h2>
 
         <topoffers></topoffers>
@@ -93,23 +257,9 @@ import topnav from "../Seller/topnav.vue";
 import Carousel from "./homeposters.vue";
 import topoffers from "./topoffers.vue";
 import Sitefooter from "./sitefooter.vue";
-import axios from "axios";
-import { BASE_URL } from "../../utils/constants";
 
 export default {
   components: { topnav, Carousel, Sitefooter, topoffers },
-  data() {
-    return {
-      list: undefined,
-    };
-  },
-  mounted() {
-    const url = BASE_URL + "/all_offers";
-    axios.get(url).then((resp) => {
-      this.list = resp.data.data;
-      console.log(resp.data.data);
-    });
-  },
 };
 </script>
 

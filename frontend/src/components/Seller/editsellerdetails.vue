@@ -48,13 +48,12 @@
               </tr>
               <tr>
                 <td class="detail">Location</td>
-                <td class="description">
-                  <b-form-select
-                    id="input-3"
-                    v-model="shop_location"
-                    :options="location"
-                  ></b-form-select>
-                </td>
+                <input
+                  type="button"
+                  value="Detect your location"
+                  v-model="shop_location"
+                  v-on:click="getLocation()"
+                />
               </tr>
               <tr>
                 <td class="detail">Phone no.</td>
@@ -118,7 +117,7 @@ export default {
       shop_address: this.$session.get("user_data").address,
       shop_contact: this.$session.get("user_data").contact_no,
       shop_email: this.$session.get("user_data").email,
-      shop_location: this.$session.get("user_data").location,
+      shop_location: "get your location",
       location: [
         {
           text: "Select location",
@@ -136,6 +135,20 @@ export default {
     this.user = this.$session.get("user_data");
   },
   methods: {
+    getLocation() {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log(position.coords.latitude);
+          console.log(position.coords.longitude);
+        },
+        (error) => {
+          console.log(error.message);
+        }
+      );
+    },
+    showPosition(position) {
+      alert(position.coords.latitude);
+    },
     updateDetails() {
       if (this.shop_name) {
         this.updateShopName();
