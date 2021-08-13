@@ -158,13 +158,8 @@ form.example::after {
   padding: 14px 20px;
   height: 70px;
   font-size: 18px;
-  margin-bottom: 30px;
-  background: linear-gradient(
-    90deg,
-    rgb(93, 217, 255),
-    rgb(93, 217, 255),
-    rgb(169, 255, 219)
-  );
+  margin-bottom: 40px;
+  background: rgb(93, 217, 255);
   box-shadow: 0 0 10px 0 rgb(0 0 0 / 30%);
 }
 

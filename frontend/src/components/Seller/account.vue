@@ -20,7 +20,7 @@
             <button class="w3-button w3-teal" style="font-weight: 600">
               ACTIVE
             </button>
-            <p class="c-domain">{{ category.category }}</p>
+            <p class="c-domain">{{ category.category[0] }}</p>
             <p class="c-shopname">{{ user.shop_name }}</p>
             <p class="c-shoplocation">{{ user.address }}</p>
             <p class="c-shoplocation">Phone No. : {{ user.contact_no }}</p>

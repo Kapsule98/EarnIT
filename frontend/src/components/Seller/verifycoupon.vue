@@ -60,7 +60,6 @@
             </b-form-group>
 
             <b-button
-              type="submit"
               variant="primary"
               style="float: right; background: #008cff"
               >Verify</b-button
@@ -80,7 +79,7 @@
               <couponcard
                 name="ELECTRONICS"
                 v-bind:discount="offer.discount_percent + '%'"
-                v-bind:left="'5/' + offer.quantity"
+                v-bind:left="offer.quantity + ' coupons'"
                 v-bind:validity="
                   ' ' + moment(offer.validity[1]).format('DD-MM-YYYY')
                 "
@@ -233,6 +232,32 @@ export default {
   },
 
   methods: {
+    /*verifyCoupon(offer_text) {
+      var r = confirm("Process the Coupon");
+      if (r == true) {
+        const config = {
+          data: {
+            offer_text: offer_text,
+          },
+        };
+        const accessToken = this.$session.get("token");
+        const options = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+        const url = BASE_URL + "/redeem";
+        axios
+          .post(url, config, options)
+          .then((response) => console.log(response))
+          .catch((error) => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+      } else {
+        document.getElementById("reedem").style.color = "white";
+      }
+    },*/
     onSubmit(event) {
       event.preventDefault();
       alert(JSON.stringify(this.form));
@@ -295,7 +320,7 @@ export default {
       );
       this.$refs["couponModal"].hide();
       alert("Coupon added Sucessfully");
-      this.$router.go();
+      //this.$router.go();
     },
     getUser() {
       this.user = this.$session.get("user_data");

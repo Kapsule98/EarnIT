@@ -46,15 +46,7 @@
                   ></b-form-input>
                 </td>
               </tr>
-              <tr>
-                <td class="detail">Location</td>
-                <input
-                  type="button"
-                  value="Detect your location"
-                  v-model="shop_location"
-                  v-on:click="getLocation()"
-                />
-              </tr>
+
               <tr>
                 <td class="detail">Phone no.</td>
                 <td class="description">
@@ -82,6 +74,22 @@
                     :multiple="true"
                   />
                 </td>
+              </tr>
+              <tr>
+                <td class="detail">Location</td>
+                <input
+                  style="
+                    padding: 5px 10px;
+                    margin: 10px;
+                    background-color: #008cff;
+                    color: white;
+                    border: none;
+                  "
+                  type="button"
+                  value="Detect your location"
+                  v-model="shop_location"
+                  v-on:click="getLocation()"
+                />
               </tr>
             </table>
             <b-button

@@ -1,61 +1,46 @@
 <template>
   <div>
-    <!---->
-
-    <carousel
-      v-if="list.active_offers.length > 0"
-      :autoplayTimeout="3000"
-      :responsive="{
-        0: { items: 1, nav: false },
-        600: { items: 3, nav: true },
-        1200: { items: 4 },
-      }"
-      :stagePadding="10"
-      :loop="true"
-      :autoplay="true"
-      :nav="false"
-      :dots="false"
-    >
-      <div v-for="offer in mapped" :key="offer.length">
-        <a href="">
-          <div class="couponhome">
-            <div class="c2-back">
-              <!-- <img :src="item.img_url" />-->
+    <div class="w3-row">
+      <div v-for="index in 4" :key="index">
+        <div class="w3-col m3 s6">
+          <a href="">
+            <div class="couponhome" style="background-color: #348feb">
+              <div class="c2-back">
+                <!-- <img :src="item.img_url" />-->
+              </div>
+              <div class="c2-off">
+                {{ mapped[index - 1].value }}% on
+                <!--{{ product }}-->
+              </div>
+              <div class="c2-left">
+                {{ list.active_offers[mapped[index - 1].index].quantity }}
+                coupons left
+              </div>
+              <div class="c2-shop"><!--{{ shop_name }}--></div>
+              <div class="c2-location">
+                <i class="fa fa-map-marker"></i>
+                <!--{{ shop_location }}-->
+              </div>
+              <div class="c2-validity">
+                offer valid till
+                {{
+                  moment(
+                    list.active_offers[mapped[index - 1].index].validity[1]
+                  ).format("DD-MM-YYYY")
+                }}
+              </div>
             </div>
-            <div class="c2-off">
-              {{ offer.value }}% on
-              <!--{{ product }}-->
-            </div>
-            <div class="c2-left">
-              {{ list.active_offers[offer.index].quantity }} coupons left
-            </div>
-            <div class="c2-shop"><!--{{ shop_name }}--></div>
-            <div class="c2-location">
-              <i class="fa fa-map-marker"></i>
-              <!--{{ shop_location }}-->
-            </div>
-            <div class="c2-validity">
-              offer valid till
-              {{
-                moment(list.active_offers[offer.index].validity[1]).format(
-                  "DD-MM-YYYY"
-                )
-              }}
-            </div>
-          </div>
-        </a>
+          </a>
+        </div>
       </div>
-    </carousel>
+    </div>
   </div>
-  <!---->
 </template>
 
 <script>
-import carousel from "vue-owl-carousel";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 export default {
-  components: { carousel },
   data() {
     return {
       list: [],
@@ -74,7 +59,6 @@ export default {
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.list = response.data;
-          console.log(response.data);
           var discount = [];
           for (var i = 0; i < this.list.active_offers.length; i++) {
             discount[i] = this.list.active_offers[i].discount_percent;

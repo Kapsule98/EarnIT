@@ -1,36 +1,37 @@
 <template>
-  <carousel
-    :items="1"
-    :stagePadding="0"
-    :loop="true"
-    :autoplay="true"
-    :nav="false"
-    :dots="false"
-  >
-    <div v-for="item in topoffers" v-bind:key="item.id">
-      <img :src="item.img" width="100%" />
-    </div>
-  </carousel>
+  <div>
+    <carousel
+      :responsive="{
+        0: { items: 1 },
+        600: { items: 1 },
+        1200: { items: 1 },
+      }"
+      :stagePadding="0"
+      :loop="true"
+      :autoplay="true"
+      :nav="false"
+      :dots="false"
+    >
+      <img
+        src="https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/8/12/e0a239e2-46df-4308-81e9-843f14ee18821628771628414-Wrogn_Desk_Banner--1-.jpg"
+        style="width: 100%"
+      />
+      <img
+        src="https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/8/12/0115163a-c65c-47a2-9828-eddc637253d11628778790401-Kidswear_Dk.jpg"
+        width="100%"
+      />
+      <img
+        src="https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/8/12/a37b36d9-4e64-4f25-bb0e-97524745cf051628771671703-Dressberry_Desk.jpg"
+        width="100%"
+      />
+    </carousel>
+  </div>
 </template>
 
 <script>
 import carousel from "vue-owl-carousel";
-import axios from "axios";
-import { BASE_URL } from "../../utils/constants";
 export default {
   components: { carousel },
-  data() {
-    return {
-      homeposters: undefined,
-    };
-  },
-  mounted() {
-    const homepostersurl = BASE_URL + "/seller/offer";
-    axios.get(homepostersurl).then((resp) => {
-      this.homeposters = resp.data.data;
-      console.warn(resp.data.data);
-    });
-  },
 };
 </script>
 <style scoped>
