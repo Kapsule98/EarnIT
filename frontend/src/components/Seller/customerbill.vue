@@ -17,8 +17,8 @@
         <div class="c-details">
           <div class="w3-container">
             <b-card style="margin: 10px">
-              <h3 style="color: teal">Rakesh Digital</h3>
-              <i class="fa fa-map-marker"></i> 342, Amroli, C.G.
+              <h3 style="color: teal">{{ user.shop_name }}</h3>
+              <i class="fa fa-map-marker"></i> {{ user.address }}
             </b-card>
             <b-card style="margin: 10px">
               <div class="w3-row">
@@ -27,7 +27,9 @@
                 </div>
                 <div class="w3-third">
                   <h5>
-                    <div class="c-data"><i class="fa fa-rupee"></i> 12,345</div>
+                    <div class="c-data">
+                      <i class="fa fa-rupee"></i> {{ earning.earning }}
+                    </div>
                   </h5>
                 </div>
               </div>
@@ -35,11 +37,11 @@
             <b-card style="margin: 10px">
               <div class="w3-row">
                 <div class="w3-twothird">
-                  <h5>Customers Shopped from You:</h5>
+                  <h5>Coupons Sold by you:</h5>
                 </div>
                 <div class="w3-third">
                   <h5>
-                    <div class="c-data">276</div>
+                    <div class="c-data">{{ coupons_sold.coupons_sold }}</div>
                   </h5>
                 </div>
               </div>
@@ -82,9 +84,52 @@
 import Sitefooter from "../Customer/sitefooter.vue";
 import Ctable from "./ctable.vue";
 import topnav from "./topnav.vue";
+import axios from "axios";
+import { BASE_URL } from "../../utils/constants";
 
 export default {
   components: { topnav, Ctable, Sitefooter },
+  data() {
+    return {
+      history: {},
+      user: {},
+      earning: {},
+      coupons_sold: {},
+    };
+  },
+  mounted() {
+    this.user = this.$session.get("user_data");
+    this.getEarning();
+    this.getCouponsSold();
+  },
+  methods: {
+    getEarning() {
+      const url = BASE_URL + "/seller/earning";
+      let JWTToken = this.$session.get("token");
+      axios
+        .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .then((response) => {
+          this.earning = response.data;
+          console.log(this.earning);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getCouponsSold() {
+      const url = BASE_URL + "/seller/get_coupons";
+      let JWTToken = this.$session.get("token");
+      axios
+        .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .then((response) => {
+          this.coupons_sold = response.data;
+          console.log(this.coupons_sold);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
 };
 </script>
 

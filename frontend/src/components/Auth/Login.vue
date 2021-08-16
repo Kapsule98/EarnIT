@@ -58,6 +58,9 @@
             style="border-top: none; border-radius: 0"
           />
           <button @click="login('customer')" class="login-button">Login</button>
+          <a href="/register" style="float: right"
+            >dont have an account? register here</a
+          >
         </div>
 
         <div id="shop" class="regtab w3-animate-opacity" style="display: none">
@@ -76,6 +79,10 @@
             style="border-top: none; border-radius: 0"
           />
           <button @click="login('seller')" class="login-button">Login</button>
+
+          <a href="/register" style="float: right"
+            >dont have an account? register here</a
+          >
         </div>
       </div>
     </div>
@@ -97,6 +104,9 @@ export default {
       username: "",
       password: "",
     };
+  },
+  mounted() {
+    document.getElementById("defaultOpen").click();
   },
   methods: {
     login(type) {
@@ -124,6 +134,12 @@ export default {
                 this.$session.set("user_data", user_data.user);
                 console.log(this.$session.get("user_data"));
                 this.$session.set("user_type", "customer");
+                this.$session.set("logged_in", "true");
+                localStorage.setItem("log", this.$session.get("logged_in"));
+                localStorage.setItem(
+                  "user_type",
+                  this.$session.get("user_type")
+                );
                 this.$router.push("/");
               } else {
                 alert(res.data.msg);
@@ -149,6 +165,10 @@ export default {
                 this.$session.set("user_data", seller_data.seller);
                 this.$session.set("logged_in", "true");
                 localStorage.setItem("log", this.$session.get("logged_in"));
+                localStorage.setItem(
+                  "user_type",
+                  this.$session.get("user_type")
+                );
                 this.$router.push("/account");
               } else {
                 alert(res.data.msg);
@@ -182,9 +202,6 @@ export default {
       return bcrypt.hashSync(password, salt);
     },
   },
-};
-window.onload = function () {
-  document.getElementById("defaultOpen").click();
 };
 </script>
 <style scoped>

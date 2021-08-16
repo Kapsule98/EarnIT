@@ -1,88 +1,180 @@
 <template>
   <div>
+    <topnav
+      link3="Account"
+      link4='<i class="fa fa-shopping-cart"></i> Cart '
+      link5='<i class="fa fa-user"></i> Login'
+      url3="/account"
+      url4="/cart"
+      url5="/login"
+      url6="/"
+      :searchbar="true"
+    ></topnav>
+    <homeposters style="margin-top: -30px; width: 100%"></homeposters>
     <div class="backwrap">
-      <topnav
-        link1='<i class="fa fa-home"></i>'
-        link2='<i class="fa fa-info-circle"></i> About'
-        link3='<i class="fa fa-user"></i> Account'
-        link4='<i class="fa fa-shopping-cart"></i> Cart'
-        link5='<i class="fa fa-lock"></i> Logout'
-        url1="/"
-        url2="/about"
-        url3="/account"
-        url4="/cart"
-        url5="/logout"
-        url6="/"
-      ></topnav>
-
-      <carousel style="margin-top: -30px"></carousel>
-
       <div class="lessm">
-        <div class="w3-row">
-          <!--5-6 Categories like pharmacy etc on clicking on it more products of this kind will be shown-->
-          <div class="w3-col m4 s6">
-            <a href="" v-for="item in list" v-bind:key="item.id">
+        <div class="w3-row" style="background-color: #e8e8e8">
+          <!--5-6 Categories like pharmacy etc on clicking on it more products of this kind will be shown>-->
+          <div class="w3-col m2 s6">
+            <router-link
+              :to="{ path: '/search', query: { category: 'Fashion' } }"
+            >
               <b-card class="top_categories">
-                <img :src="item.url" alt="ss" width="100%" />
-                <p class="offhead">
-                  Upto off on {{ item.highest_off }} {{ item.category_name }}s
-                </p>
+                <img
+                  src="../../assets/fashion.jpg"
+                  alt="ss"
+                  width="100%"
+                  class="catimg"
+                />
+                <p class="offhead">Fashion</p>
               </b-card>
-            </a>
+            </router-link>
+          </div>
+          <div class="w3-col m2 s6">
+            <router-link
+              :to="{ path: '/search', query: { category: 'Electronics' } }"
+            >
+              <b-card class="top_categories">
+                <img
+                  src="../../assets/electronics.jpg"
+                  alt="ss"
+                  width="100%"
+                  class="catimg"
+                />
+                <p class="offhead">Electronics</p>
+              </b-card>
+            </router-link>
+          </div>
+          <div class="w3-col m2 s6">
+            <router-link
+              :to="{ path: '/search', query: { category: 'Furnishing' } }"
+            >
+              <b-card class="top_categories">
+                <img
+                  src="../../assets/furnishing.jpg"
+                  alt="ss"
+                  width="100%"
+                  class="catimg"
+                />
+                <p class="offhead">Furnishing</p>
+              </b-card>
+            </router-link>
+          </div>
+          <div class="w3-col m2 s6">
+            <router-link
+              :to="{ path: '/search', query: { category: 'Health' } }"
+            >
+              <b-card class="top_categories">
+                <img
+                  src="../../assets/health.jpg"
+                  alt="ss"
+                  width="100%"
+                  class="catimg"
+                />
+                <p class="offhead">Health</p>
+              </b-card>
+            </router-link>
+          </div>
+          <div class="w3-col m2 s6">
+            <router-link :to="{ path: '/search', query: { category: 'Food' } }">
+              <b-card class="top_categories">
+                <img
+                  src="../../assets/food.jpg"
+                  alt="ss"
+                  width="100%"
+                  class="catimg"
+                />
+                <p class="offhead">Food</p>
+              </b-card>
+            </router-link>
+          </div>
+          <div class="w3-col m2 s6">
+            <router-link
+              :to="{ path: '/search', query: { category: 'Sports' } }"
+            >
+              <b-card class="top_categories">
+                <img
+                  src="../../assets/sports.png"
+                  alt="ss"
+                  width="100%"
+                  class="catimg"
+                />
+                <p class="offhead">Sports</p>
+              </b-card>
+            </router-link>
           </div>
         </div>
       </div>
 
       <b-card style="margin-top: 5px; border: none; border-radius: 0">
         <h3 style="padding: 0px">
-          Top Offers <a href="" style="font-size: 11px">View all</a>
+          Top Offers
+          <router-link :to="{ path: '/search', query: { alloffers: true } }"
+            ><a href="" style="font-size: 11px">View all</a>
+          </router-link>
         </h3>
 
         <div class="w3-container" style="padding: 20px 0px">
-          <topoffers></topoffers>
+          <topoffers alloffers="true"></topoffers>
         </div>
       </b-card>
 
       <b-card style="margin-top: 5px; border: none; border-radius: 0">
         <h2 style="padding: 20px">
-          Tagline for Apparels <a href="" style="font-size: 11px">View all</a>
+          Food
+          <router-link :to="{ path: '/search', query: { category: 'Food' } }"
+            ><a href="" style="font-size: 11px">View all</a></router-link
+          >
+        </h2>
+
+        <topoffers category="Health"></topoffers>
+
+        <catoffers></catoffers>
+      </b-card>
+      <b-card style="margin-top: 5px; border: none; border-radius: 0">
+        <h2 style="padding: 20px">
+          Electronics
+          <router-link
+            :to="{ path: '/search', query: { category: 'Electronics' } }"
+            ><a href="" style="font-size: 11px">View all</a></router-link
+          >
         </h2>
 
         <topoffers></topoffers>
+        <catoffers></catoffers>
+      </b-card>
+      <b-card style="margin-top: 5px; border: none; border-radius: 0">
+        <h2 style="padding: 20px">
+          Fashion
+          <router-link :to="{ path: '/search', query: { category: 'Fashion' } }"
+            ><a href="" style="font-size: 11px">View all</a></router-link
+          >
+        </h2>
 
-        <div class="w3-row" style="padding: 10px 0px">
-          <div class="w3-half">
-            <div class="c-grid">
-              <a href="">
-                <img
-                  src="https://images-na.ssl-images-amazon.com/images/G/31/img21/MA2021/EOSS21June/BRANDtiles/USPA._SY530_QL85_.jpg"
-                  alt="ss"
-                  width="100%"
-                  class="c-img"
-                  style="padding: 5px"
-                />
-              </a>
-            </div>
+        <topoffers></topoffers>
+        <catoffers></catoffers>
+      </b-card>
+      <b-card style="margin-top: 5px; border: none; border-radius: 0">
+        <h2 style="padding: 20px">
+          Medical<router-link
+            :to="{ path: '/search', query: { category: 'Health' } }"
+            ><a href="" style="font-size: 11px">View all</a></router-link
+          >
+        </h2>
 
-            <div class="c-grid">
-              <a href="">
-                <img
-                  src="https://images-na.ssl-images-amazon.com/images/G/31/img21/MA2021/EOSS21June/SBC/Ess-9card_01._SY530_QL85_.jpg"
-                  alt="ss"
-                  width="100%"
-                  class="c-img"
-                  style="padding: 5px"
-                />
-              </a>
-            </div>
-            <div class="c-grid" style="padding: 0px 10px">
-              <a href=""> 30% 0ff on U.S polo T-shirts </a>
-            </div>
-            <div class="c-grid" style="padding: 0px 10px">
-              <a href=""> 30% 0ff on U.S polo T-shirts </a>
-            </div>
-          </div>
-        </div>
+        <topoffers></topoffers>
+        <catoffers></catoffers>
+      </b-card>
+      <b-card style="margin-top: 5px; border: none; border-radius: 0">
+        <h2 style="padding: 20px">
+          Sports<router-link
+            :to="{ path: '/search', query: { category: 'Sports' } }"
+            ><a href="" style="font-size: 11px">View all</a></router-link
+          >
+        </h2>
+
+        <topoffers></topoffers>
+        <catoffers></catoffers>
       </b-card>
       <sitefooter></sitefooter>
     </div>
@@ -90,26 +182,13 @@
 </template>
 <script>
 import topnav from "../Seller/topnav.vue";
-import Carousel from "./homeposters.vue";
+import homeposters from "./homeposters.vue";
 import topoffers from "./topoffers.vue";
 import Sitefooter from "./sitefooter.vue";
-import axios from "axios";
-import { BASE_URL } from "../../utils/constants";
+import Catoffers from "./catoffers.vue";
 
 export default {
-  components: { topnav, Carousel, Sitefooter, topoffers },
-  data() {
-    return {
-      list: undefined,
-    };
-  },
-  mounted() {
-    const url = BASE_URL + "/all_offers";
-    axios.get(url).then((resp) => {
-      this.list = resp.data.data;
-      console.log(resp.data.data);
-    });
-  },
+  components: { topnav, Sitefooter, topoffers, homeposters, Catoffers },
 };
 </script>
 
@@ -119,6 +198,8 @@ export default {
   background: white;
   border: none;
   border-radius: 0;
+  margin: 2px auto;
+  width: 99%;
 }
 .c-grid {
   display: inline-flex;
@@ -129,8 +210,9 @@ export default {
   padding: 10px 1.25rem !important;
 }
 .offhead {
-  color: rgb(27, 27, 27);
-  font-size: 17px;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  font-weight: 500;
   text-align: center;
   width: 100%;
   padding: 5px 10px 0px 10px;
@@ -152,6 +234,11 @@ export default {
 @media screen and (min-width: 800px) {
   .c-img {
     height: 250px;
+  }
+}
+@media screen and (max-width: 800px) {
+  .catimg {
+    height: 120px;
   }
 }
 

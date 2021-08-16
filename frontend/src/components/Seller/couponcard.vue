@@ -55,13 +55,12 @@ export default {
           .catch((err) => {
             console.log(err);
           });
+        this.$router.go();
       } else {
         document.getElementById("reedem").style.color = "white";
       }
     },
   },
-
-  mounted() {},
 };
 </script>
 

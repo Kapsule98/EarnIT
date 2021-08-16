@@ -39,7 +39,7 @@
               </div>
               <div class="w3-third">
                 <b-card style="margin: 10px; text-align: center">
-                  <span class="tealbg">654</span>
+                  <span class="tealbg">{{ coupons_sold.coupons_sold }}</span>
                   <template #footer>
                     <div class="c-head">Number of Coupons Sold</div>
                   </template>
@@ -48,7 +48,7 @@
               <div class="w3-third">
                 <b-card style="margin: 10px; text-align: center">
                   <span class="tealbg"
-                    ><i class="fa fa-rupee"></i> {{ user.earning }}</span
+                    ><i class="fa fa-rupee"></i> {{ earning.earning }}</span
                   >
                   <template #footer>
                     <div class="c-head">Revenue Generated Through Us:</div>
@@ -62,12 +62,15 @@
           <b-card>
             <ul style="list-style-type: none">
               <li><a href="/editsellerdetails">Edit account details</a></li>
-              <li><a href="">View your customers</a></li>
-              <li><a href="">Add or delete coupons</a></li>
-              <li><a href="">Verify a coupon</a></li>
-              <li><a href="">Report a problem</a></li>
-              <li><a href="">Give feedback</a></li>
+              <h1>Add Product</h1>
+
+              <input type="text" v-model="addproduct" />
+              <button v-on:click="addProduct()">add product</button>
             </ul>
+            <li v-for="products in products.products" :key="products.length">
+              {{ products }}
+              <button v-on:click="deleteProduct(products)">delete</button>
+            </li>
           </b-card>
         </div>
       </div>
@@ -89,10 +92,17 @@ export default {
     return {
       user: {},
       status: undefined,
+      earning: {},
+      coupons_sold: {},
       category: [],
+      products: [],
+      addproduct: "",
+      prod: [],
+      del: [],
     };
   },
   mounted() {
+    console.log((this.user = this.$session.get("token")));
     this.user = this.$session.get("user_data");
     console.log(this.user);
     const offersurl = BASE_URL + "/seller/category";
@@ -101,11 +111,98 @@ export default {
       .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
       .then((response) => {
         this.category = response.data;
-        console.log(this.category);
       })
       .catch((err) => {
         console.log(err);
       });
+    this.getEarning();
+    this.getCouponsSold();
+    this.getProducts();
+  },
+  methods: {
+    getProducts() {
+      const url = BASE_URL + "/seller/product";
+      let JWTToken = this.$session.get("token");
+      axios
+        .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .then((response) => {
+          this.products = response.data;
+          console.log(this.products);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    addProduct() {
+      this.prod.push(this.addproduct);
+      const payload = {
+        products: this.prod,
+      };
+      const accessToken = this.$session.get("token");
+      const options = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      const url = BASE_URL + "/seller/product";
+      axios
+        .post(url, payload, options)
+        .then((response) => console.log(response), console.log(payload))
+        .catch((error) => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+      this.$router.go();
+    },
+    deleteProduct(products) {
+      this.del.push(products);
+
+      const offersurl = BASE_URL + "/seller/product";
+      let JWTToken = this.$session.get("token");
+      const config = {
+        data: {
+          products: this.del,
+        },
+        headers: {
+          Authorization: `Bearer ${JWTToken}`,
+        },
+      };
+      axios
+        .delete(offersurl, config)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      this.$router.go();
+    },
+    getEarning() {
+      const url = BASE_URL + "/seller/earning";
+      let JWTToken = this.$session.get("token");
+      axios
+        .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .then((response) => {
+          this.earning = response.data;
+          console.log(this.earning);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getCouponsSold() {
+      const url = BASE_URL + "/seller/get_coupons";
+      let JWTToken = this.$session.get("token");
+      axios
+        .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .then((response) => {
+          this.coupons_sold = response.data;
+          console.log(this.coupons_sold);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>

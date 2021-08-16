@@ -42,7 +42,7 @@
                 </div>
                 <div class="w3-col m3">
                   <button
-                    v-on:click="reedem"
+                    v-on:click="reedemOffer(offer_text)"
                     id="reedem"
                     class="w3-button"
                     style="
@@ -52,7 +52,7 @@
                       color: white;
                     "
                   >
-                    Rreedem coupon
+                    Reedem coupon
                   </button>
                 </div>
               </div>
@@ -85,15 +85,35 @@
 <script>
 import topnav from "../Seller/topnav.vue";
 import Sitefooter from "./sitefooter.vue";
+import { BASE_URL } from "../../utils/constants";
+import axios from "axios";
 export default {
   components: { topnav, Sitefooter },
   methods: {
-    reedem: function () {
+    reedemOffer(offer_text) {
       var r = confirm(
         "Note that once you reedem a code it will be valid for 5 minutes only"
       );
       if (r == true) {
-        document.getElementById("reedem").style.display = "none";
+        const config = {
+          data: {
+            offer_text: offer_text,
+          },
+        };
+        const accessToken = this.$session.get("token");
+        const options = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+        const url = BASE_URL + "/redeem";
+        axios
+          .post(url, config, options)
+          .then((response) => console.log(response))
+          .catch((error) => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
       } else {
         document.getElementById("reedem").style.color = "white";
       }

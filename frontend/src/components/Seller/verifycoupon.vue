@@ -20,19 +20,29 @@
           </p>
           <h4>Verify a Coupon</h4>
 
-          <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+          <b-form>
             <b-form-group
-              id="input-group-2"
+              id="input-group-1"
               label="Coupon Code"
-              label-for="input-2"
+              label-for="input-1"
             >
               <b-form-input
-                id="input-2"
+                id="input-1"
                 placeholder="enter coupon code"
                 required
+                v-model="r_offertxt"
               ></b-form-input>
             </b-form-group>
 
+            <b-form-group id="input-group-2" label="OTP:" label-for="input-2">
+              <b-form-input
+                type="number"
+                id="input-2"
+                placeholder="Enter OTP"
+                required
+                v-model="r_otp"
+              ></b-form-input>
+            </b-form-group>
             <b-form-group
               id="input-group-3"
               label="Total Amount:"
@@ -43,6 +53,7 @@
                 id="input-3"
                 placeholder="enter total amount"
                 required
+                v-model="r_total"
               ></b-form-input>
             </b-form-group>
 
@@ -56,13 +67,14 @@
                 placeholder="enter discounted amount"
                 required
                 type="number"
+                v-model="r_discount"
               ></b-form-input>
             </b-form-group>
 
             <b-button
-              type="submit"
               variant="primary"
               style="float: right; background: #008cff"
+              v-on:click="verifyCoupon()"
               >Verify</b-button
             >
           </b-form>
@@ -78,9 +90,9 @@
               :key="offer.length"
             >
               <couponcard
-                name="ELECTRONICS"
+                :name="offer.products[0]"
                 v-bind:discount="offer.discount_percent + '%'"
-                v-bind:left="'5/' + offer.quantity"
+                v-bind:left="offer.quantity + ' coupons'"
                 v-bind:validity="
                   ' ' + moment(offer.validity[1]).format('DD-MM-YYYY')
                 "
@@ -169,10 +181,16 @@
           <label><span style="padding: 2px 5px">Validity</span> </label>
           <date-picker v-model="validity" type="date" range></date-picker>
         </div>
+        <multiselect
+          placeholder="Select Product/s"
+          v-model="products"
+          :options="getproducts.products"
+          :multiple="true"
+        />
       </div>
       <div>
-        <label><span style="padding: 2px 5px">Offer Text :</span></label
-        ><input type="text" v-model="offer_text" />
+        <label><span style="padding: 2px 5px">Offer Text :</span></label>
+        <div class="offer_text"><input type="text" v-model="offer_text" /></div>
       </div>
       <b-button class="login-button" block @click="addCouponDetails()"
         >Add Coupon</b-button
@@ -198,6 +216,10 @@ export default {
 
   data() {
     return {
+      r_offertxt: "",
+      r_otp: "",
+      r_total: "",
+      r_discount: "",
       min_val: "500",
       quantity: "20",
       offer_text: "To be added",
@@ -215,13 +237,15 @@ export default {
       dTypeoptions: [
         { text: "Discount on item", value: "ITEM_DISCOUNT" },
         { text: "Discount on total bill", value: "BILL_DISCOUNT" },
-        { text: "Extra Items", value: "ITEM_FREE" },
+        //{ text: "Extra Items", value: "ITEM_FREE" },
       ],
       itemdiscountpercent: "",
       billdiscountpercent: "",
       customdiscount: "",
       value: "500",
       value3: "20",
+      products: [],
+      getproducts: [],
       list: [],
       getoffers: {},
       user: {},
@@ -230,9 +254,51 @@ export default {
   mounted() {
     this.getUser();
     this.getSellerOffers();
+    this.getProducts();
   },
 
   methods: {
+    getProducts() {
+      const url = BASE_URL + "/seller/product";
+      let JWTToken = this.$session.get("token");
+      axios
+        .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .then((response) => {
+          this.getproducts = response.data;
+          console.log(this.products);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    verifyCoupon() {
+      var r = confirm("Process the Coupon");
+      if (r == true) {
+        const payload = {
+          otp: parseInt(this.r_otp),
+          offer_text: this.r_offertxt,
+          cp: parseInt(this.r_total),
+          sp: parseInt(this.r_discount),
+        };
+        const accessToken = this.$session.get("token");
+        const options = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+        const url = BASE_URL + "/seller/redeem";
+        axios
+          .post(url, payload, options)
+          .then((response) => console.log(response), console.log(payload))
+          .catch((error) => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+        this.$router.go();
+      } else {
+        document.getElementById("reedem").style.color = "white";
+      }
+    },
     onSubmit(event) {
       event.preventDefault();
       alert(JSON.stringify(this.form));
@@ -257,18 +323,24 @@ export default {
       this.$refs["couponModal"].show();
     },
     addCouponDetails() {
+      var epoch = [];
+      epoch[0] = this.validity[0].getTime() / 1000.0;
+      epoch[1] = this.validity[1].getTime() / 1000.0;
       //TODO validate input and store in db
       // POST request using axios with error handling
       const payload = {
         offer: {
-          validity: this.validity,
+          validity: epoch,
           type: this.discountType,
           discount_percent: this.discount_percent,
           offer_text: this.offer_text,
-          quantity: this.quantity,
+          quantity: parseInt(this.quantity),
           min_val: this.min_val,
+          products: this.products,
         },
       };
+
+      console.log(epoch);
       const url = BASE_URL + "/seller/offer";
       const accessToken = this.$session.get("token");
       const options = {
@@ -307,7 +379,8 @@ export default {
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.getoffers = response.data;
-          console.log(this.getoffers.active_offers);
+          console.log("hello" + response);
+          console.log(response);
         })
         .catch((err) => {
           console.log(err);
@@ -316,8 +389,19 @@ export default {
   },
 };
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
+.offer_text input {
+  width: 100%;
+  height: 40px;
+  border: 1px solid rgb(141, 141, 141);
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+.offer_text input:focus {
+  outline: none;
+  border: 4px solid rgba(0, 183, 255, 0.411);
+}
 .login-button {
   width: 100%;
   padding: 6px;

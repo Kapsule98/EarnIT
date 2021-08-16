@@ -1,42 +1,20 @@
 <template>
   <div>
-    <!---->
-
-    <carousel
-      v-if="list.active_offers.length > 0"
-      :autoplayTimeout="3000"
-      :autoplayHoverPause="true"
-      :responsive="{
-        0: { items: 1, nav: false },
-        600: { items: 3, nav: true },
-        1200: { items: 4 },
-      }"
-      :stagePadding="10"
-      :loop="true"
-      :autoplay="true"
-      :nav="false"
-      :dots="false"
-    >
-      <div v-for="offer in mapped" :key="offer.length">
-        <div
-          v-if="
-            list.active_offers[offer.index].category === category ||
-            alloffers === 'true'
-          "
-        >
-          <a
-            v-on:click="redeemOffer(list.active_offers[offer.index].offer_text)"
-          >
-            <div class="couponhome">
+    <div class="w3-row">
+      <div v-for="index in 4" :key="index">
+        <div class="w3-col m3 s6">
+          <a href="">
+            <div class="couponhome" style="background-color: #348feb">
               <div class="c2-back">
                 <!-- <img :src="item.img_url" />-->
               </div>
               <div class="c2-off">
-                {{ offer.value }}% on
-                {{ list.active_offers[offer.index].products[1] }}
+                {{ mapped[index - 1].value }}% on
+                <!--{{ product }}-->
               </div>
               <div class="c2-left">
-                {{ list.active_offers[offer.index].quantity }} coupons left
+                {{ list.active_offers[mapped[index - 1].index].quantity }}
+                coupons left
               </div>
               <div class="c2-shop"><!--{{ shop_name }}--></div>
               <div class="c2-location">
@@ -46,27 +24,23 @@
               <div class="c2-validity">
                 offer valid till
                 {{
-                  moment(list.active_offers[offer.index].validity[1]).format(
-                    "DD-MM-YYYY"
-                  )
+                  moment(
+                    list.active_offers[mapped[index - 1].index].validity[1]
+                  ).format("DD-MM-YYYY")
                 }}
               </div>
             </div>
           </a>
         </div>
       </div>
-    </carousel>
+    </div>
   </div>
-  <!---->
 </template>
 
 <script>
-import carousel from "vue-owl-carousel";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 export default {
-  components: { carousel },
-  props: ["category", "alloffers"],
   data() {
     return {
       list: [],
@@ -78,38 +52,6 @@ export default {
     this.getAllOffers();
   },
   methods: {
-    redeemOffer(offer_text) {
-      var r = confirm("Process the Coupon");
-      if (r == true) {
-        const payload = {
-          offer_text: offer_text,
-        };
-
-        const accessToken = this.$session.get("token");
-        const options = {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        };
-        const url = BASE_URL + "/redeem";
-        axios
-          .post(url, payload, options)
-          .then((response) => {
-            console.log(response);
-            if (response.data.status === 200) {
-              alert(response.data.otp);
-            } else {
-              alert("something went wrong");
-            }
-          })
-          .catch((error) => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-      } else {
-        document.getElementById("reedem").style.color = "white";
-      }
-    },
     getAllOffers() {
       const offersurl = BASE_URL + "/get_all_offers";
       let JWTToken = this.$session.get("token");
@@ -117,7 +59,6 @@ export default {
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.list = response.data;
-          console.log(response.data);
           var discount = [];
           for (var i = 0; i < this.list.active_offers.length; i++) {
             discount[i] = this.list.active_offers[i].discount_percent;
