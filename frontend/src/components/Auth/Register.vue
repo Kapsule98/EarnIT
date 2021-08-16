@@ -120,13 +120,28 @@
             type="email"
             placeholder="Email"
             class="login-input"
-            style="border-top: none; border-radius: 0px 0px 5px 5px"
+            style="border-top: none"
           />
-          <multiselect
+          <select
+            required
+            class="select"
+            name="categories"
             v-model="shop_category"
-            :options="categories"
-            :multiple="true"
-          />
+            style="border-top: none"
+          >
+            <option class="option" value="" disabled selected hidden>
+              Choose Category...
+            </option>
+            <option
+              class="option"
+              v-for="items in allcategories"
+              :key="items.length"
+              :value="items"
+            >
+              {{ items }}
+            </option>
+          </select>
+
           <input
             v-model="shop_name"
             type="text"
@@ -150,11 +165,10 @@
 import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "../Seller/topnav.vue";
 import bcrypt from "bcryptjs";
-import Multiselect from "vue-multiselect";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 export default {
-  components: { topnav, Sitefooter, Multiselect },
+  components: { topnav, Sitefooter },
   data() {
     return {
       username: "",
@@ -163,10 +177,10 @@ export default {
       email: "",
       contact_no: "",
       address: "",
-      shop_category: [],
+      shop_category: "",
       shop_name: "",
       location: "",
-      categories: ["food", "electronics", "fashion", "medical", "sports"],
+      allcategories: [],
       options: [
         {
           text: "Seller",
@@ -181,7 +195,18 @@ export default {
       ],
     };
   },
-
+  mounted() {
+    const offersurl = BASE_URL + "/categories";
+    let JWTToken = this.$session.get("token");
+    axios
+      .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+      .then((response) => {
+        this.allcategories = response.data.categories;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   methods: {
     Sellersignup() {
       if (
@@ -216,6 +241,7 @@ export default {
           category: this.shop_category,
           shop_name: this.shop_name,
           location: this.location,
+          email: this.email,
         };
         const url = BASE_URL + "/seller/register";
         const payload = seller;
@@ -228,6 +254,7 @@ export default {
             } else {
               this.init();
             }
+            console.log(res.data);
           })
           .catch((err) => {
             console.log(err);
@@ -394,5 +421,23 @@ window.onload = function () {
   text-transform: uppercase;
   padding: 15px 0px 0px 8px;
   font-weight: 500;
+}
+.select {
+  height: 60px;
+  width: 100%;
+  border: 1px solid rgb(216, 216, 216);
+  font-size: 18px;
+  padding-left: 10px;
+}
+select:focus {
+  border: 4px solid rgba(0, 183, 255, 0.322);
+  outline: none;
+}
+.option {
+  height: 60px;
+  width: 100%;
+  border: 1px solid rgb(216, 216, 216);
+  font-size: 18px;
+  padding-left: 10px;
 }
 </style>

@@ -105,6 +105,12 @@ const routes = [
     component: () => import('../components/Customer/landing.vue')
   },
   {
+    path: '/search',
+    name: 'searchcategory',
+    props: (route) => ({ category: route.query.category, }),
+    component: () => import('../components/Customer/searchcategory.vue')
+  },
+  {
     beforeEnter: guardMyroute,
     path: '/customerbill',
     name: 'customerbill',

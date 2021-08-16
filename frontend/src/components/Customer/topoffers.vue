@@ -5,6 +5,7 @@
     <carousel
       v-if="list.active_offers.length > 0"
       :autoplayTimeout="3000"
+      :autoplayHoverPause="true"
       :responsive="{
         0: { items: 1, nav: false },
         600: { items: 3, nav: true },
@@ -17,33 +18,42 @@
       :dots="false"
     >
       <div v-for="offer in mapped" :key="offer.length">
-        <a href="">
-          <div class="couponhome">
-            <div class="c2-back">
-              <!-- <img :src="item.img_url" />-->
+        <div
+          v-if="
+            list.active_offers[offer.index].category === category ||
+            alloffers === 'true'
+          "
+        >
+          <a
+            v-on:click="redeemOffer(list.active_offers[offer.index].offer_text)"
+          >
+            <div class="couponhome">
+              <div class="c2-back">
+                <!-- <img :src="item.img_url" />-->
+              </div>
+              <div class="c2-off">
+                {{ offer.value }}% on
+                {{ list.active_offers[offer.index].products[1] }}
+              </div>
+              <div class="c2-left">
+                {{ list.active_offers[offer.index].quantity }} coupons left
+              </div>
+              <div class="c2-shop"><!--{{ shop_name }}--></div>
+              <div class="c2-location">
+                <i class="fa fa-map-marker"></i>
+                <!--{{ shop_location }}-->
+              </div>
+              <div class="c2-validity">
+                offer valid till
+                {{
+                  moment(list.active_offers[offer.index].validity[1]).format(
+                    "DD-MM-YYYY"
+                  )
+                }}
+              </div>
             </div>
-            <div class="c2-off">
-              {{ offer.value }}% on
-              <!--{{ product }}-->
-            </div>
-            <div class="c2-left">
-              {{ list.active_offers[offer.index].quantity }} coupons left
-            </div>
-            <div class="c2-shop"><!--{{ shop_name }}--></div>
-            <div class="c2-location">
-              <i class="fa fa-map-marker"></i>
-              <!--{{ shop_location }}-->
-            </div>
-            <div class="c2-validity">
-              offer valid till
-              {{
-                moment(list.active_offers[offer.index].validity[1]).format(
-                  "DD-MM-YYYY"
-                )
-              }}
-            </div>
-          </div>
-        </a>
+          </a>
+        </div>
       </div>
     </carousel>
   </div>
@@ -56,6 +66,7 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 export default {
   components: { carousel },
+  props: ["category", "alloffers"],
   data() {
     return {
       list: [],
@@ -67,6 +78,38 @@ export default {
     this.getAllOffers();
   },
   methods: {
+    redeemOffer(offer_text) {
+      var r = confirm("Process the Coupon");
+      if (r == true) {
+        const payload = {
+          offer_text: offer_text,
+        };
+
+        const accessToken = this.$session.get("token");
+        const options = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+        const url = BASE_URL + "/redeem";
+        axios
+          .post(url, payload, options)
+          .then((response) => {
+            console.log(response);
+            if (response.data.status === 200) {
+              alert(response.data.otp);
+            } else {
+              alert("something went wrong");
+            }
+          })
+          .catch((error) => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+      } else {
+        document.getElementById("reedem").style.color = "white";
+      }
+    },
     getAllOffers() {
       const offersurl = BASE_URL + "/get_all_offers";
       let JWTToken = this.$session.get("token");

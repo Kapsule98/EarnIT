@@ -58,6 +58,9 @@
             style="border-top: none; border-radius: 0"
           />
           <button @click="login('customer')" class="login-button">Login</button>
+          <a href="/register" style="float: right"
+            >dont have an account? register here</a
+          >
         </div>
 
         <div id="shop" class="regtab w3-animate-opacity" style="display: none">
@@ -101,6 +104,9 @@ export default {
       username: "",
       password: "",
     };
+  },
+  mounted() {
+    document.getElementById("defaultOpen").click();
   },
   methods: {
     login(type) {
@@ -196,9 +202,6 @@ export default {
       return bcrypt.hashSync(password, salt);
     },
   },
-};
-window.onload = function () {
-  document.getElementById("defaultOpen").click();
 };
 </script>
 <style scoped>

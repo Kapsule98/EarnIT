@@ -11,15 +11,22 @@
       <tr>
         <th>Sr.No</th>
         <th>Name</th>
-        <th>Email</th>
-        <th></th>
+        <th>offer code</th>
+        <th>Date</th>
       </tr>
 
-      <tr class="search">
-        <td>1.</td>
-        <td><name>Aditya Ray</name></td>
-        <td>anuj@gmail.com</td>
+      <tr class="search" v-for="(items, index) in history.history" :key="items">
+        <td>{{ index + 1 }}.</td>
         <td>
+          <name>{{ items.customer_display_name }}</name>
+        </td>
+        <td>
+          {{ items.offer_text }}
+        </td>
+        <td>
+          {{ validity }}
+        </td>
+        <!--<td>
           <button
             onclick="document.getElementById('id02').style.display='block'"
             class="w3-button"
@@ -29,7 +36,7 @@
               style="color: rgb(50, 50, 50); font-size: 20px"
             ></i>
           </button>
-        </td>
+        </td>-->
       </tr>
     </table>
 
@@ -61,7 +68,34 @@
 </template>
 
 <script>
+import axios from "axios";
+import { BASE_URL } from "../../utils/constants";
+import moment from "moment";
 export default {
+  data() {
+    return {
+      history: {},
+      validity: {},
+    };
+  },
+  mounted() {
+    console.log(this.$session.get("token"));
+    this.user = this.$session.get("user_data");
+    const offersurl = BASE_URL + "/seller/history";
+    let JWTToken = this.$session.get("token");
+
+    axios
+      .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+      .then((response) => {
+        this.history = response.data;
+        console.log(this.history);
+        var day = moment(this.history.history.timestamp); //milliseconds
+        this.validity = day.format("dddd MMMM Do YYYY, h:mm:ss a");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   methods: {
     keymonitor: function () {
       var input, filter, ul, li, a, i, txtValue;
