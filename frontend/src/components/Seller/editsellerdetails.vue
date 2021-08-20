@@ -29,13 +29,13 @@
                 </td>
               </tr>
               <tr>
-                <td class="detail">Owner Name</td>
+                <!--<td class="detail">Owner Name</td>
                 <td class="description">
                   <b-form-input
                     type="text"
                     v-model="shop_owner_name"
                   ></b-form-input>
-                </td>
+                </td>-->
               </tr>
               <tr>
                 <td class="detail">Email</td>
@@ -68,11 +68,24 @@
               <tr>
                 <td class="detail">Categories</td>
                 <td class="description">
-                  <multiselect
+                  <select
+                    required
+                    class="select"
+                    name="categories"
                     v-model="shop_category"
-                    :options="categories"
-                    :multiple="true"
-                  />
+                  >
+                    <option class="option" value="" disabled selected hidden>
+                      Choose Category...
+                    </option>
+                    <option
+                      class="option"
+                      v-for="items in allcategories"
+                      :key="items.length"
+                      :value="items"
+                    >
+                      {{ items }}
+                    </option>
+                  </select>
                 </td>
               </tr>
               <tr>
@@ -121,26 +134,38 @@ export default {
     return {
       user: {},
       shop_name: this.$session.get("user_data").shop_name,
-      shop_owner_name: this.$session.get("user_data").owner_name,
+      //shop_owner_name: this.$session.get("user_data").owner_name,
       shop_address: this.$session.get("user_data").address,
       shop_contact: this.$session.get("user_data").contact_no,
       shop_email: this.$session.get("user_data").email,
       shop_location: "get your location",
-      location: [
-        {
-          text: "Select location",
-          value: this.$session.get("user_data").location,
-        },
-        "Bhilai",
-        "Raipur",
-      ],
-      shop_category: [],
-      categories: ["food", "electronics", "fashion", "medical", "sports"],
+      //location: [
+      ///{
+      //text: "Select location",
+      //value: this.$session.get("user_data").location,
+      //},
+      //"Bhilai",
+      //"Raipur",
+      //],
+      shop_category: this.$session.get("user_data").category,
+
+      allcategories: [],
     };
   },
 
   mounted() {
+    const offersurl = BASE_URL + "/categories";
+    let JWTToken = this.$session.get("token");
+    axios
+      .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+      .then((response) => {
+        this.allcategories = response.data.categories;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     this.user = this.$session.get("user_data");
+    console.log(this.$session.get("user_data"));
   },
   methods: {
     getLocation() {
@@ -161,9 +186,9 @@ export default {
       if (this.shop_name) {
         this.updateShopName();
       }
-      if (this.shop_location) {
-        this.updateLocation();
-      }
+      // if (this.shop_location) {
+      //  this.updateLocation();
+      //}
       if (this.shop_email) {
         this.updateEmail();
       }
@@ -173,9 +198,9 @@ export default {
       if (this.address) {
         this.updateAddress();
       }
-      if (this.shop_owner_name) {
-        this.updateOwnerName();
-      }
+      //if (this.shop_owner_name) {
+      // this.updateOwnerName();
+      // }
       if (this.shop_category) {
         this.updateCategory();
       }
@@ -203,7 +228,7 @@ export default {
       console.log(this.shop_name);
     },
 
-    updateLocation() {
+    /*updateLocation() {
       const payload = {
         shop_location: this.shop_location,
       };
@@ -224,7 +249,7 @@ export default {
         });
 
       console.log(this.shop_location);
-    },
+    },*/
     updateEmail() {
       const payload = {
         email: this.shop_email,
@@ -291,7 +316,7 @@ export default {
 
       console.log(this.shop_address);
     },
-    updateOwnerName() {
+    /*updateOwnerName() {
       const payload = {
         owner_name: this.shop_owner_name,
       };
@@ -312,7 +337,7 @@ export default {
         });
 
       console.log(this.shop_location);
-    },
+    },*/
     updateCategory() {
       const payload = {
         category: {
@@ -338,7 +363,6 @@ export default {
   },
 };
 </script>
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 .accountable td {
   padding: 20px 10px;
@@ -361,5 +385,23 @@ export default {
   border-radius: 5px;
   font-size: 15px;
   font-weight: 500;
+}
+.select {
+  height: 40px;
+  width: 100%;
+  border: 1px solid rgb(216, 216, 216);
+  font-size: 18px;
+  padding-left: 10px;
+}
+select:focus {
+  border: 4px solid rgba(0, 183, 255, 0.322);
+  outline: none;
+}
+.option {
+  height: 40px;
+  width: 100%;
+  border: 1px solid rgb(216, 216, 216);
+  font-size: 18px;
+  padding-left: 10px;
 }
 </style>

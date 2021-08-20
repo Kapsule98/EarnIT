@@ -94,7 +94,7 @@
                 v-bind:discount="offer.discount_percent + '%'"
                 v-bind:left="offer.quantity + ' coupons'"
                 v-bind:validity="
-                  ' ' + moment(offer.validity[1]).format('DD-MM-YYYY')
+                  ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
                 "
                 v-bind:offer_text="offer.offer_text"
               ></couponcard>

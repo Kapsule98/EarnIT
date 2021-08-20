@@ -13,6 +13,7 @@
         <th>Name</th>
         <th>offer code</th>
         <th>Date</th>
+        <th>Bill</th>
       </tr>
 
       <tr class="search" v-for="(items, index) in history.history" :key="items">
@@ -24,7 +25,10 @@
           {{ items.offer_text }}
         </td>
         <td>
-          {{ validity }}
+          {{ moment(items.timestamp * 1000).format("DD-MM-YYYY") }}
+        </td>
+        <td>
+          {{ items.sp }}
         </td>
         <!--<td>
           <button
@@ -70,16 +74,14 @@
 <script>
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
-import moment from "moment";
+//import moment from "moment";
 export default {
   data() {
     return {
       history: {},
-      validity: {},
     };
   },
   mounted() {
-    console.log(this.$session.get("token"));
     this.user = this.$session.get("user_data");
     const offersurl = BASE_URL + "/seller/history";
     let JWTToken = this.$session.get("token");
@@ -88,9 +90,7 @@ export default {
       .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
       .then((response) => {
         this.history = response.data;
-        console.log(this.history);
-        var day = moment(this.history.history.timestamp); //milliseconds
-        this.validity = day.format("dddd MMMM Do YYYY, h:mm:ss a");
+        console.log(this.history.history[1].timestamp);
       })
       .catch((err) => {
         console.log(err);
@@ -132,6 +132,7 @@ export default {
   width: 90%;
   margin: 20px auto;
   border-collapse: collapse;
+  overflow-x: auto;
 }
 .c-table td,
 th {

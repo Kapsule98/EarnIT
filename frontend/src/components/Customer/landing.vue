@@ -115,7 +115,7 @@
         </h3>
 
         <div class="w3-container" style="padding: 20px 0px">
-          <topoffers alloffers="true"></topoffers>
+          <allapi></allapi>
         </div>
       </b-card>
 
@@ -127,9 +127,9 @@
           >
         </h2>
 
-        <topoffers category="Health"></topoffers>
+        <topoffers category="/get_offers_by_category/Food"></topoffers>
 
-        <catoffers></catoffers>
+        <catoffers category="/get_offers_by_category/Food"></catoffers>
       </b-card>
       <b-card style="margin-top: 5px; border: none; border-radius: 0">
         <h2 style="padding: 20px">
@@ -140,8 +140,8 @@
           >
         </h2>
 
-        <topoffers></topoffers>
-        <catoffers></catoffers>
+        <topoffers category="/get_offers_by_category/Electronics"></topoffers>
+        <catoffers category="/get_offers_by_category/Electronics"></catoffers>
       </b-card>
       <b-card style="margin-top: 5px; border: none; border-radius: 0">
         <h2 style="padding: 20px">
@@ -151,30 +151,19 @@
           >
         </h2>
 
-        <topoffers></topoffers>
-        <catoffers></catoffers>
+        <topoffers category="/get_offers_by_category/Fashion"></topoffers>
+        <catoffers category="/get_offers_by_category/Fashion"></catoffers>
       </b-card>
       <b-card style="margin-top: 5px; border: none; border-radius: 0">
         <h2 style="padding: 20px">
-          Medical<router-link
+          Health<router-link
             :to="{ path: '/search', query: { category: 'Health' } }"
             ><a href="" style="font-size: 11px">View all</a></router-link
           >
         </h2>
 
-        <topoffers></topoffers>
-        <catoffers></catoffers>
-      </b-card>
-      <b-card style="margin-top: 5px; border: none; border-radius: 0">
-        <h2 style="padding: 20px">
-          Sports<router-link
-            :to="{ path: '/search', query: { category: 'Sports' } }"
-            ><a href="" style="font-size: 11px">View all</a></router-link
-          >
-        </h2>
-
-        <topoffers></topoffers>
-        <catoffers></catoffers>
+        <topoffers category="/get_offers_by_category/Health"></topoffers>
+        <catoffers category="/get_offers_by_category/Health"></catoffers>
       </b-card>
       <sitefooter></sitefooter>
     </div>
@@ -186,9 +175,10 @@ import homeposters from "./homeposters.vue";
 import topoffers from "./topoffers.vue";
 import Sitefooter from "./sitefooter.vue";
 import Catoffers from "./catoffers.vue";
+import Allapi from "./allapi.vue";
 
 export default {
-  components: { topnav, Sitefooter, topoffers, homeposters, Catoffers },
+  components: { topnav, Sitefooter, topoffers, homeposters, Catoffers, Allapi },
 };
 </script>
 
