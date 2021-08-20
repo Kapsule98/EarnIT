@@ -1,21 +1,20 @@
 <template>
   <div>
     <div class="w3-row">
-      <div v-for="index in 4" :key="index">
+      <div v-for="index in 1" :key="index">
         <div class="w3-col m3 s6">
           <a href="">
-            <div class="couponhome" style="background-color: #348feb">
+            <div class="couponhome">
               <div class="c2-back">
-                <!-- <img :src="item.img_url" />-->
+                <img
+                  src="https://images.unsplash.com/photo-1572611932849-7f0f116fb2f1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
+                />
               </div>
               <div class="c2-off">
                 {{ mapped[index - 1].value }}% on
                 <!--{{ product }}-->
               </div>
-              <div class="c2-left">
-                {{ list.active_offers[mapped[index - 1].index].quantity }}
-                coupons left
-              </div>
+              <div class="c2-left"></div>
               <div class="c2-shop"><!--{{ shop_name }}--></div>
               <div class="c2-location">
                 <i class="fa fa-map-marker"></i>
@@ -25,7 +24,7 @@
                 offer valid till
                 {{
                   moment(
-                    list.active_offers[mapped[index - 1].index].validity[1]
+                    list.offers[mapped[index - 1].index].validity[1] * 1000
                   ).format("DD-MM-YYYY")
                 }}
               </div>
@@ -41,6 +40,7 @@
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 export default {
+  props: ["category"],
   data() {
     return {
       list: [],
@@ -53,15 +53,14 @@ export default {
   },
   methods: {
     getAllOffers() {
-      const offersurl = BASE_URL + "/get_all_offers";
-      let JWTToken = this.$session.get("token");
+      const offersurl = BASE_URL + this.category;
       axios
-        .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .get(offersurl)
         .then((response) => {
           this.list = response.data;
           var discount = [];
-          for (var i = 0; i < this.list.active_offers.length; i++) {
-            discount[i] = this.list.active_offers[i].discount_percent;
+          for (var i = 0; i < this.list.offers.length; i++) {
+            discount[i] = this.list.offers[i].discount_percent;
           }
           // the array to be sorted
 
@@ -95,7 +94,7 @@ export default {
   width: 98%;
   height: 220px;
   margin: 10px auto;
-  background: rgb(4, 87, 62);
+  background: rgba(4, 87, 62, 0.192);
   padding: 10px;
   overflow: hidden;
 }

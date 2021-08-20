@@ -10,10 +10,7 @@
             style="width: 200px; margin-top: -10px"
         /></router-link>
       </div>
-      <div
-        class="left searchbar"
-        v-if="this.$session.get('user_type') !== 'seller'"
-      >
+      <div class="left searchbar">
         <form class="example" v-if="searchbar === true">
           <input
             type="text"
@@ -236,7 +233,7 @@ form.example input[type="text"] {
   border: none;
   float: left;
   display: flex;
-  width: 400px;
+  width: 230px;
   background: #f7fcff;
   margin-top: 0px;
   margin-left: 40px;

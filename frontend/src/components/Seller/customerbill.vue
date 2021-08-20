@@ -110,7 +110,6 @@ export default {
         .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.earning = response.data;
-          console.log(this.earning);
         })
         .catch((err) => {
           console.log(err);
@@ -123,7 +122,6 @@ export default {
         .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.coupons_sold = response.data;
-          console.log(this.coupons_sold);
         })
         .catch((err) => {
           console.log(err);

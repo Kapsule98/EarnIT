@@ -11,9 +11,15 @@
       url5="/"
       url6="/"
       active3="active_nav"
+      :searchbar="true"
     ></topnav>
 
     <div class="w3-card c-m" style="background: white; margin-top: -30px">
+      <div class="showfilter">
+        <button class="showbtn" v-on:click="showFilter()">
+          Add Product <i class="fa fa-angle-down"></i>
+        </button>
+      </div>
       <div class="w3-row">
         <div class="w3-twothird" style="padding: 10px">
           <b-card>
@@ -24,6 +30,7 @@
             <p class="c-shopname">{{ user.shop_name }}</p>
             <p class="c-shoplocation">{{ user.address }}</p>
             <p class="c-shoplocation">Phone No. : {{ user.contact_no }}</p>
+            <a href="/editsellerdetails">Edit account details</a>
             <p class="s-details">
               <!-- Date Joined : 2 jun 2021 | user since 2 months-->
             </p>
@@ -59,22 +66,56 @@
           </b-card>
         </div>
         <div class="w3-third" style="padding: 20px">
-          <b-card>
-            <ul style="list-style-type: none">
-              <li><a href="/editsellerdetails">Edit account details</a></li>
-              <h1>Add Product</h1>
+          <div class="showfilter">
+            <button class="showbtn" v-on:click="showFilter()">
+              Filter <i class="fa fa-angle-down"></i>
+            </button>
+          </div>
 
-              <input type="text" v-model="addproduct" />
-              <button v-on:click="addProduct()">add product</button>
-            </ul>
-            <li v-for="products in products.products" :key="products.length">
-              {{ products }}
-              <button v-on:click="deleteProduct(products)">delete</button>
-            </li>
-          </b-card>
+          <div class="filter">
+            <div class="closeFilter">
+              <button v-on:click="closeFilter()" class="closebtn">close</button>
+            </div>
+            <b-card>
+              <h4
+                style="
+                  width: 100%;
+                  border-bottom: 1px solid#cccccc;
+                  padding-bottom: 10px;
+                "
+              >
+                Add Product
+              </h4>
+
+              <input
+                class="productinput"
+                type="text"
+                placeholder="Enter Product Name..."
+                v-model="addproduct"
+              />
+              <button class="addprod" v-on:click="addProduct()">
+                <i class="fa fa-plus"></i>
+              </button>
+
+              <li
+                style="list-style-type: none"
+                v-for="(products, index) in products.products"
+                :key="products.length"
+              >
+                <div class="proname">
+                  {{ index + 1 }}.
+                  {{ products }}
+                </div>
+                <button class="delprod" v-on:click="deleteProduct(products)">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </li>
+            </b-card>
+          </div>
         </div>
       </div>
     </div>
+    <div class="reduce"></div>
     <sitefooter></sitefooter>
   </div>
 </template>
@@ -96,7 +137,7 @@ export default {
       coupons_sold: {},
       category: [],
       products: [],
-      addproduct: "",
+      addproduct: null,
       prod: [],
       del: [],
     };
@@ -120,6 +161,14 @@ export default {
     this.getProducts();
   },
   methods: {
+    showFilter() {
+      document.getElementsByClassName("filter")[0].style.bottom = 0;
+      document.getElementsByClassName("reduce")[0].style.display = "block";
+    },
+    closeFilter() {
+      document.getElementsByClassName("filter")[0].style.bottom = "-100%";
+      document.getElementsByClassName("reduce")[0].style.display = "none";
+    },
     getProducts() {
       const url = BASE_URL + "/seller/product";
       let JWTToken = this.$session.get("token");
@@ -134,25 +183,27 @@ export default {
         });
     },
     addProduct() {
-      this.prod.push(this.addproduct);
-      const payload = {
-        products: this.prod,
-      };
-      const accessToken = this.$session.get("token");
-      const options = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      };
-      const url = BASE_URL + "/seller/product";
-      axios
-        .post(url, payload, options)
-        .then((response) => console.log(response), console.log(payload))
-        .catch((error) => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
-      this.$router.go();
+      if (this.addproduct !== null) {
+        this.prod.push(this.addproduct);
+        const payload = {
+          products: this.prod,
+        };
+        const accessToken = this.$session.get("token");
+        const options = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+        const url = BASE_URL + "/seller/product";
+        axios
+          .post(url, payload, options)
+          .then((response) => console.log(response), console.log(payload))
+          .catch((error) => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+        this.$router.go();
+      }
     },
     deleteProduct(products) {
       this.del.push(products);
@@ -249,9 +300,109 @@ export default {
 .c-m {
   padding: 10px 30px;
 }
+.delprod {
+  background: none;
+  padding: 3px;
+  border: none;
+  color: rgb(0 140 255);
+}
+.addprod {
+  background: rgb(0 140 255);
+  padding: 4px 8px;
+  border: none;
+  color: white;
+  width: 15%;
+  height: 40px;
+
+  margin: 10px auto;
+}
+.productinput {
+  padding: 4px;
+  margin: 10px auto;
+  height: 40px;
+  width: 85%;
+  border: none;
+  background-color: rgba(231, 231, 231, 0.425);
+}
+.productinput:focus {
+  border: 4px solid rgba(0, 140, 255, 0.521);
+  outline: none;
+}
+.proname {
+  font-size: 17px;
+  text-transform: capitalize;
+  width: 85%;
+  display: inline-block;
+  padding: 2px;
+}
+.closeFilter {
+  position: absolute;
+  top: -50px;
+  left: 0;
+  display: none;
+  width: 100%;
+  margin: 0;
+  height: 50px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 25px 25px 0px 0px;
+  border-bottom: 1px solid rgb(185, 185, 185);
+}
+.showfilter {
+  display: none;
+  margin-top: -10px;
+  height: 50px;
+  border-bottom: 1px solid rgb(185, 185, 185);
+  width: 100%;
+}
+.showbtn {
+  background: none;
+  border: none;
+  border-left: 1px solid rgb(185, 185, 185);
+  height: 100%;
+  width: fit-content;
+  text-align: center;
+  float: right;
+  font-size: 15px;
+  color: teal;
+}
+.closebtn {
+  background: none;
+  border: none;
+  float: right;
+  color: teal;
+  font-size: 15px;
+  text-transform: capitalize;
+  height: 50px;
+}
+.reduce {
+  position: fixed;
+  display: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.425);
+  z-index: 1999;
+}
 @media screen and (max-width: 600px) {
   .c-m {
     padding: 10px 0px;
+  }
+  .showfilter {
+    display: block;
+  }
+  .filter {
+    width: 100%;
+    position: fixed;
+    background: white;
+    height: 60%;
+    bottom: -100%;
+    left: 0;
+    transition: 0.5s;
+    z-index: 2000;
+  }
+  .closeFilter {
+    display: block;
   }
 }
 @media screen and (max-width: 600px) {
