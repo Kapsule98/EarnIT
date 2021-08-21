@@ -63,6 +63,11 @@ const routes = [
     component: () => import('../components/Auth/Login.vue')
   },
   {
+    path: '/forgotpassword',
+    name: 'forgotpassword',
+    component: () => import('../components/Auth/forgotpassword.vue')
+  },
+  {
     path: '/register',
     name: 'Register',
     component: () => import('../components/Auth/Register.vue')
@@ -109,6 +114,12 @@ const routes = [
     name: 'searchcategory',
     props: (route) => ({ category: route.query.category, }),
     component: () => import('../components/Customer/searchcategory.vue')
+  },
+  {
+    path: '/search_by_shop',
+    name: 'searchshop',
+    props: (route) => ({ category: route.query.category, }),
+    component: () => import('../components/Customer/searchshop.vue')
   },
   {
     beforeEnter: guardMyroute,

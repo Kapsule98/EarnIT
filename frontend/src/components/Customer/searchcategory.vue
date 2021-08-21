@@ -24,7 +24,12 @@
         </div>
         <div class="w3-col m2">
           <div class="w3-container" style="border-right: 2px solid #cccccc">
-            <h3>Filters</h3>
+            <h3>
+              Filters
+              <button v-on:click="clearFilter()" class="clear">
+                <u>clear filters</u>
+              </button>
+            </h3>
 
             <h5>Category</h5>
 
@@ -49,6 +54,26 @@
                 v-on:click="searchCategory(items, index)"
               />
               <label :for="'check' + index"> {{ items }}</label>
+            </div>
+            <br />
+            <h5>Search by :</h5>
+            <div style="display: block; line-height: 0.5">
+              <input
+                style="margin: 3px"
+                type="checkbox"
+                id="sby1"
+                v-on:click="byFilter(1)"
+              />
+              <label for="sby1"> Product</label>
+            </div>
+            <div style="display: block; line-height: 0.5">
+              <input
+                style="margin: 3px"
+                type="checkbox"
+                id="sby2"
+                v-on:click="byFilter(2)"
+              />
+              <label for="sby2">Seller</label>
             </div>
             <br />
             <h5>Discount</h5>
@@ -126,6 +151,40 @@
                         alt=""
                       />
                     </div>
+                    <div
+                      v-else-if="
+                        list.active_offers[offer.index].category === 'Furniture'
+                      "
+                    >
+                      <img
+                        src="../../assets/furnishing.jpg"
+                        class="thumbnail"
+                        alt=""
+                      />
+                    </div>
+                    <div
+                      v-else-if="
+                        list.active_offers[offer.index].category === 'Food'
+                      "
+                    >
+                      <img
+                        src="../../assets/food.jpg"
+                        class="thumbnail"
+                        alt=""
+                      />
+                    </div>
+                    <div
+                      v-else-if="
+                        list.active_offers[offer.index].category ===
+                        'Electronics'
+                      "
+                    >
+                      <img
+                        src="../../assets/electronics.jpg"
+                        class="thumbnail"
+                        alt=""
+                      />
+                    </div>
                   </div>
                   <div class="w3-col contentcol" style="width: 80%">
                     <div class="card_remaining">
@@ -195,6 +254,7 @@ export default {
   },
   mounted() {
     this.getAllOffers();
+    document.getElementById("sby1").checked = true;
     const offersurl = BASE_URL + "/categories";
     let JWTToken = this.$session.get("token");
     axios
@@ -207,6 +267,10 @@ export default {
       });
   },
   methods: {
+    clearFilter() {
+      this.$router.push("/search?alloffers=true");
+      this.$router.go();
+    },
     showFilter() {
       document.getElementsByClassName("filter")[0].style.bottom = 0;
       document.getElementsByClassName("reduce")[0].style.display = "block";
@@ -220,6 +284,8 @@ export default {
       for (var i = 0; i < 20; i++) {
         if (index !== i) {
           document.getElementById("check" + i).checked = false;
+        } else {
+          document.getElementById("check" + i).checked = true;
         }
       }
     },
@@ -228,6 +294,19 @@ export default {
       for (var i = 1; i < 5; i++) {
         if (id !== i) {
           document.getElementById("disc" + i).checked = false;
+        } else {
+          document.getElementById("disc" + i).checked = true;
+        }
+      }
+    },
+    byFilter(p) {
+      if (this.category === null && p !== 1) {
+        alert("please select a category first");
+      } else {
+        if (p === 2) {
+          this.$router.push("/search_by_shop?category=" + this.category);
+        } else if (p === 1) {
+          document.getElementById("sby1").checked = true;
         }
       }
     },
@@ -405,6 +484,13 @@ export default {
   width: 100%;
   background: rgba(0, 0, 0, 0.425);
   z-index: 1999;
+}
+.clear {
+  color: #008cff;
+  border: none;
+  font-size: 12px;
+  padding: 2px 4px;
+  background: none;
 }
 @media screen and (max-width: 600px) {
   .showfilter {

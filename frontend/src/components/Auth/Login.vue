@@ -58,7 +58,9 @@
             style="border-top: none; border-radius: 0"
           />
           <button @click="login('customer')" class="login-button">Login</button>
-          <a href="/register" style="float: right"
+
+          <a href="/forgotpassword" style="float: right">forgot password?</a>
+          <a href="/register" style="float: left"
             >dont have an account? register here</a
           >
         </div>
@@ -79,8 +81,8 @@
             style="border-top: none; border-radius: 0"
           />
           <button @click="login('seller')" class="login-button">Login</button>
-
-          <a href="/register" style="float: right"
+          <a href="/forgotpassword" style="float: right">forgot password?</a>
+          <a href="/register" style="float: left"
             >dont have an account? register here</a
           >
         </div>
