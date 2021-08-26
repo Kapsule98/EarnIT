@@ -1,13 +1,18 @@
 <template>
   <div>
     <topnav
-      link1='<i class="fa fa-home"></i> Home'
+      link1='<i class="fa fa-home"></i>'
       link2='<i class="fa fa-info-circle"></i> About'
       link3='<i class="fa fa-user"></i> Account'
       link4='<i class="fa fa-shopping-cart"></i> Cart'
       link5='<i class="fa fa-lock"></i> Logout'
-    >
-    </topnav>
+      url1="/"
+      url2="/about"
+      url3="/account"
+      url4="/cart"
+      url5="/logout"
+      url6="/"
+    ></topnav>
     <div class="greyback"></div>
     <div class="w3-container mopad">
       <div class="w3-card" style="background: white">
@@ -55,90 +60,25 @@
                         value="accepted"
                         unchecked-value="not_accepted"
                       >
-                        <div class="card_item">40% off on Samsung Fast Chargers</div>
+                        <div class="card_item">
+                          40% off on Samsung Fast Chargers
+                        </div>
                       </b-form-checkbox>
 
                       <div class="w3-row">
-                         <div class="w3-third">
-                          <div class="card_leftcoupons">
-                          9/30 Coupons Left
-                          </div>
+                        <div class="w3-third">
+                          <div class="card_leftcoupons">9/30 Coupons Left</div>
                         </div>
-                         <div class="w3-third">
+                        <div class="w3-third">
                           <div class="card_validity">
-                          valid till 4 jun 2021 <i class="fa fa-info-circle"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div class="couponcard">
-                      <div class="card_remaining"></div>
-                      <b-form-checkbox
-                        id="checkbox-2"
-                        v-model="status"
-                        name="checkbox-1"
-                        value="accepted"
-                        unchecked-value="not_accepted"
-                      >
-                        <div class="card_item">30% off on One Plus Power Banks</div>
-                      </b-form-checkbox>
-
-                      <div class="w3-row">
-                         <div class="w3-third">
-                          <div class="card_leftcoupons">
-                          9/30 Coupons Left
-                          </div>
-                        </div>
-                         <div class="w3-third">
-                          <div class="card_validity">
-                          valid till 4 jun 2021 <i class="fa fa-info-circle"></i>
+                            valid till 4 jun 2021
+                            <i class="fa fa-info-circle"></i>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div class="couponcard">
-                      <div class="card_remaining">Hurry only 2 left!</div>
-                      <b-form-checkbox
-                        id="checkbox-3"
-                        v-model="status"
-                        name="checkbox-1"
-                        value="accepted"
-                        unchecked-value="not_accepted"
-                      >
-                        <div class="card_item">50% off on Samsung M30s Smartphone</div>
-                      </b-form-checkbox>
-
-                      <div class="w3-row">
-                         <div class="w3-third">
-                          <div class="card_leftcoupons">
-                          9/30 Coupons Left
-                          </div>
-                        </div>
-                         <div class="w3-third">
-                          <div class="card_validity">
-                          valid till 4 jun 2021 <i class="fa fa-info-circle"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <button
-                      style="
-                        background: #008cff;
-                        width: fit-content;
-                        color: white;
-                        padding: 8px 10px;
-                        border-radius: 4px;
-                        font-size: 18px;
-                        float: right;
-                        border:none;
-                        margin:20px;
-                        font-weight:500;
-                      "
-                    >
-                      Add selected items to cart
-                    </button>
+                    <button class="botbtn">Add selected items to cart</button>
                   </b-tab>
                   <b-tab style="color: #666666">
                     <template #title>
@@ -162,7 +102,7 @@
                     <p>+91888**939</p>
                     <p
                       style="
-                        background: teal;
+                        background: #008cff;
                         width: fit-content;
                         color: white;
                         padding: 3px 7px;
@@ -180,13 +120,13 @@
           <div class="w3-third" style="padding: 20px">
             <div class="w3-card" style="padding: 20px; box-shadow: none">
               <h4>
-                <i class="fa fa-share-alt" style="color: #008cff"></i> Share this
-                page
+                <i class="fa fa-share-alt" style="color: #008cff"></i> Share
+                this page
               </h4>
               <h3>
                 <i
                   class="fa fa-instagram"
-                  style="color:#008cff; padding: 10px"
+                  style="color: #008cff; padding: 10px"
                 ></i>
                 <i
                   class="fa fa-facebook"
@@ -223,13 +163,24 @@
 </template>
 <script>
 import topnav from "../Seller/topnav.vue";
-import Sitefooter from './sitefooter.vue';
+import Sitefooter from "./sitefooter.vue";
 export default {
-  components: { topnav, Sitefooter, },
+  components: { topnav, Sitefooter },
 };
 </script>
 <style scoped>
-
+.botbtn {
+  background: #008cff;
+  width: fit-content;
+  color: white;
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-size: 18px;
+  float: right;
+  border: none;
+  margin: 20px;
+  font-weight: 500;
+}
 .greyback {
   position: fixed;
   top: -20%;
@@ -283,10 +234,10 @@ export default {
   font-size: 14px;
   color: rgb(85, 85, 85);
 }
-.card_leftcoupons{
+.card_leftcoupons {
   padding: 20px;
-    font-size: 18px;
-    color: rgb(61, 61, 61);
+  font-size: 18px;
+  color: rgb(61, 61, 61);
 }
 .card_remaining {
   font-size: 15px;
@@ -296,14 +247,12 @@ export default {
   padding: 10px 20px;
 }
 
-@media screen and (max-width:600px) {
+@media screen and (max-width: 600px) {
   .card_validity {
-  padding: 0px 22px;
-
+    padding: 0px 22px;
+  }
+  .mopad {
+    margin: -20px !important;
+  }
 }
-    .mopad{
-margin:-20px !important;
-} 
-}
-
 </style>

@@ -2,7 +2,7 @@
   <div>
     <div class="coupon_box">
       <div class="body">
-        <div class="remove" v-on:click="remove">&#x2212;</div>
+        <div class="remove" v-on:click="removeOffer(offer_text)">&#x2212;</div>
         <div class="bodyback">{{ discount }}</div>
         <h4 class="title">{{ name }}</h4>
 
@@ -11,8 +11,8 @@
         </h2>
         <h3>OFF</h3>
       </div>
-      <div class="usecode">12/20 Left</div>
-      <div class="validity">Valid till 2 jun 2021</div>
+      <div class="usecode">{{ left }}</div>
+      <div class="validity">Valid till {{ validity }}</div>
     </div>
     <b-modal id="modal-2" title="Reedem Coupon">
       <b-alert show variant="warning">
@@ -24,15 +24,38 @@
 </template>
 
 <script>
+import { BASE_URL } from "../../utils/constants";
+import axios from "axios";
 export default {
-  props: ["name", "discount"],
+  props: ["name", "discount", "left", "validity", "offer_text"],
+  data() {
+    return {
+      getoffers: [],
+    };
+  },
   methods: {
-    remove: function () {
-      var r = confirm(
-        "permanently remove coupon"
-      );
+    removeOffer(offer_text) {
+      var r = confirm("permanently remove coupon");
       if (r == true) {
-        document.getElementById("reedem").style.display = "none";
+        const offersurl = BASE_URL + "/seller/offer";
+        let JWTToken = this.$session.get("token");
+        const config = {
+          data: {
+            offer_text: offer_text,
+          },
+          headers: {
+            Authorization: `Bearer ${JWTToken}`,
+          },
+        };
+        axios
+          .delete(offersurl, config)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        this.$router.go();
       } else {
         document.getElementById("reedem").style.color = "white";
       }

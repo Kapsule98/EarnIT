@@ -1,12 +1,19 @@
 <template>
   <div>
     <topnav
-      link1='<i class="fa fa-home"></i> Home'
+      link1='<i class="fa fa-home"></i>'
       link2='<i class="fa fa-info-circle"></i> About'
       link3='<i class="fa fa-user"></i> Account'
       link4='<i class="fa fa-shopping-cart"></i> Cart'
       link5='<i class="fa fa-lock"></i> Logout'
+      url1="/"
+      url2="/about"
+      url3="/account"
+      url4="/cart"
+      url5="/logout"
+      url6="/"
     >
+      <div id="sucess"></div>
     </topnav>
 
     <div class="login-box">
@@ -14,7 +21,11 @@
         <div class="login-header" style="border-bottom: none">Login as</div>
 
         <div class="w3-row">
-          <a href="javascript:void(0)" v-on:click="openTab('customer')" id="defaultOpen">
+          <a
+            href="javascript:void(0)"
+            v-on:click="openTab('customer')"
+            id="defaultOpen"
+          >
             <div class="reghead">Customer</div>
           </a>
 
@@ -29,46 +40,51 @@
       <div class="login-content-box">
         <div
           id="customer"
-          class=" regtab w3-animate-opacity"
-          style="display: none"
-        >
-        <input
-          v-model="username"
-          type="text"
-          class="login-input"
-          placeholder="Username"
-          style="border-radius: 5px 5px 0px 0px"
-        />
-        <input
-          v-model="password"
-          type="password"
-          placeholder="Password"
-          class="login-input"
-          style="border-top: none; border-radius:0"
-        />
-        <button @click="login('customer')" class="login-button">Login</button>
-        </div>
-
-        <div
-          id="shop"
-          class=" regtab w3-animate-opacity"
+          class="regtab w3-animate-opacity"
           style="display: none"
         >
           <input
-          v-model="username"
-          type="text"
-          class="login-input"
-          placeholder="Username"
-          style="border-radius: 5px 5px 0px 0px"
-        />
-        <input
-          v-model="password"
-          type="password"
-          placeholder="Password"
-          class="login-input"
-          style="border-top: none; border-radius:0"
-        />
-        <button @click="login('seller')" class="login-button">Login</button>
+            v-model="username"
+            type="text"
+            class="login-input"
+            placeholder="Username"
+            style="border-radius: 5px 5px 0px 0px"
+          />
+          <input
+            v-model="password"
+            type="password"
+            placeholder="Password"
+            class="login-input"
+            style="border-top: none; border-radius: 0"
+          />
+          <button @click="login('customer')" class="login-button">Login</button>
+
+          <a href="/forgotpassword" style="float: right">forgot password?</a>
+          <a href="/register" style="float: left"
+            >dont have an account? register here</a
+          >
+        </div>
+
+        <div id="shop" class="regtab w3-animate-opacity" style="display: none">
+          <input
+            v-model="username"
+            type="text"
+            class="login-input"
+            placeholder="Username"
+            style="border-radius: 5px 5px 0px 0px"
+          />
+          <input
+            v-model="password"
+            type="password"
+            placeholder="Password"
+            class="login-input"
+            style="border-top: none; border-radius: 0"
+          />
+          <button @click="login('seller')" class="login-button">Login</button>
+          <a href="/forgotpassword" style="float: right">forgot password?</a>
+          <a href="/register" style="float: left"
+            >dont have an account? register here</a
+          >
         </div>
       </div>
     </div>
@@ -77,14 +93,13 @@
   </div>
 </template>
 <script>
-import { BASE_URL } from '../../utils/constants';
-import axios from 'axios'
+import { BASE_URL } from "../../utils/constants";
+import axios from "axios";
 // import eventBus from "../../utils/eventBus";
 import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "../Seller/topnav.vue";
-import bcrypt from 'bcryptjs'
+import bcrypt from "bcryptjs";
 export default {
-  
   components: { topnav, Sitefooter },
   data() {
     return {
@@ -92,59 +107,80 @@ export default {
       password: "",
     };
   },
+  mounted() {
+    document.getElementById("defaultOpen").click();
+  },
   methods: {
     login(type) {
       if (this.username === "" || this.password === "") {
         alert("Please fill mandatory fields");
         this.init();
       } else {
-        const hash_pass = this.encryptPassword(this.password)
-        console.log(hash_pass)
+        const hash_pass = this.encryptPassword(this.password);
+        console.log(hash_pass);
         const user = {
-          "username":this.username,
-          "password":this.password,
-        }
+          username: this.username,
+          password: this.password,
+        };
         if (type === "customer") {
-          const url = BASE_URL + '/login';
-          const payload = user
-          axios.post(url,payload).then(res => {
-            console.log(res)
-            if(res.data.status === 200) {
-              const user_data = res.data;
-              this.$session.start()
-              this.$session.set('token',user_data.jwt)
-              this.$session.set('user_data',user_data.user)
-              this.$session.set('user_type','customer')
-              this.$router.push('/land')
-            } else {
-              alert(res.data.msg)
-            }
-          }).catch(err => {
-            console.log(err)
-            alert(err)
-          })
+          const url = BASE_URL + "/login";
+          const payload = user;
+          axios
+            .post(url, payload)
+            .then((res) => {
+              console.log(res);
+              if (res.data.status === 200) {
+                const user_data = res.data;
+                this.$session.start();
+                this.$session.set("token", user_data.jwt);
+                this.$session.set("user_data", user_data.user);
+                console.log(this.$session.get("user_data"));
+                this.$session.set("user_type", "customer");
+                this.$session.set("logged_in", "true");
+                localStorage.setItem("log", this.$session.get("logged_in"));
+                localStorage.setItem(
+                  "user_type",
+                  this.$session.get("user_type")
+                );
+                this.$router.push("/");
+              } else {
+                alert(res.data.msg);
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              alert(err);
+            });
         }
-        if(type === "seller") {
-          const url = BASE_URL + '/seller/login';
-          const payload = user
-          axios.post(url,payload).then(res => {
-            console.log(res)
-            if(res.data.status === 200) {
-              const seller_data = res.data;
-              this.$session.start();
-              this.$session.set('token',seller_data.jwt)
-              this.$session.set('user_type','seller')
-              this.$session.set('user_data',seller_data.seller)
-              this.$router.push('/seller/home')
-
-            } else {
-              alert(res.data.msg);
-              console.log(res.data.msg)
-            }
-          }).catch(err => {
-            console.log(err)
-            alert(err)
-          })
+        if (type === "seller") {
+          const url = BASE_URL + "/seller/login";
+          const payload = user;
+          axios
+            .post(url, payload)
+            .then((res) => {
+              console.log(res);
+              if (res.data.status === 200) {
+                const seller_data = res.data;
+                this.$session.start();
+                this.$session.set("token", seller_data.jwt);
+                this.$session.set("user_type", "seller");
+                this.$session.set("user_data", seller_data.seller);
+                this.$session.set("logged_in", "true");
+                localStorage.setItem("log", this.$session.get("logged_in"));
+                localStorage.setItem(
+                  "user_type",
+                  this.$session.get("user_type")
+                );
+                this.$router.push("/account");
+              } else {
+                alert(res.data.msg);
+                console.log(res.data.msg);
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              alert(err);
+            });
         }
       }
     },
@@ -160,13 +196,12 @@ export default {
         document.getElementsByClassName("actvtab")[0].style.right = "50%";
       } else {
         document.getElementsByClassName("actvtab")[0].style.right = "0%";
-         
       }
-      
     },
-    encryptPassword(password) {       
-      const salt = bcrypt.genSaltSync(10)
-      return bcrypt.hashSync(password, salt)
+
+    encryptPassword(password) {
+      const salt = bcrypt.genSaltSync(10);
+      return bcrypt.hashSync(password, salt);
     },
   },
 };
@@ -251,9 +286,9 @@ export default {
   border-radius: 1px;
 }
 .reghead {
-    display: inline-block;
-    text-align: center;
-    width: 50%;
+  display: inline-block;
+  text-align: center;
+  width: 50%;
   font-size: 17px;
   color: rgb(53, 53, 53);
   letter-spacing: 1px;

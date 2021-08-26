@@ -9,224 +9,93 @@
     />
     <table class="c-table" id="myUL">
       <tr>
-        <th >Sr.No</th>
-        <th >Name</th>
-        <th >Email</th>
-        <th ></th>
+        <th>Sr.No</th>
+        <th>Name</th>
+        <th>offer code</th>
+        <th>Date</th>
+        <th>Bill</th>
       </tr>
 
-      <tr class="search">
-        <td>1.</td>
-        <td><name>Aditya Ray</name></td>
-        <td>anuj@gmail.com</td>
+      <tr class="search" v-for="(items, index) in history.history" :key="items">
+        <td>{{ index + 1 }}.</td>
         <td>
+          <name>{{ items.customer_display_name }}</name>
+        </td>
+        <td>
+          {{ items.offer_text }}
+        </td>
+        <td>
+          {{ moment(items.timestamp * 1000).format("DD-MM-YYYY") }}
+        </td>
+        <td>
+          {{ items.sp }}
+        </td>
+        <!--<td>
           <button
             onclick="document.getElementById('id02').style.display='block'"
             class="w3-button"
           >
-            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
+            <i
+              class="fa fa-address-card"
+              style="color: rgb(50, 50, 50); font-size: 20px"
+            ></i>
           </button>
-        </td>
-      </tr>
-
-      <tr class="search">
-        <td>2.</td>
-        <td><name>Aditya Kumar</name></td>
-        <td>anuj@gmail.com</td>
-        <td>
-          <button
-            onclick="document.getElementById('id02').style.display='block'"
-            class="w3-button"
-          >
-            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
-          </button>
-        </td>
-      </tr>
-
-      <tr class="search">
-        <td>3.</td>
-        <td><name>Aman Singh</name></td>
-        <td>anuj@gmail.com</td>
-        <td>
-          <button
-            onclick="document.getElementById('id02').style.display='block'"
-            class="w3-button"
-          >
-            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
-          </button>
-        </td>
-      </tr>
-
-      <tr class="search">
-        <td>4.</td>
-        <td><name>Ankit Verma</name></td>
-        <td>anuj@gmail.com</td>
-        <td>
-          <button
-            onclick="document.getElementById('id02').style.display='block'"
-            class="w3-button"
-          >
-            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
-          </button>
-        </td>
-      </tr>
-
-      <tr class="search">
-        <td>5.</td>
-        <td><name>Atharva Tiwari</name></td>
-        <td>anuj@gmail.com</td>
-        <td>
-          <button
-            onclick="document.getElementById('id02').style.display='block'"
-            class="w3-button"
-          >
-            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
-          </button>
-        </td>
-      </tr>
-
-      <tr class="search">
-        <td>6.</td>
-        <td><name>Rohit Sharma</name></td>
-        <td>anuj@gmail.com</td>
-        <td>
-          <button
-            onclick="document.getElementById('id02').style.display='block'"
-            class="w3-button"
-          >
-            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
-          </button>
-        </td>
-      </tr>
-      <tr class="search">
-        <td>7.</td>
-        <td><name>Virat Kohli</name></td>
-        <td>anuj@gmail.com</td>
-        <td>
-          <button
-            onclick="document.getElementById('id02').style.display='block'"
-            class="w3-button"
-          >
-            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
-          </button>
-        </td>
-      </tr>
-
-      <tr class="search">
-        <td>8.</td>
-        <td><name>M.S Dhoni</name></td>
-        <td>anuj@gmail.com</td>
-        <td>
-          <button
-            onclick="document.getElementById('id02').style.display='block'"
-            class="w3-button"
-          >
-            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
-          </button>
-        </td>
-      </tr>
-
-      <tr class="search">
-        <td>9.</td>
-        <td><name>Ishant Sharma</name></td>
-        <td>anuj@gmail.com</td>
-        <td>
-          <button
-            onclick="document.getElementById('id02').style.display='block'"
-            class="w3-button"
-          >
-            <i class="fa fa-address-card" style="color: rgb(50,50,50);font-size:20px"></i>
-          </button>
-        </td>
+        </td>-->
       </tr>
     </table>
+
     <div id="id02" class="w3-modal">
       <div
         class="w3-modal-content w3-animate-zoom"
-        style="padding: 0; overflow: scroll;"
+        style="padding: 0; overflow: scroll"
       >
-        
-          <span
-            onclick="document.getElementById('id02').style.display='none'"
-            class="w3-button w3-display-topright"
-            >&times;</span
-          >
-          <table class="c-table si" style="margin-top: 50px">
-            <tr>
-              <th>Date of purchases</th>
-              <th>Customer ID</th>
-              <th>Coupon Code</th>
-              <th>Total Amount</th>
-              <th>Dis. Amount</th>
-            </tr>
-            <tr>
-              <td>2 jun 2021</td>
-              <td>Anuj Kumar</td>
-              <td>ysdah78</td>
-              <td><i class="fa fa-rupee"></i> 1200</td>
-              <td><i class="fa fa-rupee"></i> 300</td>
-            </tr>
-            <tr>
-              <td>2 jun 2021</td>
-              <td>Anuj Kumar</td>
-              <td>ysdah78</td>
-              <td><i class="fa fa-rupee"></i> 1200</td>
-              <td><i class="fa fa-rupee"></i> 300</td>
-            </tr>
-            <tr>
-              <td>2 jun 2021</td>
-              <td>Anuj Kumar</td>
-              <td>ysdah78</td>
-              <td><i class="fa fa-rupee"></i> 1200</td>
-              <td><i class="fa fa-rupee"></i> 300</td>
-            </tr>
-             <tr>
-              <td>2 jun 2021</td>
-              <td>Anuj Kumar</td>
-              <td>ysdah78</td>
-              <td><i class="fa fa-rupee"></i> 1200</td>
-              <td><i class="fa fa-rupee"></i> 300</td>
-            </tr>
-             <tr>
-              <td>2 jun 2021</td>
-              <td>Anuj Kumar</td>
-              <td>ysdah78</td>
-              <td><i class="fa fa-rupee"></i> 1200</td>
-              <td><i class="fa fa-rupee"></i> 300</td>
-            </tr>
-               <tr>
-              <td>2 jun 2021</td>
-              <td>Anuj Kumar</td>
-              <td>ysdah78</td>
-              <td><i class="fa fa-rupee"></i> 1200</td>
-              <td><i class="fa fa-rupee"></i> 300</td>
-            </tr>
-               <tr>
-              <td>2 jun 2021</td>
-              <td>Anuj Kumar</td>
-              <td>ysdah78</td>
-              <td><i class="fa fa-rupee"></i> 1200</td>
-              <td><i class="fa fa-rupee"></i> 300</td>
-            </tr>
-               <tr>
-              <td>2 jun 2021</td>
-              <td>Anuj Kumar</td>
-              <td>ysdah78</td>
-              <td><i class="fa fa-rupee"></i> 1200</td>
-              <td><i class="fa fa-rupee"></i> 300</td>
-            </tr>
-
-            
-          </table>
-         <button class="w3-button" style="margin:15px 30px;float:right"><i class="fa fa-rupee"></i> Total Sales: 10,500</button>
-       
+        <span
+          onclick="document.getElementById('id02').style.display='none'"
+          class="w3-button w3-display-topright"
+          >&times;</span
+        >
+        <table class="c-table si" style="margin-top: 50px">
+          <tr>
+            <th>Date of purchases</th>
+            <th>Customer ID</th>
+            <th>Coupon Code</th>
+            <th>Total Amount</th>
+            <th>Dis. Amount</th>
+          </tr>
+        </table>
+        <button class="w3-button" style="margin: 15px 30px; float: right">
+          <i class="fa fa-rupee"></i> Total Sales: 10,500
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import { BASE_URL } from "../../utils/constants";
+//import moment from "moment";
 export default {
+  data() {
+    return {
+      history: {},
+    };
+  },
+  mounted() {
+    this.user = this.$session.get("user_data");
+    const offersurl = BASE_URL + "/seller/history";
+    let JWTToken = this.$session.get("token");
+
+    axios
+      .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+      .then((response) => {
+        this.history = response.data;
+        console.log(this.history.history[1].timestamp);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   methods: {
     keymonitor: function () {
       var input, filter, ul, li, a, i, txtValue;
@@ -263,6 +132,7 @@ export default {
   width: 90%;
   margin: 20px auto;
   border-collapse: collapse;
+  overflow-x: auto;
 }
 .c-table td,
 th {
@@ -279,7 +149,7 @@ th {
 }
 .c-table th {
   background-color: #5dd9ff;
-  color: rgb(24, 24, 24)
+  color: rgb(24, 24, 24);
 }
 .c-table tr:hover {
   background-color: rgb(219, 219, 219);

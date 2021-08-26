@@ -1,11 +1,14 @@
 <template>
   <div>
     <topnav
-      link1='<i class="fa fa-home"></i> Home'
-      link2='<i class="fa fa-info-circle"></i> About'
-      link3='<i class="fa fa-user"></i> Account'
-      link4='<i class="fa fa-shopping-cart"></i> Cart'
-      link5='<i class="fa fa-lock"></i> Logout'
+      link3="Account"
+      link4='<i class="fa fa-shopping-cart"></i> Cart '
+      link5='<i class="fa fa-user"></i> Login'
+      url3="/account"
+      url4="/cart"
+      url5="/login"
+      url6="/"
+      :searchbar="true"
     ></topnav>
     <div class="greyback"></div>
     <div class="w3-container">
@@ -16,26 +19,38 @@
               Coupons Cart
             </h2>
 
-            <div class="couponcard">
+            <div
+              class="couponcard"
+              v-for="offer in cart.cart"
+              :key="offer.length"
+            >
               <div class="w3-row">
                 <div class="w3-col m9">
-                   <div class="card_remaining">Hurry only 9 left!</div>
+                  <div class="card_remaining">Hurry only 9 left!</div>
 
-              <div class="card_item">40% off on Samsung Fast Chargers</div>
+                  <div class="card_item">
+                    {{ offer.discount_percent }}% off on Samsung Fast Chargers
+                  </div>
 
-              <div class="w3-row">
-                <div class="w3-third">
-                  <div class="card_leftcoupons">9/30 Coupons Left</div>
-                </div>
-                <div class="w3-third">
-                  <div class="card_validity">
-                    valid till 4 jun 2021 <i class="fa fa-info-circle"></i>
+                  <div class="w3-row">
+                    <div class="w3-third">
+                      <div class="card_leftcoupons">9/30 Coupons Left</div>
+                    </div>
+                    <div class="w3-third">
+                      <div class="card_validity">
+                        valid till
+                        {{
+                          moment(offer.validity[1] * 1000).format("DD-MM-YYYY")
+                        }}
+                        <i class="fa fa-info-circle"></i>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-                </div>
                 <div class="w3-col m3">
-                  <button v-on:click="reedem" id='reedem'
+                  <button
+                    v-on:click="redeemOffer(offer.offer_text)"
+                    id="reedem"
                     class="w3-button"
                     style="
                       width: 90%;
@@ -44,32 +59,18 @@
                       color: white;
                     "
                   >
-                    Rreedem coupon
+                    Reedem coupon
                   </button>
                 </div>
               </div>
-             
             </div>
-           
-            <div>
 
-</div>
+            <div></div>
           </b-card>
         </div>
         <div class="w3-quarter p-card">
           <b-card style="margin-top: 0px">
             <h4>You may be intrested in</h4>
-            <div class="couponhome">
-              <div class="c2-back">
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKBbMroCwhxlxNUD5rGHdE4yuncOPy4fTwBA&usqp=CAU"
-                />
-              </div>
-              <div class="c2-off">40% OFF on Samsung M30s</div>
-              <div class="c2-left">5 coupons left</div>
-              <div class="c2-shop">Rakesh Digital</div>
-              <div class="c2-validity">offer valid til 2 jun 2021</div>
-            </div>
             <div class="couponhome">
               <div class="c2-back">
                 <img
@@ -91,19 +92,65 @@
 <script>
 import topnav from "../Seller/topnav.vue";
 import Sitefooter from "./sitefooter.vue";
+import { BASE_URL } from "../../utils/constants";
+import axios from "axios";
 export default {
   components: { topnav, Sitefooter },
-  methods : {
-    reedem : function(){
-      
-var r = confirm("Note that once you reedem a code it will be valid for 5 minutes only");
-if (r == true) {
-  document.getElementById("reedem").style.display="none";
-} else {
- document.getElementById("reedem").style.color="white";
-}
-    }
-  }
+  data() {
+    return {
+      cart: [],
+    };
+  },
+  mounted() {
+    this.getCart();
+  },
+  methods: {
+    redeemOffer(offer_text) {
+      var r = confirm("Process the Coupon");
+      if (r == true) {
+        const payload = {
+          offer_text: offer_text,
+        };
+
+        const accessToken = this.$session.get("token");
+        const options = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+        const url = BASE_URL + "/redeem";
+        axios
+          .post(url, payload, options)
+          .then((response) => {
+            console.log(response);
+            if (response.data.status === 200) {
+              alert(response.data.otp);
+            } else {
+              alert("something went wrong");
+            }
+          })
+          .catch((error) => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+      } else {
+        document.getElementById("reedem").style.color = "white";
+      }
+    },
+    getCart() {
+      const offersurl = BASE_URL + "/cart";
+      let JWTToken = this.$session.get("token");
+      axios
+        .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .then((response) => {
+          this.cart = response.data;
+          console.log(response.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
 };
 </script>
 <style scoped>

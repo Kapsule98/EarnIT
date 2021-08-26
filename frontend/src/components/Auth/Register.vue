@@ -1,11 +1,17 @@
 <template>
   <div>
     <topnav
-      link1='<i class="fa fa-home"></i> Home'
+      link1='<i class="fa fa-home"></i>'
       link2='<i class="fa fa-info-circle"></i> About'
       link3='<i class="fa fa-user"></i> Account'
       link4='<i class="fa fa-shopping-cart"></i> Cart'
       link5='<i class="fa fa-lock"></i> Logout'
+      url1="/"
+      url2="/about"
+      url3="/account"
+      url4="/cart"
+      url5="/logout"
+      url6="/"
     >
     </topnav>
 
@@ -14,7 +20,11 @@
         <div class="login-header" style="border-bottom: none">Register as</div>
 
         <div class="w3-row">
-          <a href="javascript:void(0)" v-on:click="openTab('customer')" id="defaultOpen">
+          <a
+            href="javascript:void(0)"
+            v-on:click="openTab('customer')"
+            id="defaultOpen"
+          >
             <div class="reghead">Customer</div>
           </a>
 
@@ -29,105 +39,121 @@
       <div class="login-content-box">
         <div
           id="customer"
-          class=" regtab w3-animate-opacity"
-          style="display: none"
-        >
-        <input
-          v-model="username"
-          type="text"
-          class="login-input"
-          placeholder="Username"
-          style="border-radius: 5px 5px 0px 0px"
-        />
-        <input
-          v-model="password"
-          type="password"
-          placeholder="Password"
-          class="login-input"
-          style="border-top: none; border-radius:0"
-        />
-        <input
-          v-model="displayname"
-          type="text"
-          class="login-input"
-          placeholder="Name"
-          style="border-top: none;border-radius:  0px"
-        />
-        <input
-         v-model="email"
-          type="email"
-          placeholder="Email"
-          class="login-input"
-          style="border-top: none; border-radius: 0px 0px 5px 5px"
-        />
-
-
-        <button @click="CustomerSignup()" class="login-button">Register</button>
-         <a href="/loginnative" style="float: right">already have an account? login here</a>
-        </div>
-
-        <div
-          id="shop"
-          class=" regtab w3-animate-opacity"
+          class="regtab w3-animate-opacity"
           style="display: none"
         >
           <input
-          v-model="username"
-          type="text"
-          class="login-input"
-          placeholder="Username"
-          style="border-radius: 5px 5px 0px 0px"
-        />
-        <input
-          v-model="password"
-          type="password"
-          placeholder="Password"
-          class="login-input"
-          style="border-top: none; border-radius:0"
-        />
-        <input
-          v-model="displayname"
-          type="text"
-          class="login-input"
-          placeholder="Name"
-          style="border-top: none;border-radius:  0px"
-        />
-        <input
-          v-model="contact_no"
-          type="text"
-          class="login-input"
-          placeholder="Contact number"
-          style="border-top: none;border-radius:  0px"
-        />
-        <input
-          v-model="address"
-          type="text"
-          class="login-input"
-          placeholder="address"
-          style="border-top: none;border-radius:  0px"
-        />
-        <input
-          v-model="email"
-          type="email"
-          placeholder="Email"
-          class="login-input"
-          style="border-top: none; border-radius: 0px 0px 5px 5px"
-        />
-        <multiselect
-          v-model="shop_category"
-          :options="categories"
-          :multiple ='true'
-        />
-        <input
-          v-model="shop_name"
-          type="text"
-          placeholder="Shop name"
-          class="login-input"
-          style="border-top: none; border-radius: 0px 0px 5px 5px"
-        />
+            v-model="username"
+            type="text"
+            class="login-input"
+            placeholder="Username"
+            style="border-radius: 5px 5px 0px 0px"
+          />
+          <input
+            v-model="password"
+            type="password"
+            placeholder="Password"
+            class="login-input"
+            style="border-top: none; border-radius: 0"
+          />
+          <input
+            v-model="displayname"
+            type="text"
+            class="login-input"
+            placeholder="Name"
+            style="border-top: none; border-radius: 0px"
+          />
+          <input
+            v-model="email"
+            type="email"
+            placeholder="Email"
+            class="login-input"
+            style="border-top: none; border-radius: 0px 0px 5px 5px"
+          />
 
-        <button @click="Sellersignup()" class="login-button">Register</button>
-        <a href="/loginnative" style="float: right">already have an account? login here</a>
+          <button @click="CustomerSignup()" class="login-button">
+            Register
+          </button>
+          <a href="/loginnative" style="float: right"
+            >already have an account? login here</a
+          >
+        </div>
+
+        <div id="shop" class="regtab w3-animate-opacity" style="display: none">
+          <input
+            v-model="username"
+            type="text"
+            class="login-input"
+            placeholder="Username"
+            style="border-radius: 5px 5px 0px 0px"
+          />
+          <input
+            v-model="password"
+            type="password"
+            placeholder="Password"
+            class="login-input"
+            style="border-top: none; border-radius: 0"
+          />
+          <input
+            v-model="displayname"
+            type="text"
+            class="login-input"
+            placeholder="Name"
+            style="border-top: none; border-radius: 0px"
+          />
+          <input
+            v-model="contact_no"
+            type="text"
+            class="login-input"
+            placeholder="Contact number"
+            style="border-top: none; border-radius: 0px"
+          />
+          <input
+            v-model="address"
+            type="text"
+            class="login-input"
+            placeholder="address"
+            style="border-top: none; border-radius: 0px"
+          />
+          <input
+            v-model="email"
+            type="email"
+            placeholder="Email"
+            class="login-input"
+            style="border-top: none"
+          />
+          <select
+            required
+            class="select"
+            name="categories"
+            v-model="shop_category"
+            style="border-top: none"
+          >
+            <option class="option" value="" disabled selected hidden>
+              Choose Category...
+            </option>
+            <option
+              class="option"
+              v-for="items in allcategories"
+              :key="items.length"
+              :value="items"
+            >
+              {{ items }}
+            </option>
+          </select>
+
+          <input
+            v-model="shop_name"
+            type="text"
+            placeholder="Shop name"
+            class="login-input"
+            style="border-top: none; border-radius: 0px 0px 5px 5px"
+          />
+
+          <button @click="Sellersignup()" class="login-button">Register</button>
+          <a href="/login" style="float: right"
+            >already have an account? login here</a
+          >
         </div>
       </div>
     </div>
@@ -138,117 +164,136 @@
 <script>
 import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "../Seller/topnav.vue";
-import bcrypt from 'bcryptjs'
-import Multiselect from 'vue-multiselect'
-import axios from 'axios'
-import {BASE_URL} from '../../utils/constants'
+import bcrypt from "bcryptjs";
+import axios from "axios";
+import { BASE_URL } from "../../utils/constants";
 export default {
-    
-  components: { topnav, Sitefooter , Multiselect},
+  components: { topnav, Sitefooter },
   data() {
     return {
       username: "",
       password: "",
       displayname: "",
       email: "",
-      contact_no:'',
-      address:'',
-      shop_category:[],
-      shop_name:'',
-      location:'',
-      categories: ['food','electronics','fashion','medical','sports'],
+      contact_no: "",
+      address: "",
+      shop_category: "",
+      shop_name: "",
+      location: "",
+      allcategories: [],
       options: [
         {
           text: "Seller",
           value: "seller",
-          id:"Seller"
+          id: "Seller",
         },
         {
           text: "Customer",
           value: "customer",
-          id:"xemn"
+          id: "xemn",
         },
       ],
     };
   },
-  
+  mounted() {
+    const offersurl = BASE_URL + "/categories";
+    let JWTToken = this.$session.get("token");
+    axios
+      .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+      .then((response) => {
+        this.allcategories = response.data.categories;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   methods: {
     Sellersignup() {
       if (
         this.username === "" ||
         this.password === "" ||
         this.displayname === "" ||
-        this.contact_no === "" || 
+        this.contact_no === "" ||
         this.address === "" ||
         this.email === "" ||
         this.shop_category.length === 0 ||
         this.shop_name === ""
-        ) {
+      ) {
         alert("Please fill mandatory fields");
       } else {
-        
-        navigator.geolocation.getCurrentPosition (
-          position => {
-            this.location = position
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            this.location = position;
           },
-          error => {
+          (error) => {
             console.log(error.message);
-            alert(error.message)
-          },
-        )
-        const hash_pass = this.encryptPassword(this.password)
-        console.log(hash_pass)
-        const seller = {
-          'password':this.password,
-          'username':this.username,
-          'display_name':this.displayname,
-          'contact_no':this.contact_no,
-          'address':this.address,
-          'category':this.shop_category,
-          'shop_name':this.shop_name,
-          'location':this.location,
-        }
-        const url = BASE_URL + '/seller/register';
-        const payload = seller;
-        axios.post(url,payload).then(res => {
-          alert(res.data.msg)
-          if(res.data.status === 200) {
-            this.$router.push('/login')
-          } else {
-            this.init()
+            alert(error.message);
           }
-        }).catch(err => {
-          console.log(err)
-        })
+        );
+        const hash_pass = this.encryptPassword(this.password);
+        console.log(hash_pass);
+        const seller = {
+          password: this.password,
+          username: this.username,
+          display_name: this.displayname,
+          contact_no: this.contact_no,
+          address: this.address,
+          category: this.shop_category,
+          shop_name: this.shop_name,
+          location: this.location,
+          email: this.email,
+        };
+        const url = BASE_URL + "/seller/register";
+        const payload = seller;
+        axios
+          .post(url, payload)
+          .then((res) => {
+            alert(res.data.msg);
+            if (res.data.status === 200) {
+              this.$router.push("/login");
+            } else {
+              this.init();
+            }
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
     CustomerSignup() {
-      if(this.username === '' || this.password === '' || this.displayname === '') {
-        alert("pls fill mandaatory fields")
-        this.init()
+      if (
+        this.username === "" ||
+        this.password === "" ||
+        this.displayname === ""
+      ) {
+        alert("pls fill mandaatory fields");
+        this.init();
         return;
-      }
-      else {
-        const hash_pass = this.encryptPassword(this.password)
-        console.log(hash_pass)
+      } else {
+        const hash_pass = this.encryptPassword(this.password);
+        console.log(hash_pass);
         const user = {
-          "username" : this.username,
-          "password" : this.password,
-          "display_name": this.displayname,
-          "email": this.email
-        }
-        const url = BASE_URL + '/register';
-        axios.post(url,user).then(res => {
-          console.log(res)
-          alert(res.data.msg)
-          if(res.data.status === 200) {
-            this.$router.push('/login')
-          } else {
-            this.init();
-          }
-        }).catch(err => {
-          console.log(err)
-        })
+          username: this.username,
+          password: this.password,
+          display_name: this.displayname,
+          email: this.email,
+        };
+        const url = BASE_URL + "/register";
+        axios
+          .post(url, user)
+          .then((res) => {
+            console.log(res);
+            alert(res.data.msg);
+            if (res.data.status === 200) {
+              this.$router.push("/login");
+            } else {
+              this.init();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
     openTab(type) {
@@ -263,28 +308,28 @@ export default {
         document.getElementsByClassName("actvtab")[0].style.right = "50%";
       } else {
         document.getElementsByClassName("actvtab")[0].style.right = "0%";
-         
       }
-      
     },
     init() {
-      this.username = '';
+      this.username = "";
       this.password = "";
       this.displayname = "";
-      this.email =  "";
-      this.contact_no = '';
-      this.address = '';
-      this.shop_category =[];
-      this.shop_name = '';
-      this.location = '';
+      this.email = "";
+      this.contact_no = "";
+      this.address = "";
+      this.shop_category = [];
+      this.shop_name = "";
+      this.location = "";
     },
-    encryptPassword(password) {       
-      const salt = bcrypt.genSaltSync(10)
-      return bcrypt.hashSync(password, salt)
+    encryptPassword(password) {
+      const salt = bcrypt.genSaltSync(10);
+      return bcrypt.hashSync(password, salt);
     },
   },
 };
-window.onload= function(){document.getElementById("defaultOpen").click();}
+window.onload = function () {
+  document.getElementById("defaultOpen").click();
+};
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
@@ -367,9 +412,9 @@ window.onload= function(){document.getElementById("defaultOpen").click();}
   border-radius: 1px;
 }
 .reghead {
-    display: inline-block;
-    text-align: center;
-    width: 50%;
+  display: inline-block;
+  text-align: center;
+  width: 50%;
   font-size: 17px;
   color: rgb(53, 53, 53);
   letter-spacing: 1px;
@@ -377,5 +422,22 @@ window.onload= function(){document.getElementById("defaultOpen").click();}
   padding: 15px 0px 0px 8px;
   font-weight: 500;
 }
-
+.select {
+  height: 60px;
+  width: 100%;
+  border: 1px solid rgb(216, 216, 216);
+  font-size: 18px;
+  padding-left: 10px;
+}
+select:focus {
+  border: 4px solid rgba(0, 183, 255, 0.322);
+  outline: none;
+}
+.option {
+  height: 60px;
+  width: 100%;
+  border: 1px solid rgb(216, 216, 216);
+  font-size: 18px;
+  padding-left: 10px;
+}
 </style>
