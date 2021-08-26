@@ -129,7 +129,7 @@
 
         <topoffers category="/get_offers_by_category/Food"></topoffers>
 
-        <catoffers category="/get_offers_by_category/Food"></catoffers>
+        <!--<catoffers category="/get_offers_by_category/Food"></catoffers>-->
       </b-card>
       <b-card style="margin-top: 5px; border: none; border-radius: 0">
         <h2 style="padding: 20px">
@@ -141,7 +141,7 @@
         </h2>
 
         <topoffers category="/get_offers_by_category/Electronics"></topoffers>
-        <catoffers category="/get_offers_by_category/Electronics"></catoffers>
+        <!--<catoffers category="/get_offers_by_category/Electronics"></catoffers>-->
       </b-card>
       <b-card style="margin-top: 5px; border: none; border-radius: 0">
         <h2 style="padding: 20px">
@@ -152,7 +152,7 @@
         </h2>
 
         <topoffers category="/get_offers_by_category/Fashion"></topoffers>
-        <catoffers category="/get_offers_by_category/Fashion"></catoffers>
+        <!--<catoffers category="/get_offers_by_category/Fashion"></catoffers>-->
       </b-card>
       <b-card style="margin-top: 5px; border: none; border-radius: 0">
         <h2 style="padding: 20px">
@@ -163,7 +163,7 @@
         </h2>
 
         <topoffers category="/get_offers_by_category/Health"></topoffers>
-        <catoffers category="/get_offers_by_category/Health"></catoffers>
+        <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
       </b-card>
       <sitefooter></sitefooter>
     </div>
@@ -174,11 +174,11 @@ import topnav from "../Seller/topnav.vue";
 import homeposters from "./homeposters.vue";
 import topoffers from "./topoffers.vue";
 import Sitefooter from "./sitefooter.vue";
-import Catoffers from "./catoffers.vue";
+//import Catoffers from "./catoffers.vue";
 import Allapi from "./allapi.vue";
 
 export default {
-  components: { topnav, Sitefooter, topoffers, homeposters, Catoffers, Allapi },
+  components: { topnav, Sitefooter, topoffers, homeposters, Allapi },
 };
 </script>
 

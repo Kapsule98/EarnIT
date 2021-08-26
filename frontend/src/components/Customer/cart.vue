@@ -1,17 +1,14 @@
 <template>
   <div>
     <topnav
-      link1='<i class="fa fa-home"></i>'
-      link2='<i class="fa fa-info-circle"></i> About'
-      link3='<i class="fa fa-user"></i> Account'
-      link4='<i class="fa fa-shopping-cart"></i> Cart'
-      link5='<i class="fa fa-lock"></i> Logout'
-      url1="/"
-      url2="/about"
+      link3="Account"
+      link4='<i class="fa fa-shopping-cart"></i> Cart '
+      link5='<i class="fa fa-user"></i> Login'
       url3="/account"
       url4="/cart"
-      url5="/logout"
+      url5="/login"
       url6="/"
+      :searchbar="true"
     ></topnav>
     <div class="greyback"></div>
     <div class="w3-container">
@@ -22,12 +19,18 @@
               Coupons Cart
             </h2>
 
-            <div class="couponcard">
+            <div
+              class="couponcard"
+              v-for="offer in cart.cart"
+              :key="offer.length"
+            >
               <div class="w3-row">
                 <div class="w3-col m9">
                   <div class="card_remaining">Hurry only 9 left!</div>
 
-                  <div class="card_item">40% off on Samsung Fast Chargers</div>
+                  <div class="card_item">
+                    {{ offer.discount_percent }}% off on Samsung Fast Chargers
+                  </div>
 
                   <div class="w3-row">
                     <div class="w3-third">
@@ -35,14 +38,18 @@
                     </div>
                     <div class="w3-third">
                       <div class="card_validity">
-                        valid till 4 jun 2021 <i class="fa fa-info-circle"></i>
+                        valid till
+                        {{
+                          moment(offer.validity[1] * 1000).format("DD-MM-YYYY")
+                        }}
+                        <i class="fa fa-info-circle"></i>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="w3-col m3">
                   <button
-                    v-on:click="reedemOffer(offer_text)"
+                    v-on:click="redeemOffer(offer.offer_text)"
                     id="reedem"
                     class="w3-button"
                     style="
@@ -89,17 +96,22 @@ import { BASE_URL } from "../../utils/constants";
 import axios from "axios";
 export default {
   components: { topnav, Sitefooter },
+  data() {
+    return {
+      cart: [],
+    };
+  },
+  mounted() {
+    this.getCart();
+  },
   methods: {
-    reedemOffer(offer_text) {
-      var r = confirm(
-        "Note that once you reedem a code it will be valid for 5 minutes only"
-      );
+    redeemOffer(offer_text) {
+      var r = confirm("Process the Coupon");
       if (r == true) {
-        const config = {
-          data: {
-            offer_text: offer_text,
-          },
+        const payload = {
+          offer_text: offer_text,
         };
+
         const accessToken = this.$session.get("token");
         const options = {
           headers: {
@@ -108,8 +120,15 @@ export default {
         };
         const url = BASE_URL + "/redeem";
         axios
-          .post(url, config, options)
-          .then((response) => console.log(response))
+          .post(url, payload, options)
+          .then((response) => {
+            console.log(response);
+            if (response.data.status === 200) {
+              alert(response.data.otp);
+            } else {
+              alert("something went wrong");
+            }
+          })
           .catch((error) => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
@@ -117,6 +136,19 @@ export default {
       } else {
         document.getElementById("reedem").style.color = "white";
       }
+    },
+    getCart() {
+      const offersurl = BASE_URL + "/cart";
+      let JWTToken = this.$session.get("token");
+      axios
+        .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .then((response) => {
+          this.cart = response.data;
+          console.log(response.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

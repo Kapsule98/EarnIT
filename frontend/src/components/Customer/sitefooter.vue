@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="l-footer">
+    <div class="l-footer" style="margin-top: 5px">
       <div class="f-box">
         <div style="float: left; color: white; font-size: 25px" class="f-logo">
           <!-- <a href="/"
