@@ -109,6 +109,13 @@
         </div>
       </div>
     </div>
+    <!--<div class="catstrip">
+      <center>
+        <div class="catlink" v-for="items in allcategories" :key="items.length">
+          {{ items }}
+        </div>
+      </center>
+    </div>-->
     <router-view />
   </div>
 </template>
@@ -192,6 +199,21 @@ export default {
 };
 </script>
 <style>
+.catstrip {
+  width: 100%;
+  background: #ffffff;
+  margin-bottom: 40px;
+  color: rgb(92, 92, 92);
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 30%);
+  padding: 10px 20px;
+}
+.catlink {
+  width: fit-content;
+  padding: 2px 10px;
+  font-size: 20px;
+  border-right: 1px solid rgb(68, 68, 68);
+  display: inline;
+}
 .dropbtn {
   background-color: #4caf4f00;
   border: none;
@@ -269,13 +291,14 @@ form.example::after {
   display: table;
 }
 .topnav {
+  margin-bottom: 40px;
   position: relative;
   width: 100%;
   box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
   padding: 14px 20px;
   height: 70px;
   font-size: 18px;
-  margin-bottom: 40px;
+
   background: rgb(93, 217, 255);
   box-shadow: 0 0 10px 0 rgb(0 0 0 / 30%);
 }

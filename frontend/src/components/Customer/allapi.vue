@@ -36,14 +36,14 @@
               <div class="c2-shop"><!--{{ shop_name }}--></div>
               <div class="c2-location">
                 <i class="fa fa-map-marker"></i>
-                <!--{{ shop_location }}-->
+                {{ list.active_offers[offer.index].seller_display_name }}
               </div>
               <div class="c2-validity">
                 offer valid till
                 {{
-                  moment(list.active_offers[offer.index].validity[1]).format(
-                    "DD-MM-YYYY"
-                  )
+                  moment(
+                    list.active_offers[offer.index].validity[1] * 1000
+                  ).format("MMM Do YY")
                 }}
               </div>
             </div>
@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     redeemOffer(offer_text) {
-      var r = confirm("Process the Coupon");
+      var r = confirm("Add coupon to cart?");
       if (r == true) {
         const payload = {
           offer_text: offer_text,
@@ -88,13 +88,14 @@ export default {
             Authorization: `Bearer ${accessToken}`,
           },
         };
-        const url = BASE_URL + "/redeem";
+        const url = BASE_URL + "/cart";
         axios
           .post(url, payload, options)
           .then((response) => {
             console.log(response);
             if (response.data.status === 200) {
-              alert(response.data.otp);
+              alert(response.data.msg);
+              this.$router.push("/cart");
             } else {
               alert("something went wrong");
             }
@@ -114,7 +115,7 @@ export default {
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.list = response.data;
-          console.log(response.data);
+          console.log(response.data.active_offers);
           var discount = [];
           for (var i = 0; i < this.list.active_offers.length; i++) {
             discount[i] = this.list.active_offers[i].discount_percent;
@@ -151,7 +152,7 @@ export default {
   width: 98%;
   height: 220px;
   margin: 10px auto;
-  background: rgba(0, 172, 252, 0.233);
+  background: rgba(0, 0, 0, 0.486);
   padding: 10px;
   overflow: hidden;
 }
@@ -190,7 +191,7 @@ export default {
   text-transform: lowercase;
   font-weight: 400;
   display: block;
-  background: white;
+  background: rgba(255, 255, 255, 0.788);
   border: 2px solid rgba(0, 162, 255, 0.719);
   padding: 2px 3px;
   border-radius: 9px;
