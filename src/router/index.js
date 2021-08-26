@@ -78,11 +78,6 @@ const routes = [
     component: () => import('../components/Auth/Logout.vue')
   },
   {
-    path: '/newuser',
-    name: 'NewUser',
-    component: () => import('../components/Auth/Newuser.vue')
-  },
-  {
     path: '/seller/home',
     name: 'SellerHome',
     component: () => import('../components/Seller/home.vue')
