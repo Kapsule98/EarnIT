@@ -109,10 +109,9 @@ export default {
       }
     },
     getAllOffers() {
-      const offersurl = BASE_URL + "/get_all_offers";
-      let JWTToken = this.$session.get("token");
+      const offersurl = BASE_URL+ "/get_all_offers";
       axios
-        .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .get(offersurl)
         .then((response) => {
           this.list = response.data;
           console.log(response.data.active_offers);

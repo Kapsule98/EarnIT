@@ -1,2 +1,1 @@
-SET BASE_URL="https://earnitapi.herokuapp.com/"
-@REM SET BASE_URL=http://127.0.0.1:5000
+SET VUE_APP_BASEURL=https://earnitapi.herokuapp.com/
