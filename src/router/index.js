@@ -88,6 +88,16 @@ const routes = [
     component: () => import('../components/Seller/RegisterDetails.vue')
   },
   {
+    path: '/verifymail',
+    name: 'UserVerifyMail',
+    component: () => import('../components/Auth/VerifyMail.vue')
+  },
+  {
+    path: '/seller/verifymail',
+    name: 'SellerVerifyMail',
+    component: () => import('../components/Auth/VerifyMail.vue')
+  },
+  {
     beforeEnter: guardMyroute,
     path: '/verifycoupon',
     name: 'verifycoupon',
