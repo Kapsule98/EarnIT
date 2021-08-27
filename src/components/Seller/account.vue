@@ -37,7 +37,7 @@
             <div class="w3-row">
               <div class="w3-third">
                 <b-card style="margin: 10px; text-align: center">
-                  <span class="tealbg">67</span>
+                  <span class="tealbg">{{ coupons_sold.number_customers}}</span>
 
                   <template #footer>
                     <div class="c-head">Number of Customers</div>
@@ -46,7 +46,7 @@
               </div>
               <div class="w3-third">
                 <b-card style="margin: 10px; text-align: center">
-                  <span class="tealbg">{{ coupons_sold.coupons_sold }}</span>
+                  <span class="tealbg">{{ coupons_sold.history.length }}</span>
                   <template #footer>
                     <div class="c-head">Number of Coupons Sold</div>
                   </template>
@@ -242,7 +242,7 @@ export default {
         });
     },
     getCouponsSold() {
-      const url = BASE_URL + "/seller/get_coupons";
+      const url = BASE_URL + "/seller/history";
       let JWTToken = this.$session.get("token");
       axios
         .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
