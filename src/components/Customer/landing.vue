@@ -6,7 +6,7 @@
       link5='<i class="fa fa-user"></i> Login'
       url1="/"
       url2="/"
-      url3="/account"
+      url3="/dashboard"
       url4="/cart"
       url5="/login"
       url6="/"
@@ -111,11 +111,11 @@
         </div>
       </div>
 
-      <b-card style="margin-top: 5px; border: none; border-radius: 0">
+      <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h3 style="padding: 0px">
           Top Offers
           <router-link :to="{ path: '/search', query: { alloffers: true } }"
-            ><a href="" style="font-size: 11px">View all</a>
+            ><a href="" class="vall">View all</a>
           </router-link>
         </h3>
 
@@ -124,11 +124,11 @@
         </div>
       </b-card>
 
-      <b-card style="margin-top: 5px; border: none; border-radius: 0">
+      <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h2 style="padding: 20px">
           Food
           <router-link :to="{ path: '/search', query: { category: 'Food' } }"
-            ><a href="" style="font-size: 11px">View all</a></router-link
+            ><a href="" class="vall">View all</a></router-link
           >
         </h2>
 
@@ -136,34 +136,34 @@
 
         <!--<catoffers category="/get_offers_by_category/Food"></catoffers>-->
       </b-card>
-      <b-card style="margin-top: 5px; border: none; border-radius: 0">
+      <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h2 style="padding: 20px">
           Electronics
           <router-link
             :to="{ path: '/search', query: { category: 'Electronics' } }"
-            ><a href="" style="font-size: 11px">View all</a></router-link
+            ><a href="" class="vall">View all</a></router-link
           >
         </h2>
 
         <topoffers category="/get_offers_by_category/Electronics"></topoffers>
         <!--<catoffers category="/get_offers_by_category/Electronics"></catoffers>-->
       </b-card>
-      <b-card style="margin-top: 5px; border: none; border-radius: 0">
+      <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h2 style="padding: 20px">
           Fashion
           <router-link :to="{ path: '/search', query: { category: 'Fashion' } }"
-            ><a href="" style="font-size: 11px">View all</a></router-link
+            ><a href="" class="vall">View all</a></router-link
           >
         </h2>
 
         <topoffers category="/get_offers_by_category/Fashion"></topoffers>
         <!--<catoffers category="/get_offers_by_category/Fashion"></catoffers>-->
       </b-card>
-      <b-card style="margin-top: 5px; border: none; border-radius: 0">
+      <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h2 style="padding: 20px">
           Health<router-link
             :to="{ path: '/search', query: { category: 'Health' } }"
-            ><a href="" style="font-size: 11px">View all</a></router-link
+            ><a href="" class="vall">View all</a></router-link
           >
         </h2>
 
@@ -188,12 +188,19 @@ export default {
 </script>
 
 <style scoped>
+.vall {
+  font-size: 15px;
+  float: right;
+  padding: 7px 12px;
+  color: white;
+  background: rgb(0, 119, 255);
+}
 .top_categories {
   z-index: 1000;
   background: white;
   border: none;
   border-radius: 0;
-  margin: 2px auto;
+  margin: 1px auto;
   width: 99%;
 }
 .c-grid {

@@ -8,7 +8,7 @@
       link2=""
       url1="/"
       url2="/"
-      url3="/account"
+      url3="/dashboard"
       url4="/cart"
       url5="/login"
       url6="/"
@@ -59,7 +59,7 @@
                     class="w3-button"
                     style="
                       width: 90%;
-                      margin: 30px 10px;
+                      margin: 30px 5%;
                       background: #008cff;
                       color: white;
                     "

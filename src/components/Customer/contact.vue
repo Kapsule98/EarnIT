@@ -6,7 +6,7 @@
       link5='<i class="fa fa-user"></i> Login'
       url1="/"
       url2="/"
-      url3="/account"
+      url3="/dashboard"
       url4="/cart"
       url5="/login"
       url6="/"
