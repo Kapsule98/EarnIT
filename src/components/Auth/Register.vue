@@ -250,7 +250,7 @@ export default {
           .then((res) => {
             alert(res.data.msg);
             if (res.data.status === 200) {
-              this.$router.push("/login");
+              this.$router.push("/seller/verifymail");
             } else {
               this.init();
             }
@@ -286,7 +286,7 @@ export default {
             console.log(res);
             alert(res.data.msg);
             if (res.data.status === 200) {
-              this.$router.push("/login");
+              this.$router.push("/verifymail");
             } else {
               this.init();
             }

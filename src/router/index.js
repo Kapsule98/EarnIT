@@ -78,11 +78,6 @@ const routes = [
     component: () => import('../components/Auth/Logout.vue')
   },
   {
-    path: '/newuser',
-    name: 'NewUser',
-    component: () => import('../components/Auth/Newuser.vue')
-  },
-  {
     path: '/seller/home',
     name: 'SellerHome',
     component: () => import('../components/Seller/home.vue')
@@ -91,6 +86,16 @@ const routes = [
     path: '/seller/registerdetails',
     name: 'RegisterSellerDetails',
     component: () => import('../components/Seller/RegisterDetails.vue')
+  },
+  {
+    path: '/verifymail',
+    name: 'UserVerifyMail',
+    component: () => import('../components/Auth/VerifyMail.vue')
+  },
+  {
+    path: '/seller/verifymail',
+    name: 'SellerVerifyMail',
+    component: () => import('../components/Auth/VerifyMail.vue')
   },
   {
     beforeEnter: guardMyroute,
