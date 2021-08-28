@@ -91,6 +91,7 @@
         </div>
       </div>
     </div>
+    <bottomnav></bottomnav>
     <sitefooter></sitefooter>
   </div>
 </template>
@@ -99,8 +100,9 @@ import topnav from "../Seller/topnav.vue";
 import Sitefooter from "./sitefooter.vue";
 import { BASE_URL } from "../../utils/constants";
 import axios from "axios";
+import Bottomnav from "./bottomnav.vue";
 export default {
-  components: { topnav, Sitefooter },
+  components: { topnav, Sitefooter, Bottomnav },
   data() {
     return {
       cart: [],

@@ -191,6 +191,7 @@
         style="width: 60%; margin-left: 20%; margin-top: -2%"
       />
     </div>
+    <bottomnav></bottomnav>
     <sitefooter></sitefooter>
   </div>
 </template>

@@ -14,15 +14,17 @@
     >
       <img
         src="https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/8/12/e0a239e2-46df-4308-81e9-843f14ee18821628771628414-Wrogn_Desk_Banner--1-.jpg"
-        style="width: 100%"
+        class="homeposters"
       />
       <img
         src="https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/8/12/0115163a-c65c-47a2-9828-eddc637253d11628778790401-Kidswear_Dk.jpg"
         width="100%"
+        class="homeposters"
       />
       <img
         src="https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/8/12/a37b36d9-4e64-4f25-bb0e-97524745cf051628771671703-Dressberry_Desk.jpg"
         width="100%"
+        class="homeposters"
       />
     </carousel>
   </div>
@@ -61,5 +63,13 @@ a {
 }
 a:hover {
   text-decoration: none;
+}
+.homeposters {
+  width: 100%;
+}
+@media screen and (max-width: 600px) {
+  .homeposters {
+    width: 200% !important;
+  }
 }
 </style>

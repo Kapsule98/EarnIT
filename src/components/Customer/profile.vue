@@ -56,15 +56,17 @@
 
       <div class="w3-col m3" style="padding: 1px"></div>
     </div>
+    <bottomnav></bottomnav>
     <sitefooter></sitefooter>
   </div>
 </template>
 
 <script>
 import topnav from "../Seller/topnav.vue";
+import Bottomnav from "./bottomnav.vue";
 import Sitefooter from "./sitefooter.vue";
 export default {
-  components: { topnav, Sitefooter },
+  components: { topnav, Sitefooter, Bottomnav },
 
   data() {
     return {
