@@ -6,14 +6,14 @@
       link5='<i class="fa fa-user"></i> Login'
       url1="/"
       url2="/"
-      url3="/account"
+      url3="/dashboard"
       url4="/cart"
       url5="/login"
       url6="/"
       link1=""
       link2=""
       :display_categories="true"
-      :productsearch="true"
+      :searchbar="true"
     ></topnav>
     <div class="greyback"></div>
     <div class="w3-container mopad">
@@ -96,7 +96,7 @@
                             class="w3-button"
                             style="
                               width: 80%;
-                              margin: 30px auto;
+                              margin: 30px 10%;
                               background: #008cff;
                               color: white;
                             "

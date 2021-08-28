@@ -25,12 +25,14 @@
         </form>
         <form class="example" v-if="productsearch === true">
           <input
+            ref="prose"
             type="text"
             placeholder="Search.."
             name="search"
-            v-on:keyup="productSearch()"
+            v-on:keydown="productSearch()"
             v-model="searchvalue"
             autocomplete="off"
+            autofocus
           />
           <button v-on:click="productSearch()">
             <i class="fa fa-search"></i>
@@ -60,6 +62,7 @@
           >
             Hi {{ user.shop_name }}!
           </div>
+          <div class="restxt" v-else>Please Signin!</div>
 
           <div v-bind:class="'topnavlink ' + active6">
             <div :to="url6"><span v-html="link6"></span></div>
@@ -168,6 +171,7 @@ export default {
     "display_categories",
   ],
   mounted() {
+    this.$nextTick(() => this.$refs.prose.focus());
     this.user = this.$session.get("user_data");
     const offersurl = BASE_URL + "/categories";
     let JWTToken = this.$session.get("token");
@@ -215,6 +219,9 @@ export default {
 };
 </script>
 <style>
+.restxt {
+  display: none;
+}
 .catstrip {
   width: 100%;
   background: #ffffff;
@@ -375,6 +382,9 @@ form.example::after {
   display: inline-flex;
 }
 @media screen and (max-width: 1050px) {
+  .restxt {
+    display: block;
+  }
   .reduce {
     position: fixed;
     display: none;

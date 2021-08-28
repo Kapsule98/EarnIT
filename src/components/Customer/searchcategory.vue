@@ -6,7 +6,7 @@
       link5='<i class="fa fa-user"></i> Login'
       url1="/"
       url2="/"
-      url3="/account"
+      url3="/dashboard"
       url4="/cart"
       url5="/login"
       url6="/"
@@ -236,7 +236,7 @@
                       class="w3-button"
                       style="
                         width: 80%;
-                        margin: 30px auto;
+                        margin: 30px 10%;
                         background: #008cff;
                         color: white;
                       "
@@ -332,6 +332,7 @@ export default {
     byFilter(p) {
       if (this.category === null && p !== 1) {
         alert("please select a category first");
+        document.getElementById("sby2").checked = false;
       } else {
         if (p === 2) {
           this.$router.push("/search_by_shop?category=" + this.category);

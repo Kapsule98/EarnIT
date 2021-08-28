@@ -12,6 +12,7 @@
       link2=""
       link3=""
       link5=""
+      :searchbar="true"
     ></topnav>
     <div class="w3-container">
       <div class="w3-row">
