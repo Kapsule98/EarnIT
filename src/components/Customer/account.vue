@@ -91,6 +91,7 @@
         <!---->
       </div>
     </div>
+    <bottomnav></bottomnav>
     <sitefooter></sitefooter>
   </div>
 </template>
@@ -99,9 +100,10 @@
 import topnav from "../Seller/topnav.vue";
 import Sitefooter from "./sitefooter.vue";
 import GoogleChart from "./GoogleChart.vue";
+import Bottomnav from "./bottomnav.vue";
 
 export default {
-  components: { topnav, Sitefooter, GoogleChart },
+  components: { topnav, Sitefooter, GoogleChart, Bottomnav },
 };
 </script>
 

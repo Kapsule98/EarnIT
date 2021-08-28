@@ -4,17 +4,15 @@
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
       <div class="topnavlink left" style="font-weight: 900">
         <router-link to="/"
-          ><img
-            src="../../assets/flogo.png"
-            alt=""
-            style="width: 200px; margin-top: -10px"
+          ><img src="../../assets/flogo.png" alt="" class="mainlogo"
         /></router-link>
       </div>
       <div class="left searchbar">
         <form class="example" v-if="searchbar === true">
           <input
+            id="landsearch"
             type="text"
-            placeholder="Search.."
+            placeholder="Search"
             name="search"
             v-on:click="search"
             autocomplete="off"
@@ -219,6 +217,10 @@ export default {
 };
 </script>
 <style>
+.mainlogo {
+  width: 200px;
+  margin-top: -5px;
+}
 .restxt {
   display: none;
 }
@@ -282,6 +284,8 @@ form.example input[type="text"] {
   background: #f7fcff;
   margin-top: 0px;
   margin-left: 40px;
+  border-radius: 6px 0px 0px 6px;
+  box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.137);
 }
 form.example input[type="text"]:focus {
   outline: none;
@@ -293,14 +297,15 @@ form.example button {
   float: left;
   width: 50px;
   padding: 10px;
-  background: rgb(0, 119, 255);
+  background: #0077ff;
   color: rgb(255, 255, 255);
   font-size: 18px;
   border: none;
   border-left: none; /* Prevent double borders */
   cursor: pointer;
   margin-top: 0px;
-  border-radius: 0 5px 5px 0;
+  border-radius: 0 6px 6px 0;
+  box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.137);
 }
 
 form.example button:hover {
@@ -322,7 +327,7 @@ form.example::after {
   height: 70px;
   font-size: 18px;
 
-  background: rgb(93, 217, 255);
+  background: linear-gradient(to right, rgb(93, 217, 255), rgb(82, 255, 212));
   box-shadow: 0 0 10px 0 rgb(0 0 0 / 30%);
 }
 
@@ -367,9 +372,9 @@ form.example::after {
 .menubtn {
   display: none;
   font-size: 25px;
-  color: black;
+  color: rgb(0, 5, 53);
   float: right;
-  padding-top: 10px;
+  padding-top: 0px;
 }
 .closebtn {
   display: none;
@@ -382,6 +387,10 @@ form.example::after {
   display: inline-flex;
 }
 @media screen and (max-width: 1050px) {
+  .mainlogo {
+    width: 150px;
+    margin-top: -5px;
+  }
   .restxt {
     display: block;
   }
@@ -439,9 +448,9 @@ form.example::after {
     display: block;
     position: absolute;
     right: 20px;
-    top: 12%;
+    top: 11%;
     color: rgb(255, 255, 255);
-    font-size: 20px;
+    font-size: 25px;
   }
   form.example input[type="text"] {
     padding: 10px;
@@ -468,7 +477,7 @@ form.example::after {
     border: none;
     border-left: none; /* Prevent double borders */
     cursor: pointer;
-    margin-top: 9px;
+    margin-top: 10px;
     border-radius: 0 5px 5px 0;
   }
   .resp {

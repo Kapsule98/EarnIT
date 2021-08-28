@@ -161,6 +161,7 @@
         </div>
       </div>
     </div>
+    <bottomnav></bottomnav>
     <div class="reduce"></div>
     <sitefooter></sitefooter>
   </div>
@@ -174,8 +175,9 @@ import Sitefooter from "./sitefooter.vue";
 //import allcatrgories from "./allcategories.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import Bottomnav from "./bottomnav.vue";
 export default {
-  components: { topnav, Sitefooter },
+  components: { topnav, Sitefooter, Bottomnav },
   props: {
     category: {
       type: String,

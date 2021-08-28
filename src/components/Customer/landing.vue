@@ -170,6 +170,7 @@
         <topoffers category="/get_offers_by_category/Health"></topoffers>
         <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
       </b-card>
+      <bottomnav></bottomnav>
       <sitefooter></sitefooter>
     </div>
   </div>
@@ -181,9 +182,17 @@ import topoffers from "./topoffers.vue";
 import Sitefooter from "./sitefooter.vue";
 //import Catoffers from "./catoffers.vue";
 import Allapi from "./allapi.vue";
+import Bottomnav from "./bottomnav.vue";
 
 export default {
-  components: { topnav, Sitefooter, topoffers, homeposters, Allapi },
+  components: {
+    topnav,
+    Sitefooter,
+    topoffers,
+    homeposters,
+    Allapi,
+    Bottomnav,
+  },
 };
 </script>
 
@@ -240,7 +249,8 @@ export default {
 }
 @media screen and (max-width: 800px) {
   .catimg {
-    height: 120px;
+    height: 150px;
+    border-radius: 10px;
   }
 }
 

@@ -136,6 +136,7 @@ export default {
 @media screen and (max-width: 800px) {
   .l-footer {
     padding: 10px;
+    padding-bottom: 70px;
   }
   .f-address {
     border-left: none;
