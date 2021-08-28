@@ -1,17 +1,19 @@
 <template>
   <div>
     <topnav
-      link1='<i class="fa fa-home"></i>'
-      link2='<i class="fa fa-info-circle"></i> About'
-      link3='<i class="fa fa-user"></i> Account'
-      link4='<i class="fa fa-shopping-cart"></i> Cart'
-      link5='<i class="fa fa-lock"></i> Logout'
+      link3="Account"
+      link4='<i class="fa fa-shopping-cart"></i> Cart '
+      link5='<i class="fa fa-user"></i> Login'
       url1="/"
-      url2="/about"
+      url2="/"
       url3="/account"
       url4="/cart"
-      url5="/logout"
+      url5="/login"
       url6="/"
+      link1=""
+      link2=""
+      :searchbar="true"
+      :display_categories="true"
     ></topnav>
     <h1>Contact page</h1>
     <br /><br /><br />

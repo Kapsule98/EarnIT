@@ -1,16 +1,14 @@
 <template>
   <div>
     <topnav
-      link1='<i class="fa fa-home"></i> Home'
-      link2='<i class="fa fa-info-circle"></i> About'
+      link1='<i class="fa fa-cubes"></i> Dashboard'
+      link2='<i class="fa fa-money"></i> Customer Bill'
       link3='<i class="fa fa-user"></i> Account'
-      link4='<i class="fa fa-shopping-cart"></i> Cart'
-      link5='<i class="fa fa-lock"></i> Logout'
-      url1="/"
-      url2="/about"
-      url3="/dashboard"
-      url4="/cart"
-      url5="/login"
+      url1="/verifycoupon"
+      url2="/customerbill"
+      url3="/account"
+      link4=""
+      link5=""
     ></topnav>
 
     <div class="w3-row">

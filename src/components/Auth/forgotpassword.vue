@@ -1,17 +1,17 @@
 <template>
   <div>
     <topnav
-      link1='<i class="fa fa-home"></i>'
-      link2='<i class="fa fa-info-circle"></i> About'
-      link3='<i class="fa fa-user"></i> Account'
-      link4='<i class="fa fa-shopping-cart"></i> Cart'
-      link5='<i class="fa fa-lock"></i> Logout'
-      url1="/"
-      url2="/about"
-      url3="/account"
-      url4="/cart"
-      url5="/logout"
+      link1="Register"
+      link2="Login"
+      url1="/register"
+      url2="/login"
+      url3="/"
+      url4="/"
+      url5="/"
       url6="/"
+      link3=""
+      link4=""
+      link5=""
     >
     </topnav>
 
@@ -56,7 +56,7 @@
             />
             <input
               v-model="password"
-              type="password..."
+              type="password"
               class="login-input"
               placeholder="enter a new password"
               style="border-top: none; border-radius: 0px"
@@ -173,6 +173,7 @@ export default {
             document.getElementById("resetbtn").style.display = "none";
             document.getElementById("step1").style.display = "none";
             document.getElementById("relogbtn").style.display = "block";
+            this.$router.push("/login");
           } else {
             alert(response.data.msg);
           }

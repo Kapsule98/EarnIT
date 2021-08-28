@@ -4,10 +4,15 @@
       link3="Account"
       link4='<i class="fa fa-shopping-cart"></i> Cart '
       link5='<i class="fa fa-user"></i> Login'
+      url1="/"
+      url2="/"
       url3="/account"
       url4="/cart"
       url5="/login"
       url6="/"
+      link1=""
+      link2=""
+      :display_categories="true"
       :productsearch="true"
     ></topnav>
     <!--<allcatrgories></allcatrgories>-->
@@ -77,52 +82,78 @@
           <span>
             <div class="couponcard">
               <div class="w3-row">
-                <div class="w3-col imgcol">
-                  <div v-if="shop.category === 'Health'">
-                    <img
-                      src="../../assets/health.jpg"
-                      class="thumbnail"
-                      alt=""
-                    />
+                <div class="w3-col m9">
+                  <div class="w3-col imgcol">
+                    <div v-if="shop.category === 'Health'">
+                      <img
+                        src="../../assets/health.jpg"
+                        class="thumbnail"
+                        alt=""
+                      />
+                    </div>
+                    <div v-else-if="shop.category === 'Fashion'">
+                      <img
+                        src="../../assets/fashion.jpg"
+                        class="thumbnail"
+                        alt=""
+                      />
+                    </div>
+                    <div v-else-if="shop.category === 'Furniture'">
+                      <img
+                        src="../../assets/furnishing.jpg"
+                        class="thumbnail"
+                        alt=""
+                      />
+                    </div>
+                    <div v-else-if="shop.category === 'Food'">
+                      <img
+                        src="../../assets/food.jpg"
+                        class="thumbnail"
+                        alt=""
+                      />
+                    </div>
+                    <div v-else-if="shop.category === 'Electronics'">
+                      <img
+                        src="../../assets/electronics.jpg"
+                        class="thumbnail"
+                        alt=""
+                      />
+                    </div>
                   </div>
-                  <div v-else-if="shop.category === 'Fashion'">
-                    <img
-                      src="../../assets/fashion.jpg"
-                      class="thumbnail"
-                      alt=""
-                    />
-                  </div>
-                  <div v-else-if="shop.category === 'Furniture'">
-                    <img
-                      src="../../assets/furnishing.jpg"
-                      class="thumbnail"
-                      alt=""
-                    />
-                  </div>
-                  <div v-else-if="shop.category === 'Food'">
-                    <img src="../../assets/food.jpg" class="thumbnail" alt="" />
-                  </div>
-                  <div v-else-if="shop.category === 'Electronics'">
-                    <img
-                      src="../../assets/electronics.jpg"
-                      class="thumbnail"
-                      alt=""
-                    />
+                  <div class="w3-col contentcol" style="width: 80%">
+                    <div class="card_item">
+                      <name> {{ shop.display_name }} </name>
+                    </div>
+
+                    <div class="w3-row">
+                      <div class="w3-third">
+                        <div class="card_leftcoupons">
+                          <address>{{ shop.address }}</address>
+                        </div>
+                      </div>
+                      <div class="w3-third"></div>
+                    </div>
                   </div>
                 </div>
-                <div class="w3-col contentcol" style="width: 80%">
-                  <div class="card_item">
-                    <name> {{ shop.display_name }} </name>
-                  </div>
-
-                  <div class="w3-row">
-                    <div class="w3-third">
-                      <div class="card_leftcoupons">
-                        <address>{{ shop.address }}</address>
-                      </div>
-                    </div>
-                    <div class="w3-third"></div>
-                  </div>
+                <div class="w3-col m3">
+                  <router-link
+                    :to="{
+                      path: '/seller',
+                      query: { seller: shop.shop_name },
+                    }"
+                  >
+                    <button
+                      class="w3-button"
+                      style="
+                        width: 80%;
+                        margin: 30px auto;
+                        background: #008cff;
+                        color: white;
+                      "
+                    >
+                      View Shop
+                    </button>
+                  </router-link>
                 </div>
               </div>
             </div>

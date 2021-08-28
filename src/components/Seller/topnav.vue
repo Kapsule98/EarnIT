@@ -3,7 +3,7 @@
     <div id="nav" class="topnav">
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
       <div class="topnavlink left" style="font-weight: 900">
-        <router-link to=""
+        <router-link to="/"
           ><img
             src="../../assets/flogo.png"
             alt=""
@@ -60,51 +60,63 @@
           >
             Hi {{ user.shop_name }}!
           </div>
+
           <div v-bind:class="'topnavlink ' + active6">
             <div :to="url6"><span v-html="link6"></span></div>
           </div>
         </div>
-        <div class="resp">
-          <div v-bind:class="'topnavlink ' + active1">
-            <router-link :to="url1"><span v-html="link1"></span></router-link>
+        <div class="indate">
+          <div class="resp" v-if="link1 !== ''">
+            <div v-bind:class="'topnavlink ' + active1">
+              <router-link :to="url1"><span v-html="link1"></span></router-link>
+            </div>
           </div>
-        </div>
-        <div class="resp">
-          <div v-bind:class="'topnavlink ' + active2">
-            <router-link :to="url2"><span v-html="link2"></span></router-link>
+          <div class="resp" v-if="link2 !== ''">
+            <div v-bind:class="'topnavlink ' + active2">
+              <router-link :to="url2"><span v-html="link2"></span></router-link>
+            </div>
           </div>
-        </div>
-        <div class="resp" v-if="this.$session.get('user_type') !== 'seller'">
-          <div class="dropdown">
-            <button class="dropbtn">
-              Categories <i class="fa fa-angle-down"></i>
-            </button>
-            <div class="dropdown-content">
-              <div v-for="items in allcategories" :key="items.length">
-                <router-link
-                  :to="{ path: '/search', query: { category: items } }"
-                  >{{ items }}</router-link
-                >
+          <div
+            class="resp"
+            v-if="
+              this.$session.get('user_type') !== 'seller' &&
+              display_categories === true
+            "
+          >
+            <div class="dropdown">
+              <button class="dropbtn">
+                Categories <i class="fa fa-angle-down"></i>
+              </button>
+              <div class="dropdown-content">
+                <div v-for="items in allcategories" :key="items.length">
+                  <router-link
+                    :to="{ path: '/search', query: { category: items } }"
+                    >{{ items }}</router-link
+                  >
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="resp" v-if="this.$session.get('logged_in') === 'true'">
-          <div v-bind:class="'topnavlink ' + active3">
-            <router-link :to="url3"><span v-html="link3"></span></router-link>
-          </div>
-        </div>
-        <div class="resp">
-          <div v-bind:class="'topnavlink ' + active4">
-            <router-link :to="url4"><span v-html="link4"></span></router-link>
-          </div>
-        </div>
-        <div class="resp">
           <div
-            v-bind:class="'topnavlink ' + active5"
-            v-if="this.$session.get('logged_in') !== 'true'"
+            class="resp"
+            v-if="this.$session.get('logged_in') === 'true' && link3 !== ''"
           >
-            <router-link :to="url5"><span v-html="link5"></span></router-link>
+            <div v-bind:class="'topnavlink ' + active3">
+              <router-link :to="url3"><span v-html="link3"></span></router-link>
+            </div>
+          </div>
+          <div class="resp" v-if="link4 !== ''">
+            <div v-bind:class="'topnavlink ' + active4">
+              <router-link :to="url4"><span v-html="link4"></span></router-link>
+            </div>
+          </div>
+          <div class="resp" v-if="link5 !== ''">
+            <div
+              v-bind:class="'topnavlink ' + active5"
+              v-if="this.$session.get('logged_in') !== 'true'"
+            >
+              <router-link :to="url5"><span v-html="link5"></span></router-link>
+            </div>
           </div>
         </div>
       </div>
@@ -117,6 +129,7 @@
       </center>
     </div>-->
     <router-view />
+    <div class="reduce"></div>
   </div>
 </template>
 <script>
@@ -152,6 +165,7 @@ export default {
     "active6",
     "searchbar",
     "productsearch",
+    "display_categories",
   ],
   mounted() {
     this.user = this.$session.get("user_data");
@@ -191,9 +205,11 @@ export default {
     },
     openmenu: function () {
       document.getElementsByClassName("right")[0].style.left = "0%";
+      document.getElementsByClassName("reduce")[0].style.display = "block";
     },
     closemenu: function () {
       document.getElementsByClassName("right")[0].style.left = "-70%";
+      document.getElementsByClassName("reduce")[0].style.display = "none";
     },
   },
 };
@@ -255,7 +271,7 @@ form.example input[type="text"] {
   border: none;
   float: left;
   display: flex;
-  width: 230px;
+  width: 290px;
   background: #f7fcff;
   margin-top: 0px;
   margin-left: 40px;
@@ -355,7 +371,24 @@ form.example::after {
   background: #008cff;
   color: rgb(233, 255, 234);
 }
+.indate {
+  display: inline-flex;
+}
 @media screen and (max-width: 1050px) {
+  .reduce {
+    position: fixed;
+    display: none;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1999;
+  }
+  .indate {
+    padding-left: 20px;
+    display: block;
+  }
   .topnav {
     height: 120px;
     margin: 0 0 30px 0px;
@@ -370,18 +403,24 @@ form.example::after {
     background-color: rgb(248, 248, 248);
     z-index: 2000;
     padding-top: 20%;
+    margin-top: -10px;
   }
   .topnavlink.left {
     font-size: 25px;
     color: white !important;
   }
   .right a {
-    padding: 20px 36px !important;
+    padding: 4px 6px !important;
     width: 100%;
   }
   .hiwel {
-    margin: 20px;
-    font-size: 30px !important;
+    margin: 0px;
+    margin-bottom: 20px;
+    padding: 12px 10px !important;
+    font-size: 25px !important;
+    border-bottom: 1px solid#008cff;
+    background: #008cff;
+    color: white !important;
   }
   .menubtn {
     display: block;
@@ -390,8 +429,8 @@ form.example::after {
     display: block;
     position: absolute;
     right: 20px;
-    top: 10%;
-    color: teal;
+    top: 12%;
+    color: rgb(255, 255, 255);
     font-size: 20px;
   }
   form.example input[type="text"] {
@@ -425,6 +464,23 @@ form.example::after {
   .resp {
     padding: 4px 0px;
     font-size: 20px;
+  }
+  .dropdown-content {
+    display: block;
+    position: relative;
+    background-color: #ffffff00;
+    width: 100%;
+    box-shadow: none;
+    z-index: 3;
+    border-bottom: 1px solid #858585;
+  }
+
+  .dropdown-content a {
+    color: rgb(92, 92, 92);
+    padding: 0px 16px;
+    text-decoration: none;
+    display: block;
+    margin: 0px !important;
   }
 }
 </style>

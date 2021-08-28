@@ -17,9 +17,7 @@
       :dots="false"
       ><template>
         <div v-for="offer in mapped" :key="offer.length">
-          <a
-            v-on:click="redeemOffer(list.active_offers[offer.index].offer_text)"
-          >
+          <a v-on:click="addToCart(list.active_offers[offer.index].offer_text)">
             <div class="couponhome">
               <div class="c2-back">
                 <img
@@ -51,7 +49,6 @@
         </div>
       </template>
     </carousel>
-    <allapi></allapi>
   </div>
   <!---->
 </template>
@@ -60,9 +57,8 @@
 import carousel from "vue-owl-carousel";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
-import Allapi from "./allapi.vue";
 export default {
-  components: { carousel, Allapi },
+  components: { carousel },
   props: ["category", "alloffers"],
   data() {
     return {
@@ -75,7 +71,7 @@ export default {
     this.getAllOffers();
   },
   methods: {
-    redeemOffer(offer_text) {
+    addToCart(offer_text) {
       var r = confirm("Add coupon to cart?");
       if (r == true) {
         const payload = {
@@ -92,7 +88,6 @@ export default {
         axios
           .post(url, payload, options)
           .then((response) => {
-            console.log(response);
             if (response.data.status === 200) {
               alert(response.data.msg);
               this.$router.push("/cart");
@@ -109,12 +104,12 @@ export default {
       }
     },
     getAllOffers() {
-      const offersurl = BASE_URL+ "/get_all_offers";
+      const offersurl = BASE_URL + "/get_all_offers";
       axios
         .get(offersurl)
         .then((response) => {
           this.list = response.data;
-          console.log(response.data.active_offers);
+
           var discount = [];
           for (var i = 0; i < this.list.active_offers.length; i++) {
             discount[i] = this.list.active_offers[i].discount_percent;
@@ -139,7 +134,7 @@ export default {
           this.mapped = mapped;
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     },
   },

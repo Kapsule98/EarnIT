@@ -7,11 +7,9 @@
       url1="/verifycoupon"
       url2="/customerbill"
       url3="/account"
-      url4="/"
-      url5="/"
-      url6="/"
+      link4=""
+      link5=""
       active3="active_nav"
-      :searchbar="true"
     ></topnav>
 
     <div class="w3-card c-m" style="background: white; margin-top: -30px">
@@ -37,7 +35,9 @@
             <div class="w3-row">
               <div class="w3-third">
                 <b-card style="margin: 10px; text-align: center">
-                  <span class="tealbg">{{ coupons_sold.number_customers}}</span>
+                  <span class="tealbg">{{
+                    coupons_sold.number_customers
+                  }}</span>
 
                   <template #footer>
                     <div class="c-head">Number of Customers</div>
@@ -66,12 +66,6 @@
           </b-card>
         </div>
         <div class="w3-third" style="padding: 20px">
-          <div class="showfilter">
-            <button class="showbtn" v-on:click="showFilter()">
-              Filter <i class="fa fa-angle-down"></i>
-            </button>
-          </div>
-
           <div class="filter">
             <div class="closeFilter">
               <button v-on:click="closeFilter()" class="closebtn">close</button>
