@@ -1,25 +1,27 @@
 <template>
   <div>
     <topnav
-      link1='<i class="fa fa-home"></i>'
-      link2='<i class="fa fa-info-circle"></i> About'
-      link3='<i class="fa fa-user"></i> Account'
-      link4='<i class="fa fa-shopping-cart"></i> Cart'
-      link5='<i class="fa fa-lock"></i> Logout'
+      link3="Account"
+      link4='<i class="fa fa-shopping-cart"></i> Cart '
+      link5='<i class="fa fa-user"></i> Login'
       url1="/"
-      url2="/about"
+      url2="/"
       url3="/account"
       url4="/cart"
-      url5="/logout"
+      url5="/login"
       url6="/"
+      link1=""
+      link2=""
+      :display_categories="true"
+      :productsearch="true"
     ></topnav>
     <div class="greyback"></div>
     <div class="w3-container mopad">
       <div class="w3-card" style="background: white">
         <div class="w3-row">
           <div class="w3-twothird" style="padding: 20px">
-            <p class="domain">Electronics</p>
-            <p class="shopname">Rakesh Digitals</p>
+            <p class="domain">{{ list[0].category }}</p>
+            <p class="shopname">{{ list[0].shop_name }}</p>
             <p class="shoplocation">
               <i class="fa fa-map-marker"></i> 342, West Bank, Amroli, C.G
             </p>
@@ -51,34 +53,65 @@
                       <span style="color: #008cff">Offers</span>
                     </template>
 
-                    <div class="couponcard">
-                      <div class="card_remaining">Hurry only 9 left!</div>
-                      <b-form-checkbox
-                        id="checkbox-1"
-                        v-model="status"
-                        name="checkbox-1"
-                        value="accepted"
-                        unchecked-value="not_accepted"
-                      >
-                        <div class="card_item">
-                          40% off on Samsung Fast Chargers
-                        </div>
-                      </b-form-checkbox>
-
+                    <div
+                      class="couponcard"
+                      v-for="offers in list"
+                      :key="offers.length"
+                    >
                       <div class="w3-row">
-                        <div class="w3-third">
-                          <div class="card_leftcoupons">9/30 Coupons Left</div>
-                        </div>
-                        <div class="w3-third">
-                          <div class="card_validity">
-                            valid till 4 jun 2021
-                            <i class="fa fa-info-circle"></i>
+                        <div class="w3-col m9">
+                          <div
+                            class="card_remaining"
+                            v-if="offers.quantity <= 5"
+                          >
+                            Hurry only {{ offers.quantity }} left!
                           </div>
+
+                          <div class="card_item">
+                            {{ offers.discount_percent }}% off on
+                            {{ offers.products[0] }}
+                          </div>
+
+                          <div class="w3-row">
+                            <div class="w3-col m8">
+                              <div class="card_leftcoupons">
+                                {{ offers.quantity }} Coupons Left
+                              </div>
+                            </div>
+                            <div class="w3-col m4">
+                              <div class="card_validity">
+                                valid till
+                                {{
+                                  moment(offers.validity[1] * 1000).format(
+                                    "DD/MM/YY"
+                                  )
+                                }}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="w3-col m3">
+                          <button
+                            v-on:click="addToCart(offers.offer_text)"
+                            class="w3-button"
+                            style="
+                              width: 80%;
+                              margin: 30px auto;
+                              background: #008cff;
+                              color: white;
+                            "
+                          >
+                            <i
+                              class="fa fa-shopping-cart"
+                              aria-hidden="true"
+                            ></i>
+                            Add to cart
+                          </button>
                         </div>
                       </div>
                     </div>
 
-                    <button class="botbtn">Add selected items to cart</button>
+                    <br />
                   </b-tab>
                   <b-tab style="color: #666666">
                     <template #title>
@@ -164,8 +197,63 @@
 <script>
 import topnav from "../Seller/topnav.vue";
 import Sitefooter from "./sitefooter.vue";
+import axios from "axios";
+import { BASE_URL } from "../../utils/constants";
 export default {
   components: { topnav, Sitefooter },
+  props: {
+    seller: {
+      type: String,
+      default: null,
+    },
+  },
+  data() {
+    return {
+      list: [],
+    };
+  },
+  mounted() {
+    const url = BASE_URL + "/get_offers_by_shop/" + this.seller;
+    axios
+      .get(url)
+      .then((response) => {
+        this.list = response.data.offers;
+        console.log(this.list);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  methods: {
+    addToCart(offer_text) {
+      const payload = {
+        offer_text: offer_text,
+      };
+
+      const accessToken = this.$session.get("token");
+      const options = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      const url = BASE_URL + "/cart";
+      axios
+        .post(url, payload, options)
+        .then((response) => {
+          console.log(response);
+          if (response.data.status === 200) {
+            alert(response.data.msg);
+            this.$router.push("/cart");
+          } else {
+            alert("something went wrong");
+          }
+        })
+        .catch((error) => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+    },
+  },
 };
 </script>
 <style scoped>
@@ -223,6 +311,7 @@ export default {
   width: fit-content;
   display: block;
   font-weight: 400;
+  margin-left: 20px;
 }
 .card_discount {
   padding: 20px;

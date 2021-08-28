@@ -103,12 +103,7 @@ const routes = [
     name: 'verifycoupon',
     component: () => import('../components/Seller/verifycoupon.vue'),
   },
-  {
 
-    path: '/shop',
-    name: 'shop',
-    component: () => import('../components/Customer/shopcoupons.vue')
-  },
   {
     path: '/',
     name: 'landingpage',
@@ -119,6 +114,12 @@ const routes = [
     name: 'searchcategory',
     props: (route) => ({ category: route.query.category, }),
     component: () => import('../components/Customer/searchcategory.vue')
+  },
+  {
+    path: '/seller',
+    name: 'seller',
+    props: (route) => ({ seller: route.query.seller, }),
+    component: () => import('../components/Customer/shopcoupons.vue')
   },
   {
     path: '/search_by_shop',

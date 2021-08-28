@@ -11,7 +11,10 @@
               style="margin-top: -65px; margin-bottom: -85px"
           /></a> -->
         </div>
-        <div style="float: right">
+        <div
+          style="float: right"
+          v-if="this.$session.get('logged_in') !== 'true'"
+        >
           <a href="/register"
             ><button
               class="f-register"

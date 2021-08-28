@@ -89,7 +89,6 @@ export default {
         axios
           .post(url, payload, options)
           .then((response) => {
-            console.log(response);
             if (response.data.status === 200) {
               alert(response.data.msg);
             } else {
@@ -111,7 +110,7 @@ export default {
         .get(offersurl)
         .then((response) => {
           this.list = response.data;
-          console.log(response.data);
+
           var discount = [];
           for (var i = 0; i < this.list.offers.length; i++) {
             discount[i] = this.list.offers[i].discount_percent;
@@ -136,7 +135,7 @@ export default {
           this.mapped = mapped;
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     },
   },

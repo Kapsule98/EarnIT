@@ -4,10 +4,15 @@
       link3="Account"
       link4='<i class="fa fa-shopping-cart"></i> Cart '
       link5='<i class="fa fa-user"></i> Login'
+      url1="/"
+      url2="/"
       url3="/account"
       url4="/cart"
       url5="/login"
       url6="/"
+      link1=""
+      link2=""
+      :display_categories="true"
       :productsearch="true"
     ></topnav>
     <!--<allcatrgories></allcatrgories>-->
@@ -122,97 +127,122 @@
             v-if="
               (list.active_offers[offer.index].category === category &&
                 offer.value > discfilter) ||
-              category === null
+              (category === null && offer.value > discfilter)
             "
           >
             <span>
               <div class="couponcard">
                 <div class="w3-row">
-                  <div class="w3-col imgcol">
-                    <div
-                      v-if="
-                        list.active_offers[offer.index].category === 'Health'
-                      "
-                    >
-                      <img
-                        src="../../assets/health.jpg"
-                        class="thumbnail"
-                        alt=""
-                      />
+                  <div class="w3-col m9">
+                    <div class="w3-col imgcol">
+                      <div
+                        v-if="
+                          list.active_offers[offer.index].category === 'Health'
+                        "
+                      >
+                        <img
+                          src="../../assets/health.jpg"
+                          class="thumbnail"
+                          alt=""
+                        />
+                      </div>
+                      <div
+                        v-else-if="
+                          list.active_offers[offer.index].category === 'Fashion'
+                        "
+                      >
+                        <img
+                          src="../../assets/fashion.jpg"
+                          class="thumbnail"
+                          alt=""
+                        />
+                      </div>
+                      <div
+                        v-else-if="
+                          list.active_offers[offer.index].category ===
+                          'Furniture'
+                        "
+                      >
+                        <img
+                          src="../../assets/furnishing.jpg"
+                          class="thumbnail"
+                          alt=""
+                        />
+                      </div>
+                      <div
+                        v-else-if="
+                          list.active_offers[offer.index].category === 'Food'
+                        "
+                      >
+                        <img
+                          src="../../assets/food.jpg"
+                          class="thumbnail"
+                          alt=""
+                        />
+                      </div>
+                      <div
+                        v-else-if="
+                          list.active_offers[offer.index].category ===
+                          'Electronics'
+                        "
+                      >
+                        <img
+                          src="../../assets/electronics.jpg"
+                          class="thumbnail"
+                          alt=""
+                        />
+                      </div>
                     </div>
-                    <div
-                      v-else-if="
-                        list.active_offers[offer.index].category === 'Fashion'
-                      "
-                    >
-                      <img
-                        src="../../assets/fashion.jpg"
-                        class="thumbnail"
-                        alt=""
-                      />
-                    </div>
-                    <div
-                      v-else-if="
-                        list.active_offers[offer.index].category === 'Furniture'
-                      "
-                    >
-                      <img
-                        src="../../assets/furnishing.jpg"
-                        class="thumbnail"
-                        alt=""
-                      />
-                    </div>
-                    <div
-                      v-else-if="
-                        list.active_offers[offer.index].category === 'Food'
-                      "
-                    >
-                      <img
-                        src="../../assets/food.jpg"
-                        class="thumbnail"
-                        alt=""
-                      />
-                    </div>
-                    <div
-                      v-else-if="
-                        list.active_offers[offer.index].category ===
-                        'Electronics'
-                      "
-                    >
-                      <img
-                        src="../../assets/electronics.jpg"
-                        class="thumbnail"
-                        alt=""
-                      />
+                    <div class="w3-col contentcol" style="width: 80%">
+                      <div class="card_remaining">
+                        {{ list.active_offers[offer.index].quantity }} left!
+                      </div>
+
+                      <div class="card_item">
+                        {{ offer.value }}% off on
+
+                        <name>
+                          {{ list.active_offers[offer.index].products[0] }}
+                        </name>
+                      </div>
+
+                      <div class="w3-row">
+                        <div class="w3-third">
+                          <div class="card_leftcoupons">
+                            {{ list.active_offers[offer.index].quantity }}
+                            Coupons Left
+                          </div>
+                        </div>
+                        <div class="w3-third">
+                          <div class="card_validity">
+                            valid till
+                            {{
+                              moment(
+                                list.active_offers[offer.index].validity[1] *
+                                  1000
+                              ).format("Do MMM YY")
+                            }}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class="w3-col contentcol" style="width: 80%">
-                    <div class="card_remaining">
-                      {{ list.active_offers[offer.index].quantity }} left!
-                    </div>
-
-                    <div class="card_item">
-                      {{ offer.value }}% off on
-
-                      <name>
-                        {{ list.active_offers[offer.index].products[0] }}
-                      </name>
-                    </div>
-
-                    <div class="w3-row">
-                      <div class="w3-third">
-                        <div class="card_leftcoupons">
-                          {{ list.active_offers[offer.index].quantity }} Coupons
-                          Left
-                        </div>
-                      </div>
-                      <div class="w3-third">
-                        <div class="card_validity">
-                          valid till 4 jun 2021
-                          <i class="fa fa-info-circle"></i>
-                        </div>
-                      </div>
-                    </div>
+                  <div class="w3-col m3">
+                    <button
+                      v-on:click="
+                        addToCart(list.active_offers[offer.index].offer_text)
+                      "
+                      id="reedem"
+                      class="w3-button"
+                      style="
+                        width: 80%;
+                        margin: 30px auto;
+                        background: #008cff;
+                        color: white;
+                      "
+                    >
+                      Reedem coupon
+                    </button>
                   </div>
                 </div>
               </div>
@@ -309,6 +339,34 @@ export default {
           document.getElementById("sby1").checked = true;
         }
       }
+    },
+    addToCart(offer_text) {
+      const payload = {
+        offer_text: offer_text,
+      };
+
+      const accessToken = this.$session.get("token");
+      const options = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      const url = BASE_URL + "/cart";
+      axios
+        .post(url, payload, options)
+        .then((response) => {
+          console.log(response);
+          if (response.data.status === 200) {
+            alert(response.data.msg);
+            this.$router.push("/cart");
+          } else {
+            alert("something went wrong");
+          }
+        })
+        .catch((error) => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
     },
     getAllOffers() {
       const offersurl = BASE_URL + "/get_all_offers";

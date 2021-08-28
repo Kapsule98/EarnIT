@@ -4,11 +4,16 @@
       link3="Account"
       link4='<i class="fa fa-shopping-cart"></i> Cart '
       link5='<i class="fa fa-user"></i> Login'
+      url1="/"
+      url2="/"
       url3="/account"
       url4="/cart"
       url5="/login"
       url6="/"
+      link1=""
+      link2=""
       :searchbar="true"
+      :display_categories="true"
     ></topnav>
     <homeposters style="margin-top: -30px; width: 100%"></homeposters>
     <div class="backwrap">

@@ -1,16 +1,16 @@
 <template>
   <div>
     <topnav
-      link1='<i class="fa fa-home"></i>'
-      link2='<i class="fa fa-info-circle"></i> About'
-      link3='<i class="fa fa-user"></i> Account'
-      link4='<i class="fa fa-shopping-cart"></i> Cart'
-      link5='<i class="fa fa-lock"></i> Logout'
+      link2="Login"
+      link1=""
+      link3=""
+      link4=""
+      link5=""
+      url2="/login"
       url1="/"
-      url2="/about"
-      url3="/account"
-      url4="/cart"
-      url5="/logout"
+      url3="/"
+      url4="/"
+      url5="/"
       url6="/"
     >
     </topnav>
@@ -196,6 +196,7 @@ export default {
     };
   },
   mounted() {
+    document.getElementById("defaultOpen").click();
     const offersurl = BASE_URL + "/categories";
     let JWTToken = this.$session.get("token");
     axios
