@@ -110,6 +110,7 @@
       </div>
     </div>
     <div class="reduce"></div>
+
     <sitefooter></sitefooter>
   </div>
 </template>
@@ -252,6 +253,9 @@ export default {
 };
 </script>
 <style scoped>
+.topnav {
+  height: 70px !important;
+}
 .c-domain {
   color: rgb(90, 90, 90);
   font-weight: 600;
