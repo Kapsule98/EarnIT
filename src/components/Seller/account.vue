@@ -33,7 +33,7 @@
               <!-- Date Joined : 2 jun 2021 | user since 2 months-->
             </p>
             <div class="w3-row">
-              <div class="w3-third">
+              <!--<div class="w3-third">
                 <b-card style="margin: 10px; text-align: center">
                   <span class="tealbg">{{
                     coupons_sold.number_customers
@@ -43,7 +43,7 @@
                     <div class="c-head">Number of Customers</div>
                   </template>
                 </b-card>
-              </div>
+              </div>-->
               <div class="w3-third">
                 <b-card style="margin: 10px; text-align: center">
                   <span class="tealbg">{{ coupons_sold.history.length }}</span>

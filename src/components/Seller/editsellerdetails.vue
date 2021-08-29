@@ -63,7 +63,7 @@
                   ></b-form-input>
                 </td>
               </tr>
-              <tr>
+              <!--<tr>
                 <td class="detail">Categories</td>
                 <td class="description">
                   <select
@@ -85,7 +85,7 @@
                     </option>
                   </select>
                 </td>
-              </tr>
+              </tr>-->
               <tr>
                 <td class="detail">Location</td>
                 <input
@@ -145,7 +145,7 @@ export default {
       //"Bhilai",
       //"Raipur",
       //],
-      shop_category: this.$session.get("user_data").category,
+      // shop_category: this.$session.get("user_data").category,
 
       allcategories: [],
     };
@@ -166,7 +166,7 @@ export default {
     console.log(this.$session.get("user_data"));
   },
   methods: {
-    getLocation() {
+    /*getLocation() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           console.log(position.coords.latitude);
@@ -179,7 +179,7 @@ export default {
     },
     showPosition(position) {
       alert(position.coords.latitude);
-    },
+    },*/
     updateDetails() {
       if (this.shop_name) {
         this.updateShopName();
@@ -199,9 +199,9 @@ export default {
       //if (this.shop_owner_name) {
       // this.updateOwnerName();
       // }
-      if (this.shop_category) {
-        this.updateCategory();
-      }
+      // if (this.shop_category) {
+      // this.updateCategory();
+      //}
     },
     updateShopName() {
       const payload = {
@@ -259,16 +259,17 @@ export default {
           Authorization: `Bearer ${accessToken}`,
         },
       };
-      console.log(payload);
+
       axios
         .post(url, payload, options)
-        .then((response) => console.log(response))
+        .then(
+          (response) => console.log(response),
+          console.log(this.$session.get("user_data").email)
+        )
         .catch((error) => {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
-
-      console.log(this.shop_email);
     },
     updateContact() {
       const payload = {
@@ -336,7 +337,7 @@ export default {
 
       console.log(this.shop_location);
     },*/
-    updateCategory() {
+    /* updateCategory() {
       const payload = {
         category: {
           categories: this.shop_category,
@@ -357,7 +358,7 @@ export default {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
-    },
+    },*/
   },
 };
 </script>

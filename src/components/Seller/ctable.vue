@@ -16,10 +16,10 @@
         <th>Bill</th>
       </tr>
 
-      <tr class="search" v-for="(items, index) in history.history" :key="items">
+      <tr class="search" v-for="(items, index) in history.history" :key="index">
         <td>{{ index + 1 }}.</td>
         <td>
-          <name>{{ items.customer_display_name }}</name>
+          <span>{{ items.customer_display_name }}</span>
         </td>
         <td>
           {{ items.offer_text }}
@@ -90,7 +90,26 @@ export default {
       .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
       .then((response) => {
         this.history = response.data;
-        console.log(this.history.history[1].timestamp);
+
+        var arr = [];
+        for (var i = 0; i < this.history.history.length; i++) {
+          arr[i] = this.history.history[i].offer_text;
+        }
+        var map = arr.reduce(function (prev, cur) {
+          prev[cur] = (prev[cur] || 0) + 1;
+          return prev;
+        }, {});
+        var count = 0;
+        var mostused;
+        for (var key of Object.keys(map)) {
+          if (parseInt(map[key]) > count) {
+            count = parseInt(map[key]);
+            mostused = key;
+          }
+        }
+
+        document.getElementById("mostused").innerHTML = mostused;
+        document.getElementById("mostusedno").innerHTML = count;
       })
       .catch((err) => {
         console.log(err);
@@ -104,7 +123,7 @@ export default {
       ul = document.getElementById("myUL");
       li = ul.getElementsByClassName("search");
       for (i = 0; i < li.length; i++) {
-        a = li[i].getElementsByTagName("name")[0];
+        a = li[i].getElementsByTagName("span")[0];
         txtValue = a.textContent || a.innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
           li[i].style.display = "";

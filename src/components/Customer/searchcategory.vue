@@ -241,7 +241,7 @@
                         color: white;
                       "
                     >
-                      Reedem coupon
+                      Add to cart
                     </button>
                   </div>
                 </div>
