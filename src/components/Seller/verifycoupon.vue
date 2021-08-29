@@ -48,11 +48,12 @@
               label-for="input-3"
             >
               <b-form-input
+                v-model="r_total"
                 type="number"
                 id="input-3"
                 placeholder="enter total amount"
                 required
-                v-model="r_total"
+                v-on:change="calcdisc()"
               ></b-form-input>
             </b-form-group>
 
@@ -63,9 +64,9 @@
             >
               <b-form-input
                 id="input-4"
-                placeholder="enter discounted amount"
-                required
+                placeholder=" discounted amount"
                 type="number"
+                disabled
                 v-model="r_discount"
               ></b-form-input>
             </b-form-group>
@@ -88,21 +89,89 @@
               v-for="offer in getoffers.active_offers"
               :key="offer.length"
             >
-              <couponcard
-                :name="offer.products[0]"
-                v-bind:discount="offer.discount_percent + '%'"
-                v-bind:left="offer.quantity + ' coupons'"
-                v-bind:validity="
-                  ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+              <div
+                v-if="
+                  Math.floor(new Date().getTime() / 1000.0) <
+                    offer.validity[1] &&
+                  Math.floor(new Date().getTime() / 1000.0) > offer.validity[0]
                 "
-                v-bind:offer_text="offer.offer_text"
-              ></couponcard>
+              >
+                <couponcard
+                  :name="offer.products[0]"
+                  v-bind:discount="offer.discount_percent + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  v-bind:validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  v-bind:offer_text="offer.offer_text"
+                ></couponcard>
+              </div>
             </div>
             <div class="w3-third">
               <div class="addoffer">
                 <button @click="showAddCouponModal()">
                   <div class="plus"><i class="fa fa-plus"></i></div>
                 </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="w3-row">
+            <h2 style="color: #4f4f4f; margin-top: 30px">
+              <div class="percent">Planned Offers</div>
+            </h2>
+            <div
+              class="w3-third"
+              v-for="offer in getoffers.active_offers"
+              :key="offer.length"
+            >
+              <div
+                v-if="
+                  Math.floor(new Date().getTime() / 1000.0) <
+                    offer.validity[1] &&
+                  offer.validity[0] > Math.floor(new Date().getTime() / 1000.0)
+                "
+              >
+                <couponcard
+                  :planned="true"
+                  :validfrom="
+                    moment(offer.validity[0] * 1000).format('DD-MM-YYYY')
+                  "
+                  :name="offer.products[0]"
+                  v-bind:discount="offer.discount_percent + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  v-bind:validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  v-bind:offer_text="offer.offer_text"
+                ></couponcard>
+              </div>
+            </div>
+          </div>
+          <div class="w3-row">
+            <h2 style="color: #4f4f4f; margin-top: 30px">
+              <div class="percent">Expired Offers</div>
+            </h2>
+            <div
+              class="w3-third"
+              v-for="offer in getoffers.active_offers"
+              :key="offer.length"
+            >
+              <div
+                v-if="
+                  Math.floor(new Date().getTime() / 1000.0) > offer.validity[1]
+                "
+              >
+                <couponcard
+                  :expired="true"
+                  :name="offer.products[0]"
+                  v-bind:discount="offer.discount_percent + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  v-bind:validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  v-bind:offer_text="offer.offer_text"
+                ></couponcard>
               </div>
             </div>
           </div>
@@ -257,6 +326,18 @@ export default {
   },
 
   methods: {
+    calcdisc() {
+      for (var i = 0; i < this.getoffers.active_offers.length; i++) {
+        var ta = this.r_total;
+        var atxt = this.getoffers.active_offers[i].offer_text;
+        var entxt = document.getElementById("input-1").value;
+        if (entxt === atxt) {
+          var per = this.getoffers.active_offers[i].discount_percent;
+          document.getElementById("input-4").value = ta - (ta / 100) * per;
+          this.r_discount = document.getElementById("input-4").value;
+        }
+      }
+    },
     getProducts() {
       const url = BASE_URL + "/seller/product";
       let JWTToken = this.$session.get("token");
@@ -264,38 +345,47 @@ export default {
         .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.getproducts = response.data;
-          console.log(this.products);
         })
         .catch((err) => {
           console.log(err);
         });
     },
     verifyCoupon() {
-      var r = confirm("Process the Coupon");
-      if (r == true) {
-        const payload = {
-          otp: parseInt(this.r_otp),
-          offer_text: this.r_offertxt,
-          cp: parseInt(this.r_total),
-          sp: parseInt(this.r_discount),
-        };
-        const accessToken = this.$session.get("token");
-        const options = {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        };
-        const url = BASE_URL + "/seller/redeem";
-        axios
-          .post(url, payload, options)
-          .then((response) => console.log(response), console.log(payload))
-          .catch((error) => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-        this.$router.go();
+      var otpa = this.r_otp;
+      var offer_texta = this.r_offertxt;
+      var cpa = this.r_total;
+      var spa = this.r_discount;
+      if (otpa == "" || offer_texta == "" || cpa == "" || spa == "") {
+        alert(
+          otpa + offer_texta + cpa + spa + "please fill the required fields"
+        );
       } else {
-        document.getElementById("reedem").style.color = "white";
+        var r = confirm("Process the Coupon");
+        if (r == true) {
+          const payload = {
+            otp: parseInt(this.r_otp),
+            offer_text: this.r_offertxt,
+            cp: parseInt(this.r_total),
+            sp: parseInt(this.r_discount),
+          };
+          const accessToken = this.$session.get("token");
+          const options = {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          };
+          const url = BASE_URL + "/seller/redeem";
+          axios
+            .post(url, payload, options)
+            .then((response) => console.log(response), console.log(payload))
+            .catch((error) => {
+              this.errorMessage = error.message;
+              console.error("There was an error!", error);
+            });
+          this.$router.go();
+        } else {
+          document.getElementById("reedem").style.color = "white";
+        }
       }
     },
     onSubmit(event) {
@@ -339,7 +429,6 @@ export default {
         },
       };
 
-      console.log(epoch);
       const url = BASE_URL + "/seller/offer";
       const accessToken = this.$session.get("token");
       const options = {
@@ -356,14 +445,6 @@ export default {
           console.error("There was an error!", error);
         });
 
-      console.log("discount type = ", this.discountType);
-
-      console.log(
-        this.itemdiscountpercent,
-        this.billdiscountpercent,
-        this.customdiscount,
-        this.validity
-      );
       this.$refs["couponModal"].hide();
       alert("Coupon added Sucessfully");
       this.$router.go();
@@ -378,8 +459,6 @@ export default {
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.getoffers = response.data;
-          console.log("hello" + response);
-          console.log(response);
         })
         .catch((err) => {
           console.log(err);
