@@ -169,7 +169,13 @@ export default {
     "display_categories",
   ],
   mounted() {
-    this.$nextTick(() => this.$refs.prose.focus());
+    if (this.$session.get("user_type") === "seller") {
+      document.getElementsByClassName("topnav")[0].style.height = "70px";
+    }
+    if (this.$session.get("user_type") === "customer") {
+      this.$nextTick(() => this.$refs.prose.focus());
+    }
+
     this.user = this.$session.get("user_data");
     const offersurl = BASE_URL + "/categories";
     let JWTToken = this.$session.get("token");

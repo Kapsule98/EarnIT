@@ -58,9 +58,9 @@
                       border-radius: 6px;
                     "
                   >
-                    50% 0ff on Utencils
+                    <span id="mostused"></span>
                   </div>
-                  <p>238 coupons sold</p>
+                  <p><span id="mostusedno"></span> coupons sold</p>
                 </h5>
               </div>
             </b-card>
