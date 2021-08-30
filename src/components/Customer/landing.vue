@@ -14,6 +14,7 @@
       link2=""
       :searchbar="true"
       :display_categories="true"
+      :landing="true"
     ></topnav>
     <homeposters style="margin-top: -30px; width: 100%"></homeposters>
     <div class="backwrap">

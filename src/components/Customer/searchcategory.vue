@@ -344,32 +344,36 @@ export default {
       }
     },
     addToCart(offer_text) {
-      const payload = {
-        offer_text: offer_text,
-      };
+      if (localStorage.getItem("log") === "true") {
+        const payload = {
+          offer_text: offer_text,
+        };
 
-      const accessToken = this.$session.get("token");
-      const options = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      };
-      const url = BASE_URL + "/cart";
-      axios
-        .post(url, payload, options)
-        .then((response) => {
-          console.log(response);
-          if (response.data.status === 200) {
-            alert(response.data.msg);
-            this.$router.push("/cart");
-          } else {
-            alert("something went wrong");
-          }
-        })
-        .catch((error) => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
+        const accessToken = this.$session.get("token");
+        const options = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+        const url = BASE_URL + "/cart";
+        axios
+          .post(url, payload, options)
+          .then((response) => {
+            console.log(response);
+            if (response.data.status === 200) {
+              alert(response.data.msg);
+              this.$router.push("/cart");
+            } else {
+              alert("something went wrong");
+            }
+          })
+          .catch((error) => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+      } else {
+        this.$router.push("/login");
+      }
     },
     getAllOffers() {
       const offersurl = BASE_URL + "/get_all_offers";

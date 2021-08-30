@@ -27,13 +27,10 @@
                 </td>
               </tr>
               <tr>
-                <!--<td class="detail">Owner Name</td>
+                <td class="detail">Owner Name</td>
                 <td class="description">
-                  <b-form-input
-                    type="text"
-                    v-model="shop_owner_name"
-                  ></b-form-input>
-                </td>-->
+                  <b-form-input type="text" v-model="owner_name"></b-form-input>
+                </td>
               </tr>
               <tr>
                 <td class="detail">Email</td>
@@ -63,7 +60,7 @@
                   ></b-form-input>
                 </td>
               </tr>
-              <!--<tr>
+              <tr>
                 <td class="detail">Categories</td>
                 <td class="description">
                   <select
@@ -72,7 +69,7 @@
                     name="categories"
                     v-model="shop_category"
                   >
-                    <option class="option" value="" disabled selected hidden>
+                    <option class="option" value="cho" disabled selected hidden>
                       Choose Category...
                     </option>
                     <option
@@ -85,7 +82,7 @@
                     </option>
                   </select>
                 </td>
-              </tr>-->
+              </tr>
               <tr>
                 <td class="detail">Location</td>
                 <input
@@ -132,11 +129,12 @@ export default {
     return {
       user: {},
       shop_name: this.$session.get("user_data").shop_name,
-      //shop_owner_name: this.$session.get("user_data").owner_name,
+      owner_name: this.$session.get("user_data").owner_name,
       shop_address: this.$session.get("user_data").address,
       shop_contact: this.$session.get("user_data").contact_no,
       shop_email: this.$session.get("user_data").email,
       shop_location: "get your location",
+      shop_category: this.$session.get("user_data").category,
       //location: [
       ///{
       //text: "Select location",
@@ -154,6 +152,7 @@ export default {
   mounted() {
     const offersurl = BASE_URL + "/categories";
     let JWTToken = this.$session.get("token");
+    console.log(this.$session.get("user_data"));
     axios
       .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
       .then((response) => {
@@ -166,7 +165,7 @@ export default {
     console.log(this.$session.get("user_data"));
   },
   methods: {
-    /*getLocation() {
+    getLocation() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           console.log(position.coords.latitude);
@@ -179,29 +178,33 @@ export default {
     },
     showPosition(position) {
       alert(position.coords.latitude);
-    },*/
+    },
     updateDetails() {
-      if (this.shop_name) {
-        this.updateShopName();
+      var r = confirm("You will need to signin again to update your changes!");
+      if (r == true) {
+        if (this.shop_name) {
+          this.updateShopName();
+        }
+        if (this.shop_location) {
+          this.updateLocation();
+        }
+        if (this.shop_email) {
+          this.updateEmail();
+        }
+        if (this.shop_contact) {
+          this.updateContact();
+        }
+        if (this.address) {
+          this.updateAddress();
+        }
+        //  if (this.shop_owner_name) {
+        //  this.updateOwnerName();
+        // }
+        //  if (this.shop_category) {
+        //  this.updateCategory();
+        // }
       }
-      // if (this.shop_location) {
-      //  this.updateLocation();
-      //}
-      if (this.shop_email) {
-        this.updateEmail();
-      }
-      if (this.shop_contact) {
-        this.updateContact();
-      }
-      if (this.address) {
-        this.updateAddress();
-      }
-      //if (this.shop_owner_name) {
-      // this.updateOwnerName();
-      // }
-      // if (this.shop_category) {
-      // this.updateCategory();
-      //}
+      this.$router.push("/logout");
     },
     updateShopName() {
       const payload = {
@@ -226,7 +229,7 @@ export default {
       console.log(this.shop_name);
     },
 
-    /*updateLocation() {
+    updateLocation() {
       const payload = {
         shop_location: this.shop_location,
       };
@@ -247,7 +250,7 @@ export default {
         });
 
       console.log(this.shop_location);
-    },*/
+    },
     updateEmail() {
       const payload = {
         email: this.shop_email,
@@ -315,9 +318,9 @@ export default {
 
       console.log(this.shop_address);
     },
-    /*updateOwnerName() {
+    /* updateOwnerName() {
       const payload = {
-        owner_name: this.shop_owner_name,
+        owner_name: this.owner_name,
       };
       const url = BASE_URL + "/seller/update_owner_name";
       const accessToken = this.$session.get("token");
@@ -336,11 +339,11 @@ export default {
         });
 
       console.log(this.shop_location);
-    },*/
-    /* updateCategory() {
+    },
+      updateCategory() {
       const payload = {
         category: {
-          categories: this.shop_category,
+          category: this.shop_category,
         },
       };
       const url = BASE_URL + "/seller/category";

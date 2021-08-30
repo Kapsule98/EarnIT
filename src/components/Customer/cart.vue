@@ -20,6 +20,10 @@
       <div class="w3-row">
         <div class="w3-threequarter">
           <b-card>
+            <h5>OTP :{{ reedemdetails }}</h5>
+            <h5>offer code :{{ reedemdetailso }}</h5></b-card
+          >
+          <b-card>
             <h2 style="border-bottom: 1px solid #bababa; padding: 20px">
               Coupons Cart
             </h2>
@@ -31,23 +35,37 @@
             >
               <div class="w3-row">
                 <div class="w3-col m9">
-                  <div class="card_remaining">Hurry only 9 left!</div>
+                  <div class="card_remaining">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-geo-alt"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"
+                      />
+                      <path
+                        d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
+                      />
+                    </svg>
+                    {{ offer.seller_display_name }}
+                  </div>
 
                   <div class="card_item">
-                    {{ offer.discount_percent }}% off on Samsung Fast Chargers
+                    {{ offer.discount_percent }}% off on {{ offer.products[0] }}
                   </div>
 
                   <div class="w3-row">
-                    <div class="w3-third">
-                      <div class="card_leftcoupons">9/30 Coupons Left</div>
-                    </div>
+                    <div class="w3-third"></div>
                     <div class="w3-third">
                       <div class="card_validity">
                         valid till
                         {{
                           moment(offer.validity[1] * 1000).format("DD-MM-YYYY")
                         }}
-                        <i class="fa fa-info-circle"></i>
                       </div>
                     </div>
                   </div>
@@ -65,6 +83,12 @@
                     "
                   >
                     Reedem coupon
+                  </button>
+                  <button
+                    v-on:click="removeItem(offer.offer_text)"
+                    class="delbtn"
+                  >
+                    delete
                   </button>
                 </div>
               </div>
@@ -106,6 +130,8 @@ export default {
   data() {
     return {
       cart: [],
+      reedemdetails: localStorage.getItem("otp"),
+      reedemdetailso: localStorage.getItem("offtext"),
     };
   },
   mounted() {
@@ -113,7 +139,9 @@ export default {
   },
   methods: {
     redeemOffer(offer_text) {
-      var r = confirm("Process the Coupon");
+      var r = confirm(
+        "After reedeming the coupon it will be valid only for 5 minutes!"
+      );
       if (r == true) {
         const payload = {
           offer_text: offer_text,
@@ -131,7 +159,9 @@ export default {
           .then((response) => {
             console.log(response);
             if (response.data.status === 200) {
-              alert(response.data.otp);
+              localStorage.setItem("otp", response.data.otp);
+              localStorage.setItem("offtext", offer_text);
+              this.$router.go();
             } else {
               alert("something went wrong");
             }
@@ -152,10 +182,34 @@ export default {
         .then((response) => {
           this.cart = response.data;
           console.log(response.data);
+          if (this.cart.status === 200) {
+            localStorage.setItem("cartitems", this.cart.count);
+          }
         })
         .catch((err) => {
           console.log(err);
         });
+    },
+    removeItem(offer_text) {
+      const offersurl = BASE_URL + "/cart";
+      let JWTToken = this.$session.get("token");
+      const config = {
+        data: {
+          offer_text: offer_text,
+        },
+        headers: {
+          Authorization: `Bearer ${JWTToken}`,
+        },
+      };
+      axios
+        .delete(offersurl, config)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      this.$router.go();
     },
   },
 };
@@ -164,7 +218,19 @@ export default {
 .p-card {
   padding: 0px 10px;
 }
-
+.delbtn {
+  width: fit-content;
+  background: none;
+  border: none;
+  margin: 0px 10px;
+  color: #32a88b;
+  float: right;
+  font-size: 12px;
+  padding: px 2px;
+}
+.delbtn:hover {
+  color: rgb(75, 75, 75);
+}
 .greyback {
   position: fixed;
   top: -20%;
@@ -207,7 +273,7 @@ export default {
 }
 .card_remaining {
   font-size: 15px;
-  color: rgb(252, 88, 88);
+  color: rgb(51, 51, 51);
   display: block;
   width: 100%;
   padding: 10px 20px;
