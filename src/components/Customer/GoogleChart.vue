@@ -1,10 +1,6 @@
 <template>
   <div>
-    <GChart
-      type="PieChart"
-      :options="options"
-      :data="data"
-    />    
+    <GChart type="PieChart" :options="options" :data="data" />
   </div>
 </template>
  
@@ -14,20 +10,21 @@ import { GChart } from "vue-google-charts";
 export default {
   name: "App",
   components: {
-    GChart
+    GChart,
   },
+  props: ["moneyspent", "moneysaved"],
   data() {
     return {
       data: [
-          ['type', 'value'],
-          ['Money Saved',     500],
-          ['Money Spent',      1250],
+        ["type", "value"],
+        ["Money Saved", this.moneysaved],
+        ["Money Spent", this.moneyspent],
       ],
       options: {
         width: 500,
-        height: 400
-      }
+        height: 400,
+      },
     };
-  }
+  },
 };
 </script>

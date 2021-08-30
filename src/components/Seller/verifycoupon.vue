@@ -138,12 +138,12 @@
                     moment(offer.validity[0] * 1000).format('DD-MM-YYYY')
                   "
                   :name="offer.products[0]"
-                  v-bind:discount="offer.discount_percent + '%'"
-                  v-bind:left="offer.quantity + ' coupons'"
-                  v-bind:validity="
+                  :discount="offer.discount_percent + '%'"
+                  :left="offer.quantity + ' coupons'"
+                  :validity="
                     ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
                   "
-                  v-bind:offer_text="offer.offer_text"
+                  :offer_text="offer.offer_text"
                 ></couponcard>
               </div>
             </div>
@@ -167,11 +167,68 @@
                   :name="offer.products[0]"
                   v-bind:discount="offer.discount_percent + '%'"
                   v-bind:left="offer.quantity + ' coupons'"
-                  v-bind:validity="
+                  :validity="
                     ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
                   "
-                  v-bind:offer_text="offer.offer_text"
+                  :offer_text="offer.offer_text"
                 ></couponcard>
+                <div id="repeatmodal" class="w3-modal">
+                  <div class="w3-modal-content w3-animate-zoom w3-card-4">
+                    <header
+                      class="w3-container"
+                      style="background-color: #36cdff"
+                    >
+                      <span
+                        onclick="document.getElementById('repeatmodal').style.display='none'"
+                        class="w3-button w3-display-topright"
+                        >&times;</span
+                      >
+                      <h2 style="padding: 10px">Repeat Coupon</h2>
+                    </header>
+                    <div style="padding: 20px">
+                      <br />
+                      <h4>Select number of coupons</h4>
+                      <br />
+                      <b-form-input
+                        id="rangex"
+                        v-model="rquantity"
+                        type="range"
+                        min="0"
+                        max="50"
+                        step="1"
+                      ></b-form-input>
+                      <center>
+                        <div class="mt-2">Value: {{ rquantity }}</div>
+                      </center>
+                      <br />
+                      <center>
+                        <label
+                          ><span style="padding: 2px 5px">Validity</span>
+                        </label>
+                      </center>
+                      <center>
+                        <date-picker
+                          style="width: 80%"
+                          v-model="rvalidity"
+                          type="date"
+                          range
+                        ></date-picker>
+                      </center>
+                    </div>
+
+                    <footer class="w3-container w3-tblue">
+                      <center>
+                        <button
+                          class="login-button"
+                          style="max-width: 300px"
+                          v-on:click="addrepeat(offer.offer_text)"
+                        >
+                          repeat offer
+                        </button>
+                      </center>
+                    </footer>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -317,6 +374,13 @@ export default {
       list: [],
       getoffers: {},
       user: {},
+      rgetoffers: [],
+      rquantity: "20",
+      rvalidity: [],
+      rproducts: [],
+      rdiscountType: "",
+      rdiscount_percent: "",
+      rmin_val: "",
     };
   },
   mounted() {
@@ -326,6 +390,64 @@ export default {
   },
 
   methods: {
+    addrepeat(offer_text) {
+      const url = BASE_URL + "/seller/offer";
+      let JWTToken = this.$session.get("token");
+      var repoch = [];
+      this.rproducts = [];
+      axios
+        .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .then((response) => {
+          this.rgetoffers = response.data;
+          //console.log(this.rgetoffers);
+          var l = this.rgetoffers.active_offers;
+
+          for (var i = 0; i < l.length; i++) {
+            if (l[i].offer_text === offer_text) {
+              this.rproducts = l[i].products;
+              this.rdiscountType = l[i].type;
+              this.rdiscount_percent = l[i].discount_percent;
+              this.rmin_val = l[i].min_val;
+            }
+          }
+
+          const payload = {
+            offer: {
+              validity: repoch,
+              type: this.rdiscountType,
+              discount_percent: parseInt(this.rdiscount_percent),
+              offer_text: offer_text,
+              quantity: parseInt(this.rquantity),
+              min_val: parseInt(this.rmin_val),
+              products: this.rproducts,
+            },
+          };
+          repoch[0] = this.rvalidity[0].getTime() / 1000.0;
+          repoch[1] = this.rvalidity[1].getTime() / 1000.0;
+
+          const options = {
+            headers: {
+              Authorization: `Bearer ${JWTToken}`,
+            },
+          };
+
+          axios
+            .put(url, payload, options)
+            .then((response) => console.log(response), console.log(payload))
+            .catch((error) => {
+              this.errorMessage = error.message;
+              console.error("There was an error!", error);
+            });
+
+          console.log("discount type = ", this.discountType);
+          console.log();
+          //this.$router.go();
+        })
+
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     calcdisc() {
       for (var i = 0; i < this.getoffers.active_offers.length; i++) {
         var ta = this.r_total;
@@ -459,6 +581,7 @@ export default {
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.getoffers = response.data;
+          //console.log(this.getoffers);
         })
         .catch((err) => {
           console.log(err);

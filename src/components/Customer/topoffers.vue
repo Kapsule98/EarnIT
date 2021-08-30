@@ -73,34 +73,38 @@ export default {
   },
   methods: {
     redeemOffer(offer_text) {
-      var r = confirm("Add coupon to cart?");
-      if (r == true) {
-        const payload = {
-          offer_text: offer_text,
-        };
+      if (localStorage.getItem("log") === "true") {
+        var r = confirm("Add coupon to cart?");
+        if (r == true) {
+          const payload = {
+            offer_text: offer_text,
+          };
 
-        const accessToken = this.$session.get("token");
-        const options = {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        };
-        const url = BASE_URL + "/cart";
-        axios
-          .post(url, payload, options)
-          .then((response) => {
-            if (response.data.status === 200) {
-              alert(response.data.msg);
-            } else {
-              alert("something went wrong");
-            }
-          })
-          .catch((error) => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
+          const accessToken = this.$session.get("token");
+          const options = {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          };
+          const url = BASE_URL + "/cart";
+          axios
+            .post(url, payload, options)
+            .then((response) => {
+              if (response.data.status === 200) {
+                alert(response.data.msg);
+              } else {
+                alert("something went wrong");
+              }
+            })
+            .catch((error) => {
+              this.errorMessage = error.message;
+              console.error("There was an error!", error);
+            });
+        } else {
+          document.getElementById("reedem").style.color = "white";
+        }
       } else {
-        document.getElementById("reedem").style.color = "white";
+        this.$router.push("/login");
       }
     },
     getAllOffers() {

@@ -20,12 +20,14 @@
       <div class="w3-card" style="background: white">
         <div class="w3-row">
           <div class="w3-twothird" style="padding: 20px">
-            <p class="domain">{{ list[0].category }}</p>
-            <p class="shopname">{{ list[0].shop_name }}</p>
+            <p class="domain">{{ list.category }}</p>
+            <p class="shopname">{{ list.offers[0].shop_name }}</p>
             <p class="shoplocation">
-              <i class="fa fa-map-marker"></i> 342, West Bank, Amroli, C.G
+              <i class="fa fa-map-marker"></i> {{ list.address }}
             </p>
-            <p class="shoplocation"><i class="fa fa-phone"></i> +91888**939</p>
+            <p class="shoplocation">
+              <i class="fa fa-phone"></i>{{ list.contact_no }}
+            </p>
           </div>
           <div class="w3-third" style="padding: 20px">
             <img
@@ -55,7 +57,7 @@
 
                     <div
                       class="couponcard"
-                      v-for="offers in list"
+                      v-for="offers in list.offers"
                       :key="offers.length"
                     >
                       <div class="w3-row">
@@ -200,8 +202,9 @@ import topnav from "../Seller/topnav.vue";
 import Sitefooter from "./sitefooter.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import Bottomnav from "./bottomnav.vue";
 export default {
-  components: { topnav, Sitefooter },
+  components: { topnav, Sitefooter, Bottomnav },
   props: {
     seller: {
       type: String,
@@ -218,7 +221,7 @@ export default {
     axios
       .get(url)
       .then((response) => {
-        this.list = response.data.offers;
+        this.list = response.data;
         console.log(this.list);
       })
       .catch((err) => {
@@ -227,32 +230,36 @@ export default {
   },
   methods: {
     addToCart(offer_text) {
-      const payload = {
-        offer_text: offer_text,
-      };
+      if (localStorage.getItem("log") === "true") {
+        const payload = {
+          offer_text: offer_text,
+        };
 
-      const accessToken = this.$session.get("token");
-      const options = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      };
-      const url = BASE_URL + "/cart";
-      axios
-        .post(url, payload, options)
-        .then((response) => {
-          console.log(response);
-          if (response.data.status === 200) {
-            alert(response.data.msg);
-            this.$router.push("/cart");
-          } else {
-            alert("something went wrong");
-          }
-        })
-        .catch((error) => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
+        const accessToken = this.$session.get("token");
+        const options = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+        const url = BASE_URL + "/cart";
+        axios
+          .post(url, payload, options)
+          .then((response) => {
+            console.log(response);
+            if (response.data.status === 200) {
+              alert(response.data.msg);
+              this.$router.push("/cart");
+            } else {
+              alert("something went wrong");
+            }
+          })
+          .catch((error) => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+      } else {
+        this.$router.push("/login");
+      }
     },
   },
 };

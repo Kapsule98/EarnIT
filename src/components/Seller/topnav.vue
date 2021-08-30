@@ -167,9 +167,11 @@ export default {
     "searchbar",
     "productsearch",
     "display_categories",
+    "focus",
+    "landing",
   ],
   mounted() {
-    if (this.$session.get("user_type") === "seller") {
+    if (this.$session.get("user_type") === "seller" && this.landing !== true) {
       document.getElementsByClassName("topnav")[0].style.height = "70px";
     }
     if (this.$session.get("user_type") === "customer") {
