@@ -60,29 +60,7 @@
                   ></b-form-input>
                 </td>
               </tr>
-              <tr>
-                <td class="detail">Categories</td>
-                <td class="description">
-                  <select
-                    required
-                    class="select"
-                    name="categories"
-                    v-model="shop_category"
-                  >
-                    <option class="option" value="cho" disabled selected hidden>
-                      Choose Category...
-                    </option>
-                    <option
-                      class="option"
-                      v-for="items in allcategories"
-                      :key="items.length"
-                      :value="items"
-                    >
-                      {{ items }}
-                    </option>
-                  </select>
-                </td>
-              </tr>
+
               <tr>
                 <td class="detail">Location</td>
                 <input

@@ -114,7 +114,7 @@
 
       <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h3 style="padding: 0px">
-          Top Offers
+          Grab maximum discounts!
           <router-link :to="{ path: '/search', query: { alloffers: true } }"
             ><a href="" class="vall">View all</a>
           </router-link>
@@ -125,7 +125,10 @@
         </div>
       </b-card>
 
-      <b-card style="margin-top: 4px; border: none; border-radius: 0">
+      <b-card
+        style="margin-top: 4px; border: none; border-radius: 0"
+        v-if="showFoodBlock === true"
+      >
         <h2 style="padding: 20px">
           Food
           <router-link :to="{ path: '/search', query: { category: 'Food' } }"
@@ -137,7 +140,10 @@
 
         <!--<catoffers category="/get_offers_by_category/Food"></catoffers>-->
       </b-card>
-      <b-card style="margin-top: 4px; border: none; border-radius: 0">
+      <b-card
+        style="margin-top: 4px; border: none; border-radius: 0"
+        v-if="showElectronicsBlock === true"
+      >
         <h2 style="padding: 20px">
           Electronics
           <router-link
@@ -149,7 +155,10 @@
         <topoffers category="/get_offers_by_category/Electronics"></topoffers>
         <!--<catoffers category="/get_offers_by_category/Electronics"></catoffers>-->
       </b-card>
-      <b-card style="margin-top: 4px; border: none; border-radius: 0">
+      <b-card
+        style="margin-top: 4px; border: none; border-radius: 0"
+        v-if="showFashionBlock === true"
+      >
         <h2 style="padding: 20px">
           Fashion
           <router-link :to="{ path: '/search', query: { category: 'Fashion' } }"
@@ -160,7 +169,10 @@
         <topoffers category="/get_offers_by_category/Fashion"></topoffers>
         <!--<catoffers category="/get_offers_by_category/Fashion"></catoffers>-->
       </b-card>
-      <b-card style="margin-top: 4px; border: none; border-radius: 0">
+      <b-card
+        style="margin-top: 4px; border: none; border-radius: 0"
+        v-if="showHealthBlock === true"
+      >
         <h2 style="padding: 20px">
           Health<router-link
             :to="{ path: '/search', query: { category: 'Health' } }"
@@ -169,6 +181,20 @@
         </h2>
 
         <topoffers category="/get_offers_by_category/Health"></topoffers>
+        <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
+      </b-card>
+      <b-card
+        style="margin-top: 4px; border: none; border-radius: 0"
+        v-if="showFashionBlock === true"
+      >
+        <h2 style="padding: 20px">
+          Furiniture<router-link
+            :to="{ path: '/search', query: { category: 'Furniture' } }"
+            ><a href="" class="vall">View all</a></router-link
+          >
+        </h2>
+
+        <topoffers category="/get_offers_by_category/Furniture"></topoffers>
         <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
       </b-card>
       <bottomnav></bottomnav>
@@ -193,6 +219,52 @@ export default {
     homeposters,
     Allapi,
     Bottomnav,
+  },
+  data() {
+    return {
+      showFashionBlock: false,
+      showHealthBlock: false,
+      showFoodBlock: false,
+      showElectronicsBlock: false,
+      showFurnitureBlock: false,
+    };
+  },
+  mounted() {
+    if (
+      localStorage.getItem("/get_offers_by_category/Fashionempty?") === "true"
+    ) {
+      this.showFashionBlock = false;
+    } else {
+      this.showFashionBlock = true;
+    }
+
+    if (
+      localStorage.getItem("/get_offers_by_category/Healthempty?") === "true"
+    ) {
+      this.showHealthBlock = false;
+    } else {
+      this.showHealthBlock = true;
+    }
+    if (localStorage.getItem("/get_offers_by_category/Foodempty?") === "true") {
+      this.showFoodBlock = false;
+    } else {
+      this.showFoodBlock = true;
+    }
+    if (
+      localStorage.getItem("/get_offers_by_category/Electronicsempty?") ===
+      "true"
+    ) {
+      this.showElectronicsBlock = false;
+    } else {
+      this.showElectronicsBlock = true;
+    }
+    if (
+      localStorage.getItem("/get_offers_by_category/Furnitureempty?") === "true"
+    ) {
+      this.showFurnitureBlock = false;
+    } else {
+      this.showFurnitureBlock = true;
+    }
   },
 };
 </script>
@@ -238,7 +310,7 @@ export default {
   text-align: center;
 }
 .backwrap {
-  background-color: rgb(160, 160, 160);
+  background-color: rgb(224, 224, 224);
 }
 .c-img {
   height: 200px;

@@ -199,7 +199,7 @@ export default {
       ul = document.getElementById("Sproducts");
       li = ul.getElementsByClassName("Scard");
       for (i = 0; i < li.length; i++) {
-        a = li[i].getElementsByTagName("name")[0];
+        a = li[i].getElementsByTagName("nav")[0];
 
         txtValue = a.textContent || a.innerText;
 

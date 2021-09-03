@@ -283,6 +283,14 @@
             max="100"
           ></b-form-input>
           <div class="mt-2">Value: {{ discount_percent }} %</div>
+
+          <multiselect
+            placeholder="Select Product/s"
+            v-model="products"
+            :options="getproducts.products"
+            :multiple="true"
+          />
+          <br />
         </div>
         <div v-if="discountType === 'BILL_DISCOUNT'">
           <label for="range-2">Discount percent on total bill</label>
@@ -306,16 +314,16 @@
           <label><span style="padding: 2px 5px">Validity</span> </label>
           <date-picker v-model="validity" type="date" range></date-picker>
         </div>
-        <multiselect
-          placeholder="Select Product/s"
-          v-model="products"
-          :options="getproducts.products"
-          :multiple="true"
-        />
       </div>
       <div>
         <label><span style="padding: 2px 5px">Offer Text :</span></label>
-        <div class="offer_text"><input type="text" v-model="offer_text" /></div>
+        <div class="offer_text">
+          <input
+            type="text"
+            v-model="offer_text"
+            placeholder="offer code should be unique"
+          />
+        </div>
       </div>
       <b-button class="login-button" block @click="addCouponDetails()"
         >Add Coupon</b-button
@@ -347,7 +355,7 @@ export default {
       r_discount: "",
       min_val: "500",
       quantity: "20",
-      offer_text: "To be added",
+      offer_text: "",
       discount_percent: "50",
       offer_type: "",
       validity: [],
