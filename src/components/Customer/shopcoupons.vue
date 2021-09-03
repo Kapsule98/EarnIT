@@ -110,6 +110,10 @@
                             Add to cart
                           </button>
                         </div>
+                        <div class="minval">
+                          offer valid on a minimum purchase of
+                          <i class="fa fa-rupee"></i> {{ offers.min_val }}
+                        </div>
                       </div>
                     </div>
 
@@ -265,6 +269,9 @@ export default {
 };
 </script>
 <style scoped>
+.minval {
+  float: right;
+}
 .botbtn {
   background: #008cff;
   width: fit-content;

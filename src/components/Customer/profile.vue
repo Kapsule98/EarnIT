@@ -22,35 +22,34 @@
       <div class="w3-col m6">
         <b-card style="margin: 20px 0px">
           <h1>Your Account</h1>
-          <center>
-            <table style="width: 80%; text-align: center" class="accountable">
-              <tr>
-                <td class="detail">Full Name</td>
-                <td class="description">{{ user.display_name }}</td>
-              </tr>
-              <tr>
-                <td class="detail">Email</td>
-                <td class="description">{{ user.email }}</td>
-              </tr>
-              <tr>
-                <td class="detail">Password</td>
-                <td class="description">******</td>
-              </tr>
-              <tr>
-                <td class="detail">Location</td>
-                <td class="description">
-                  <select name="location" id="">
-                    <option value="Bhilai">Bhilai</option>
-                    <option value="Raipur">Raipur</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td class="detail">Phone no.</td>
-                <td class="description">{{ user.phone }}</td>
-              </tr>
-            </table>
-          </center>
+
+          <table style="width: 80%" class="accountable">
+            <tr>
+              <td style="width: 70%" class="detail">Full Name</td>
+              <td class="description">{{ user.display_name }}</td>
+            </tr>
+            <tr>
+              <td class="detail">Email</td>
+              <td class="description">{{ user.email }}</td>
+            </tr>
+            <!-- <tr>
+              <td class="detail">Password</td>
+              <td class="description">******</td>
+            </tr>
+            <tr>
+              <td class="detail">Location</td>
+              <td class="description">
+                <select name="location" id="">
+                  <option value="Bhilai">Bhilai</option>
+                  <option value="Raipur">Raipur</option>
+                </select>
+              </td>
+            </tr>-->
+            <tr>
+              <td class="detail">Phone no.</td>
+              <td class="description">{{ user.phone }}</td>
+            </tr>
+          </table>
         </b-card>
       </div>
 
@@ -99,9 +98,7 @@ export default {
 .accountable td {
   padding: 20px 10px;
 }
-.accountable tr {
-  border-bottom: 1px solid rgb(228, 228, 228);
-}
+
 .detail {
   color: black;
   font-size: 15px;
@@ -110,6 +107,7 @@ export default {
 .description {
   color: rgb(65, 65, 65);
   font-size: 15px;
+  text-transform: capitalize;
 }
 .edit {
   padding: 6px 14px;

@@ -78,86 +78,49 @@
         </div>
       </div>
       <div class="w3-col m10" id="Sproducts">
-        <div v-for="shop in list.sellers" :key="shop.length" class="Scard">
-          <span>
-            <div class="couponcard">
-              <div class="w3-row">
-                <div class="w3-col m9">
-                  <div class="w3-col imgcol">
-                    <div v-if="shop.category === 'Health'">
+        <div class="w3-container">
+          <div class="w3-row">
+            <div
+              class="w3-col m4"
+              v-for="shop in list.sellers"
+              :key="shop.length"
+            >
+              <div class="Scard">
+                <div class="hovclass">
+                  <div class="couponhome">
+                    <div class="c2-back">
                       <img
-                        src="../../assets/health.jpg"
-                        class="thumbnail"
-                        alt=""
-                      />
-                    </div>
-                    <div v-else-if="shop.category === 'Fashion'">
-                      <img
-                        src="../../assets/fashion.jpg"
-                        class="thumbnail"
-                        alt=""
-                      />
-                    </div>
-                    <div v-else-if="shop.category === 'Furniture'">
-                      <img
-                        src="../../assets/furnishing.jpg"
-                        class="thumbnail"
-                        alt=""
-                      />
-                    </div>
-                    <div v-else-if="shop.category === 'Food'">
-                      <img
-                        src="../../assets/food.jpg"
-                        class="thumbnail"
-                        alt=""
-                      />
-                    </div>
-                    <div v-else-if="shop.category === 'Electronics'">
-                      <img
-                        src="../../assets/electronics.jpg"
-                        class="thumbnail"
-                        alt=""
+                        src="https://source.unsplash.com/random"
+                        width="100%"
                       />
                     </div>
                   </div>
-                  <div class="w3-col contentcol" style="width: 80%">
-                    <div class="card_item">
-                      <name> {{ shop.display_name }} </name>
-                    </div>
-
-                    <div class="w3-row">
-                      <div class="w3-third">
-                        <div class="card_leftcoupons">
-                          <address>{{ shop.address }}</address>
-                        </div>
-                      </div>
-                      <div class="w3-third"></div>
-                    </div>
+                  <div class="l-offer">
+                    <nav>{{ shop.display_name }}</nav>
                   </div>
-                </div>
-                <div class="w3-col m3">
-                  <router-link
-                    :to="{
-                      path: '/seller',
-                      query: { seller: shop.shop_name },
-                    }"
-                  >
-                    <button
-                      class="w3-button"
-                      style="
-                        width: 80%;
-                        margin: 30px a10%;
-                        background: #008cff;
-                        color: white;
-                      "
+                  <div class="shopname">
+                    <div
+                      class="s-address"
+                      v-b-tooltip.hover
+                      :title="shop.address"
                     >
-                      View Shop
-                    </button>
-                  </router-link>
+                      {{ shop.address }}
+                    </div>
+                    <router-link
+                      :to="{
+                        path: '/seller',
+                        query: {
+                          seller: shop.shop_name,
+                        },
+                      }"
+                    >
+                      <button class="vshop">View Shop</button>
+                    </router-link>
+                  </div>
                 </div>
               </div>
             </div>
-          </span>
+          </div>
         </div>
       </div>
     </div>
@@ -207,7 +170,7 @@ export default {
   },
   methods: {
     showFilter() {
-      document.getElementsByClassName("filter")[0].style.bottom = 0;
+      document.getElementsByClassName("filter")[0].style.bottom = "0";
       document.getElementsByClassName("reduce")[0].style.display = "block";
     },
     closeFilter() {
@@ -243,7 +206,6 @@ export default {
         .get(offersurl)
         .then((response) => {
           this.list = response.data;
-          console.log(this.list);
         })
         .catch((err) => {
           console.log(err);
@@ -253,6 +215,150 @@ export default {
 };
 </script>
 <style scoped>
+.couponhome {
+  position: relative;
+  width: 90%;
+  height: 220px;
+  margin: 10px auto 0px auto;
+  background: rgba(0, 0, 0, 0.082);
+  overflow: hidden;
+  border-radius: 12px;
+}
+.hovclass {
+  border: none;
+  transition: 0.4s ease-in-out;
+  border-radius: 12px;
+  padding-bottom: 30px;
+  height: fit-content;
+  margin: 10px 0px;
+}
+.hovclass:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+.shopname {
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 10px;
+  font-size: 14px;
+  color: rgb(92, 92, 92);
+  text-transform: capitalize;
+}
+.s-address {
+  float: left;
+  max-width: 65%; /* IE6 needs any width */
+  overflow: hidden; /* "overflow" value must be different from  visible"*/
+  -o-text-overflow: ellipsis; /* Opera < 11*/
+  text-overflow: ellipsis; /* IE, Safari (WebKit), Opera >= 11, FF > 6 */
+  height: 20px;
+}
+.l-offer {
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 10px;
+  font-size: 17px;
+  text-transform: capitalize;
+  background-color: rgba(175, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  color: rgb(46, 46, 46);
+  height: 50px;
+  border-bottom: 2px solid rgb(212, 212, 212);
+  white-space: nowrap;
+  width: 90%; /* IE6 needs any width */
+  overflow: hidden; /* "overflow" value must be different from  visible"*/
+  -o-text-overflow: ellipsis; /* Opera < 11*/
+  text-overflow: ellipsis; /* IE, Safari (WebKit), Opera >= 11, FF > 6 */
+}
+.offno {
+  font-size: 22px;
+  font-weight: 700;
+}
+.vshop {
+  font-size: 13px;
+  color: #0077ff;
+  background: none;
+  text-transform: lowercase;
+  font-weight: 600;
+  border: 1px solid#0077ff;
+  width: fit-content;
+  border-radius: 3px;
+  padding: 2px 14px;
+  float: right;
+  margin: 0px;
+  transition: 0.4s ease-in-out;
+}
+.vshop:hover {
+  color: white;
+  background: #0077ff;
+}
+.c2-off {
+  font-size: 22px;
+  color: rgb(255, 255, 255);
+  text-transform: uppercase;
+  font-weight: 900;
+  height: 80px;
+  width: 100%;
+  margin-top: 20px;
+  display: block;
+}
+.c2-validity {
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 10px;
+  font-size: 14px;
+  color: rgb(172, 172, 172);
+  text-transform: lowercase;
+  font-weight: 400;
+  display: block;
+}
+.c2-shop {
+  font-size: 17px;
+  color: rgb(255, 255, 255);
+  font-weight: 400;
+  display: block;
+  padding: 10px;
+  border-bottom: none;
+}
+.c2-location {
+  top: 5px;
+  left: 5px;
+  position: absolute;
+  font-size: 11px;
+  color: rgb(0, 0, 0);
+  text-transform: lowercase;
+  font-weight: 400;
+  display: block;
+  background: white;
+  border: 2px solid rgb(0, 162, 255);
+  padding: 2px 3px;
+  border-radius: 9px;
+}
+.c2-left {
+  font-size: 12px;
+  color: rgb(255, 255, 255);
+  text-transform: lowercase;
+  font-weight: 600;
+  background: #0077ff;
+  width: fit-content;
+  border-radius: 0px 3px 3px 0px;
+  padding: 2px 14px;
+  float: left;
+  margin: 20px 10px 10px -2px;
+}
+.c2-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  widows: 100%;
+  height: 220px;
+  z-index: -1;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+/*
 .botbtn {
   background: #008cff;
   width: fit-content;
@@ -340,7 +446,7 @@ export default {
 }
 .contentcol {
   width: 90%;
-}
+}*/
 .closeFilter {
   position: absolute;
   top: -50px;
@@ -396,6 +502,14 @@ export default {
   font-size: 12px;
   padding: 2px 4px;
   background: none;
+}
+@media screen and (min-width: 600px) {
+  .filter {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 40px;
+    z-index: 0;
+  }
 }
 @media screen and (max-width: 600px) {
   .showfilter {

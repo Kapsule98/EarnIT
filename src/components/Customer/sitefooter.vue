@@ -101,6 +101,8 @@ export default {
 
 <style scoped>
 .l-footer {
+  position: relative;
+  z-index: 100;
   width: 100%;
   background: #08041f;
   padding: 40px;

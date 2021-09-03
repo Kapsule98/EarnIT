@@ -46,7 +46,7 @@
               </div>-->
               <div class="w3-third">
                 <b-card style="margin: 10px; text-align: center">
-                  <span class="tealbg">{{ coupons_sold.history.length }}</span>
+                  <span class="tealbg">{{ coupons_sold }}</span>
                   <template #footer>
                     <div class="c-head">Number of Coupons Sold</div>
                   </template>
@@ -94,7 +94,7 @@
               <li
                 style="list-style-type: none"
                 v-for="(products, index) in products.products"
-                :key="products.length"
+                :key="index"
               >
                 <div class="proname">
                   {{ index + 1 }}.
@@ -138,9 +138,7 @@ export default {
     };
   },
   mounted() {
-    console.log((this.user = this.$session.get("token")));
     this.user = this.$session.get("user_data");
-    console.log(this.user);
     const offersurl = BASE_URL + "/seller/category";
     let JWTToken = this.$session.get("token");
     axios
@@ -157,11 +155,13 @@ export default {
   },
   methods: {
     showFilter() {
-      document.getElementsByClassName("filter")[0].style.bottom = 0;
+      document.getElementsByClassName("filter")[0].style.bottom = "0";
+      document.getElementsByClassName("closeFilter")[0].style.bottom = "60%";
       document.getElementsByClassName("reduce")[0].style.display = "block";
     },
     closeFilter() {
       document.getElementsByClassName("filter")[0].style.bottom = "-100%";
+      document.getElementsByClassName("closeFilter")[0].style.bottom = "-100%";
       document.getElementsByClassName("reduce")[0].style.display = "none";
     },
     getProducts() {
@@ -171,7 +171,6 @@ export default {
         .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.products = response.data;
-          console.log(this.products);
         })
         .catch((err) => {
           console.log(err);
@@ -192,7 +191,7 @@ export default {
         const url = BASE_URL + "/seller/product";
         axios
           .post(url, payload, options)
-          .then((response) => console.log(response), console.log(payload))
+          .then()
           .catch((error) => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
@@ -215,9 +214,7 @@ export default {
       };
       axios
         .delete(offersurl, config)
-        .then((res) => {
-          console.log(res);
-        })
+        .then(() => {})
         .catch((err) => {
           console.log(err);
         });
@@ -230,7 +227,6 @@ export default {
         .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.earning = response.data;
-          console.log(this.earning);
         })
         .catch((err) => {
           console.log(err);
@@ -242,8 +238,7 @@ export default {
       axios
         .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
-          this.coupons_sold = response.data;
-          console.log(this.coupons_sold);
+          this.coupons_sold = response.data.history.length;
         })
         .catch((err) => {
           console.log(err);
@@ -333,18 +328,7 @@ export default {
   display: inline-block;
   padding: 2px;
 }
-.closeFilter {
-  position: absolute;
-  top: -50px;
-  left: 0;
-  display: none;
-  width: 100%;
-  margin: 0;
-  height: 50px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 25px 25px 0px 0px;
-  border-bottom: 1px solid rgb(185, 185, 185);
-}
+
 .showfilter {
   display: none;
   margin-top: -10px;
@@ -382,6 +366,9 @@ export default {
   background: rgba(0, 0, 0, 0.425);
   z-index: 1999;
 }
+.closeFilter {
+  display: none;
+}
 @media screen and (max-width: 600px) {
   .c-m {
     padding: 10px 0px;
@@ -398,9 +385,20 @@ export default {
     left: 0;
     transition: 0.5s;
     z-index: 2000;
+    overflow-y: scroll;
   }
   .closeFilter {
     display: block;
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    height: 50px;
+    transition: 0.5s;
+    background-color: rgb(255, 255, 255);
+    border-radius: 25px 25px 0px 0px;
+    border-bottom: 1px solid rgb(185, 185, 185);
   }
 }
 @media screen and (max-width: 600px) {
