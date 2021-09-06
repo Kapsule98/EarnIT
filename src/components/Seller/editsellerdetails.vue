@@ -45,24 +45,8 @@
                   ></b-form-input>
                 </td>
               </tr>
-
-              <tr>
-                <td class="detail">Location</td>
-                <input
-                  style="
-                    padding: 5px 10px;
-                    margin: 10px;
-                    background-color: #008cff;
-                    color: white;
-                    border: none;
-                  "
-                  type="button"
-                  value="Detect your location"
-                  v-model="shop_location"
-                  v-on:click="getLocation()"
-                />
-              </tr>
             </table>
+            <div id="map"></div>
             <b-button
               variant="primary"
               style="float: right; margin: 10px"
@@ -127,21 +111,34 @@ export default {
     this.user = this.$session.get("user_data");
     console.log(this.$session.get("user_data"));
   },
+
   methods: {
-    getLocation() {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          console.log(position.coords.latitude);
-          console.log(position.coords.longitude);
-        },
-        (error) => {
-          console.log(error.message);
-        }
-      );
-    },
-    showPosition(position) {
-      alert(position.coords.latitude);
-    },
+    /*initMap() {
+      const myLatlng = { lat: -25.363, lng: 131.044 };
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 4,
+        center: myLatlng,
+      });
+      // Create the initial InfoWindow.
+      let infoWindow = new google.maps.InfoWindow({
+        content: "Click the map to get Lat/Lng!",
+        position: myLatlng,
+      });
+      infoWindow.open(map);
+      // Configure the click listener.
+      map.addListener("click", (mapsMouseEvent) => {
+        // Close the current InfoWindow.
+        infoWindow.close();
+        // Create a new InfoWindow.
+        infoWindow = new google.maps.InfoWindow({
+          position: mapsMouseEvent.latLng,
+        });
+        infoWindow.setContent(
+          JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
+        );
+        infoWindow.open(map);
+      });
+    },*/
     updateDetails() {
       var r = confirm("You will need to signin again to update your changes!");
       if (r == true) {

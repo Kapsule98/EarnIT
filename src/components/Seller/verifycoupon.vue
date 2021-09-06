@@ -100,6 +100,21 @@
                 "
               >
                 <couponcard
+                  v-if="offer.type === 'ITEM_DISCOUNT'"
+                  v-b-tooltip.hover
+                  :title="offer.products + ' '"
+                  :name="offer.products[0]"
+                  v-bind:discount="offer.discount_percent + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  v-bind:validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  v-bind:offer_text="offer.offer_text"
+                ></couponcard>
+                <couponcard
+                  v-else
+                  v-b-tooltip.hover
+                  title="Total Bill"
                   :name="offer.products[0]"
                   v-bind:discount="offer.discount_percent + '%'"
                   v-bind:left="offer.quantity + ' coupons'"
@@ -468,12 +483,18 @@ export default {
         var ta = this.r_total;
         var atxt = this.getoffers.active_offers[i].offer_text;
         var entxt = document.getElementById("input-1").value;
+        var per = this.getoffers.active_offers[i].discount_percent;
         if (entxt === atxt) {
-          var per = this.getoffers.active_offers[i].discount_percent;
-          if (per >= this.getoffers.active_offers[i].min_val) {
+          if (
+            parseInt(ta) >
+            parseInt(this.getoffers.active_offers[i].min_val) - 1
+          ) {
             document.getElementById("input-4").value = ta - (ta / 100) * per;
             this.r_discount = document.getElementById("input-4").value;
-          } else {
+          } else if (
+            parseInt(ta) <
+            parseInt(this.getoffers.active_offers[i].min_val) - 1
+          ) {
             alert(
               "minimum selling price is Rs" +
                 this.getoffers.active_offers[i].min_val
@@ -500,9 +521,7 @@ export default {
       var cpa = this.r_total;
       var spa = this.r_discount;
       if (otpa == "" || offer_texta == "" || cpa == "" || spa == "") {
-        alert(
-          otpa + offer_texta + cpa + spa + "please fill the required fields"
-        );
+        alert("please fill the required fields");
       } else {
         var r = confirm("Process the Coupon");
         if (r == true) {
@@ -526,7 +545,7 @@ export default {
               this.errorMessage = error.message;
               console.error("There was an error!", error);
             });
-          this.$router.go();
+          //this.$router.go();
         } else {
           document.getElementById("reedem").style.color = "white";
         }
