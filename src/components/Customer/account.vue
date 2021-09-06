@@ -88,21 +88,13 @@
                   />
                 </div>
                 <div class="w3-col" style="width: 70%">
-                  <div class="a-seller">
-                    Sold by - {{ items.seller_display_name }}
-                  </div>
+                  <div class="a-seller">Sold by - {{ items.shop_name }}</div>
                   <div class="a-spend">
-                    Money Spend: <i class="fa fa-rupee"></i> {{ items.sp }}
+                    Money Spent: <i class="fa fa-rupee"></i> {{ items.sp }}
                   </div>
                   <div class="a-spend">
                     Money Saved: <i class="fa fa-rupee"></i>
                     {{ items.cp - items.sp }}
-                  </div>
-                  <div class="a-btn">
-                    <a href=""
-                      ><i class="fa fa-list-alt" aria-hidden="true"></i> View
-                      Similar Coupons</a
-                    >
                   </div>
                 </div>
               </div>

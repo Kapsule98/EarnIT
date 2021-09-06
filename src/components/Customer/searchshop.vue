@@ -1,6 +1,7 @@
 <template>
   <div>
     <topnav
+      v-if="this.$session.get('user_type') !== 'seller'"
       link3="Account"
       link4='<i class="fa fa-shopping-cart"></i> Cart '
       link5='<i class="fa fa-user"></i> Login'
@@ -14,6 +15,23 @@
       link2=""
       :display_categories="true"
       :productsearch="true"
+    ></topnav>
+    <topnav
+      v-if="this.$session.get('user_type') === 'seller'"
+      link3="Account"
+      link4="Dashboard"
+      link5='<i class="fa fa-user"></i> Login'
+      url1="/"
+      url2="/"
+      url3="/account"
+      url4="/verifycoupon"
+      url5="/login"
+      url6="/"
+      link1=""
+      link2=""
+      :searchbar="true"
+      :display_categories="true"
+      :landing="true"
     ></topnav>
     <!--<allcatrgories></allcatrgories>-->
 
@@ -124,6 +142,7 @@
         </div>
       </div>
     </div>
+
     <bottomnav></bottomnav>
     <div class="reduce"></div>
     <sitefooter></sitefooter>
@@ -190,8 +209,8 @@ export default {
       }
     },
     byFilter(p) {
-      if (this.category === null && p !== 1) {
-        alert("please select a category first");
+      if (this.category === "all" && p === 1) {
+        this.$router.push("/search?alloffers=true");
       } else {
         if (p === 1) {
           this.$router.push("/search?category=" + this.category);
@@ -206,6 +225,7 @@ export default {
         .get(offersurl)
         .then((response) => {
           this.list = response.data;
+          console.log(this.list);
         })
         .catch((err) => {
           console.log(err);

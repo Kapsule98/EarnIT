@@ -1,6 +1,7 @@
 <template>
   <div>
     <topnav
+      v-if="this.$session.get('user_type') !== 'seller'"
       link3="Account"
       link4='<i class="fa fa-shopping-cart"></i> Cart '
       link5='<i class="fa fa-user"></i> Login'
@@ -14,6 +15,23 @@
       link2=""
       :display_categories="true"
       :productsearch="true"
+    ></topnav>
+    <topnav
+      v-if="this.$session.get('user_type') === 'seller'"
+      link3="Account"
+      link4="Dashboard"
+      link5='<i class="fa fa-user"></i> Login'
+      url1="/"
+      url2="/"
+      url3="/account"
+      url4="/verifycoupon"
+      url5="/login"
+      url6="/"
+      link1=""
+      link2=""
+      :searchbar="true"
+      :display_categories="true"
+      :landing="true"
     ></topnav>
     <!--<allcatrgories></allcatrgories>-->
 
@@ -186,7 +204,7 @@
                     </nav>
                   </div>
                   <div class="shopname">
-                    {{ list.active_offers[offer.index].seller_display_name }}
+                    {{ list.active_offers[offer.index].shop_name }}
 
                     <router-link
                       :to="{
@@ -212,139 +230,9 @@
             </div>
           </div>
         </div>
-        <!--
-        <div v-for="offer in mapped" :key="offer.length" class="Scard">
-          <div
-            v-if="
-              (list.active_offers[offer.index].category === category &&
-                offer.value > discfilter) ||
-              (category === null && offer.value > discfilter)
-            "
-          >
-            <span>
-              <div class="couponcard">
-                <div class="w3-row">
-                  <div class="w3-col m9">
-                    <div class="w3-col imgcol">
-                      <div
-                        v-if="
-                          list.active_offers[offer.index].category === 'Health'
-                        "
-                      >
-                        <img
-                          src="../../assets/health.jpg"
-                          class="thumbnail"
-                          alt=""
-                        />
-                      </div>
-                      <div
-                        v-else-if="
-                          list.active_offers[offer.index].category === 'Fashion'
-                        "
-                      >
-                        <img
-                          src="../../assets/fashion.jpg"
-                          class="thumbnail"
-                          alt=""
-                        />
-                      </div>
-                      <div
-                        v-else-if="
-                          list.active_offers[offer.index].category ===
-                          'Furniture'
-                        "
-                      >
-                        <img
-                          src="../../assets/furnishing.jpg"
-                          class="thumbnail"
-                          alt=""
-                        />
-                      </div>
-                      <div
-                        v-else-if="
-                          list.active_offers[offer.index].category === 'Food'
-                        "
-                      >
-                        <img
-                          src="../../assets/food.jpg"
-                          class="thumbnail"
-                          alt=""
-                        />
-                      </div>
-                      <div
-                        v-else-if="
-                          list.active_offers[offer.index].category ===
-                          'Electronics'
-                        "
-                      >
-                        <img
-                          src="../../assets/electronics.jpg"
-                          class="thumbnail"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                    <div class="w3-col contentcol" style="width: 80%">
-                      <div
-                        class="card_remaining"
-                        v-if="list.active_offers[offer.index].quantity < 10"
-                      >
-                        {{ list.active_offers[offer.index].quantity }} left!
-                      </div>
-
-                      <div class="card_item">
-                        {{ offer.value }}% off on
-
-                        <name>
-                          {{ list.active_offers[offer.index].products[0] }}
-                        </name>
-                      </div>
-
-                      <div class="w3-row">
-                        <div class="w3-third">
-                          <div class="card_leftcoupons">
-                            {{ list.active_offers[offer.index].quantity }}
-                            Coupons Left
-                          </div>
-                        </div>
-                        <div class="w3-third">
-                          <div class="card_validity">
-                            valid till
-                            {{
-                              moment(
-                                list.active_offers[offer.index].validity[1] *
-                                  1000
-                              ).format("Do MMM YY")
-                            }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="w3-col m3">
-                    <button
-                      v-on:click="
-                        addToCart(list.active_offers[offer.index].offer_text)
-                      "
-                      id="reedem"
-                      class="w3-button"
-                      style="
-                        width: 80%;
-                        margin: 30px 10%;
-                        background: #008cff;
-                        color: white;
-                      "
-                    >
-                      Add to cart
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </span>
-          </div>
-        </div>-->
       </div>
     </div>
+
     <div class="reduce"></div>
     <bottomnav></bottomnav>
     <sitefooter></sitefooter>
@@ -429,8 +317,7 @@ export default {
     },
     byFilter(p) {
       if (this.category === null && p !== 1) {
-        alert("please select a category first");
-        document.getElementById("sby2").checked = false;
+        this.$router.push("/search_by_shop?category=all");
       } else {
         if (p === 2) {
           this.$router.push("/search_by_shop?category=" + this.category);
@@ -613,95 +500,6 @@ a {
 a:hover {
   text-decoration: none;
 }
-/*
-.botbtn {
-  background: #008cff;
-  width: fit-content;
-  color: white;
-  padding: 8px 10px;
-  border-radius: 4px;
-  font-size: 18px;
-  float: right;
-  border: none;
-  margin: 20px;
-  font-weight: 500;
-}
-.greyback {
-  position: fixed;
-  top: -20%;
-  left: 0;
-  width: 100%;
-  height: 140%;
-  background: rgb(241, 248, 248);
-  z-index: -100;
-}
-.domain {
-  color: rgb(196, 196, 196);
-  font-weight: 600;
-  margin: 15px 5px 5px 5px;
-  font-size: 15px;
-  text-transform: uppercase;
-}
-.shopname {
-  color: teal;
-  font-weight: 700;
-  font-size: 30px;
-  line-height: 0.9;
-}
-
-.shoplocation {
-  color: rgb(151, 151, 151);
-  font-size: 18px;
-}
-.couponcard {
-  width: 95%;
-  padding: 20px;
-  margin: 10px auto;
-  border-bottom: 1px solid rgb(214, 214, 214);
-}
-
-.card_item {
-  font-size: 20px;
-  color: teal;
-  float: left;
-  margin-top: -5px;
-  padding-left: 20px;
-  width: fit-content;
-  display: block;
-  font-weight: 400;
-}
-.card_discount {
-  padding: 20px;
-  font-size: 20px;
-  color: rgb(49, 49, 49);
-}
-.card_validity {
-  padding: 25px;
-  font-size: 14px;
-  color: rgb(85, 85, 85);
-}
-.card_leftcoupons {
-  padding: 20px;
-  font-size: 18px;
-  color: rgb(61, 61, 61);
-}
-.card_remaining {
-  font-size: 15px;
-  color: rgb(252, 88, 88);
-  display: block;
-  width: 100%;
-  padding: 10px 20px;
-}
-.thumbnail {
-  width: 100px;
-  border-radius: 50%;
-}
-.imgcol {
-  width: 12%;
-}
-.contentcol {
-  width: 90%;
-}*/
 
 .showfilter {
   display: none;

@@ -46,8 +46,9 @@
               </td>
             </tr>-->
             <tr>
-              <td class="detail">Phone no.</td>
-              <td class="description">{{ user.phone }}</td>
+              <router-link to="/logout">
+                <button>logout</button>
+              </router-link>
             </tr>
           </table>
         </b-card>

@@ -14,7 +14,10 @@
     <div class="w3-container">
       <div class="w3-row">
         <div class="w3-third form">
-          <p class="heading" style="text-transform: capitalize">
+          <p
+            class="heading"
+            style="text-transform: capitalize; color: rgb(53, 53, 53)"
+          >
             {{ user.shop_name }}
           </p>
           <h4>Verify a Coupon</h4>
@@ -441,7 +444,11 @@ export default {
 
           axios
             .put(url, payload, options)
-            .then((response) => console.log(response), console.log(payload))
+            .then(
+              (response) => console.log(response),
+              console.log(payload),
+              this.$router.go()
+            )
             .catch((error) => {
               this.errorMessage = error.message;
               console.error("There was an error!", error);
@@ -463,8 +470,15 @@ export default {
         var entxt = document.getElementById("input-1").value;
         if (entxt === atxt) {
           var per = this.getoffers.active_offers[i].discount_percent;
-          document.getElementById("input-4").value = ta - (ta / 100) * per;
-          this.r_discount = document.getElementById("input-4").value;
+          if (per >= this.getoffers.active_offers[i].min_val) {
+            document.getElementById("input-4").value = ta - (ta / 100) * per;
+            this.r_discount = document.getElementById("input-4").value;
+          } else {
+            alert(
+              "minimum selling price is Rs" +
+                this.getoffers.active_offers[i].min_val
+            );
+          }
         }
       }
     },

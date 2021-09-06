@@ -110,6 +110,7 @@ export default {
         .get(offersurl)
         .then((response) => {
           this.list = response.data;
+          console.log(this.list);
           var discount = [];
           for (var i = 0; i < this.list.active_offers.length; i++) {
             discount[i] = this.list.active_offers[i].discount_percent;
