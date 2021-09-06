@@ -20,10 +20,6 @@
       <div class="w3-row">
         <div class="w3-threequarter">
           <b-card>
-            <h5>OTP :{{ reedemdetails }}</h5>
-            <h5>offer code :{{ reedemdetailso }}</h5></b-card
-          >
-          <b-card>
             <h2 style="border-bottom: 1px solid #bababa; padding: 20px">
               Coupons Cart
             </h2>
@@ -55,7 +51,21 @@
                   </div>
 
                   <div class="card_item">
-                    {{ offer.discount_percent }}% off on {{ offer.products[0] }}
+                    {{ offer.discount_percent }}% off on
+                    <span v-b-tooltip.hover :title="offer.products + ' '">
+                      <span
+                        v-for="(prods, index1) in offer.products"
+                        :key="prods.offer_text"
+                      >
+                        {{ offer.products[index1] }}
+                        <span
+                          v-if="
+                            index1 != Object.keys(offer.products).length - 1
+                          "
+                          >,
+                        </span>
+                      </span>
+                    </span>
                   </div>
 
                   <div class="w3-row">
@@ -91,6 +101,17 @@
                     delete
                   </button>
                 </div>
+              </div>
+              <div
+                v-if="
+                  offer.offer_text === reedemdetailso && showstatus === true
+                "
+              >
+                <b-alert variant="success" show>
+                  provide the OTP and coupon code to the Shop to reedem it!
+                  <br />
+                  OTP :{{ reedemdetails }} | offer code :{{ reedemdetailso }}
+                </b-alert>
               </div>
             </div>
 
@@ -132,10 +153,21 @@ export default {
       cart: [],
       reedemdetails: localStorage.getItem("otp"),
       reedemdetailso: localStorage.getItem("offtext"),
+      currentTime: "",
+      nextTime: "",
+      showstatus: true,
     };
   },
   mounted() {
     this.getCart();
+    this.currentTime = localStorage.getItem("ct");
+    const ct = this.currentTime;
+    this.nextTime = new Date();
+    var nt = this.nextTime.getTime();
+
+    if (parseInt(nt) - parseInt(ct) > 300000) {
+      this.showstatus = false;
+    }
   },
   methods: {
     redeemOffer(offer_text) {
@@ -158,9 +190,12 @@ export default {
           .post(url, payload, options)
           .then((response) => {
             console.log(response);
-            if (response.data.status === 200) {
+            if (response.data.status === 200 || response.data.status === 400) {
               localStorage.setItem("otp", response.data.otp);
               localStorage.setItem("offtext", offer_text);
+              this.currentTime = new Date();
+              const ct = this.currentTime.getTime();
+              localStorage.setItem("ct", ct);
               this.$router.go();
             } else {
               alert("something went wrong");

@@ -145,6 +145,7 @@ export default {
       searchvalue: "",
     };
   },
+
   props: [
     "link1",
     "link2",
@@ -192,21 +193,22 @@ export default {
   },
   methods: {
     productSearch() {
-      var input, filter, ul, li, a, i, txtValue;
+      var input, filter, ul, li, a, i, j, txtValue;
       input = this.searchvalue;
       filter = input.toUpperCase();
 
       ul = document.getElementById("Sproducts");
       li = ul.getElementsByClassName("Scard");
       for (i = 0; i < li.length; i++) {
-        a = li[i].getElementsByTagName("nav")[0];
+        a = li[i].getElementsByTagName("nav");
+        for (j = 0; j < a.length; j++) {
+          txtValue = a[j].textContent || a[j].innerText;
 
-        txtValue = a.textContent || a.innerText;
-
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          li[i].style.display = "";
-        } else {
-          li[i].style.display = "none";
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+          } else {
+            li[i].style.display = "none";
+          }
         }
       }
     },

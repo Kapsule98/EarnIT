@@ -1,6 +1,7 @@
 <template>
   <div>
     <topnav
+      v-if="this.$session.get('user_type') !== 'seller'"
       link3="Account"
       link4='<i class="fa fa-shopping-cart"></i> Cart '
       link5='<i class="fa fa-user"></i> Login'
@@ -15,13 +16,30 @@
       :display_categories="true"
       :searchbar="true"
     ></topnav>
+    <topnav
+      v-if="this.$session.get('user_type') === 'seller'"
+      link3="Account"
+      link4="Dashboard"
+      link5='<i class="fa fa-user"></i> Login'
+      url1="/"
+      url2="/"
+      url3="/account"
+      url4="/verifycoupon"
+      url5="/login"
+      url6="/"
+      link1=""
+      link2=""
+      :searchbar="true"
+      :display_categories="true"
+      :landing="true"
+    ></topnav>
     <div class="greyback"></div>
     <div class="w3-container mopad">
       <div class="w3-card" style="background: white">
         <div class="w3-row">
           <div class="w3-twothird" style="padding: 20px">
             <p class="domain">{{ list.category }}</p>
-            <p class="shopname">{{ list.offers[0].shop_name }}</p>
+            <p class="shopname">{{ list.shop_name }}</p>
             <p class="shoplocation">
               <i class="fa fa-map-marker"></i> {{ list.address }}
             </p>
@@ -71,7 +89,24 @@
 
                           <div class="card_item">
                             {{ offers.discount_percent }}% off on
-                            {{ offers.products[0] }}
+                            <span
+                              v-b-tooltip.hover
+                              :title="offers.products + ' '"
+                            >
+                              <span
+                                v-for="(prods, index1) in offers.products"
+                                :key="prods.offer_text"
+                              >
+                                {{ offers.products[index1] }}
+                                <span
+                                  v-if="
+                                    index1 !=
+                                    Object.keys(offers.products).length - 1
+                                  "
+                                  >,
+                                </span>
+                              </span>
+                            </span>
                           </div>
 
                           <div class="w3-row">
@@ -132,13 +167,13 @@
                         color: #666666;
                       "
                     >
-                      Rakesh Digital
+                      {{ list.shop_name }}
                     </h5>
                     <br />
                     <h5>Adress</h5>
-                    <p>342, West Bank, Amroli, C.G</p>
+                    <p>{{ list.address }}</p>
                     <h4>phone:</h4>
-                    <p>+91888**939</p>
+                    <p>+{{ list.contact_no }}</p>
                     <p
                       style="
                         background: #008cff;

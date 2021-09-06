@@ -107,6 +107,25 @@ export default {
     };
   },
   mounted() {
+    if ("profile" in localStorage) {
+      const data = JSON.parse(localStorage.getItem("profile"));
+      console.log(data);
+      if (data.user_type === "customer") {
+        this.$session.start();
+        this.$session.set("token", data.token);
+        this.$session.set("user_data", data.user_data);
+        this.$session.set("user_type", "customer");
+        this.$session.set("logged_in", "true");
+        this.$router.push("/");
+      } else if (data.user_type === "seller") {
+        this.$session.start();
+        this.$session.set("token", data.token);
+        this.$session.set("user_data", data.user_data);
+        this.$session.set("user_type", "seller");
+        this.$session.set("logged_in", "true");
+        this.$router.push("/");
+      }
+    }
     document.getElementById("defaultOpen").click();
   },
   methods: {
@@ -133,14 +152,21 @@ export default {
                 this.$session.start();
                 this.$session.set("token", user_data.jwt);
                 this.$session.set("user_data", user_data.user);
-                console.log(this.$session.get("user_data"));
                 this.$session.set("user_type", "customer");
                 this.$session.set("logged_in", "true");
+                const storedata = {
+                  token: user_data.jwt,
+                  user_data: user_data.user,
+                  user_type: "customer",
+                  logged_in: "true",
+                };
+
                 localStorage.setItem("log", this.$session.get("logged_in"));
                 localStorage.setItem(
                   "user_type",
                   this.$session.get("user_type")
                 );
+                localStorage.setItem("profile", JSON.stringify(storedata));
                 this.$router.push("/");
               } else {
                 alert(res.data.msg);
@@ -170,6 +196,13 @@ export default {
                   "user_type",
                   this.$session.get("user_type")
                 );
+                const storedata = {
+                  token: seller_data.jwt,
+                  user_data: seller_data.seller,
+                  user_type: "seller",
+                  logged_in: "true",
+                };
+                localStorage.setItem("profile", JSON.stringify(storedata));
                 this.$router.push("/account");
               } else {
                 alert(res.data.msg);

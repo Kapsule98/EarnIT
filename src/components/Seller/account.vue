@@ -21,13 +21,17 @@
       <div class="w3-row">
         <div class="w3-twothird" style="padding: 10px">
           <b-card>
-            <button class="w3-button w3-teal" style="font-weight: 600">
+            <button
+              class="w3-button"
+              style="font-weight: 600; background-color: #008cff; color: white"
+            >
               ACTIVE
             </button>
             <p class="c-domain">{{ category.category }}</p>
             <p class="c-shopname">{{ user.shop_name }}</p>
             <p class="c-shoplocation">{{ user.address }}</p>
             <p class="c-shoplocation">Phone No. : {{ user.contact_no }}</p>
+            <p class="c-shoplocation">Email : {{ user.email }}</p>
             <a href="/editsellerdetails">Edit account details</a>
             <p class="s-details">
               <!-- Date Joined : 2 jun 2021 | user since 2 months-->
@@ -49,6 +53,7 @@
                   <span class="tealbg">{{ coupons_sold }}</span>
                   <template #footer>
                     <div class="c-head">Number of Coupons Sold</div>
+                    <br />
                   </template>
                 </b-card>
               </div>
@@ -259,7 +264,7 @@ export default {
   text-transform: uppercase;
 }
 .c-shopname {
-  color: teal;
+  color: rgb(53, 53, 53);
   font-weight: 700;
   font-size: 30px;
   line-height: 0.9;

@@ -98,7 +98,7 @@
             v-model="displayname"
             type="text"
             class="login-input"
-            placeholder="Name"
+            placeholder="Your Shop Name"
             style="border-top: none; border-radius: 0px"
           />
           <input
@@ -145,11 +145,22 @@
           <input
             v-model="shop_name"
             type="text"
-            placeholder="Shop name"
+            placeholder="Registered Shop Name"
             class="login-input"
             style="border-top: none; border-radius: 0px 0px 5px 5px"
           />
-
+          <br />
+          <br />
+          <h5 style="color: #999999">tell Customers your active time</h5>
+          <div class="weekco">
+            <input
+              disabled
+              :value="days.day"
+              class="week"
+              v-for="days in days"
+              :key="days.length"
+            />
+          </div>
           <button @click="Sellersignup()" class="login-button">Register</button>
           <a href="/login" style="float: right"
             >already have an account? login here</a
@@ -171,6 +182,15 @@ export default {
   components: { topnav, Sitefooter },
   data() {
     return {
+      days: [
+        { day: "M" },
+        { day: "T" },
+        { day: "W" },
+        { day: "Th" },
+        { day: "F" },
+        { day: "S" },
+        { day: "Su" },
+      ],
       username: "",
       password: "",
       displayname: "",
@@ -334,6 +354,24 @@ window.onload = function () {
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
+.weekco {
+  width: 100%;
+  justify-content: space-between;
+  display: flex;
+  text-align: center;
+}
+.week {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 20px;
+  background: rgba(0, 174, 255, 0.336);
+  text-align: center;
+  color: rgba(0, 140, 255, 0.815);
+  line-height: 40px;
+  vertical-align: middle;
+  border: none;
+}
 .login-box {
   margin: 80px auto;
   width: 35%;

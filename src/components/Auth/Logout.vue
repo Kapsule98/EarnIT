@@ -10,11 +10,11 @@ export default {
   methods: {
     logout() {
       this.$session.destroy();
-      localStorage.clear();
       alert("Logged out successfully");
       eventBus.$emit("login", false);
       eventBus.$emit("seller", false);
       eventBus.$emit("customer", false);
+      localStorage.clear();
       this.$router.push("/");
     },
   },
