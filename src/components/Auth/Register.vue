@@ -151,7 +151,7 @@
           />
           <br />
           <br />
-          <h5 style="color: #999999">tell Customers your active time</h5>
+          <!-- <h5 style="color: #999999">tell Customers your active time</h5>
           <div class="weekco">
             <div
               class="week"
@@ -177,7 +177,7 @@
                 @context="onContext"
               ></b-time>
             </center>
-          </div>
+          </div>-->
           <button @click="Sellersignup()" class="login-button">Register</button>
           <a href="/login" style="float: right"
             >already have an account? login here</a
@@ -199,7 +199,7 @@ export default {
   components: { topnav, Sitefooter },
   data() {
     return {
-      active_time: [],
+      /* active_time: [],
       opening_time: "",
       closing_time: "",
       days: [
@@ -210,7 +210,7 @@ export default {
         { day: "F", index: 4 },
         { day: "S", index: 5 },
         { day: "Su", index: 6 },
-      ],
+      ],*/
       username: "",
       password: "",
       displayname: "",
@@ -250,7 +250,7 @@ export default {
       });
   },
   methods: {
-    onContext(ctx) {
+    /*  onContext(ctx) {
       this.context = ctx;
     },
     get_date(index) {
@@ -266,7 +266,7 @@ export default {
       document.getElementsByClassName("week")[index].style.color = "white";
 
       this.active_time[index] = [this.opening_time];
-    },
+    },*/
     Sellersignup() {
       if (
         this.username === "" ||
@@ -275,8 +275,7 @@ export default {
         this.contact_no === "" ||
         this.address === "" ||
         this.email === "" ||
-        this.shop_category.length === 0 ||
-        this.shop_name === ""
+        this.shop_category.length === 0
       ) {
         alert("Please fill mandatory fields");
       } else {

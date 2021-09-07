@@ -22,7 +22,8 @@
             Math.floor(new Date().getTime() / 1000.0) <
               list.offers[offer.index].validity[1] &&
             Math.floor(new Date().getTime() / 1000.0) >
-              list.offers[offer.index].validity[0]
+              list.offers[offer.index].validity[0] &&
+            list.offers[offer.index].quantity > 0
           "
           :key="offer.length"
           class="hovclass"
