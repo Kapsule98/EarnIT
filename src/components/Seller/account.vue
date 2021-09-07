@@ -68,6 +68,12 @@
                 </b-card>
               </div>
             </div>
+            <hr />
+            <router-link to="/logout">
+              <b-button variant="danger" style="float: right"
+                ><i class="fa fa-exclamation-triangle"></i> logout</b-button
+              ></router-link
+            >
           </b-card>
         </div>
         <div class="w3-third" style="padding: 20px">
@@ -143,6 +149,7 @@ export default {
     };
   },
   mounted() {
+    console.log(this.$session.get("userdata".location));
     this.user = this.$session.get("user_data");
     const offersurl = BASE_URL + "/seller/category";
     let JWTToken = this.$session.get("token");

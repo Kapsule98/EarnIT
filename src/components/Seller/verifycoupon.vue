@@ -100,7 +100,22 @@
                 "
               >
                 <couponcard
+                  v-if="offer.type === 'ITEM_DISCOUNT'"
+                  v-b-tooltip.hover
+                  :title="offer.products + ' '"
                   :name="offer.products[0]"
+                  v-bind:discount="offer.discount_percent + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  v-bind:validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  v-bind:offer_text="offer.offer_text"
+                ></couponcard>
+                <couponcard
+                  v-else
+                  v-b-tooltip.hover
+                  title="Total Bill"
+                  name="Total Bill"
                   v-bind:discount="offer.discount_percent + '%'"
                   v-bind:left="offer.quantity + ' coupons'"
                   v-bind:validity="
@@ -136,11 +151,30 @@
                 "
               >
                 <couponcard
+                  v-if="offer.type === 'ITEM_DISCOUNT'"
+                  v-b-tooltip.hover
+                  :title="offer.products + ' '"
                   :planned="true"
                   :validfrom="
                     moment(offer.validity[0] * 1000).format('DD-MM-YYYY')
                   "
                   :name="offer.products[0]"
+                  :discount="offer.discount_percent + '%'"
+                  :left="offer.quantity + ' coupons'"
+                  :validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  :offer_text="offer.offer_text"
+                ></couponcard>
+                <couponcard
+                  v-else
+                  v-b-tooltip.hover
+                  title="Total Bill"
+                  :planned="true"
+                  :validfrom="
+                    moment(offer.validity[0] * 1000).format('DD-MM-YYYY')
+                  "
+                  name="Total Bill"
                   :discount="offer.discount_percent + '%'"
                   :left="offer.quantity + ' coupons'"
                   :validity="
@@ -166,8 +200,24 @@
                 "
               >
                 <couponcard
+                  v-if="offer.type === 'ITEM_DISCOUNT'"
+                  v-b-tooltip.hover
+                  :title="offer.products + ' '"
                   :expired="true"
                   :name="offer.products[0]"
+                  v-bind:discount="offer.discount_percent + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  :validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  :offer_text="offer.offer_text"
+                ></couponcard>
+                <couponcard
+                  v-else
+                  v-b-tooltip.hover
+                  title="Ttal Bill"
+                  :expired="true"
+                  name="Total Bill"
                   v-bind:discount="offer.discount_percent + '%'"
                   v-bind:left="offer.quantity + ' coupons'"
                   :validity="
@@ -356,6 +406,7 @@ export default {
       r_otp: "",
       r_total: "",
       r_discount: "",
+      r_min_val: "",
       min_val: "500",
       quantity: "20",
       offer_text: "",
@@ -468,12 +519,18 @@ export default {
         var ta = this.r_total;
         var atxt = this.getoffers.active_offers[i].offer_text;
         var entxt = document.getElementById("input-1").value;
+        var per = this.getoffers.active_offers[i].discount_percent;
         if (entxt === atxt) {
-          var per = this.getoffers.active_offers[i].discount_percent;
-          if (per >= this.getoffers.active_offers[i].min_val) {
+          if (
+            parseInt(ta) >
+            parseInt(this.getoffers.active_offers[i].min_val) - 1
+          ) {
             document.getElementById("input-4").value = ta - (ta / 100) * per;
             this.r_discount = document.getElementById("input-4").value;
-          } else {
+          } else if (
+            parseInt(ta) <
+            parseInt(this.getoffers.active_offers[i].min_val) - 1
+          ) {
             alert(
               "minimum selling price is Rs" +
                 this.getoffers.active_offers[i].min_val
@@ -495,14 +552,21 @@ export default {
         });
     },
     verifyCoupon() {
+      for (var i = 0; i < this.getoffers.active_offers.length; i++) {
+        var atxt = this.getoffers.active_offers[i].offer_text;
+
+        if (this.r_offertxt === atxt) {
+          this.r_min_val = this.getoffers.active_offers[i].min_val;
+        }
+      }
+
       var otpa = this.r_otp;
       var offer_texta = this.r_offertxt;
       var cpa = this.r_total;
       var spa = this.r_discount;
+
       if (otpa == "" || offer_texta == "" || cpa == "" || spa == "") {
-        alert(
-          otpa + offer_texta + cpa + spa + "please fill the required fields"
-        );
+        alert("please fill the required fields");
       } else {
         var r = confirm("Process the Coupon");
         if (r == true) {
@@ -511,7 +575,9 @@ export default {
             offer_text: this.r_offertxt,
             cp: parseInt(this.r_total),
             sp: parseInt(this.r_discount),
+            min_value: parseInt(this.r_min_val),
           };
+
           const accessToken = this.$session.get("token");
           const options = {
             headers: {

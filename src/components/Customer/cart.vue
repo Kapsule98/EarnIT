@@ -82,7 +82,9 @@
                 </div>
                 <div class="w3-col m3">
                   <button
-                    v-on:click="redeemOffer(offer.offer_text)"
+                    v-on:click="
+                      redeemOffer(offer.offer_text, offer.seller_email)
+                    "
                     id="reedem"
                     class="w3-button"
                     style="
@@ -95,7 +97,9 @@
                     Reedem coupon
                   </button>
                   <button
-                    v-on:click="removeItem(offer.offer_text)"
+                    v-on:click="
+                      removeItem(offer.offer_text, offer.seller_email)
+                    "
                     class="delbtn"
                   >
                     delete
@@ -170,13 +174,14 @@ export default {
     }
   },
   methods: {
-    redeemOffer(offer_text) {
+    redeemOffer(offer_text, email) {
       var r = confirm(
         "After reedeming the coupon it will be valid only for 5 minutes!"
       );
       if (r == true) {
         const payload = {
           offer_text: offer_text,
+          seller_email: email,
         };
 
         const accessToken = this.$session.get("token");
@@ -193,6 +198,7 @@ export default {
             if (response.data.status === 200 || response.data.status === 400) {
               localStorage.setItem("otp", response.data.otp);
               localStorage.setItem("offtext", offer_text);
+              console.log(response.data.otp + "" + offer_text);
               this.currentTime = new Date();
               const ct = this.currentTime.getTime();
               localStorage.setItem("ct", ct);
@@ -225,12 +231,13 @@ export default {
           console.log(err);
         });
     },
-    removeItem(offer_text) {
+    removeItem(offer_text, email) {
       const offersurl = BASE_URL + "/cart";
       let JWTToken = this.$session.get("token");
       const config = {
         data: {
           offer_text: offer_text,
+          seller_email: email,
         },
         headers: {
           Authorization: `Bearer ${JWTToken}`,

@@ -203,7 +203,7 @@
       </b-card>
       <b-card
         style="margin-top: 4px; border: none; border-radius: 0"
-        v-if="showFashionBlock === true"
+        v-if="showFurnitureBlock === true"
       >
         <h2 style="padding: 20px">
           Furiniture<router-link

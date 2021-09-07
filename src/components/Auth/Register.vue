@@ -153,13 +153,30 @@
           <br />
           <h5 style="color: #999999">tell Customers your active time</h5>
           <div class="weekco">
-            <input
-              disabled
-              :value="days.day"
+            <div
               class="week"
               v-for="days in days"
               :key="days.length"
-            />
+              @click="get_date(days.index)"
+            >
+              {{ days.day }}
+            </div>
+          </div>
+          <br />
+          <div style="display: block">
+            <center>
+              <b-time
+                v-model="opening_time"
+                locale="en"
+                @context="days.onContext"
+              ></b-time>
+              To
+              <b-time
+                v-model="closing_time"
+                locale="en"
+                @context="onContext"
+              ></b-time>
+            </center>
           </div>
           <button @click="Sellersignup()" class="login-button">Register</button>
           <a href="/login" style="float: right"
@@ -182,14 +199,17 @@ export default {
   components: { topnav, Sitefooter },
   data() {
     return {
+      active_time: [],
+      opening_time: "",
+      closing_time: "",
       days: [
-        { day: "M" },
-        { day: "T" },
-        { day: "W" },
-        { day: "Th" },
-        { day: "F" },
-        { day: "S" },
-        { day: "Su" },
+        { day: "M", index: 0 },
+        { day: "T", index: 1 },
+        { day: "W", index: 2 },
+        { day: "Th", index: 3 },
+        { day: "F", index: 4 },
+        { day: "S", index: 5 },
+        { day: "Su", index: 6 },
       ],
       username: "",
       password: "",
@@ -213,6 +233,7 @@ export default {
           id: "xemn",
         },
       ],
+      context: null,
     };
   },
   mounted() {
@@ -229,6 +250,23 @@ export default {
       });
   },
   methods: {
+    onContext(ctx) {
+      this.context = ctx;
+    },
+    get_date(index) {
+      for (var i = 0; i < this.days.length; i++) {
+        if (i !== index) {
+          document.getElementsByClassName("week")[i].style.background =
+            "rgba(0, 174, 255, 0.336)";
+          document.getElementsByClassName("week")[i].style.color = "black";
+        }
+      }
+      document.getElementsByClassName("week")[index].style.background =
+        "#315da3";
+      document.getElementsByClassName("week")[index].style.color = "white";
+
+      this.active_time[index] = [this.opening_time];
+    },
     Sellersignup() {
       if (
         this.username === "" ||
@@ -371,6 +409,7 @@ window.onload = function () {
   line-height: 40px;
   vertical-align: middle;
   border: none;
+  cursor: pointer;
 }
 .login-box {
   margin: 80px auto;

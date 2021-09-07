@@ -46,6 +46,10 @@
             <p class="shoplocation">
               <i class="fa fa-phone"></i>{{ list.contact_no }}
             </p>
+            <b-button variant="primary" style="float: left"
+              ><i class="fa fa-compass" aria-hidden="true"></i>
+              Directions</b-button
+            >
           </div>
           <div class="w3-third" style="padding: 20px">
             <img
@@ -87,7 +91,10 @@
                             Hurry only {{ offers.quantity }} left!
                           </div>
 
-                          <div class="card_item">
+                          <div
+                            class="card_item"
+                            v-if="offers.type === 'ITEM_DISCOUNT'"
+                          >
                             {{ offers.discount_percent }}% off on
                             <span
                               v-b-tooltip.hover
@@ -107,6 +114,12 @@
                                 </span>
                               </span>
                             </span>
+                          </div>
+                          <div class="card_item" v-else>
+                            <span class="offno"
+                              >{{ offers.discount_percent }}%</span
+                            >
+                            off on Total Bill
                           </div>
 
                           <div class="w3-row">
@@ -129,7 +142,9 @@
                         </div>
                         <div class="w3-col m3">
                           <button
-                            v-on:click="addToCart(offers.offer_text)"
+                            v-on:click="
+                              addToCart(offers.offer_text, list.seller_email)
+                            "
                             class="w3-button"
                             style="
                               width: 80%;
@@ -268,10 +283,11 @@ export default {
       });
   },
   methods: {
-    addToCart(offer_text) {
+    addToCart(offer_text, email) {
       if (localStorage.getItem("log") === "true") {
         const payload = {
           offer_text: offer_text,
+          seller_email: email,
         };
 
         const accessToken = this.$session.get("token");
