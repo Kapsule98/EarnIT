@@ -8,44 +8,76 @@
       :responsive="{
         0: { items: 1, nav: false },
         600: { items: 3, nav: true },
-        1200: { items: 4 },
+        1200: { items: 3 },
       }"
-      :stagePadding="10"
+      :stagePadding="0"
       :loop="true"
       :autoplay="true"
       :nav="false"
       :dots="false"
-      ><template>
-        <div v-for="offer in mapped" :key="offer.length">
-          <a v-on:click="redeemOffer(list.offers[offer.index].offer_text)">
-            <div class="couponhome">
-              <div class="c2-back">
-                <img
-                  src="https://images.unsplash.com/photo-1603912699214-92627f304eb6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=625&q=80"
-                />
-              </div>
-              <div class="c2-off">
-                {{ offer.value }}% on
-                {{ list.offers[offer.index].products[0] }}
-              </div>
-              <div class="c2-left">
-                {{ list.offers[offer.index].quantity }} coupons left
-              </div>
-              <div class="c2-shop"><!--{{ shop_name }}--></div>
-              <div class="c2-location">
-                <i class="fa fa-map-marker"></i>
-                {{ list.offers[offer.index].shop_name }}
-              </div>
-              <div class="c2-validity">
-                offer valid till
-                {{
-                  moment(list.offers[offer.index].validity[1] * 1000).format(
-                    "DD-MM-YYYY"
-                  )
-                }}
-              </div>
+    >
+      <template v-for="offer in mapped">
+        <div
+          v-if="
+            Math.floor(new Date().getTime() / 1000.0) <
+              list.offers[offer.index].validity[1] &&
+            Math.floor(new Date().getTime() / 1000.0) >
+              list.offers[offer.index].validity[0]
+          "
+          :key="offer.length"
+          class="hovclass"
+        >
+          <div class="couponhome">
+            <div class="c2-back">
+              <img src="https://source.unsplash.com/random" />
             </div>
-          </a>
+            <div class="c2-left">
+              {{ list.offers[offer.index].quantity }} coupons left
+            </div>
+            <div class="c2-off"></div>
+
+            <div class="c2-shop"><!--{{ shop_name }}--></div>
+          </div>
+          <div class="l-offer">
+            <span class="offno">{{ offer.value }}%</span> off on
+            <span
+              v-b-tooltip.hover
+              :title="list.offers[offer.index].products + ' '"
+            >
+              <span
+                v-for="(prods, index3) in list.offers[offer.index].products"
+                :key="prods.offer_text"
+              >
+                {{ list.offers[offer.index].products[index3] }}
+                <span
+                  v-if="
+                    index3 !=
+                    Object.keys(list.offers[offer.index].products).length - 1
+                  "
+                  >,
+                </span>
+              </span>
+            </span>
+          </div>
+          <div class="shopname">
+            {{ list.offers[offer.index].shop_name }}
+            <router-link
+              :to="{
+                path: '/seller',
+                query: { seller: list.offers[offer.index].shop_name },
+              }"
+            >
+              <button class="vshop">View Shop</button>
+            </router-link>
+          </div>
+          <div class="c2-validity">
+            offer valid till
+            {{
+              moment(list.offers[offer.index].validity[1] * 1000).format(
+                "DD-MM-YYYY"
+              )
+            }}
+          </div>
         </div>
       </template>
     </carousel>
@@ -72,41 +104,6 @@ export default {
     this.getAllOffers();
   },
   methods: {
-    redeemOffer(offer_text) {
-      if (localStorage.getItem("log") === "true") {
-        var r = confirm("Add coupon to cart?");
-        if (r == true) {
-          const payload = {
-            offer_text: offer_text,
-          };
-
-          const accessToken = this.$session.get("token");
-          const options = {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          };
-          const url = BASE_URL + "/cart";
-          axios
-            .post(url, payload, options)
-            .then((response) => {
-              if (response.data.status === 200) {
-                alert(response.data.msg);
-              } else {
-                alert("something went wrong");
-              }
-            })
-            .catch((error) => {
-              this.errorMessage = error.message;
-              console.error("There was an error!", error);
-            });
-        } else {
-          document.getElementById("reedem").style.color = "white";
-        }
-      } else {
-        this.$router.push("/login");
-      }
-    },
     getAllOffers() {
       const offersurl = BASE_URL + this.category;
       // let JWTToken = this.$session.get("token");
@@ -114,7 +111,11 @@ export default {
         .get(offersurl)
         .then((response) => {
           this.list = response.data;
-
+          if (this.list.offers.length === 0) {
+            localStorage.setItem(this.category + "empty?", true);
+          } else {
+            localStorage.setItem(this.category + "empty?", false);
+          }
           var discount = [];
           for (var i = 0; i < this.list.offers.length; i++) {
             discount[i] = this.list.offers[i].discount_percent;
@@ -148,12 +149,70 @@ export default {
 <style scoped>
 .couponhome {
   position: relative;
-  width: 98%;
+  width: 90%;
   height: 220px;
-  margin: 10px auto;
-  background: rgba(0, 172, 252, 0.082);
-  padding: 10px;
+  margin: 10px auto 0px auto;
+  background: rgba(0, 0, 0, 0.082);
   overflow: hidden;
+  border-radius: 12px;
+}
+.hovclass {
+  border: none;
+  transition: 0.4s ease-in-out;
+  border-radius: 12px;
+  padding-bottom: 10px;
+  height: fit-content;
+  margin: 10px 0px;
+}
+.hovclass:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+.shopname {
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 10px;
+  font-size: 20px;
+  color: rgb(92, 92, 92);
+  text-transform: capitalize;
+}
+.l-offer {
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 10px;
+  font-size: 17px;
+  text-transform: capitalize;
+  background-color: rgba(175, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  color: rgb(46, 46, 46);
+  height: 50px;
+  border-bottom: 2px solid rgb(212, 212, 212);
+  white-space: nowrap;
+  width: 90%; /* IE6 needs any width */
+  overflow: hidden; /* "overflow" value must be different from  visible"*/
+  -o-text-overflow: ellipsis; /* Opera < 11*/
+  text-overflow: ellipsis; /* IE, Safari (WebKit), Opera >= 11, FF > 6 */
+}
+.offno {
+  font-size: 22px;
+  font-weight: 700;
+}
+.vshop {
+  font-size: 13px;
+  color: #0077ff;
+  background: none;
+  text-transform: lowercase;
+  font-weight: 600;
+  border: 1px solid#0077ff;
+  width: fit-content;
+  border-radius: 3px;
+  padding: 2px 14px;
+  float: right;
+  margin: 4px;
+  transition: 0.4s ease-in-out;
+}
+.vshop:hover {
+  color: white;
+  background: #0077ff;
 }
 .c2-off {
   font-size: 22px;
@@ -166,12 +225,14 @@ export default {
   display: block;
 }
 .c2-validity {
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 10px;
   font-size: 14px;
-  color: rgb(255, 255, 255);
+  color: rgb(172, 172, 172);
   text-transform: lowercase;
   font-weight: 400;
   display: block;
-  padding-left: 10px;
 }
 .c2-shop {
   font-size: 17px;
@@ -191,27 +252,28 @@ export default {
   font-weight: 400;
   display: block;
   background: white;
-  border: 2px solid rgba(0, 162, 255, 0.719);
+  border: 2px solid rgb(0, 162, 255);
   padding: 2px 3px;
   border-radius: 9px;
 }
 .c2-left {
-  font-size: 17px;
+  font-size: 12px;
   color: rgb(255, 255, 255);
   text-transform: lowercase;
   font-weight: 600;
-  background: rgba(0, 162, 255, 0.719);
+  background: #0077ff;
   width: fit-content;
-  border-radius: 6px;
+  border-radius: 0px 3px 3px 0px;
   padding: 2px 14px;
-  margin: 5px auto;
+  float: left;
+  margin: 20px 10px 10px -2px;
 }
 .c2-back {
   position: absolute;
   top: 0;
   left: 0;
   widows: 100%;
-  height: 100%;
+  height: 220px;
   z-index: -1;
 }
 a {

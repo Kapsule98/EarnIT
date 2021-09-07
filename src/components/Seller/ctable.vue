@@ -90,7 +90,7 @@ export default {
       .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
       .then((response) => {
         this.history = response.data;
-
+        console.log(this.history);
         var arr = [];
         for (var i = 0; i < this.history.history.length; i++) {
           arr[i] = this.history.history[i].offer_text;

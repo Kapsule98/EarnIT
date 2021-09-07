@@ -1,6 +1,7 @@
 <template>
   <div>
     <topnav
+      v-if="this.$session.get('user_type') !== 'seller'"
       link3="Account"
       link4='<i class="fa fa-shopping-cart"></i> Cart '
       link5='<i class="fa fa-user"></i> Login'
@@ -14,6 +15,23 @@
       link2=""
       :display_categories="true"
       :productsearch="true"
+    ></topnav>
+    <topnav
+      v-if="this.$session.get('user_type') === 'seller'"
+      link3="Account"
+      link4="Dashboard"
+      link5='<i class="fa fa-user"></i> Login'
+      url1="/"
+      url2="/"
+      url3="/account"
+      url4="/verifycoupon"
+      url5="/login"
+      url6="/"
+      link1=""
+      link2=""
+      :searchbar="true"
+      :display_categories="true"
+      :landing="true"
     ></topnav>
     <!--<allcatrgories></allcatrgories>-->
 
@@ -122,135 +140,99 @@
         </div>
       </div>
       <div class="w3-col m10" id="Sproducts">
-        <div v-for="offer in mapped" :key="offer.length" class="Scard">
-          <div
-            v-if="
-              (list.active_offers[offer.index].category === category &&
-                offer.value > discfilter) ||
-              (category === null && offer.value > discfilter)
-            "
-          >
-            <span>
-              <div class="couponcard">
-                <div class="w3-row">
-                  <div class="w3-col m9">
-                    <div class="w3-col imgcol">
-                      <div
-                        v-if="
-                          list.active_offers[offer.index].category === 'Health'
-                        "
-                      >
-                        <img
-                          src="../../assets/health.jpg"
-                          class="thumbnail"
-                          alt=""
-                        />
-                      </div>
-                      <div
-                        v-else-if="
-                          list.active_offers[offer.index].category === 'Fashion'
-                        "
-                      >
-                        <img
-                          src="../../assets/fashion.jpg"
-                          class="thumbnail"
-                          alt=""
-                        />
-                      </div>
-                      <div
-                        v-else-if="
-                          list.active_offers[offer.index].category ===
-                          'Furniture'
-                        "
-                      >
-                        <img
-                          src="../../assets/furnishing.jpg"
-                          class="thumbnail"
-                          alt=""
-                        />
-                      </div>
-                      <div
-                        v-else-if="
-                          list.active_offers[offer.index].category === 'Food'
-                        "
-                      >
-                        <img
-                          src="../../assets/food.jpg"
-                          class="thumbnail"
-                          alt=""
-                        />
-                      </div>
-                      <div
-                        v-else-if="
-                          list.active_offers[offer.index].category ===
-                          'Electronics'
-                        "
-                      >
-                        <img
-                          src="../../assets/electronics.jpg"
-                          class="thumbnail"
-                          alt=""
-                        />
-                      </div>
+        <div class="w3-container">
+          <div class="w3-row">
+            <div class="w3-col m4" v-for="offer in mapped" :key="offer.length">
+              <div
+                v-if="
+                  (list.active_offers[offer.index].category === category &&
+                    offer.value > discfilter) ||
+                  (category === null && offer.value > discfilter)
+                "
+                class="Scard"
+              >
+                <div
+                  v-if="
+                    Math.floor(new Date().getTime() / 1000.0) <
+                      list.active_offers[offer.index].validity[1] &&
+                    Math.floor(new Date().getTime() / 1000.0) >
+                      list.active_offers[offer.index].validity[0]
+                  "
+                  class="hovclass"
+                >
+                  <div class="couponhome">
+                    <div class="c2-back">
+                      <img
+                        src="https://source.unsplash.com/random"
+                        width="100%"
+                      />
                     </div>
-                    <div class="w3-col contentcol" style="width: 80%">
-                      <div class="card_remaining">
-                        {{ list.active_offers[offer.index].quantity }} left!
-                      </div>
-
-                      <div class="card_item">
-                        {{ offer.value }}% off on
-
-                        <name>
-                          {{ list.active_offers[offer.index].products[0] }}
-                        </name>
-                      </div>
-
-                      <div class="w3-row">
-                        <div class="w3-third">
-                          <div class="card_leftcoupons">
-                            {{ list.active_offers[offer.index].quantity }}
-                            Coupons Left
-                          </div>
-                        </div>
-                        <div class="w3-third">
-                          <div class="card_validity">
-                            valid till
-                            {{
-                              moment(
-                                list.active_offers[offer.index].validity[1] *
-                                  1000
-                              ).format("Do MMM YY")
-                            }}
-                          </div>
-                        </div>
-                      </div>
+                    <div class="c2-left">
+                      {{ list.active_offers[offer.index].quantity }} coupons
+                      left
                     </div>
+                    <div class="c2-off"></div>
+
+                    <div class="c2-shop"><!--{{ shop_name }}--></div>
                   </div>
-                  <div class="w3-col m3">
-                    <button
-                      v-on:click="
-                        addToCart(list.active_offers[offer.index].offer_text)
-                      "
-                      id="reedem"
-                      class="w3-button"
-                      style="
-                        width: 80%;
-                        margin: 30px 10%;
-                        background: #008cff;
-                        color: white;
-                      "
+                  <div class="l-offer">
+                    <nav
+                      v-b-tooltip.hover
+                      :title="list.active_offers[offer.index].products + ' '"
                     >
-                      Add to cart
-                    </button>
+                      <span class="offno">{{ offer.value }}%</span> off on
+
+                      <span
+                        v-for="(prods, index3) in list.active_offers[
+                          offer.index
+                        ].products"
+                        :key="prods.offer_text"
+                      >
+                        {{ list.active_offers[offer.index].products[index3] }}
+
+                        <span
+                          v-if="
+                            index3 !=
+                            Object.keys(
+                              list.active_offers[offer.index].products
+                            ).length -
+                              1
+                          "
+                          >,
+                        </span>
+                      </span>
+                    </nav>
+                  </div>
+                  <div class="shopname">
+                    {{ list.active_offers[offer.index].shop_name }}
+
+                    <router-link
+                      :to="{
+                        path: '/seller',
+                        query: {
+                          seller: list.active_offers[offer.index].shop_name,
+                        },
+                      }"
+                    >
+                      <button class="vshop">View Shop</button>
+                    </router-link>
+                  </div>
+                  <div class="c2-validity">
+                    offer valid till
+                    {{
+                      moment(
+                        list.active_offers[offer.index].validity[1] * 1000
+                      ).format("DD-MM-YYYY")
+                    }}
                   </div>
                 </div>
               </div>
-            </span>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
     <div class="reduce"></div>
     <bottomnav></bottomnav>
     <sitefooter></sitefooter>
@@ -304,11 +286,13 @@ export default {
       this.$router.go();
     },
     showFilter() {
-      document.getElementsByClassName("filter")[0].style.bottom = 0;
+      document.getElementsByClassName("filter")[0].style.bottom = "0";
+      document.getElementsByClassName("closeFilter")[0].style.bottom = "60%";
       document.getElementsByClassName("reduce")[0].style.display = "block";
     },
     closeFilter() {
       document.getElementsByClassName("filter")[0].style.bottom = "-100%";
+      document.getElementsByClassName("closeFilter")[0].style.bottom = "-100%";
       document.getElementsByClassName("reduce")[0].style.display = "none";
     },
     searchCategory(category, index) {
@@ -322,7 +306,7 @@ export default {
       }
     },
     priceFilter(discount, id) {
-      this.discfilter = discount;
+      this.discfilter = discount - 1;
       for (var i = 1; i < 5; i++) {
         if (id !== i) {
           document.getElementById("disc" + i).checked = false;
@@ -333,8 +317,7 @@ export default {
     },
     byFilter(p) {
       if (this.category === null && p !== 1) {
-        alert("please select a category first");
-        document.getElementById("sby2").checked = false;
+        this.$router.push("/search_by_shop?category=all");
       } else {
         if (p === 2) {
           this.$router.push("/search_by_shop?category=" + this.category);
@@ -343,38 +326,7 @@ export default {
         }
       }
     },
-    addToCart(offer_text) {
-      if (localStorage.getItem("log") === "true") {
-        const payload = {
-          offer_text: offer_text,
-        };
 
-        const accessToken = this.$session.get("token");
-        const options = {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        };
-        const url = BASE_URL + "/cart";
-        axios
-          .post(url, payload, options)
-          .then((response) => {
-            console.log(response);
-            if (response.data.status === 200) {
-              alert(response.data.msg);
-              this.$router.push("/cart");
-            } else {
-              alert("something went wrong");
-            }
-          })
-          .catch((error) => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
-      } else {
-        this.$router.push("/login");
-      }
-    },
     getAllOffers() {
       const offersurl = BASE_URL + "/get_all_offers";
       let JWTToken = this.$session.get("token");
@@ -413,112 +365,151 @@ export default {
 };
 </script>
 <style scoped>
-.botbtn {
-  background: #008cff;
-  width: fit-content;
-  color: white;
-  padding: 8px 10px;
-  border-radius: 4px;
-  font-size: 18px;
-  float: right;
+.couponhome {
+  position: relative;
+  width: 90%;
+  height: 220px;
+  margin: 10px auto 0px auto;
+  background: rgba(0, 0, 0, 0.082);
+  overflow: hidden;
+  border-radius: 12px;
+}
+.hovclass {
   border: none;
-  margin: 20px;
-  font-weight: 500;
+  transition: 0.4s ease-in-out;
+  border-radius: 12px;
+  padding-bottom: 10px;
+  height: fit-content;
+  margin: 10px 0px;
 }
-.greyback {
-  position: fixed;
-  top: -20%;
-  left: 0;
-  width: 100%;
-  height: 140%;
-  background: rgb(241, 248, 248);
-  z-index: -100;
-}
-.domain {
-  color: rgb(196, 196, 196);
-  font-weight: 600;
-  margin: 15px 5px 5px 5px;
-  font-size: 15px;
-  text-transform: uppercase;
+.hovclass:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 .shopname {
-  color: teal;
-  font-weight: 700;
-  font-size: 30px;
-  line-height: 0.9;
-}
-
-.shoplocation {
-  color: rgb(151, 151, 151);
-  font-size: 18px;
-}
-.couponcard {
-  width: 95%;
-  padding: 20px;
-  margin: 10px auto;
-  border-bottom: 1px solid rgb(214, 214, 214);
-}
-
-.card_item {
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 10px;
   font-size: 20px;
-  color: teal;
-  float: left;
-  margin-top: -5px;
-  padding-left: 20px;
-  width: fit-content;
-  display: block;
-  font-weight: 400;
+  color: rgb(92, 92, 92);
+  text-transform: capitalize;
 }
-.card_discount {
-  padding: 20px;
-  font-size: 20px;
-  color: rgb(49, 49, 49);
-}
-.card_validity {
-  padding: 25px;
-  font-size: 14px;
-  color: rgb(85, 85, 85);
-}
-.card_leftcoupons {
-  padding: 20px;
-  font-size: 18px;
-  color: rgb(61, 61, 61);
-}
-.card_remaining {
-  font-size: 15px;
-  color: rgb(252, 88, 88);
-  display: block;
-  width: 100%;
-  padding: 10px 20px;
-}
-.thumbnail {
-  width: 100px;
-  border-radius: 50%;
-}
-.imgcol {
-  width: 12%;
-}
-.contentcol {
-  width: 90%;
-}
-.closeFilter {
-  position: absolute;
-  top: -50px;
-  left: 0;
-  display: none;
-  width: 100%;
-  margin: 0;
+.l-offer {
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 10px;
+  font-size: 17px;
+  text-transform: capitalize;
+  background-color: rgba(175, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  color: rgb(46, 46, 46);
   height: 50px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 25px 25px 0px 0px;
-  border-bottom: 1px solid rgb(185, 185, 185);
+  border-bottom: 2px solid rgb(212, 212, 212);
+  white-space: nowrap;
+  width: 90%; /* IE6 needs any width */
+  overflow: hidden; /* "overflow" value must be different from  visible"*/
+  -o-text-overflow: ellipsis; /* Opera < 11*/
+  text-overflow: ellipsis; /* IE, Safari (WebKit), Opera >= 11, FF > 6 */
 }
+.offno {
+  font-size: 22px;
+  font-weight: 700;
+}
+.vshop {
+  font-size: 13px;
+  color: #0077ff;
+  background: none;
+  text-transform: lowercase;
+  font-weight: 600;
+  border: 1px solid#0077ff;
+  width: fit-content;
+  border-radius: 3px;
+  padding: 2px 14px;
+  float: right;
+  margin: 4px;
+  transition: 0.4s ease-in-out;
+}
+.vshop:hover {
+  color: white;
+  background: #0077ff;
+}
+.c2-off {
+  font-size: 22px;
+  color: rgb(255, 255, 255);
+  text-transform: uppercase;
+  font-weight: 900;
+  height: 80px;
+  width: 100%;
+  margin-top: 20px;
+  display: block;
+}
+.c2-validity {
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 10px;
+  font-size: 14px;
+  color: rgb(172, 172, 172);
+  text-transform: lowercase;
+  font-weight: 400;
+  display: block;
+}
+.c2-shop {
+  font-size: 17px;
+  color: rgb(255, 255, 255);
+  font-weight: 400;
+  display: block;
+  padding: 10px;
+  border-bottom: none;
+}
+.c2-location {
+  top: 5px;
+  left: 5px;
+  position: absolute;
+  font-size: 11px;
+  color: rgb(0, 0, 0);
+  text-transform: lowercase;
+  font-weight: 400;
+  display: block;
+  background: white;
+  border: 2px solid rgb(0, 162, 255);
+  padding: 2px 3px;
+  border-radius: 9px;
+}
+.c2-left {
+  font-size: 12px;
+  color: rgb(255, 255, 255);
+  text-transform: lowercase;
+  font-weight: 600;
+  background: #0077ff;
+  width: fit-content;
+  border-radius: 0px 3px 3px 0px;
+  padding: 2px 14px;
+  float: left;
+  margin: 20px 10px 10px -2px;
+}
+.c2-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  widows: 100%;
+  height: 220px;
+  z-index: -1;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+
 .showfilter {
   display: none;
   margin-top: -30px;
   height: 50px;
   border-bottom: 1px solid rgb(185, 185, 185);
   width: 100%;
+}
+.closeFilter {
+  display: none;
 }
 .showbtn {
   background: none;
@@ -557,6 +548,15 @@ export default {
   padding: 2px 4px;
   background: none;
 }
+
+@media screen and (min-width: 600px) {
+  .filter {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 40px;
+    z-index: 0;
+  }
+}
 @media screen and (max-width: 600px) {
   .showfilter {
     display: block;
@@ -592,9 +592,22 @@ export default {
     bottom: -100%;
     transition: 0.5s;
     z-index: 2000;
+    overflow-y: scroll;
+    padding-bottom: 100px;
   }
+
   .closeFilter {
     display: block;
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    height: 50px;
+    transition: 0.5s;
+    background-color: rgb(255, 255, 255);
+    border-radius: 25px 25px 0px 0px;
+    border-bottom: 1px solid rgb(185, 185, 185);
   }
 }
 </style>

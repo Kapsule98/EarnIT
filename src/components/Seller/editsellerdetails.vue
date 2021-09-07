@@ -26,21 +26,6 @@
                   <b-form-input type="text" v-model="shop_name"></b-form-input>
                 </td>
               </tr>
-              <tr>
-                <td class="detail">Owner Name</td>
-                <td class="description">
-                  <b-form-input type="text" v-model="owner_name"></b-form-input>
-                </td>
-              </tr>
-              <tr>
-                <td class="detail">Email</td>
-                <td class="description">
-                  <b-form-input
-                    type="email"
-                    v-model="shop_email"
-                  ></b-form-input>
-                </td>
-              </tr>
 
               <tr>
                 <td class="detail">Phone no.</td>
@@ -60,29 +45,7 @@
                   ></b-form-input>
                 </td>
               </tr>
-              <tr>
-                <td class="detail">Categories</td>
-                <td class="description">
-                  <select
-                    required
-                    class="select"
-                    name="categories"
-                    v-model="shop_category"
-                  >
-                    <option class="option" value="cho" disabled selected hidden>
-                      Choose Category...
-                    </option>
-                    <option
-                      class="option"
-                      v-for="items in allcategories"
-                      :key="items.length"
-                      :value="items"
-                    >
-                      {{ items }}
-                    </option>
-                  </select>
-                </td>
-              </tr>
+
               <tr>
                 <td class="detail">Location</td>
                 <input
@@ -129,10 +92,10 @@ export default {
     return {
       user: {},
       shop_name: this.$session.get("user_data").shop_name,
-      owner_name: this.$session.get("user_data").owner_name,
+
       shop_address: this.$session.get("user_data").address,
       shop_contact: this.$session.get("user_data").contact_no,
-      shop_email: this.$session.get("user_data").email,
+
       shop_location: "get your location",
       shop_category: this.$session.get("user_data").category,
       //location: [
@@ -187,9 +150,6 @@ export default {
         }
         if (this.shop_location) {
           this.updateLocation();
-        }
-        if (this.shop_email) {
-          this.updateEmail();
         }
         if (this.shop_contact) {
           this.updateContact();
@@ -251,29 +211,7 @@ export default {
 
       console.log(this.shop_location);
     },
-    updateEmail() {
-      const payload = {
-        email: this.shop_email,
-      };
-      const url = BASE_URL + "/seller/update_email";
-      const accessToken = this.$session.get("token");
-      const options = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      };
 
-      axios
-        .post(url, payload, options)
-        .then(
-          (response) => console.log(response),
-          console.log(this.$session.get("user_data").email)
-        )
-        .catch((error) => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
-    },
     updateContact() {
       const payload = {
         contact: this.shop_contact,

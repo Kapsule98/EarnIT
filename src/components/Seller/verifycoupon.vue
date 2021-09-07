@@ -14,7 +14,10 @@
     <div class="w3-container">
       <div class="w3-row">
         <div class="w3-third form">
-          <p class="heading" style="text-transform: capitalize">
+          <p
+            class="heading"
+            style="text-transform: capitalize; color: rgb(53, 53, 53)"
+          >
             {{ user.shop_name }}
           </p>
           <h4>Verify a Coupon</h4>
@@ -283,6 +286,14 @@
             max="100"
           ></b-form-input>
           <div class="mt-2">Value: {{ discount_percent }} %</div>
+
+          <multiselect
+            placeholder="Select Product/s"
+            v-model="products"
+            :options="getproducts.products"
+            :multiple="true"
+          />
+          <br />
         </div>
         <div v-if="discountType === 'BILL_DISCOUNT'">
           <label for="range-2">Discount percent on total bill</label>
@@ -306,16 +317,16 @@
           <label><span style="padding: 2px 5px">Validity</span> </label>
           <date-picker v-model="validity" type="date" range></date-picker>
         </div>
-        <multiselect
-          placeholder="Select Product/s"
-          v-model="products"
-          :options="getproducts.products"
-          :multiple="true"
-        />
       </div>
       <div>
         <label><span style="padding: 2px 5px">Offer Text :</span></label>
-        <div class="offer_text"><input type="text" v-model="offer_text" /></div>
+        <div class="offer_text">
+          <input
+            type="text"
+            v-model="offer_text"
+            placeholder="offer code should be unique"
+          />
+        </div>
       </div>
       <b-button class="login-button" block @click="addCouponDetails()"
         >Add Coupon</b-button
@@ -347,7 +358,7 @@ export default {
       r_discount: "",
       min_val: "500",
       quantity: "20",
-      offer_text: "To be added",
+      offer_text: "",
       discount_percent: "50",
       offer_type: "",
       validity: [],
@@ -433,7 +444,11 @@ export default {
 
           axios
             .put(url, payload, options)
-            .then((response) => console.log(response), console.log(payload))
+            .then(
+              (response) => console.log(response),
+              console.log(payload),
+              this.$router.go()
+            )
             .catch((error) => {
               this.errorMessage = error.message;
               console.error("There was an error!", error);
@@ -455,8 +470,15 @@ export default {
         var entxt = document.getElementById("input-1").value;
         if (entxt === atxt) {
           var per = this.getoffers.active_offers[i].discount_percent;
-          document.getElementById("input-4").value = ta - (ta / 100) * per;
-          this.r_discount = document.getElementById("input-4").value;
+          if (per >= this.getoffers.active_offers[i].min_val) {
+            document.getElementById("input-4").value = ta - (ta / 100) * per;
+            this.r_discount = document.getElementById("input-4").value;
+          } else {
+            alert(
+              "minimum selling price is Rs" +
+                this.getoffers.active_offers[i].min_val
+            );
+          }
         }
       }
     },

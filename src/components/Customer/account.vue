@@ -14,11 +14,45 @@
       link5=""
       :searchbar="true"
     ></topnav>
+    <div class="greyback"></div>
+    <div class="w3-container" style="margin-bottom: 10px; margin-top: -20px">
+      <b-card style="min-height: 110px">
+        <div class="w3-row">
+          <div class="w3-col m9">
+            <p class="shopname">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="40"
+                height="40"
+                fill="currentColor"
+                class="bi bi-person"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"
+                />
+              </svg>
+              Hi {{ this.$session.get("user_data").display_name }} !!
+            </p>
+          </div>
+          <div class="w3-col m3">
+            <router-link to="/profile">
+              <button class="login-button" style="font-size: 16px">
+                View your account details
+              </button>
+            </router-link>
+          </div>
+        </div>
+      </b-card>
+    </div>
+    <div class="w3-container">
+      <b-card>
+        <h1>Your Coupons</h1>
+      </b-card>
+    </div>
     <div class="w3-container">
       <div class="w3-row">
         <div class="w3-twothird">
-          <h1>Your Coupons</h1>
-
           <!---->
           <b-card
             style="margin: 10px 0px"
@@ -54,21 +88,13 @@
                   />
                 </div>
                 <div class="w3-col" style="width: 70%">
-                  <div class="a-seller">
-                    Sold by - {{ items.seller_display_name }}
-                  </div>
+                  <div class="a-seller">Sold by - {{ items.shop_name }}</div>
                   <div class="a-spend">
-                    Money Spend: <i class="fa fa-rupee"></i> {{ items.sp }}
+                    Money Spent: <i class="fa fa-rupee"></i> {{ items.sp }}
                   </div>
                   <div class="a-spend">
                     Money Saved: <i class="fa fa-rupee"></i>
                     {{ items.cp - items.sp }}
-                  </div>
-                  <div class="a-btn">
-                    <a href=""
-                      ><i class="fa fa-list-alt" aria-hidden="true"></i> View
-                      Similar Coupons</a
-                    >
                   </div>
                 </div>
               </div>
@@ -158,6 +184,40 @@ export default {
 </script>
 
 <style scoped>
+.login-button {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid rgb(0 140 255);
+  color: rgb(0 140 255);
+  font-size: 20px;
+  background: none;
+  margin: 10px 0px;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+.login-button:hover {
+  background: rgb(0 140 255);
+  color: white;
+}
+.greyback {
+  position: fixed;
+  top: -20%;
+  left: 0;
+  width: 100%;
+  height: 140%;
+  background: rgb(241, 248, 248);
+  z-index: -100;
+}
+.shopname {
+  color: rgb(75, 75, 75);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 0.9;
+  margin: 20px;
+}
+
 .a-date {
   font-size: 20px;
   font-weight: 600;
@@ -195,7 +255,7 @@ export default {
   cursor: pointer;
 }
 .g-card {
-  margin: 55px 10px;
+  margin: 10px 10px;
 }
 
 @media screen and (max-width: 800px) {
