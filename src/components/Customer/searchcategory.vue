@@ -175,7 +175,12 @@
 
                     <div class="c2-shop"><!--{{ shop_name }}--></div>
                   </div>
-                  <div class="l-offer">
+                  <div
+                    class="l-offer"
+                    v-if="
+                      list.active_offers[offer.index].type === 'ITEM_DISCOUNT'
+                    "
+                  >
                     <nav
                       v-b-tooltip.hover
                       :title="list.active_offers[offer.index].products + ' '"
@@ -203,6 +208,12 @@
                       </span>
                     </nav>
                   </div>
+                  <div class="l-offer" v-else>
+                    <nav>
+                      <span class="offno">{{ offer.value }}%</span> off on Total
+                      Bill
+                    </nav>
+                  </div>
                   <div class="shopname">
                     {{ list.active_offers[offer.index].shop_name }}
 
@@ -210,7 +221,7 @@
                       :to="{
                         path: '/seller',
                         query: {
-                          seller: list.active_offers[offer.index].shop_name,
+                          seller: list.active_offers[offer.index].seller_email,
                         },
                       }"
                     >

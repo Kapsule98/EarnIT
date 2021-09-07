@@ -128,7 +128,7 @@
                       :to="{
                         path: '/seller',
                         query: {
-                          seller: shop.shop_name,
+                          seller: shop.email,
                         },
                       }"
                     >

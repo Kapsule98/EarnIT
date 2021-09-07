@@ -38,7 +38,10 @@
 
             <div class="c2-shop"><!--{{ shop_name }}--></div>
           </div>
-          <div class="l-offer">
+          <div
+            class="l-offer"
+            v-if="list.offers[offer.index].type === 'ITEM_DISCOUNT'"
+          >
             <span class="offno">{{ offer.value }}%</span> off on
             <span
               v-b-tooltip.hover
@@ -59,12 +62,15 @@
               </span>
             </span>
           </div>
+          <div class="l-offer" v-else>
+            <span class="offno">{{ offer.value }}%</span> off on Total Bill
+          </div>
           <div class="shopname">
             {{ list.offers[offer.index].shop_name }}
             <router-link
               :to="{
                 path: '/seller',
-                query: { seller: list.offers[offer.index].shop_name },
+                query: { seller: list.offers[offer.index].seller_email },
               }"
             >
               <button class="vshop">View Shop</button>

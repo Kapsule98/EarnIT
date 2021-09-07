@@ -34,7 +34,10 @@
               {{ list.active_offers[offer.index].quantity }} coupons left
             </div>
           </div>
-          <div class="l-offer">
+          <div
+            class="l-offer"
+            v-if="list.active_offers[offer.index].type === 'ITEM_DISCOUNT'"
+          >
             <span class="offno">{{ offer.value }}%</span> off on
             <span
               v-b-tooltip.hover
@@ -58,13 +61,16 @@
               </span>
             </span>
           </div>
+          <div class="l-offer" v-else>
+            <span class="offno">{{ offer.value }}%</span> off on Total Bill
+          </div>
           <div class="shopname">
             {{ list.active_offers[offer.index].seller_display_name }}
             <router-link
               :to="{
                 path: '/seller',
                 query: {
-                  seller: list.active_offers[offer.index].seller_display_name,
+                  seller: list.active_offers[offer.index].seller_email,
                 },
               }"
             >

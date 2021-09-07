@@ -107,9 +107,18 @@ export default {
             mostused = key;
           }
         }
-
-        document.getElementById("mostused").innerHTML = mostused;
-        document.getElementById("mostusedno").innerHTML = count;
+        for (var j = 0; j < this.history.history.length; j++) {
+          if (this.history.history[j].offer_text === mostused) {
+            const storemostused = {
+              offer_text: mostused,
+              count: count,
+              discount: this.history.history[j].discount_percent,
+              type: this.history.history[j].discount_type,
+              products: this.history.history[j].products,
+            };
+            localStorage.setItem("mostused", JSON.stringify(storemostused));
+          }
+        }
       })
       .catch((err) => {
         console.log(err);
