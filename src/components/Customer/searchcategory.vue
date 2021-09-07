@@ -37,6 +37,17 @@
 
     <div class="w3-row">
       <div class="showfilter">
+        <p style="padding: 10px; float: left">
+          Search By :
+
+          <router-link to="/search?alloffers=true"
+            ><input type="radio" id="torad2" checked /> product
+          </router-link>
+          |
+          <router-link to="/search_by_shop?category=all"
+            ><input type="radio" id="torad1" /> shop
+          </router-link>
+        </p>
         <button class="showbtn" v-on:click="showFilter()">
           Filter <i class="fa fa-angle-down"></i>
         </button>

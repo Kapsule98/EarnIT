@@ -39,21 +39,21 @@
           <a href=""><div class="coltop">ABOUT</div></a>
           <a href=""><div>Contact Us</div></a>
           <a href=""><div>About Us</div></a>
-          <a href=""><div>Carrier</div></a>
         </div>
         <div class="w3-col m3 s6" style="margin-top: 10px">
           <a href=""><div class="coltop">HELP</div></a>
           <a href=""><div>FAQs</div></a>
         </div>
-        <div class="w3-col m3 s6" style="margin-top: 10px">
-          <a href=""><div class="coltop">POLICY</div></a>
-          <a href=""><div>Privacy</div></a>
-        </div>
+        <div class="w3-col m3 s6" style="margin-top: 10px"></div>
         <div class="w3-col m4 s6 f-address">
-          <div class="coltop">Registered office at:</div>
-          <p>
-            Shop 182, Zonal Market, Sector-10, Bhilai, Chhattisgarh, pin-490006
-          </p>
+          <router-link to="/contact">
+            <b-button variant="primary"
+              ><div class="coltop" style="display: block; font-weight: 600">
+                Contact Us
+              </div></b-button
+            >
+          </router-link>
+          <br /><br /><br />
           <a href=""
             ><i class="fa fa-facebook" style="margin-right: 10px"></i
           ></a>
@@ -67,7 +67,7 @@
       </div>
       <div class="w3-row" style="margin-top: 20px">
         <div class="w3-col m8">
-          <a href=""
+          <!--  <a href=""
             ><span style="padding: 0px 40px 0px 0px"> Sell on Lemmebuy</span></a
           >
           <a href=""
@@ -76,11 +76,11 @@
           <a href=""
             ><span style="padding: 0px 40px 0px 0px">Gift Card </span></a
           >
-          <a href=""><span style="padding: 0px 40px 0px 0px">Center</span></a>
+          <a href=""><span style="padding: 0px 40px 0px 0px">Center</span></a>-->
         </div>
-        <div class="w3-col m4">
+        <!-- <div class="w3-col m4">
           <i class="fa fa-copyright"></i> 2021-20XX Lemmebuy.in
-        </div>
+        </div>-->
       </div>
     </div>
   </div>

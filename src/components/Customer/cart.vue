@@ -23,7 +23,11 @@
             <h2 style="border-bottom: 1px solid #bababa; padding: 20px">
               Coupons Cart
             </h2>
-
+            <div v-if="empty === true">
+              <br /><br />
+              <center><h1>Your cart is empty!</h1></center>
+              <br /><br /><br /><br /><br /><br />
+            </div>
             <div
               class="couponcard"
               v-for="offer in cart.cart"
@@ -50,7 +54,7 @@
                     {{ offer.seller_display_name }}
                   </div>
 
-                  <div class="card_item">
+                  <div class="card_item" v-if="offer.type === 'ITEM_DISCOUNT'">
                     {{ offer.discount_percent }}% off on
                     <span v-b-tooltip.hover :title="offer.products + ' '">
                       <span
@@ -66,6 +70,9 @@
                         </span>
                       </span>
                     </span>
+                  </div>
+                  <div class="card_item" v-else>
+                    {{ offer.discount_percent }}% off on Total Bill
                   </div>
 
                   <div class="w3-row">
@@ -160,6 +167,7 @@ export default {
       currentTime: "",
       nextTime: "",
       showstatus: true,
+      empty: false,
     };
   },
   mounted() {
@@ -222,6 +230,10 @@ export default {
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.cart = response.data;
+
+          if (this.cart.cart.length === 0) {
+            this.empty = true;
+          }
           console.log(response.data);
           if (this.cart.status === 200) {
             localStorage.setItem("cartitems", this.cart.count);
