@@ -46,6 +46,10 @@
             <p class="shoplocation">
               <i class="fa fa-phone"></i>{{ list.contact_no }}
             </p>
+            <b-button variant="primary" style="float: left"
+              ><i class="fa fa-compass" aria-hidden="true"></i>
+              Directions</b-button
+            >
           </div>
           <div class="w3-third" style="padding: 20px">
             <img

@@ -115,7 +115,7 @@
                   v-else
                   v-b-tooltip.hover
                   title="Total Bill"
-                  :name="offer.products[0]"
+                  name="Total Bill"
                   v-bind:discount="offer.discount_percent + '%'"
                   v-bind:left="offer.quantity + ' coupons'"
                   v-bind:validity="
@@ -151,11 +151,30 @@
                 "
               >
                 <couponcard
+                  v-if="offer.type === 'ITEM_DISCOUNT'"
+                  v-b-tooltip.hover
+                  :title="offer.products + ' '"
                   :planned="true"
                   :validfrom="
                     moment(offer.validity[0] * 1000).format('DD-MM-YYYY')
                   "
                   :name="offer.products[0]"
+                  :discount="offer.discount_percent + '%'"
+                  :left="offer.quantity + ' coupons'"
+                  :validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  :offer_text="offer.offer_text"
+                ></couponcard>
+                <couponcard
+                  v-else
+                  v-b-tooltip.hover
+                  title="Total Bill"
+                  :planned="true"
+                  :validfrom="
+                    moment(offer.validity[0] * 1000).format('DD-MM-YYYY')
+                  "
+                  name="Total Bill"
                   :discount="offer.discount_percent + '%'"
                   :left="offer.quantity + ' coupons'"
                   :validity="
@@ -181,8 +200,24 @@
                 "
               >
                 <couponcard
+                  v-if="offer.type === 'ITEM_DISCOUNT'"
+                  v-b-tooltip.hover
+                  :title="offer.products + ' '"
                   :expired="true"
                   :name="offer.products[0]"
+                  v-bind:discount="offer.discount_percent + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  :validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  :offer_text="offer.offer_text"
+                ></couponcard>
+                <couponcard
+                  v-else
+                  v-b-tooltip.hover
+                  title="Ttal Bill"
+                  :expired="true"
+                  name="Total Bill"
                   v-bind:discount="offer.discount_percent + '%'"
                   v-bind:left="offer.quantity + ' coupons'"
                   :validity="
@@ -371,6 +406,7 @@ export default {
       r_otp: "",
       r_total: "",
       r_discount: "",
+      r_min_val: "",
       min_val: "500",
       quantity: "20",
       offer_text: "",
@@ -516,10 +552,19 @@ export default {
         });
     },
     verifyCoupon() {
+      for (var i = 0; i < this.getoffers.active_offers.length; i++) {
+        var atxt = this.getoffers.active_offers[i].offer_text;
+
+        if (this.r_offertxt === atxt) {
+          this.r_min_val = this.getoffers.active_offers[i].min_val;
+        }
+      }
+
       var otpa = this.r_otp;
       var offer_texta = this.r_offertxt;
       var cpa = this.r_total;
       var spa = this.r_discount;
+
       if (otpa == "" || offer_texta == "" || cpa == "" || spa == "") {
         alert("please fill the required fields");
       } else {
@@ -530,7 +575,9 @@ export default {
             offer_text: this.r_offertxt,
             cp: parseInt(this.r_total),
             sp: parseInt(this.r_discount),
+            min_value: parseInt(this.r_min_val),
           };
+
           const accessToken = this.$session.get("token");
           const options = {
             headers: {
@@ -545,7 +592,7 @@ export default {
               this.errorMessage = error.message;
               console.error("There was an error!", error);
             });
-          //this.$router.go();
+          this.$router.go();
         } else {
           document.getElementById("reedem").style.color = "white";
         }

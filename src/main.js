@@ -8,7 +8,14 @@ import VueSession from 'vue-session'
 import { MdIcon } from 'vue-material/dist/components'
 import Multiselect from "vue-multiselect";
 import moment from 'moment'
+import * as VueGoogleMaps from 'vue2-google-maps'
 
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyCsnoXXWxw0Xi_kdbi3o0AzqL1ZKArZq4Q',
+  },
+})
 
 Vue.prototype.moment = moment
 Vue.component("multiselect", Multiselect);

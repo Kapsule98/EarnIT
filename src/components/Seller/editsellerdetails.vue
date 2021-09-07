@@ -46,19 +46,34 @@
                 </td>
               </tr>
             </table>
-            <div id="map"></div>
-            <b-button
-              variant="primary"
-              style="float: right; margin: 10px"
-              @click="updateDetails()"
-              >Edit</b-button
-            >
           </form>
+          <GmapMap
+            :center="{ lat: 21.1938, lng: 81.3509 }"
+            :zoom="12"
+            map-type-id="terrain"
+            style="width: 100%; height: 500px"
+            @click="mark"
+          >
+            <GmapMarker
+              :key="index"
+              v-for="(m, index) in markers"
+              :position="m.position"
+              :clickable="true"
+              :draggable="true"
+            />
+          </GmapMap>
+          <b-button
+            variant="primary"
+            style="float: right; margin: 10px"
+            @click="updateDetails()"
+            >Edit</b-button
+          >
         </b-card>
       </div>
 
       <div class="w3-col m2" style="padding: 1px"></div>
     </div>
+
     <sitefooter></sitefooter>
   </div>
 </template>
@@ -79,24 +94,15 @@ export default {
 
       shop_address: this.$session.get("user_data").address,
       shop_contact: this.$session.get("user_data").contact_no,
-
-      shop_location: "get your location",
       shop_category: this.$session.get("user_data").category,
-      //location: [
-      ///{
-      //text: "Select location",
-      //value: this.$session.get("user_data").location,
-      //},
-      //"Bhilai",
-      //"Raipur",
-      //],
-      // shop_category: this.$session.get("user_data").category,
+      location: [],
 
       allcategories: [],
     };
   },
 
   mounted() {
+    console.log(this.$session.get("user_data"));
     const offersurl = BASE_URL + "/categories";
     let JWTToken = this.$session.get("token");
     console.log(this.$session.get("user_data"));
@@ -113,39 +119,19 @@ export default {
   },
 
   methods: {
-    /*initMap() {
-      const myLatlng = { lat: -25.363, lng: 131.044 };
-      const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 4,
-        center: myLatlng,
-      });
-      // Create the initial InfoWindow.
-      let infoWindow = new google.maps.InfoWindow({
-        content: "Click the map to get Lat/Lng!",
-        position: myLatlng,
-      });
-      infoWindow.open(map);
-      // Configure the click listener.
-      map.addListener("click", (mapsMouseEvent) => {
-        // Close the current InfoWindow.
-        infoWindow.close();
-        // Create a new InfoWindow.
-        infoWindow = new google.maps.InfoWindow({
-          position: mapsMouseEvent.latLng,
-        });
-        infoWindow.setContent(
-          JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
-        );
-        infoWindow.open(map);
-      });
-    },*/
+    mark(event) {
+      this.location = [event.latLng.lat(), event.latLng.lng()];
+      this.$session.set("user_data".location, this.location);
+      console.log(this.$session.get("userdata".location));
+    },
+
     updateDetails() {
       var r = confirm("You will need to signin again to update your changes!");
       if (r == true) {
         if (this.shop_name) {
           this.updateShopName();
         }
-        if (this.shop_location) {
+        if (this.location) {
           this.updateLocation();
         }
         if (this.shop_contact) {
@@ -161,7 +147,7 @@ export default {
         //  this.updateCategory();
         // }
       }
-      this.$router.push("/logout");
+      // this.$router.push("/logout");
     },
     updateShopName() {
       const payload = {
@@ -188,7 +174,7 @@ export default {
 
     updateLocation() {
       const payload = {
-        shop_location: this.shop_location,
+        shop_location: this.location,
       };
       const url = BASE_URL + "/seller/update_location";
       const accessToken = this.$session.get("token");

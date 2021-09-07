@@ -198,6 +198,7 @@ export default {
             if (response.data.status === 200 || response.data.status === 400) {
               localStorage.setItem("otp", response.data.otp);
               localStorage.setItem("offtext", offer_text);
+              console.log(response.data.otp + "" + offer_text);
               this.currentTime = new Date();
               const ct = this.currentTime.getTime();
               localStorage.setItem("ct", ct);

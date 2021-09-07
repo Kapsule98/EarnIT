@@ -47,8 +47,11 @@
             </tr>-->
             <tr>
               <router-link to="/logout">
-                <button>logout</button>
-              </router-link>
+                <b-button variant="danger" style="float: right"
+                  ><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                  logout</b-button
+                ></router-link
+              >
             </tr>
           </table>
         </b-card>
