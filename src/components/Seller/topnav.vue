@@ -27,7 +27,7 @@
             type="text"
             placeholder="Search.."
             name="search"
-            v-on:keydown="productSearch()"
+            :onchange="productSearch()"
             v-model="searchvalue"
             autocomplete="off"
             autofocus

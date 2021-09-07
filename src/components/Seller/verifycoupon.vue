@@ -96,7 +96,9 @@
                 v-if="
                   Math.floor(new Date().getTime() / 1000.0) <
                     offer.validity[1] &&
-                  Math.floor(new Date().getTime() / 1000.0) > offer.validity[0]
+                  Math.floor(new Date().getTime() / 1000.0) >
+                    offer.validity[0] &&
+                  offer.quantity > 0
                 "
               >
                 <couponcard
@@ -196,7 +198,8 @@
             >
               <div
                 v-if="
-                  Math.floor(new Date().getTime() / 1000.0) > offer.validity[1]
+                  Math.floor(new Date().getTime() / 1000.0) >
+                    offer.validity[1] || offer.quantity <= 0
                 "
               >
                 <couponcard
@@ -587,14 +590,18 @@ export default {
           const url = BASE_URL + "/seller/redeem";
           axios
             .post(url, payload, options)
-            .then((response) => console.log(response), console.log(payload))
+            .then((response) => {
+              if (response.status === 200) {
+                alert(response.msg);
+              } else {
+                alert("Coupon reedem unsucessfull!");
+              }
+            })
             .catch((error) => {
               this.errorMessage = error.message;
               console.error("There was an error!", error);
             });
-          this.$router.go();
-        } else {
-          document.getElementById("reedem").style.color = "white";
+          //this.$router.go();
         }
       }
     },
