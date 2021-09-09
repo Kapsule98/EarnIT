@@ -46,9 +46,22 @@
             <p class="shoplocation">
               <i class="fa fa-phone"></i>{{ list.contact_no }}
             </p>
-            <b-button variant="primary" style="float: left"
-              ><i class="fa fa-compass" aria-hidden="true"></i>
-              Directions</b-button
+            <a
+              :href="
+                '//www.google.com/maps/@' +
+                list.location[0].toPrecision(7) +
+                ',' +
+                list.location[1].toPrecision(7) +
+                ',' +
+                '18.29z'
+              "
+              target="_blank"
+              style="text-decoration: none"
+            >
+              <b-button variant="primary" style="float: left"
+                ><i class="fa fa-compass" aria-hidden="true"></i>
+                Directions</b-button
+              ></a
             >
           </div>
           <div class="w3-third" style="padding: 20px">

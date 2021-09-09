@@ -203,7 +203,7 @@ export default {
                   logged_in: "true",
                 };
                 localStorage.setItem("profile", JSON.stringify(storedata));
-                this.$router.push("/account");
+                this.$router.push("/verifycoupon");
               } else {
                 alert(res.data.msg);
                 console.log(res.data.msg);

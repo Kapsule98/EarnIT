@@ -174,7 +174,7 @@ export default {
 
     updateLocation() {
       const payload = {
-        shop_location: this.location,
+        location: this.location,
       };
       const url = BASE_URL + "/seller/update_location";
       const accessToken = this.$session.get("token");

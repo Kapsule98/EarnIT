@@ -21,12 +21,6 @@
       <div class="w3-row">
         <div class="w3-twothird" style="padding: 10px">
           <b-card>
-            <button
-              class="w3-button"
-              style="font-weight: 600; background-color: #008cff; color: white"
-            >
-              ACTIVE
-            </button>
             <p class="c-domain">{{ category.category }}</p>
             <p class="c-shopname">{{ user.shop_name }}</p>
             <p class="c-shoplocation">{{ user.address }}</p>
@@ -68,15 +62,29 @@
                 </b-card>
               </div>
             </div>
-            <hr />
-            <router-link to="/logout">
-              <b-button variant="danger" style="float: right"
-                ><i class="fa fa-exclamation-triangle"></i> logout</b-button
-              ></router-link
-            >
           </b-card>
         </div>
         <div class="w3-third" style="padding: 20px">
+          <b-card>
+            <h4 class="mt-3">
+              Shop Status
+              <b-button
+                style="float: right"
+                v-if="myToggle === true"
+                :pressed.sync="myToggle"
+                variant="primary"
+                >OPEN</b-button
+              >
+              <b-button
+                style="float: right"
+                v-else
+                :pressed.sync="myToggle"
+                variant="danger"
+              >
+                CLOSE
+              </b-button>
+            </h4>
+          </b-card>
           <div class="filter">
             <div class="closeFilter">
               <button v-on:click="closeFilter()" class="closebtn">close</button>
@@ -117,6 +125,13 @@
               </li>
             </b-card>
           </div>
+          <b-card>
+            <router-link to="/logout">
+              <b-button variant="danger" style="float: right"
+                ><i class="fa fa-exclamation-triangle"></i> logout</b-button
+              ></router-link
+            >
+          </b-card>
         </div>
       </div>
     </div>
@@ -146,6 +161,7 @@ export default {
       addproduct: null,
       prod: [],
       del: [],
+      myToggle: false,
     };
   },
   mounted() {

@@ -1,55 +1,38 @@
 <template>
-  <div class="loader">
-    <div class="boxcon">
-      <div class="box1">
-        <img
-          width="100%"
-          style="padding: 0px 15%"
-          src="../../assets/flogo.png"
-          alt=""
-        />
-      </div>
-      <div class="box2"></div>
-    </div>
+  <div id="loading">
+    <img
+      class="img"
+      src="../../assets/loader.gif"
+      alt="loading..."
+      width="200"
+    />
   </div>
 </template>
 
 <script>
 export default {
-  mounted() {
-    const loader = document.querySelector(".loader");
-    loader.className += " hidden"; // class "loader hidden"
-  },
+  name: "Loading",
 };
 </script>
 
-<style scoped>
-.loader {
+<style>
+#loading {
   position: fixed;
-  z-index: 99000000;
   top: 0;
   left: 0;
-  width: 100%;
+  z-index: 19009000;
+  background-color: rgb(255, 255, 255);
   height: 100%;
-  background: rgb(255, 255, 255);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  text-align: center;
 }
-
-.loader > img {
-  width: 100px;
-}
-
-.loader.hidden {
-  animation: fadeOut 1s;
-  animation-fill-mode: forwards;
-}
-
-@keyframes fadeOut {
-  100% {
-    opacity: 0;
-    visibility: hidden;
-  }
+.img {
+  top: 50%;
+  margin: 0px auto;
+  margin-left: -100px;
+  width: 200px;
+  line-height: 100vh;
+  vertical-align: middle;
+  position: absolute;
 }
 </style>

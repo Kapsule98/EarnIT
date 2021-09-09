@@ -592,7 +592,7 @@ export default {
             .post(url, payload, options)
             .then((response) => {
               if (response.status === 200) {
-                alert(response.msg);
+                alert("Coupon Sucessfully Reedemed.");
               } else {
                 alert("Coupon reedem unsucessfull!");
               }
