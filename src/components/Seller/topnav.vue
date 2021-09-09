@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <loader v-if="isLoading"></loader>
     <div id="nav" class="topnav">
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
       <div class="topnavlink left" style="font-weight: 900">
@@ -27,7 +28,7 @@
             type="text"
             placeholder="Search.."
             name="search"
-            :onchange="productSearch()"
+            v-on:input="productSearch()"
             v-model="searchvalue"
             autocomplete="off"
             autofocus
@@ -136,13 +137,16 @@
 <script>
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import loader from "./loader.vue";
 export default {
+  components: { loader },
   data() {
     return {
       user: {},
       status: undefined,
       allcategories: [],
       searchvalue: "",
+      isLoading: true,
     };
   },
 
@@ -172,6 +176,9 @@ export default {
     "landing",
   ],
   mounted() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1500);
     if (this.$session.get("user_type") === "seller" && this.landing !== true) {
       document.getElementsByClassName("topnav")[0].style.height = "70px";
     }

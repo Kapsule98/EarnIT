@@ -215,7 +215,8 @@
         <topoffers category="/get_offers_by_category/Furniture"></topoffers>
         <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
       </b-card>
-      <bottomnav></bottomnav>
+
+      <bottomnav v-if="this.$session.get('user_type') !== 'seller'"></bottomnav>
       <sitefooter></sitefooter>
     </div>
   </div>
