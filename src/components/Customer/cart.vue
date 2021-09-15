@@ -230,11 +230,12 @@ export default {
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.cart = response.data;
-
+          console.log("cart" + response.data);
+          console.log(response.data);
           if (this.cart.cart.length === 0) {
             this.empty = true;
           }
-          console.log(response.data);
+
           if (this.cart.status === 200) {
             localStorage.setItem("cartitems", this.cart.count);
           }

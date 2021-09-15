@@ -148,7 +148,7 @@
             placeholder="Registered Shop Name"
             class="login-input"
             style="border-top: none; border-radius: 0px 0px 5px 5px"
-          />
+          /><!--
           <br />
           <br />
           <h5 style="color: #999999">tell Customers your active time</h5>
@@ -177,7 +177,7 @@
                 @context="onContext"
               ></b-time>
             </center>
-          </div>
+          </div>-->
           <button @click="Sellersignup()" class="login-button">Register</button>
           <a href="/login" style="float: right"
             >already have an account? login here</a

@@ -18,7 +18,7 @@
     <div class="w3-container" style="margin-bottom: 10px; margin-top: -20px">
       <b-card style="min-height: 110px">
         <div class="w3-row">
-          <div class="w3-col m9">
+          <div class="w3-col m6">
             <p class="shopname">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -35,11 +35,20 @@
               Hi {{ this.$session.get("user_data").display_name }} !!
             </p>
           </div>
-          <div class="w3-col m3">
+          <div class="w3-col m6">
             <router-link to="/profile">
-              <button class="login-button" style="font-size: 16px">
-                View your account details
-              </button>
+              <div class="w3-col" style="width: 50%; padding: 10px">
+                <button class="login-button" style="font-size: 16px">
+                  View your account details
+                </button>
+              </div>
+            </router-link>
+            <router-link to="/milestones">
+              <div class="w3-col" style="width: 50%; padding: 10px">
+                <button class="login-button" style="font-size: 16px">
+                  Your milestones
+                </button>
+              </div>
             </router-link>
           </div>
         </div>

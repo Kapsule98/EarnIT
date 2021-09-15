@@ -147,6 +147,12 @@ const routes = [
   },
   {
     beforeEnter: guardMyrouteCustomer,
+    path: '/milestones',
+    name: 'milestones',
+    component: () => import('../components/Customer/milestones.vue')
+  },
+  {
+    beforeEnter: guardMyrouteCustomer,
     path: '/cart',
     name: 'cart',
     component: () => import('../components/Customer/cart.vue')
