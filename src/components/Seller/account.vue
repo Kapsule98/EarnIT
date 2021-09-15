@@ -65,7 +65,7 @@
           </b-card>
         </div>
         <div class="w3-third" style="padding: 20px">
-          <b-card>
+          <!-- <b-card>
             <h4 class="mt-3">
               Shop Status
               <b-button
@@ -84,7 +84,7 @@
                 CLOSE
               </b-button>
             </h4>
-          </b-card>
+          </b-card>-->
           <div class="filter">
             <div class="closeFilter">
               <button v-on:click="closeFilter()" class="closebtn">close</button>

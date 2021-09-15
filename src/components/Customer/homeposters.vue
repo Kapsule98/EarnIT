@@ -14,9 +14,9 @@
       :dots="false"
       video:true
     >
-      <img src="../../assets/home4.jpeg" class="homeposters" />
-      <img src="../../assets/home5.jpeg" width="100%" class="homeposters" />
-      <img src="../../assets/home2.jpeg" width="100%" class="homeposters" />
+      <img src="../../assets/0001.jpg" width="100%" class="homeposters" />
+      <img src="../../assets/0002.jpg" width="100%" class="homeposters" />
+      <img src="../../assets/0003.jpg" width="100%" class="homeposters" />
     </carousel>
   </div>
 </template>
