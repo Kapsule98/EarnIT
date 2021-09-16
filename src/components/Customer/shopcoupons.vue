@@ -47,6 +47,7 @@
               <i class="fa fa-phone"></i>{{ list.contact_no }}
             </p>
             <a
+              v-if="Array.isArray(list.location)"
               :href="
                 '//www.google.com/maps/@' +
                 list.location[0].toPrecision(7) +

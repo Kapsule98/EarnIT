@@ -281,7 +281,10 @@ export default {
       } else {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            this.location = position;
+            this.location = [
+              position.coords.longitude,
+              position.coords.latitude,
+            ];
           },
           (error) => {
             console.log(error.message);

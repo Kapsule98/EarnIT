@@ -171,82 +171,82 @@
                   "
                   class="hovclass"
                 >
-                  <div class="couponhome">
-                    <div class="c2-back">
-                      <img
-                        src="https://source.unsplash.com/random"
-                        width="100%"
-                      />
-                    </div>
-                    <div class="c2-left">
-                      {{ list.active_offers[offer.index].quantity }} coupons
-                      left
-                    </div>
-                    <div class="c2-off"></div>
-
-                    <div class="c2-shop"><!--{{ shop_name }}--></div>
-                  </div>
-                  <div
-                    class="l-offer"
-                    v-if="
-                      list.active_offers[offer.index].type === 'ITEM_DISCOUNT'
-                    "
+                  <router-link
+                    :to="{
+                      path: '/seller',
+                      query: {
+                        seller: list.active_offers[offer.index].seller_email,
+                      },
+                    }"
                   >
-                    <nav
-                      v-b-tooltip.hover
-                      :title="list.active_offers[offer.index].products + ' '"
-                    >
-                      <span class="offno">{{ offer.value }}%</span> off on
+                    <div class="couponhome">
+                      <div class="c2-back">
+                        <img
+                          src="https://source.unsplash.com/random"
+                          width="100%"
+                        />
+                      </div>
+                      <div class="c2-left">
+                        {{ list.active_offers[offer.index].quantity }} coupons
+                        left
+                      </div>
+                      <div class="c2-off"></div>
 
-                      <span
-                        v-for="(prods, index3) in list.active_offers[
-                          offer.index
-                        ].products"
-                        :key="prods.offer_text"
+                      <div class="c2-shop"><!--{{ shop_name }}--></div>
+                    </div>
+                    <div
+                      class="l-offer"
+                      v-if="
+                        list.active_offers[offer.index].type === 'ITEM_DISCOUNT'
+                      "
+                    >
+                      <nav
+                        v-b-tooltip.hover
+                        :title="list.active_offers[offer.index].products + ' '"
                       >
-                        {{ list.active_offers[offer.index].products[index3] }}
+                        <span class="offno">{{ offer.value }}%</span> off on
 
                         <span
-                          v-if="
-                            index3 !=
-                            Object.keys(
-                              list.active_offers[offer.index].products
-                            ).length -
-                              1
-                          "
-                          >,
-                        </span>
-                      </span>
-                    </nav>
-                  </div>
-                  <div class="l-offer" v-else>
-                    <nav>
-                      <span class="offno">{{ offer.value }}%</span> off on Total
-                      Bill
-                    </nav>
-                  </div>
-                  <div class="shopname">
-                    {{ list.active_offers[offer.index].shop_name }}
+                          v-for="(prods, index3) in list.active_offers[
+                            offer.index
+                          ].products"
+                          :key="prods.offer_text"
+                        >
+                          {{ list.active_offers[offer.index].products[index3] }}
 
-                    <router-link
-                      :to="{
-                        path: '/seller',
-                        query: {
-                          seller: list.active_offers[offer.index].seller_email,
-                        },
-                      }"
-                    >
+                          <span
+                            v-if="
+                              index3 !=
+                              Object.keys(
+                                list.active_offers[offer.index].products
+                              ).length -
+                                1
+                            "
+                            >,
+                          </span>
+                        </span>
+                      </nav>
+                    </div>
+                    <div class="l-offer" v-else>
+                      <nav>
+                        <span class="offno">{{ offer.value }}%</span> off on
+                        Total Bill
+                      </nav>
+                    </div>
+                    <div class="shopname">
+                      {{ list.active_offers[offer.index].shop_name }}
+
                       <button class="vshop">View Shop</button>
-                    </router-link>
-                  </div>
-                  <div class="c2-validity">
-                    offer valid till
-                    {{
-                      moment(
-                        list.active_offers[offer.index].validity[1] * 1000
-                      ).format("DD-MM-YYYY")
-                    }}
-                  </div>
+                    </div>
+                    <div class="c2-validity">
+                      offer valid till
+                      {{
+                        moment(
+                          list.active_offers[offer.index].validity[1] * 1000
+                        ).format("DD-MM-YYYY")
+                      }}
+                    </div>
+                  </router-link>
                 </div>
               </div>
             </div>
