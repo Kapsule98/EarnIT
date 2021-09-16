@@ -226,11 +226,12 @@ export default {
     getCart() {
       const offersurl = BASE_URL + "/cart";
       let JWTToken = this.$session.get("token");
+      console.log(JWTToken);
       axios
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.cart = response.data;
-          console.log("cart" + response.data);
+          console.log("cart");
           console.log(response.data);
           if (this.cart.cart.length === 0) {
             this.empty = true;
@@ -247,6 +248,7 @@ export default {
     removeItem(offer_text, email) {
       const offersurl = BASE_URL + "/cart";
       let JWTToken = this.$session.get("token");
+
       const config = {
         data: {
           offer_text: offer_text,

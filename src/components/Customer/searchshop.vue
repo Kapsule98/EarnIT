@@ -114,40 +114,41 @@
               v-for="shop in list.sellers"
               :key="shop.length"
             >
-              <div class="Scard">
-                <div class="hovclass">
-                  <div class="couponhome">
-                    <div class="c2-back">
-                      <img
-                        src="https://source.unsplash.com/random"
-                        width="100%"
-                      />
+              <router-link
+                :to="{
+                  path: '/seller',
+                  query: {
+                    seller: shop.email,
+                  },
+                }"
+              >
+                <div class="Scard">
+                  <div class="hovclass">
+                    <div class="couponhome">
+                      <div class="c2-back">
+                        <img
+                          src="https://source.unsplash.com/random"
+                          width="100%"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div class="l-offer">
-                    <nav>{{ shop.display_name }}</nav>
-                  </div>
-                  <div class="shopname">
-                    <div
-                      class="s-address"
-                      v-b-tooltip.hover
-                      :title="shop.address"
-                    >
-                      {{ shop.address }}
+                    <div class="l-offer">
+                      <nav>{{ shop.display_name }}</nav>
                     </div>
-                    <router-link
-                      :to="{
-                        path: '/seller',
-                        query: {
-                          seller: shop.email,
-                        },
-                      }"
-                    >
+                    <div class="shopname">
+                      <div
+                        class="s-address"
+                        v-b-tooltip.hover
+                        :title="shop.address"
+                      >
+                        {{ shop.address }}
+                      </div>
+
                       <button class="vshop">View Shop</button>
-                    </router-link>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </router-link>
             </div>
           </div>
         </div>

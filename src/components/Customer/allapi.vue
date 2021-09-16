@@ -27,65 +27,66 @@
           :key="offer.length"
           class="hovclass"
         >
-          <div class="couponhome">
-            <div class="c2-back">
-              <img src="https://source.unsplash.com/random/food" />
-            </div>
-            <div class="c2-left">
-              {{ list.active_offers[offer.index].quantity }} coupons left
-            </div>
-          </div>
-          <div
-            class="l-offer"
-            v-if="list.active_offers[offer.index].type === 'ITEM_DISCOUNT'"
+          <router-link
+            :to="{
+              path: '/seller',
+              query: {
+                seller: list.active_offers[offer.index].seller_email,
+              },
+            }"
           >
-            <span class="offno">{{ offer.value }}%</span> off on
-            <span
-              v-b-tooltip.hover
-              :title="list.active_offers[offer.index].products + ' '"
+            <div class="couponhome">
+              <div class="c2-back">
+                <img src="https://source.unsplash.com/random/food" />
+              </div>
+              <div class="c2-left">
+                {{ list.active_offers[offer.index].quantity }} coupons left
+              </div>
+            </div>
+            <div
+              class="l-offer"
+              v-if="list.active_offers[offer.index].type === 'ITEM_DISCOUNT'"
             >
+              <span class="offno">{{ offer.value }}%</span> off on
               <span
-                v-for="(prods, index1) in list.active_offers[offer.index]
-                  .products"
-                :key="prods.offer_text"
+                v-b-tooltip.hover
+                :title="list.active_offers[offer.index].products + ' '"
               >
-                {{ list.active_offers[offer.index].products[index1] }}
                 <span
-                  v-if="
-                    index1 !=
-                    Object.keys(list.active_offers[offer.index].products)
-                      .length -
-                      1
-                  "
-                  >,
+                  v-for="(prods, index1) in list.active_offers[offer.index]
+                    .products"
+                  :key="prods.offer_text"
+                >
+                  {{ list.active_offers[offer.index].products[index1] }}
+                  <span
+                    v-if="
+                      index1 !=
+                      Object.keys(list.active_offers[offer.index].products)
+                        .length -
+                        1
+                    "
+                    >,
+                  </span>
                 </span>
               </span>
-            </span>
-          </div>
-          <div class="l-offer" v-else>
-            <span class="offno">{{ offer.value }}%</span> off on Total Bill
-          </div>
-          <div class="shopname">
-            {{ list.active_offers[offer.index].seller_display_name }}
-            <router-link
-              :to="{
-                path: '/seller',
-                query: {
-                  seller: list.active_offers[offer.index].seller_email,
-                },
-              }"
-            >
+            </div>
+            <div class="l-offer" v-else>
+              <span class="offno">{{ offer.value }}%</span> off on Total Bill
+            </div>
+            <div class="shopname">
+              {{ list.active_offers[offer.index].seller_display_name }}
+
               <button class="vshop">View Shop</button>
-            </router-link>
-          </div>
-          <div class="c2-validity">
-            offer valid till
-            {{
-              moment(list.active_offers[offer.index].validity[1] * 1000).format(
-                "MMM Do YY"
-              )
-            }}
-          </div>
+            </div>
+            <div class="c2-validity">
+              offer valid till
+              {{
+                moment(
+                  list.active_offers[offer.index].validity[1] * 1000
+                ).format("MMM Do YY")
+              }}
+            </div>
+          </router-link>
         </div>
       </template>
     </carousel>
