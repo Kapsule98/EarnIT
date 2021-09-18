@@ -3,13 +3,13 @@
     <div class="l-footer" style="margin-top: 5px">
       <div class="f-box">
         <div style="float: left; color: white; font-size: 25px" class="f-logo">
-          <!-- <a href="/"
+          <a href="/"
             ><img
-              :src="images.logo"
+              src="../../assets/flogo.png"
+              class="footlogo"
               alt="logo"
-              height="200px"
               style="margin-top: -65px; margin-bottom: -85px"
-          /></a> -->
+          /></a>
         </div>
         <div
           style="float: right"
@@ -65,9 +65,9 @@
           ></a>
         </div>
       </div>
-      <div class="w3-row" style="margin-top: 20px">
+      <!--   <div class="w3-row" style="margin-top: 20px">
         <div class="w3-col m8">
-          <!--  <a href=""
+         <a href=""
             ><span style="padding: 0px 40px 0px 0px"> Sell on Lemmebuy</span></a
           >
           <a href=""
@@ -77,12 +77,12 @@
             ><span style="padding: 0px 40px 0px 0px">Gift Card </span></a
           >
           <a href=""><span style="padding: 0px 40px 0px 0px">Center</span></a>-->
-        </div>
-        <!-- <div class="w3-col m4">
-          <i class="fa fa-copyright"></i> 2021-20XX Lemmebuy.in
-        </div>-->
-      </div>
     </div>
+    <!-- <div class="w3-col m4">
+          <i class="fa fa-copyright"></i> 2021-20XX Lemmebuy.in
+        </div>
+      </div>
+    </div>-->
   </div>
 </template>
 <script>
@@ -100,6 +100,10 @@ export default {
 </script>
 
 <style scoped>
+.footlogo {
+  width: 200px;
+  margin-top: -5px;
+}
 .l-footer {
   position: relative;
   z-index: 100;
