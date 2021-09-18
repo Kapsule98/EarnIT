@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <loader v-if="isLoading"></loader>
     <div id="nav" class="topnav">
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
       <div class="topnavlink left" style="font-weight: 900">
@@ -137,16 +136,15 @@
 <script>
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
-import loader from "./loader.vue";
+
 export default {
-  components: { loader },
+  components: {},
   data() {
     return {
       user: {},
       status: undefined,
       allcategories: [],
       searchvalue: "",
-      isLoading: true,
     };
   },
 
@@ -176,16 +174,6 @@ export default {
     "landing",
   ],
   mounted() {
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1500);
-    if (this.$session.get("user_type") === "seller" && this.landing !== true) {
-      document.getElementsByClassName("topnav")[0].style.height = "70px";
-    }
-    if (this.$session.get("user_type") === "customer") {
-      this.$nextTick(() => this.$refs.prose.focus());
-    }
-
     this.user = this.$session.get("user_data");
     const offersurl = BASE_URL + "/categories";
     let JWTToken = this.$session.get("token");

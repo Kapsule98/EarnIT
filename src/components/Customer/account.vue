@@ -77,8 +77,8 @@
                 </div>
                 <div class="w3-quarter">
                   <div>
-                    <i class="fa fa-bolt" style="color: gold"></i> 50 Lemme
-                    coins earned
+                    <i class="fa fa-bolt" style="color: gold"></i>
+                    {{ items.credit_earned }} Lemme coins earned
                   </div>
                 </div>
               </div>
@@ -97,7 +97,9 @@
                   />
                 </div>
                 <div class="w3-col" style="width: 70%">
-                  <div class="a-seller">Sold by - {{ items.shop_name }}</div>
+                  <div class="a-seller">
+                    Sold by - {{ items.seller_display_name }}
+                  </div>
                   <div class="a-spend">
                     Money Spent: <i class="fa fa-rupee"></i> {{ items.sp }}
                   </div>

@@ -34,6 +34,7 @@
       :display_categories="true"
       :landing="true"
     ></topnav>
+    <loader v-if="isLoading"></loader>
     <homeposters style="margin-top: -30px; width: 100%"></homeposters>
     <div class="backwrap">
       <div class="lessm">
@@ -114,7 +115,7 @@
           </div>
           <div class="w3-col m2 s6">
             <router-link
-              :to="{ path: '/search', query: { category: 'Sports' } }"
+              :to="{ path: '/search', query: { category: 'Grocery' } }"
             >
               <b-card class="top_categories">
                 <img
@@ -123,7 +124,7 @@
                   width="100%"
                   class="catimg"
                 />
-                <p class="offhead">Sports</p>
+                <p class="offhead">Grocery</p>
               </b-card>
             </router-link>
           </div>
@@ -228,6 +229,7 @@ import topoffers from "./topoffers.vue";
 import Sitefooter from "./sitefooter.vue";
 //import Catoffers from "./catoffers.vue";
 import Allapi from "./allapi.vue";
+import loader from "../Seller/loader.vue";
 import Bottomnav from "./bottomnav.vue";
 
 export default {
@@ -238,6 +240,7 @@ export default {
     homeposters,
     Allapi,
     Bottomnav,
+    loader,
   },
   data() {
     return {
@@ -246,9 +249,19 @@ export default {
       showFoodBlock: false,
       showElectronicsBlock: false,
       showFurnitureBlock: false,
+      isLoading: true,
     };
   },
   mounted() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1500);
+    if (this.$session.get("user_type") === "seller" && this.landing !== true) {
+      document.getElementsByClassName("topnav")[0].style.height = "70px";
+    }
+    if (this.$session.get("user_type") === "customer") {
+      this.$nextTick(() => this.$refs.prose.focus());
+    }
     if (
       localStorage.getItem("/get_offers_by_category/Fashionempty?") === "true"
     ) {
