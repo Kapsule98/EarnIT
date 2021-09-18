@@ -15,6 +15,15 @@
       <div class="w3-col m2" style="padding: 1px"></div>
 
       <div class="w3-col m8">
+        
+        <!-- take image input from seller for shop image -->
+        <div>
+          <img v-bind:src="image" />
+          add image
+          <!-- <input @change="handleImage" type="file" accept="image/*"> -->
+          <input type="file" @change="encodeImageFileAsURL" />
+        </div>
+        
         <b-card style="margin: 20px 0px">
           <h1>Edit Your Shop Details</h1>
 
@@ -96,11 +105,10 @@ export default {
       shop_contact: this.$session.get("user_data").contact_no,
       shop_category: this.$session.get("user_data").category,
       location: [],
-
+      image:'',
       allcategories: [],
     };
   },
-
   mounted() {
     console.log(this.$session.get("user_data"));
     const offersurl = BASE_URL + "/categories";
@@ -116,9 +124,31 @@ export default {
       });
     this.user = this.$session.get("user_data");
     console.log(this.$session.get("user_data"));
+    this.getImageBinary();
   },
 
   methods: {
+    getImageBinary(){
+      const url = BASE_URL + "/seller/image";
+      const jwt = this.$session.get("token");
+      const options = {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+      }; 
+      axios.get(url,options).then(res => {
+        console.log(res);
+        if(res.status === 200){
+          this.image =res.data.toString();
+          console.log(res)
+        } else {
+          console.log("Some error occured");
+        }
+        
+      }).catch(err => {
+        console.log(err);
+      })
+    },
     mark(event) {
       this.location = [event.latLng.lat(), event.latLng.lng()];
       this.$session.set("user_data".location, this.location);
@@ -239,6 +269,34 @@ export default {
 
       console.log(this.shop_address);
     },
+    encodeImageFileAsURL(element) {
+      var file = element.target.files[0];
+      var reader = new FileReader();
+      console.log("jwt now = ",this.jwt)
+      reader.onloadend = function() {
+
+        // Upload image to api
+        const profile_token = JSON.parse(localStorage.getItem("profile")).token;
+        const url = BASE_URL + "/seller/image";
+        console.log(this.jwt)
+        const options = {
+          headers: {
+            Authorization: `Bearer ${profile_token}`,
+          },
+        };
+        console.log(options)
+        const payload = {
+          "image":reader.result
+        }
+        console.log(payload);
+        axios.post(url,payload,options).then(res => {
+          console.log(res);
+        }).catch(err => {
+          console.log(err);
+        })
+      }
+      reader.readAsDataURL(file);
+    }
     /* updateOwnerName() {
       const payload = {
         owner_name: this.owner_name,
