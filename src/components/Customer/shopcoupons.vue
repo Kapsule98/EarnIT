@@ -96,7 +96,16 @@
                       v-for="offers in list.offers"
                       :key="offers.length"
                     >
-                      <div class="w3-row">
+                      <div
+                        class="w3-row"
+                        v-if="
+                          Math.floor(new Date().getTime() / 1000.0) <
+                            offers.validity[1] &&
+                          Math.floor(new Date().getTime() / 1000.0) >
+                            offers.validity[0] &&
+                          offers.quantity > 0
+                        "
+                      >
                         <div class="w3-col m9">
                           <div
                             class="card_remaining"
@@ -222,24 +231,28 @@
           </div>
           <div class="w3-third" style="padding: 20px">
             <div class="w3-card" style="padding: 20px; box-shadow: none">
-              <h4>
-                <i class="fa fa-share-alt" style="color: #008cff"></i> Share
-                this page
+              <h4 @click="sharePage()">
+                <i class="fa fa-share-alt" style="color: #008cff"></i>
+                Share this page
               </h4>
               <h3>
                 <i
+                  @click="sharePage()"
                   class="fa fa-instagram"
                   style="color: #008cff; padding: 10px"
                 ></i>
                 <i
+                  @click="sharePage()"
                   class="fa fa-facebook"
                   style="color: #008cff; padding: 10px"
                 ></i>
                 <i
+                  @click="sharePage()"
                   class="fa fa-snapchat"
                   style="color: #008cff; padding: 10px"
                 ></i>
                 <i
+                  @click="sharePage()"
                   class="fa fa-pinterest"
                   style="color: #008cff; padding: 10px"
                 ></i>
@@ -297,6 +310,18 @@ export default {
       });
   },
   methods: {
+    sharePage() {
+      if (navigator.share) {
+        navigator
+          .share({
+            title: "Shop Coupons from Lemmmebuy.in",
+            text: "Hey I found this amazing offer on Lemmebuy.in! You will love it.",
+            url: window.location.href,
+          })
+          .then(() => console.log("Successful share"))
+          .catch((error) => console.log("Error sharing", error));
+      }
+    },
     addToCart(offer_text, email) {
       if (localStorage.getItem("log") === "true") {
         const payload = {
