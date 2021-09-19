@@ -37,7 +37,7 @@
           >
             <div class="couponhome">
               <div class="c2-back">
-                <img src="https://source.unsplash.com/random/food" />
+                <img :src="shop_image[offer.index]" />
               </div>
               <div class="c2-left">
                 {{ list.active_offers[offer.index].quantity }} coupons left
@@ -106,6 +106,8 @@ export default {
       list: [],
       result: [],
       mapped: [],
+      email: [],
+      shop_image: [],
     };
   },
   mounted() {
@@ -114,18 +116,26 @@ export default {
   methods: {
     getAllOffers() {
       const offersurl = BASE_URL + "/get_all_offers";
+
       axios
         .get(offersurl)
         .then((response) => {
           this.list = response.data;
-          console.log(this.list);
+
           var discount = [];
+
           for (var i = 0; i < this.list.active_offers.length; i++) {
             discount[i] = this.list.active_offers[i].discount_percent;
-          }
-          // the array to be sorted
+            this.email[i] = this.list.active_offers[i].seller_email;
+            this.shop_image[i] = this.getImage(this.email[i]);
 
-          // temporary array holds objects with position and sort-value
+            //  alert(this.shop_image[i]);
+
+            //
+
+            //
+          }
+
           var mapped = discount.map(function (el, i) {
             return { index: i, value: el };
           });
@@ -145,6 +155,31 @@ export default {
         .catch((err) => {
           console.error(err);
         });
+    },
+    getImage(email) {
+      const url = BASE_URL + "/seller_image/" + email;
+      var simg = null;
+
+      axios
+        .get(url)
+        .then((response) => {
+          if (response.status === 200) {
+            if (response.data.msg === "seller image does not exist") {
+              simg = "/img/def.d3b94f4a.png";
+              console.log(response);
+              //   alert(simg);
+            } else {
+              simg = "res.data.toString()";
+              console.log(response);
+              //  alert(simg);
+            }
+          }
+        })
+        .catch((er) => {
+          console.error(er);
+        });
+      //   alert(img);
+      return simg;
     },
   },
 };

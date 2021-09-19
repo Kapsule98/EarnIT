@@ -15,18 +15,31 @@
       <div class="w3-col m2" style="padding: 1px"></div>
 
       <div class="w3-col m8">
-        
         <!-- take image input from seller for shop image -->
-        <div>
-          <img v-bind:src="image" />
-          add image
-          <!-- <input @change="handleImage" type="file" accept="image/*"> -->
-          <input type="file" @change="encodeImageFileAsURL" />
-        </div>
-        
+
         <b-card style="margin: 20px 0px">
           <h1>Edit Your Shop Details</h1>
+          <div class="w3-row" style="margin-top: 30px">
+            <div class="w3-col m2">Shop Image</div>
 
+            <div class="w3-col m10">
+              <!--   <img v-bind:src="image" style="width: 100%" id="proimg" />-->
+
+              <cropper
+                class="cropper"
+                :src="image"
+                :stencil-props="{
+                  aspectRatio: 16 / 9,
+                }"
+                @change="change"
+              ></cropper>
+
+              <div style="float: right; margin-top: 10px">
+                <!-- <input @change="handleImage" type="file" accept="image/*"> -->
+                <input type="file" @change="encodeImageFileAsURL" />
+              </div>
+            </div>
+          </div>
           <form action="">
             <table style="width: 100%" class="accountable">
               <tr>
@@ -92,9 +105,10 @@ import topnav from "../Seller/topnav.vue";
 import Sitefooter from "../Customer/sitefooter.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
-
+import { Cropper } from "vue-advanced-cropper";
+import "vue-advanced-cropper/dist/style.css";
 export default {
-  components: { topnav, Sitefooter },
+  components: { topnav, Sitefooter, Cropper },
 
   data() {
     return {
@@ -105,12 +119,11 @@ export default {
       shop_contact: this.$session.get("user_data").contact_no,
       shop_category: this.$session.get("user_data").category,
       location: [],
-      image:'',
+      image: "",
       allcategories: [],
     };
   },
   mounted() {
-    console.log(this.$session.get("user_data"));
     const offersurl = BASE_URL + "/categories";
     let JWTToken = this.$session.get("token");
     console.log(this.$session.get("user_data"));
@@ -128,26 +141,31 @@ export default {
   },
 
   methods: {
-    getImageBinary(){
+    change({ coordinates, canvas }) {
+      console.log(coordinates, canvas);
+    },
+    getImageBinary() {
       const url = BASE_URL + "/seller/image";
       const jwt = this.$session.get("token");
       const options = {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-      }; 
-      axios.get(url,options).then(res => {
-        console.log(res);
-        if(res.status === 200){
-          this.image =res.data.toString();
-          console.log(res)
-        } else {
-          console.log("Some error occured");
-        }
-        
-      }).catch(err => {
-        console.log(err);
-      })
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      };
+      axios
+        .get(url, options)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            this.image = res.data.toString();
+            console.log(res);
+          } else {
+            console.log("Some error occured");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     mark(event) {
       this.location = [event.latLng.lat(), event.latLng.lng()];
@@ -272,31 +290,33 @@ export default {
     encodeImageFileAsURL(element) {
       var file = element.target.files[0];
       var reader = new FileReader();
-      console.log("jwt now = ",this.jwt)
-      reader.onloadend = function() {
-
+      console.log("jwt now = ", this.jwt);
+      reader.onloadend = function () {
         // Upload image to api
         const profile_token = JSON.parse(localStorage.getItem("profile")).token;
         const url = BASE_URL + "/seller/image";
-        console.log(this.jwt)
+        console.log(this.jwt);
         const options = {
           headers: {
             Authorization: `Bearer ${profile_token}`,
           },
         };
-        console.log(options)
+        console.log(options);
         const payload = {
-          "image":reader.result
-        }
+          image: reader.result,
+        };
         console.log(payload);
-        axios.post(url,payload,options).then(res => {
-          console.log(res);
-        }).catch(err => {
-          console.log(err);
-        })
-      }
+        axios
+          .post(url, payload, options)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
       reader.readAsDataURL(file);
-    }
+    },
     /* updateOwnerName() {
       const payload = {
         owner_name: this.owner_name,
