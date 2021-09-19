@@ -37,7 +37,9 @@
           >
             <div class="couponhome">
               <div class="c2-back">
-                <img :src="shop_image[offer.index]" />
+                <imgstore
+                  :email="list.active_offers[offer.index].seller_email"
+                ></imgstore>
               </div>
               <div class="c2-left">
                 {{ list.active_offers[offer.index].quantity }} coupons left
@@ -98,16 +100,15 @@
 import carousel from "vue-owl-carousel";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import Imgstore from "./imgstore.vue";
 export default {
-  components: { carousel },
+  components: { carousel, Imgstore },
   props: ["category", "alloffers"],
   data() {
     return {
       list: [],
       result: [],
       mapped: [],
-      email: [],
-      shop_image: [],
     };
   },
   mounted() {
@@ -126,14 +127,6 @@ export default {
 
           for (var i = 0; i < this.list.active_offers.length; i++) {
             discount[i] = this.list.active_offers[i].discount_percent;
-            this.email[i] = this.list.active_offers[i].seller_email;
-            this.shop_image[i] = this.getImage(this.email[i]);
-
-            //  alert(this.shop_image[i]);
-
-            //
-
-            //
           }
 
           var mapped = discount.map(function (el, i) {
@@ -155,31 +148,6 @@ export default {
         .catch((err) => {
           console.error(err);
         });
-    },
-    getImage(email) {
-      const url = BASE_URL + "/seller_image/" + email;
-      var simg = null;
-
-      axios
-        .get(url)
-        .then((response) => {
-          if (response.status === 200) {
-            if (response.data.msg === "seller image does not exist") {
-              simg = "/img/def.d3b94f4a.png";
-              console.log(response);
-              //   alert(simg);
-            } else {
-              simg = "res.data.toString()";
-              console.log(response);
-              //  alert(simg);
-            }
-          }
-        })
-        .catch((er) => {
-          console.error(er);
-        });
-      //   alert(img);
-      return simg;
     },
   },
 };

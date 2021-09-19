@@ -10,7 +10,7 @@
       link4=""
       link5=""
     ></topnav>
-
+    <test></test>
     <div class="w3-row">
       <div class="w3-col m2" style="padding: 1px"></div>
 
@@ -19,12 +19,13 @@
 
         <b-card style="margin: 20px 0px">
           <h1>Edit Your Shop Details</h1>
-          <div class="w3-row" style="margin-top: 30px">
-            <div class="w3-col m2">Shop Image</div>
+          <hr />
+          <div class="w3-row" style="margin-top: 50px">
+            <div class="w3-col m2"><b>Shop Image</b></div>
 
             <div class="w3-col m10">
               <!--   <img v-bind:src="image" style="width: 100%" id="proimg" />-->
-
+              <img :src="newimg" alt="" />
               <cropper
                 class="cropper"
                 :src="image"
@@ -32,7 +33,10 @@
                   aspectRatio: 16 / 9,
                 }"
                 @change="change"
+                ref="cropper"
               ></cropper>
+              <br />
+              <button @click="crop">Crop</button>
 
               <div style="float: right; margin-top: 10px">
                 <!-- <input @change="handleImage" type="file" accept="image/*"> -->
@@ -107,11 +111,19 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import { Cropper } from "vue-advanced-cropper";
 import "vue-advanced-cropper/dist/style.css";
+import Test from "./test.vue";
 export default {
-  components: { topnav, Sitefooter, Cropper },
+  components: { topnav, Sitefooter, Cropper, Test },
 
   data() {
     return {
+      coordinates: {
+        width: 0,
+        height: 0,
+        left: 0,
+        top: 0,
+      },
+      newimg: "",
       user: {},
       shop_name: this.$session.get("user_data").shop_name,
 
@@ -144,6 +156,15 @@ export default {
   },
 
   methods: {
+    crop() {
+      const { coordinates, canvas } = this.$refs.cropper.getResult();
+      this.coordinates = coordinates;
+      // You able to do different manipulations at a canvas
+      // but there we just get a cropped image, that can be used
+      // as src for <img/> to preview result
+      this.image = canvas.toDataURL();
+      this.encodeImageFileAsURL();
+    },
     change({ coordinates, canvas }) {
       console.log(coordinates, canvas);
     },
@@ -191,14 +212,7 @@ export default {
         if (this.address) {
           this.updateAddress();
         }
-        //  if (this.shop_owner_name) {
-        //  this.updateOwnerName();
-        // }
-        //  if (this.shop_category) {
-        //  this.updateCategory();
-        // }
       }
-      // this.$router.push("/logout");
     },
     updateShopName() {
       const payload = {
@@ -292,7 +306,9 @@ export default {
     },
     encodeImageFileAsURL(element) {
       var file = element.target.files[0];
+
       var reader = new FileReader();
+      this.newimg = reader.result.toString();
       console.log("jwt now = ", this.jwt);
       reader.onloadend = function () {
         // Upload image to api
@@ -320,50 +336,6 @@ export default {
       };
       reader.readAsDataURL(file);
     },
-    /* updateOwnerName() {
-      const payload = {
-        owner_name: this.owner_name,
-      };
-      const url = BASE_URL + "/seller/update_owner_name";
-      const accessToken = this.$session.get("token");
-      const options = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      };
-
-      axios
-        .post(url, payload, options)
-        .then((response) => console.log(response))
-        .catch((error) => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
-
-      console.log(this.shop_location);
-    },
-      updateCategory() {
-      const payload = {
-        category: {
-          category: this.shop_category,
-        },
-      };
-      const url = BASE_URL + "/seller/category";
-      const accessToken = this.$session.get("token");
-      const options = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      };
-
-      axios
-        .post(url, payload, options)
-        .then((response) => console.log(response))
-        .catch((error) => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
-    },*/
   },
 };
 </script>

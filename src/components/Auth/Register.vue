@@ -148,36 +148,17 @@
             placeholder="Registered Shop Name"
             class="login-input"
             style="border-top: none; border-radius: 0px 0px 5px 5px"
-          /><!--
+          />
           <br />
           <br />
-          <h5 style="color: #999999">tell Customers your active time</h5>
-          <div class="weekco">
-            <div
-              class="week"
-              v-for="days in days"
-              :key="days.length"
-              @click="get_date(days.index)"
-            >
-              {{ days.day }}
-            </div>
-          </div>
-          <br />
-          <div style="display: block">
-            <center>
-              <b-time
-                v-model="opening_time"
-                locale="en"
-                @context="days.onContext"
-              ></b-time>
-              To
-              <b-time
-                v-model="closing_time"
-                locale="en"
-                @context="onContext"
-              ></b-time>
-            </center>
-          </div>-->
+          <h6>Choose shop image</h6>
+          <input
+            type="file"
+            placeholder="Shop Image"
+            class="login-input"
+            @change="encodeImageFileAsURL"
+          />
+
           <button @click="Sellersignup()" class="login-button">Register</button>
           <a href="/login" style="float: right"
             >already have an account? login here</a
@@ -385,6 +366,38 @@ export default {
     encryptPassword(password) {
       const salt = bcrypt.genSaltSync(10);
       return bcrypt.hashSync(password, salt);
+    },
+    encodeImageFileAsURL(element) {
+      var file = element.target.files[0];
+
+      var reader = new FileReader();
+      this.newimg = reader.result.toString();
+      console.log("jwt now = ", this.jwt);
+      reader.onloadend = function () {
+        // Upload image to api
+        const profile_token = JSON.parse(localStorage.getItem("profile")).token;
+        const url = BASE_URL + "/seller/image";
+        console.log(this.jwt);
+        const options = {
+          headers: {
+            Authorization: `Bearer ${profile_token}`,
+          },
+        };
+        console.log(options);
+        const payload = {
+          image: reader.result,
+        };
+        console.log(payload);
+        axios
+          .post(url, payload, options)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+      reader.readAsDataURL(file);
     },
   },
 };

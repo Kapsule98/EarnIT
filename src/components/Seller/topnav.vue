@@ -21,7 +21,11 @@
             <i class="fa fa-search"></i>
           </button>
         </form>
-        <form class="example" v-if="productsearch === true">
+        <form
+          action="javascript:void(0);"
+          class="example"
+          v-if="productsearch === true"
+        >
           <input
             ref="prose"
             type="text"
@@ -31,8 +35,9 @@
             v-model="searchvalue"
             autocomplete="off"
             autofocus
+            v-on:keydown.enter="alert('yo')"
           />
-          <button v-on:click="productSearch()">
+          <button type="submit" v-on:click="proSearch()">
             <i class="fa fa-search"></i>
           </button>
         </form>
@@ -187,6 +192,7 @@ export default {
       });
   },
   methods: {
+    proSearch() {},
     productSearch() {
       var input, filter, ul, li, a, i, j, txtValue;
       input = this.searchvalue;

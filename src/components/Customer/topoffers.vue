@@ -36,7 +36,9 @@
           >
             <div class="couponhome">
               <div class="c2-back">
-                <img src="https://source.unsplash.com/random" />
+                <imgstore
+                  :email="list.offers[offer.index].seller_email"
+                ></imgstore>
               </div>
               <div class="c2-left">
                 {{ list.offers[offer.index].quantity }} coupons left
@@ -97,9 +99,10 @@
 import carousel from "vue-owl-carousel";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import Imgstore from "./imgstore.vue";
 
 export default {
-  components: { carousel },
+  components: { carousel, Imgstore },
   props: ["category"],
   data() {
     return {
