@@ -124,6 +124,9 @@ export default {
     };
   },
   mounted() {
+    if (this.$session.get("user_type") === "seller") {
+      document.getElementsByClassName("topnav")[0].style.height = "70px";
+    }
     const offersurl = BASE_URL + "/categories";
     let JWTToken = this.$session.get("token");
     console.log(this.$session.get("user_data"));
