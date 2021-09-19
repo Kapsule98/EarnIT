@@ -21,6 +21,7 @@
     "moment": "^2.29.1",
     "serve-static": "^1.14.1",
     "vue": "^2.6.11",
+    "vue-advanced-cropper": "^1.8.2",
     "vue-axios": "^3.2.5",
     "vue-carousel": "^0.18.0",
     "vue-chartjs": "^3.5.1",
