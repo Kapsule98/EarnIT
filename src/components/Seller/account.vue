@@ -165,6 +165,9 @@ export default {
     };
   },
   mounted() {
+    if (this.$session.get("user_type") === "seller") {
+      document.getElementsByClassName("topnav")[0].style.height = "70px";
+    }
     console.log(this.$session.get("userdata".location));
     this.user = this.$session.get("user_data");
     const offersurl = BASE_URL + "/seller/category";

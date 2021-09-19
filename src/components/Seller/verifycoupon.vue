@@ -452,6 +452,9 @@ export default {
     this.getUser();
     this.getSellerOffers();
     this.getProducts();
+    if (this.$session.get("user_type") === "seller") {
+      document.getElementsByClassName("topnav")[0].style.height = "70px";
+    }
   },
 
   methods: {

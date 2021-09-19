@@ -256,9 +256,11 @@ export default {
     setTimeout(() => {
       this.isLoading = false;
     }, 1500);
-    if (this.$session.get("user_type") === "seller" && this.landing !== true) {
+    if (this.$session.get("user_type") === "seller" && this.landing === true) {
       document.getElementsByClassName("topnav")[0].style.height = "70px";
-      document.getElementsByClassName("topnav")[1].style.height = "70px";
+      if (window.scrollX < 700) {
+        document.getElementsByClassName("topnav")[0].style.height = "120px";
+      }
     }
     if (this.$session.get("user_type") === "customer") {
       this.$nextTick(() => this.$refs.prose.focus());
