@@ -49,12 +49,10 @@
             <a
               v-if="Array.isArray(list.location)"
               :href="
-                '//www.google.com/maps/@' +
+                '//www.google.com/maps/dir/21.193800,81.350900/' +
                 list.location[0].toPrecision(7) +
                 ',' +
-                list.location[1].toPrecision(7) +
-                ',' +
-                '18.29z'
+                list.location[1].toPrecision(7)
               "
               target="_blank"
               style="text-decoration: none"
@@ -210,18 +208,6 @@
                     <p>{{ list.address }}</p>
                     <h4>phone:</h4>
                     <p>+{{ list.contact_no }}</p>
-                    <p
-                      style="
-                        background: #008cff;
-                        width: fit-content;
-                        color: white;
-                        padding: 3px 7px;
-                        border-radius: 4px;
-                        font-size: 16px;
-                      "
-                    >
-                      open : 9 am - 8pm Mon-Fri
-                    </p>
                   </b-tab>
                 </b-tabs>
               </b-card>

@@ -81,7 +81,7 @@
                   width="100%"
                   class="catimg"
                 />
-                <p class="offhead">Furnishing</p>
+                <p class="offhead">Furniture</p>
               </b-card>
             </router-link>
           </div>
@@ -143,7 +143,20 @@
           <allapi></allapi>
         </div>
       </b-card>
+      <b-card
+        style="margin-top: 4px; border: none; border-radius: 0"
+        v-if="showGroceryBlock === true"
+      >
+        <h2 style="padding: 20px">
+          Grocery<router-link
+            :to="{ path: '/search', query: { category: 'Grocery' } }"
+            ><a href="" class="vall">View all</a></router-link
+          >
+        </h2>
 
+        <topoffers category="/get_offers_by_category/Grocery"></topoffers>
+        <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
+      </b-card>
       <b-card
         style="margin-top: 4px; border: none; border-radius: 0"
         v-if="showFoodBlock === true"
@@ -249,6 +262,7 @@ export default {
       showFoodBlock: false,
       showElectronicsBlock: false,
       showFurnitureBlock: false,
+      showGroceryBlock: false,
       isLoading: true,
     };
   },
@@ -299,6 +313,13 @@ export default {
       this.showFurnitureBlock = false;
     } else {
       this.showFurnitureBlock = true;
+    }
+    if (
+      localStorage.getItem("/get_offers_by_category/Groceryempty?") === "true"
+    ) {
+      this.showGroceryBlock = false;
+    } else {
+      this.showGroceryBlock = true;
     }
   },
 };

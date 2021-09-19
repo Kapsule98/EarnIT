@@ -181,10 +181,9 @@
                   >
                     <div class="couponhome">
                       <div class="c2-back">
-                        <img
-                          src="https://source.unsplash.com/random"
-                          width="100%"
-                        />
+                        <imgstore
+                          :email="list.active_offers[offer.index].seller_email"
+                        ></imgstore>
                       </div>
                       <div class="c2-left">
                         {{ list.active_offers[offer.index].quantity }} coupons
@@ -270,8 +269,9 @@ import Sitefooter from "./sitefooter.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import Bottomnav from "./bottomnav.vue";
+import Imgstore from "./imgstore.vue";
 export default {
-  components: { topnav, Sitefooter, Bottomnav },
+  components: { topnav, Sitefooter, Bottomnav, Imgstore },
   props: {
     category: {
       type: String,
