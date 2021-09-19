@@ -119,7 +119,7 @@
             >
               <b-card class="top_categories">
                 <img
-                  src="../../assets/sports.png"
+                  src="../../assets/grocery.png"
                   alt="ss"
                   width="100%"
                   class="catimg"
@@ -258,6 +258,7 @@ export default {
     }, 1500);
     if (this.$session.get("user_type") === "seller" && this.landing !== true) {
       document.getElementsByClassName("topnav")[0].style.height = "70px";
+      document.getElementsByClassName("topnav")[1].style.height = "70px";
     }
     if (this.$session.get("user_type") === "customer") {
       this.$nextTick(() => this.$refs.prose.focus());
