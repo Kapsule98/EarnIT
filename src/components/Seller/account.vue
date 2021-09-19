@@ -22,7 +22,7 @@
         <div class="w3-twothird" style="padding: 10px">
           <b-card>
             <p class="c-domain">{{ category.category }}</p>
-            <p class="c-shopname">{{ user.shop_name }}</p>
+            <p class="c-shopname">{{ user.display_name }}</p>
             <p class="c-shoplocation">{{ user.address }}</p>
             <p class="c-shoplocation">Phone No. : {{ user.contact_no }}</p>
             <p class="c-shoplocation">Email : {{ user.email }}</p>
@@ -170,6 +170,7 @@ export default {
     }
     console.log(this.$session.get("userdata".location));
     this.user = this.$session.get("user_data");
+    console.log(this.user);
     const offersurl = BASE_URL + "/seller/category";
     let JWTToken = this.$session.get("token");
     axios

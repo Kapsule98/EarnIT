@@ -16,7 +16,9 @@
         <div class="c-details">
           <div class="w3-container">
             <b-card style="margin: 10px">
-              <h3 style="text-transform: Capitalize">{{ user.shop_name }}</h3>
+              <h3 style="text-transform: Capitalize">
+                {{ user.display_name }}
+              </h3>
               <i class="fa fa-map-marker"></i> {{ user.address }}
             </b-card>
             <b-card style="margin: 10px">
