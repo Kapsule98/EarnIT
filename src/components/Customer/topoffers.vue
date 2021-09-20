@@ -75,7 +75,7 @@
               <span class="offno">{{ offer.value }}%</span> off on Total Bill
             </div>
             <div class="shopname">
-              {{ list.offers[offer.index].shop_name }}
+              {{ list.offers[offer.index].display_name }}
 
               <button class="vshop">View Shop</button>
             </div>
@@ -283,7 +283,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  widows: 100%;
+  width: 100%;
   height: 220px;
   z-index: -1;
 }

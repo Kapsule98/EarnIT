@@ -233,7 +233,7 @@
                       </nav>
                     </div>
                     <div class="shopname">
-                      {{ list.active_offers[offer.index].shop_name }}
+                      {{ list.active_offers[offer.index].seller_display_name }}
 
                       <button class="vshop">View Shop</button>
                     </div>
@@ -512,7 +512,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  widows: 100%;
+  width: 100%;
   height: 220px;
   z-index: -1;
 }
