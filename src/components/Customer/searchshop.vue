@@ -126,10 +126,7 @@
                   <div class="hovclass">
                     <div class="couponhome">
                       <div class="c2-back">
-                        <imgstore
-                          :email="shop.email"
-                         
-                        ></imgstore>
+                        <imgstore :email="shop.email"></imgstore>
                       </div>
                     </div>
                     <div class="l-offer">
@@ -381,7 +378,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  widows: 100%;
+  width: 100%;
   height: 220px;
   z-index: -1;
 }

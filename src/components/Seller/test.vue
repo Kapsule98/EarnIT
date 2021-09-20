@@ -1,21 +1,26 @@
 <template>
   <div>
-    <input type="file" id="readUrl" />
+    <p>
+      <input
+        type="file"
+        accept="image/*"
+        name="image"
+        id="file"
+        @change="loadFile"
+        style="display: none"
+      />
+    </p>
+    <p><label for="file" style="cursor: pointer">Upload Image</label></p>
 
-    <img
-      id="uploadedImage"
-      src="#"
-      alt="Uploaded Image"
-      accept="image/png, image/jpeg"
-      style="display: none"
-    />
     <cropper
+      :src="dp"
       class="cropper"
       :stencil-props="{
         aspectRatio: 16 / 9,
       }"
       ref="cropper"
     ></cropper>
+    <button @click="crop">Crop</button>
   </div>
 </template>
 <style scoped>
@@ -27,23 +32,20 @@ export default {
   components: { Cropper },
   data() {
     return {
-      image: "",
+      dp: "",
     };
   },
-  mounted() {
-    document.getElementById("readUrl").addEventListener("change", function () {
-      if (this.files[0]) {
-        var picture = new FileReader();
-        picture.readAsDataURL(this.files[0]);
-        picture.addEventListener("load", function (event) {
-          document
-            .getElementById("uploadedImage")
-            .setAttribute("src", event.target.result);
-          this.image = event.target.result;
-          document.getElementById("uploadedImage").style.display = "block";
-        });
-      }
-    });
+  mounted() {},
+  methods: {
+    crop() {
+      const { coordinates, canvas } = this.$refs.cropper.getResult();
+      this.coordinates = coordinates;
+      this.dp = canvas.toDataURL();
+      this.encodeImageFileAsURL();
+    },
+    loadFile(event) {
+      this.dp = URL.createObjectURL(event.target.files[0]);
+    },
   },
 };
 </script>

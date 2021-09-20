@@ -10,7 +10,7 @@
       link4=""
       link5=""
     ></topnav>
-    <test></test>
+
     <div class="w3-row">
       <div class="w3-col m2" style="padding: 1px"></div>
 
@@ -25,23 +25,39 @@
 
             <div class="w3-col m10">
               <!--   <img v-bind:src="image" style="width: 100%" id="proimg" />-->
-              <img :src="newimg" alt="" />
               <cropper
+                :src="dp"
                 class="cropper"
-                :src="image"
                 :stencil-props="{
-                  aspectRatio: 16 / 9,
+                  aspectRatio: 16 / 10,
                 }"
-                @change="change"
                 ref="cropper"
               ></cropper>
-              <br />
-              <button @click="crop">Crop</button>
 
+              <br />
+              <div class="no_btn" id="no_btn">
+                <b-button
+                  variant="primary"
+                  @click="crop"
+                  id="crop"
+                  style="margin: 10px"
+                  >Crop</b-button
+                >
+                <b-button variant="primary" @click="encodeImageFileAsURL"
+                  >set profile image</b-button
+                >
+              </div>
               <div style="float: right; margin-top: 10px">
                 <!-- <input @change="handleImage" type="file" accept="image/*"> -->
-                <input type="file" @change="encodeImageFileAsURL" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="image"
+                  id="file"
+                  @change="loadFile"
+                />
               </div>
+              <img :src="image" alt="" width="50%" />
             </div>
           </div>
           <form action="">
@@ -111,9 +127,9 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import { Cropper } from "vue-advanced-cropper";
 import "vue-advanced-cropper/dist/style.css";
-import Test from "./test.vue";
+
 export default {
-  components: { topnav, Sitefooter, Cropper, Test },
+  components: { topnav, Sitefooter, Cropper },
 
   data() {
     return {
@@ -133,6 +149,7 @@ export default {
       location: [],
       image: "",
       allcategories: [],
+      dp: "",
     };
   },
   mounted() {
@@ -159,14 +176,12 @@ export default {
     crop() {
       const { coordinates, canvas } = this.$refs.cropper.getResult();
       this.coordinates = coordinates;
-      // You able to do different manipulations at a canvas
-      // but there we just get a cropped image, that can be used
-      // as src for <img/> to preview result
-      this.image = canvas.toDataURL();
+      this.dp = canvas.toDataURL();
       this.encodeImageFileAsURL();
     },
-    change({ coordinates, canvas }) {
-      console.log(coordinates, canvas);
+    loadFile(event) {
+      this.dp = URL.createObjectURL(event.target.files[0]);
+      document.getElementById("no_btn").style.display = "block";
     },
     getImageBinary() {
       const url = BASE_URL + "/seller/image";
@@ -181,7 +196,7 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
-            this.image = res.data.toString();
+            this.dp = res.data.toString();
             console.log(res);
           } else {
             console.log("Some error occured");
@@ -304,42 +319,47 @@ export default {
 
       console.log(this.shop_address);
     },
-    encodeImageFileAsURL(element) {
-      var file = element.target.files[0];
+    encodeImageFileAsURL() {
+      document.getElementById("crop").click();
+      // var file = element.target.files[0];
 
-      var reader = new FileReader();
-      this.newimg = reader.result.toString();
-      console.log("jwt now = ", this.jwt);
-      reader.onloadend = function () {
-        // Upload image to api
-        const profile_token = JSON.parse(localStorage.getItem("profile")).token;
-        const url = BASE_URL + "/seller/image";
-        console.log(this.jwt);
-        const options = {
-          headers: {
-            Authorization: `Bearer ${profile_token}`,
-          },
-        };
-        console.log(options);
-        const payload = {
-          image: reader.result,
-        };
-        console.log(payload);
-        axios
-          .post(url, payload, options)
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+      // var reader = new FileReader();
+      // this.dp = reader.result.toString();
+      // console.log("jwt now = ", this.jwt);
+      //reader.onloadend = function () {
+      // Upload image to api
+      const profile_token = JSON.parse(localStorage.getItem("profile")).token;
+      const url = BASE_URL + "/seller/image";
+      console.log(this.jwt);
+      const options = {
+        headers: {
+          Authorization: `Bearer ${profile_token}`,
+        },
       };
-      reader.readAsDataURL(file);
+      console.log(options);
+      const payload = {
+        image: this.dp,
+      };
+      console.log(payload);
+      axios
+        .post(url, payload, options)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      // };
+      // // reader.readAsDataURL(file);
+      document.getElementById("no_btn").style.display = "none";
     },
   },
 };
 </script>
 <style scoped>
+.no_btn {
+  display: none;
+}
 .accountable td {
   padding: 20px 10px;
 }

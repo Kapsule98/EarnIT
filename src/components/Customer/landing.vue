@@ -371,6 +371,7 @@ export default {
 .c-img {
   height: 200px;
 }
+
 @media screen and (min-width: 800px) {
   .c-img {
     height: 250px;

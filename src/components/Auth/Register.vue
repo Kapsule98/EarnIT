@@ -152,13 +152,35 @@
           <br />
           <br />
           <h6>Choose shop image</h6>
+          <cropper
+            :src="dp"
+            class="cropper"
+            :stencil-props="{
+              aspectRatio: 16 / 10,
+            }"
+            ref="cropper"
+          ></cropper>
           <input
+            accept="image/*"
+            name="image"
+            id="file"
+            @change="loadFile"
             type="file"
             placeholder="Shop Image"
             class="login-input"
-            @change="encodeImageFileAsURL"
           />
-
+          <div class="no_btn" id="no_btn" style="text-align: center">
+            <b-button
+              variant="primary"
+              @click="crop"
+              id="crop"
+              style="margin: 10px"
+              >Crop</b-button
+            >
+            <b-button variant="primary" @click="encodeImageFileAsURL"
+              >set profile image</b-button
+            >
+          </div>
           <button @click="Sellersignup()" class="login-button">Register</button>
           <a href="/login" style="float: right"
             >already have an account? login here</a
@@ -176,8 +198,10 @@ import topnav from "../Seller/topnav.vue";
 import bcrypt from "bcryptjs";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import { Cropper } from "vue-advanced-cropper";
+import "vue-advanced-cropper/dist/style.css";
 export default {
-  components: { topnav, Sitefooter },
+  components: { topnav, Sitefooter, Cropper },
   data() {
     return {
       active_time: [],
@@ -215,6 +239,7 @@ export default {
         },
       ],
       context: null,
+      dp: "",
     };
   },
   mounted() {
@@ -231,6 +256,16 @@ export default {
       });
   },
   methods: {
+    crop() {
+      const { coordinates, canvas } = this.$refs.cropper.getResult();
+      this.coordinates = coordinates;
+      this.dp = canvas.toDataURL();
+      this.encodeImageFileAsURL();
+    },
+    loadFile(event) {
+      this.dp = URL.createObjectURL(event.target.files[0]);
+      document.getElementById("no_btn").style.display = "block";
+    },
     onContext(ctx) {
       this.context = ctx;
     },
@@ -407,6 +442,9 @@ window.onload = function () {
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
+.no_btn {
+  display: none;
+}
 .weekco {
   width: 100%;
   justify-content: space-between;
