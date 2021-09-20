@@ -18,7 +18,7 @@
             class="heading"
             style="text-transform: capitalize; color: rgb(53, 53, 53)"
           >
-            {{ user.shop_name }}
+            {{ user.display_name }}
           </p>
           <h4>Verify a Coupon</h4>
 
@@ -452,6 +452,9 @@ export default {
     this.getUser();
     this.getSellerOffers();
     this.getProducts();
+    if (this.$session.get("user_type") === "seller") {
+      document.getElementsByClassName("topnav")[0].style.height = "70px";
+    }
   },
 
   methods: {
@@ -638,10 +641,10 @@ export default {
         offer: {
           validity: epoch,
           type: this.discountType,
-          discount_percent: this.discount_percent,
+          discount_percent: parseInt(this.discount_percent),
           offer_text: this.offer_text,
           quantity: parseInt(this.quantity),
-          min_val: this.min_val,
+          min_val: parseInt(this.min_val),
           products: this.products,
         },
       };
@@ -656,14 +659,19 @@ export default {
 
       axios
         .post(url, payload, options)
-        .then((response) => console.log(response))
+        .then((response) => {
+          if (response.status === 200) {
+            alert("Coupon added Sucessfully");
+            console.log(response);
+          }
+        })
         .catch((error) => {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
 
       this.$refs["couponModal"].hide();
-      alert("Coupon added Sucessfully");
+
       this.$router.go();
     },
     getUser() {

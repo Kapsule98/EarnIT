@@ -19,25 +19,45 @@
 
         <b-card style="margin: 20px 0px">
           <h1>Edit Your Shop Details</h1>
-          <div class="w3-row" style="margin-top: 30px">
-            <div class="w3-col m2">Shop Image</div>
+          <hr />
+          <div class="w3-row" style="margin-top: 50px">
+            <div class="w3-col m2"><b>Shop Image</b></div>
 
             <div class="w3-col m10">
               <!--   <img v-bind:src="image" style="width: 100%" id="proimg" />-->
-
               <cropper
+                :src="dp"
                 class="cropper"
-                :src="image"
                 :stencil-props="{
-                  aspectRatio: 16 / 9,
+                  aspectRatio: 16 / 10,
                 }"
-                @change="change"
+                ref="cropper"
               ></cropper>
 
+              <br />
+              <div class="no_btn" id="no_btn">
+                <b-button
+                  variant="primary"
+                  @click="crop"
+                  id="crop"
+                  style="margin: 10px"
+                  >Crop</b-button
+                >
+                <b-button variant="primary" @click="encodeImageFileAsURL"
+                  >set profile image</b-button
+                >
+              </div>
               <div style="float: right; margin-top: 10px">
                 <!-- <input @change="handleImage" type="file" accept="image/*"> -->
-                <input type="file" @change="encodeImageFileAsURL" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="image"
+                  id="file"
+                  @change="loadFile"
+                />
               </div>
+              <img :src="image" alt="" width="50%" />
             </div>
           </div>
           <form action="">
@@ -107,11 +127,19 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import { Cropper } from "vue-advanced-cropper";
 import "vue-advanced-cropper/dist/style.css";
+
 export default {
   components: { topnav, Sitefooter, Cropper },
 
   data() {
     return {
+      coordinates: {
+        width: 0,
+        height: 0,
+        left: 0,
+        top: 0,
+      },
+      newimg: "",
       user: {},
       shop_name: this.$session.get("user_data").shop_name,
 
@@ -121,9 +149,13 @@ export default {
       location: [],
       image: "",
       allcategories: [],
+      dp: "",
     };
   },
   mounted() {
+    if (this.$session.get("user_type") === "seller") {
+      document.getElementsByClassName("topnav")[0].style.height = "70px";
+    }
     const offersurl = BASE_URL + "/categories";
     let JWTToken = this.$session.get("token");
     console.log(this.$session.get("user_data"));
@@ -141,8 +173,15 @@ export default {
   },
 
   methods: {
-    change({ coordinates, canvas }) {
-      console.log(coordinates, canvas);
+    crop() {
+      const { coordinates, canvas } = this.$refs.cropper.getResult();
+      this.coordinates = coordinates;
+      this.dp = canvas.toDataURL();
+      this.encodeImageFileAsURL();
+    },
+    loadFile(event) {
+      this.dp = URL.createObjectURL(event.target.files[0]);
+      document.getElementById("no_btn").style.display = "block";
     },
     getImageBinary() {
       const url = BASE_URL + "/seller/image";
@@ -157,7 +196,7 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
-            this.image = res.data.toString();
+            this.dp = res.data.toString();
             console.log(res);
           } else {
             console.log("Some error occured");
@@ -188,14 +227,7 @@ export default {
         if (this.address) {
           this.updateAddress();
         }
-        //  if (this.shop_owner_name) {
-        //  this.updateOwnerName();
-        // }
-        //  if (this.shop_category) {
-        //  this.updateCategory();
-        // }
       }
-      // this.$router.push("/logout");
     },
     updateShopName() {
       const payload = {
@@ -287,84 +319,47 @@ export default {
 
       console.log(this.shop_address);
     },
-    encodeImageFileAsURL(element) {
-      var file = element.target.files[0];
-      var reader = new FileReader();
-      console.log("jwt now = ", this.jwt);
-      reader.onloadend = function () {
-        // Upload image to api
-        const profile_token = JSON.parse(localStorage.getItem("profile")).token;
-        const url = BASE_URL + "/seller/image";
-        console.log(this.jwt);
-        const options = {
-          headers: {
-            Authorization: `Bearer ${profile_token}`,
-          },
-        };
-        console.log(options);
-        const payload = {
-          image: reader.result,
-        };
-        console.log(payload);
-        axios
-          .post(url, payload, options)
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      };
-      reader.readAsDataURL(file);
-    },
-    /* updateOwnerName() {
-      const payload = {
-        owner_name: this.owner_name,
-      };
-      const url = BASE_URL + "/seller/update_owner_name";
-      const accessToken = this.$session.get("token");
+    encodeImageFileAsURL() {
+      document.getElementById("crop").click();
+      // var file = element.target.files[0];
+
+      // var reader = new FileReader();
+      // this.dp = reader.result.toString();
+      // console.log("jwt now = ", this.jwt);
+      //reader.onloadend = function () {
+      // Upload image to api
+      const profile_token = JSON.parse(localStorage.getItem("profile")).token;
+      const url = BASE_URL + "/seller/image";
+      console.log(this.jwt);
       const options = {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${profile_token}`,
         },
       };
-
-      axios
-        .post(url, payload, options)
-        .then((response) => console.log(response))
-        .catch((error) => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
-
-      console.log(this.shop_location);
-    },
-      updateCategory() {
+      console.log(options);
       const payload = {
-        category: {
-          category: this.shop_category,
-        },
+        image: this.dp,
       };
-      const url = BASE_URL + "/seller/category";
-      const accessToken = this.$session.get("token");
-      const options = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      };
-
+      console.log(payload);
       axios
         .post(url, payload, options)
-        .then((response) => console.log(response))
-        .catch((error) => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
         });
-    },*/
+      // };
+      // // reader.readAsDataURL(file);
+      document.getElementById("no_btn").style.display = "none";
+    },
   },
 };
 </script>
 <style scoped>
+.no_btn {
+  display: none;
+}
 .accountable td {
   padding: 20px 10px;
 }
