@@ -80,7 +80,7 @@
           </div>
           <div class="w3-col m4">
             <team
-              name="Shikhar Ranjan"
+              name="Shishir Ranjan"
               designation="Co-founder"
               :image="require('../assets/shishir.png')"
             ></team>
