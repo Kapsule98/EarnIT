@@ -63,6 +63,15 @@
       <div class="w3-row">
         <div class="w3-twothird">
           <!---->
+          <b-card v-if="history.length === 0">
+            <br />
+            <br /><br /><br />
+            <h1 style="margin: 40px 20px">
+              You have not purchased any coupon yet!
+            </h1>
+            <br />
+            <br /><br /><br />
+          </b-card>
           <b-card
             style="margin: 10px 0px"
             v-for="items in history"
@@ -128,7 +137,7 @@
             </div>
             <div class="a-spend" style="font-size: 20px">
               total Coins Earned:
-              <i class="fa fa-bolt" style="color: gold"></i> 300.
+              <i class="fa fa-bolt" style="color: gold"></i> {{ credit }}
             </div>
           </b-card>
         </div>
@@ -164,6 +173,7 @@ export default {
         width: 500,
         height: 400,
       },
+      credit: "",
     };
   },
   mounted() {
@@ -186,6 +196,17 @@ export default {
           ["Money Saved", this.totalsaved],
           ["Money Spent", this.totalspent],
         ];
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    const url = BASE_URL + "/credit";
+
+    axios
+      .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
+      .then((response) => {
+        this.credit = parseInt(response.data.credit_points);
       })
       .catch((err) => {
         console.log(err);

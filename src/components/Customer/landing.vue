@@ -220,7 +220,7 @@
         v-if="showFurnitureBlock === true"
       >
         <h2 style="padding: 20px">
-          Furiniture<router-link
+          Furniture<router-link
             :to="{ path: '/search', query: { category: 'Furniture' } }"
             ><a href="" class="vall">View all</a></router-link
           >
