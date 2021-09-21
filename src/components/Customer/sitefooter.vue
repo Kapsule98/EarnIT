@@ -40,30 +40,42 @@
           <a href=""><div>Contact Us</div></a>
           <a href="/about"><div>About Us</div></a>
         </div>
-        <div class="w3-col m3 s6" style="margin-top: 10px">
+        <!-- <div class="w3-col m3 s6" style="margin-top: 10px">
           <a href=""><div class="coltop">HELP</div></a>
           <a href=""><div>FAQs</div></a>
-        </div>
-        <div class="w3-col m3 s6" style="margin-top: 10px"></div>
-        <div class="w3-col m4 s6 f-address">
+        </div> -->
+        <div class="w3-col m3 s6" style="margin-top: 10px">
           <router-link to="/contact">
             <b-button variant="primary"
-              ><div class="coltop" style="display: block; font-weight: 600">
+              ><div
+                class="coltop"
+                style="display: block; font-weight: 600; color: white"
+              >
                 Contact Us
               </div></b-button
             >
           </router-link>
+          <br /><br />
+          <a href="https://www.facebook.com/Lemmebuyin-267448181767528/"
+            ><i
+              class="fa fa-facebook"
+              style="margin-right: 20px; font-size: 20px"
+            ></i
+          ></a>
+          <a href="https://www.instagram.com/lemmebuy.in?r=nametag"
+            ><i
+              class="fa fa-instagram"
+              style="margin-right: 10px; font-size: 20px"
+            ></i
+          ></a>
+        </div>
+        <!-- <div class="w3-col m4 s6 f-address">
           <br /><br /><br />
-          <a href=""
-            ><i class="fa fa-facebook" style="margin-right: 10px"></i
-          ></a>
-          <a href=""
-            ><i class="fa fa-instagram" style="margin-right: 10px"></i
-          ></a>
+
           <a href=""
             ><i class="fa fa-twitter" style="margin-right: 10px"></i
           ></a>
-        </div>
+        </div> -->
       </div>
       <!--   <div class="w3-row" style="margin-top: 20px">
         <div class="w3-col m8">
