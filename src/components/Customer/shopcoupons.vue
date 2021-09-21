@@ -204,9 +204,9 @@
                       {{ list.shop_name }}
                     </h5>
                     <br />
-                    <h5>Adress</h5>
+                    <h5>Address</h5>
                     <p>{{ list.address }}</p>
-                    <h4>phone:</h4>
+                    <h4>Phone:</h4>
                     <p>+{{ list.contact_no }}</p>
                   </b-tab>
                 </b-tabs>

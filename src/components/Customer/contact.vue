@@ -15,7 +15,15 @@
       :searchbar="true"
       :display_categories="true"
     ></topnav>
-    <h1>Contact page</h1>
+    <b-card style="padding: 20px">
+      <h1>Contact Us</h1>
+      <hr />
+      <br />
+      <br />
+      <p><i class="fa fa-envelope"></i> Email : contact@lemmebuy.in</p>
+      <p><i class="fa fa-phone"></i> Phone no. 9752614409</p>
+      <br /><br />
+    </b-card>
     <br /><br /><br />
     <sitefooter></sitefooter>
   </div>
