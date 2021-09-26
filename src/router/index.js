@@ -181,7 +181,31 @@ const routes = [
     name: 'editsellerdetails',
     component: () => import('../components/Seller/editsellerdetails.vue')
   },
-
+  {
+    path: '/admin/register',
+    name: 'AdminRegister',
+    component: () => import('../components/Admin/Register.vue')
+  },
+  {
+    path: '/admin/verifymail',
+    name: 'AdminVerifyMail',
+    component: () => import('../components/Admin/Verifymail.vue')
+  },
+  {
+    path: '/admin/login',
+    name: 'AdminLogin',
+    component: () => import('../components/Admin/Login.vue')
+  },
+  {
+    path: '/admin/shop',
+    name: 'AdminShopPermission',
+    component: () => import('../components/Admin/ShopPermission.vue')
+  },
+  {
+    path: '/admin/permission',
+    name: 'AdminPermission',
+    component: () => import('../components/Admin/AdminPermission.vue')
+  }
 
 ]
 
