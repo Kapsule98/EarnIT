@@ -40,7 +40,14 @@ function guardMyrouteCustomer(to, from, next) {
   }
 
 }
-
+function guardMyrouteAdmin(to,from,next){
+  if(localStorage.adminJWT) {
+    next();
+  } else {
+    localStorage.clear()
+    next('/')
+  }
+}
 
 
 const routes = [
@@ -197,11 +204,13 @@ const routes = [
     component: () => import('../components/Admin/Login.vue')
   },
   {
+    beforeEnter: guardMyrouteAdmin,
     path: '/admin/shop',
     name: 'AdminShopPermission',
     component: () => import('../components/Admin/ShopPermission.vue')
   },
   {
+    beforeEnter: guardMyrouteAdmin,
     path: '/admin/permission',
     name: 'AdminPermission',
     component: () => import('../components/Admin/AdminPermission.vue')
