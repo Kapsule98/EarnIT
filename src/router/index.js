@@ -215,6 +215,19 @@ const routes = [
     name: 'AdminPermission',
     component: () => import('../components/Admin/AdminPermission.vue')
   }
+ 
+    path: '/waiting_for_admin_approval',
+    name: 'admin',
+    component: () => import('../components/Seller/admin.vue')
+  },
+  {
+ 
+    path: '/upload_profile_image',
+    name: 'upimg',
+    component: () => import('../components/Seller/upimg.vue')
+  },
+
+
 
 ]
 
