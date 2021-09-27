@@ -149,7 +149,7 @@
             class="login-input"
             style="border-top: none; border-radius: 0px 0px 5px 5px"
           />
-          <br />
+          <!-- <br />
           <br />
           <h6>Choose shop image</h6>
           <cropper
@@ -180,7 +180,7 @@
             <b-button variant="primary" @click="encodeImageFileAsURL"
               >set profile image</b-button
             >
-          </div>
+          </div> -->
           <button @click="Sellersignup()" class="login-button">Register</button>
           <a href="/login" style="float: right"
             >already have an account? login here</a
@@ -198,10 +198,10 @@ import topnav from "../Seller/topnav.vue";
 import bcrypt from "bcryptjs";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
-import { Cropper } from "vue-advanced-cropper";
+// import { Cropper } from "vue-advanced-cropper";
 import "vue-advanced-cropper/dist/style.css";
 export default {
-  components: { topnav, Sitefooter, Cropper },
+  components: { topnav, Sitefooter },
   data() {
     return {
       active_time: [],
@@ -327,7 +327,11 @@ export default {
           .then((res) => {
             alert(res.data.msg);
             if (res.data.status === 200) {
+              localStorage.setItem("sptoken", res.data.jwt);
               this.$router.push("/seller/verifymail");
+
+              console.log("hello");
+              console.log(res);
             } else {
               this.init();
             }

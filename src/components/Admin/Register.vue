@@ -2,85 +2,98 @@
   <div>
     <div class="login-box">
       <div class="login-header-box">
-        <div class="login-header" style="border-bottom: none">Verify Email</div>
+        <div class="login-header" style="border-bottom: none">Register</div>
       </div>
       <div class="login-content-box">
-        <div>
-          <input
-            v-model="email"
-            type="email"
-            class="login-input"
-            placeholder="Email"
-            style="border-radius: 5px 5px 0px 0px"
-          />
-          <input
-            v-model="otp"
-            type="text"
-            class="login-input"
-            placeholder="OTP"
-            style="border-radius: 0px 0px 5px 5px"
-          />
-          <button class="login-button" @click="verifyEmail()">
-            Verify Email
-          </button>
-        </div>
+        <input
+          type="text"
+          v-model="username"
+          placeholder="Username"
+          class="login-input"
+          style="border-radius: 10px 10px 0 0"
+        />
+
+        <input
+          type="password"
+          v-model="password"
+          placeholder="Password"
+          class="login-input"
+          style="border-top: none; border-radius: 0"
+        />
+
+        <input
+          type="text"
+          v-model="display_name"
+          placeholder="Display Name"
+          class="login-input"
+          style="border-top: none; border-radius: 0"
+        />
+
+        <input
+          type="email"
+          v-model="email"
+          placeholder="Email"
+          class="login-input"
+          style="border-top: none; border-radius: 0 0 10px 10px"
+        />
+        <button @click="register()" class="login-button">Register</button>
+        <button
+          @click="gotoLogin"
+          class="login-button"
+          style="margin-top: -10px"
+        >
+          Login
+        </button>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 export default {
   data() {
     return {
-      otp: "",
+      username: "",
+      password: "",
+      display_name: "",
       email: "",
-      class: "",
-      sptoken: localStorage.getItem("sptoken"),
     };
   },
-  // mounted() {
-  //   alert(this.sptoken);
-  // },
   methods: {
     init() {
-      (this.otp = 0), (this.email = "");
+      this.username = "";
+      this.password = "";
+      this.display_name = "";
+      this.email = "";
     },
-    verifyEmail() {
-      var url;
-      if (this.$route.name === "SellerVerifyMail") {
-        url = BASE_URL + "/seller/register";
-      } else {
-        url = BASE_URL + "/register";
-      }
-      const jwt = this.sptoken;
-
+    register() {
+      const url = BASE_URL + "/admin";
       const payload = {
+        username: this.username,
+        password: this.password,
+        display_name: this.display_name,
         email: this.email,
-        otp: parseInt(this.otp),
       };
       axios
-        .put(url, payload, { headers: { Authorization: `Bearer ${jwt}` } })
+        .post(url, payload)
         .then((res) => {
           console.log(res);
-          if (res.data.status === 200) {
-            this.$router.push("/login");
-          } else if (res.data.status === 403) {
-            this.$router.push("/waiting_for_admin_approval");
-          } else {
-            alert(res.data.msg);
-            this.init();
-          }
+          alert(res.data);
+          this.$router.push("/admin/verifymail");
         })
         .catch((err) => {
           console.log(err);
+          this.init();
         });
+    },
+    gotoLogin() {
+      this.$router.push("/admin/login");
     },
   },
 };
 </script>
+
 <style scoped>
 .login-box {
   margin: 80px auto;
@@ -103,7 +116,7 @@ export default {
   letter-spacing: 2px;
 }
 .login-content-box {
-  height: 300px;
+  height: fit-content;
   box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
     0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
   border-radius: 0px 0px 10px 10px;
