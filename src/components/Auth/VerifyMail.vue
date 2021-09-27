@@ -38,8 +38,12 @@ export default {
       otp: "",
       email: "",
       class: "",
+      sptoken: localStorage.getItem("sptoken"),
     };
   },
+  // mounted() {
+  //   alert(this.sptoken);
+  // },
   methods: {
     init() {
       (this.otp = 0), (this.email = "");
@@ -51,16 +55,20 @@ export default {
       } else {
         url = BASE_URL + "/register";
       }
+      const jwt = this.sptoken;
+
       const payload = {
         email: this.email,
         otp: parseInt(this.otp),
       };
       axios
-        .put(url, payload)
+        .put(url, payload, { headers: { Authorization: `Bearer ${jwt}` } })
         .then((res) => {
           console.log(res);
           if (res.data.status === 200) {
             this.$router.push("/login");
+          } else if (res.data.status === 403) {
+            this.$router.go("/waiting_for_admin_approval");
           } else {
             alert(res.data.msg);
             this.init();

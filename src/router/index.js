@@ -181,6 +181,18 @@ const routes = [
     name: 'editsellerdetails',
     component: () => import('../components/Seller/editsellerdetails.vue')
   },
+  {
+ 
+    path: '/waiting_for_admin_approval',
+    name: 'admin',
+    component: () => import('../components/Seller/admin.vue')
+  },
+  {
+ 
+    path: '/upload_profile_image',
+    name: 'upimg',
+    component: () => import('../components/Seller/upimg.vue')
+  },
 
 
 ]
