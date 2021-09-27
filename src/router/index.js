@@ -214,8 +214,8 @@ const routes = [
     path: '/admin/permission',
     name: 'AdminPermission',
     component: () => import('../components/Admin/AdminPermission.vue')
-  }
- 
+  },
+ {
     path: '/waiting_for_admin_approval',
     name: 'admin',
     component: () => import('../components/Seller/admin.vue')

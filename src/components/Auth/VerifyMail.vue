@@ -68,7 +68,7 @@ export default {
           if (res.data.status === 200) {
             this.$router.push("/login");
           } else if (res.data.status === 403) {
-            this.$router.go("/waiting_for_admin_approval");
+            this.$router.push("/waiting_for_admin_approval");
           } else {
             alert(res.data.msg);
             this.init();
