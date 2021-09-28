@@ -37,7 +37,9 @@
           >
             <div class="couponhome">
               <div class="c2-back">
-                <img src="https://source.unsplash.com/random/food" />
+                <imgstore
+                  :email="list.active_offers[offer.index].seller_email"
+                ></imgstore>
               </div>
               <div class="c2-left">
                 {{ list.active_offers[offer.index].quantity }} coupons left
@@ -98,8 +100,9 @@
 import carousel from "vue-owl-carousel";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import Imgstore from "./imgstore.vue";
 export default {
-  components: { carousel },
+  components: { carousel, Imgstore },
   props: ["category", "alloffers"],
   data() {
     return {
@@ -114,18 +117,18 @@ export default {
   methods: {
     getAllOffers() {
       const offersurl = BASE_URL + "/get_all_offers";
+
       axios
         .get(offersurl)
         .then((response) => {
           this.list = response.data;
-          console.log(this.list);
+
           var discount = [];
+
           for (var i = 0; i < this.list.active_offers.length; i++) {
             discount[i] = this.list.active_offers[i].discount_percent;
           }
-          // the array to be sorted
 
-          // temporary array holds objects with position and sort-value
           var mapped = discount.map(function (el, i) {
             return { index: i, value: el };
           });
@@ -275,7 +278,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  widows: 100%;
+  width: 100%;
   height: 220px;
   z-index: -1;
 }

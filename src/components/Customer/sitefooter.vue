@@ -3,13 +3,13 @@
     <div class="l-footer" style="margin-top: 5px">
       <div class="f-box">
         <div style="float: left; color: white; font-size: 25px" class="f-logo">
-          <!-- <a href="/"
+          <a href="/"
             ><img
-              :src="images.logo"
+              src="../../assets/flogo.png"
+              class="footlogo"
               alt="logo"
-              height="200px"
               style="margin-top: -65px; margin-bottom: -85px"
-          /></a> -->
+          /></a>
         </div>
         <div
           style="float: right"
@@ -38,36 +38,49 @@
         <div class="w3-col m2 s6" style="margin-top: 10px">
           <a href=""><div class="coltop">ABOUT</div></a>
           <a href=""><div>Contact Us</div></a>
-          <a href=""><div>About Us</div></a>
+          <a href="/about"><div>About Us</div></a>
+          <a href="/admin/register"><div>Admin</div></a>
         </div>
-        <div class="w3-col m3 s6" style="margin-top: 10px">
+        <!-- <div class="w3-col m3 s6" style="margin-top: 10px">
           <a href=""><div class="coltop">HELP</div></a>
           <a href=""><div>FAQs</div></a>
-        </div>
-        <div class="w3-col m3 s6" style="margin-top: 10px"></div>
-        <div class="w3-col m4 s6 f-address">
+        </div> -->
+        <div class="w3-col m3 s6" style="margin-top: 10px">
           <router-link to="/contact">
             <b-button variant="primary"
-              ><div class="coltop" style="display: block; font-weight: 600">
+              ><div
+                class="coltop"
+                style="display: block; font-weight: 600; color: white"
+              >
                 Contact Us
               </div></b-button
             >
           </router-link>
+          <br /><br />
+          <a href="https://www.facebook.com/Lemmebuyin-267448181767528/"
+            ><i
+              class="fa fa-facebook"
+              style="margin-right: 20px; font-size: 20px"
+            ></i
+          ></a>
+          <a href="https://www.instagram.com/lemmebuy.in?r=nametag"
+            ><i
+              class="fa fa-instagram"
+              style="margin-right: 10px; font-size: 20px"
+            ></i
+          ></a>
+        </div>
+        <!-- <div class="w3-col m4 s6 f-address">
           <br /><br /><br />
-          <a href=""
-            ><i class="fa fa-facebook" style="margin-right: 10px"></i
-          ></a>
-          <a href=""
-            ><i class="fa fa-instagram" style="margin-right: 10px"></i
-          ></a>
+
           <a href=""
             ><i class="fa fa-twitter" style="margin-right: 10px"></i
           ></a>
-        </div>
+        </div> -->
       </div>
-      <div class="w3-row" style="margin-top: 20px">
+      <!--   <div class="w3-row" style="margin-top: 20px">
         <div class="w3-col m8">
-          <!--  <a href=""
+         <a href=""
             ><span style="padding: 0px 40px 0px 0px"> Sell on Lemmebuy</span></a
           >
           <a href=""
@@ -77,12 +90,12 @@
             ><span style="padding: 0px 40px 0px 0px">Gift Card </span></a
           >
           <a href=""><span style="padding: 0px 40px 0px 0px">Center</span></a>-->
-        </div>
-        <!-- <div class="w3-col m4">
-          <i class="fa fa-copyright"></i> 2021-20XX Lemmebuy.in
-        </div>-->
-      </div>
     </div>
+    <!-- <div class="w3-col m4">
+          <i class="fa fa-copyright"></i> 2021-20XX Lemmebuy.in
+        </div>
+      </div>
+    </div>-->
   </div>
 </template>
 <script>
@@ -96,10 +109,15 @@ export default {
     this.user = this.$session.get("user_data");
     localStorage.setItem("log", this.$session.get("logged_in"));
   },
+  methods: {},
 };
 </script>
 
 <style scoped>
+.footlogo {
+  width: 200px;
+  margin-top: -5px;
+}
 .l-footer {
   position: relative;
   z-index: 100;

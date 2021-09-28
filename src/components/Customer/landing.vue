@@ -34,6 +34,7 @@
       :display_categories="true"
       :landing="true"
     ></topnav>
+    <loader v-if="isLoading"></loader>
     <homeposters style="margin-top: -30px; width: 100%"></homeposters>
     <div class="backwrap">
       <div class="lessm">
@@ -80,7 +81,7 @@
                   width="100%"
                   class="catimg"
                 />
-                <p class="offhead">Furnishing</p>
+                <p class="offhead">Furniture</p>
               </b-card>
             </router-link>
           </div>
@@ -114,16 +115,16 @@
           </div>
           <div class="w3-col m2 s6">
             <router-link
-              :to="{ path: '/search', query: { category: 'Sports' } }"
+              :to="{ path: '/search', query: { category: 'Grocery' } }"
             >
               <b-card class="top_categories">
                 <img
-                  src="../../assets/sports.png"
+                  src="../../assets/grocery.png"
                   alt="ss"
                   width="100%"
                   class="catimg"
                 />
-                <p class="offhead">Sports</p>
+                <p class="offhead">Grocery</p>
               </b-card>
             </router-link>
           </div>
@@ -142,7 +143,20 @@
           <allapi></allapi>
         </div>
       </b-card>
+      <b-card
+        style="margin-top: 4px; border: none; border-radius: 0"
+        v-if="showGroceryBlock === true"
+      >
+        <h2 style="padding: 20px">
+          Grocery<router-link
+            :to="{ path: '/search', query: { category: 'Grocery' } }"
+            ><a href="" class="vall">View all</a></router-link
+          >
+        </h2>
 
+        <topoffers category="/get_offers_by_category/Grocery"></topoffers>
+        <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
+      </b-card>
       <b-card
         style="margin-top: 4px; border: none; border-radius: 0"
         v-if="showFoodBlock === true"
@@ -206,7 +220,7 @@
         v-if="showFurnitureBlock === true"
       >
         <h2 style="padding: 20px">
-          Furiniture<router-link
+          Furniture<router-link
             :to="{ path: '/search', query: { category: 'Furniture' } }"
             ><a href="" class="vall">View all</a></router-link
           >
@@ -228,6 +242,7 @@ import topoffers from "./topoffers.vue";
 import Sitefooter from "./sitefooter.vue";
 //import Catoffers from "./catoffers.vue";
 import Allapi from "./allapi.vue";
+import loader from "../Seller/loader.vue";
 import Bottomnav from "./bottomnav.vue";
 
 export default {
@@ -238,6 +253,7 @@ export default {
     homeposters,
     Allapi,
     Bottomnav,
+    loader,
   },
   data() {
     return {
@@ -246,9 +262,23 @@ export default {
       showFoodBlock: false,
       showElectronicsBlock: false,
       showFurnitureBlock: false,
+      showGroceryBlock: false,
+      isLoading: true,
     };
   },
   mounted() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1500);
+    if (this.$session.get("user_type") === "seller" && this.landing === true) {
+      document.getElementsByClassName("topnav")[0].style.height = "70px";
+      if (window.scrollX < 700) {
+        document.getElementsByClassName("topnav")[0].style.height = "120px";
+      }
+    }
+    if (this.$session.get("user_type") === "customer") {
+      this.$nextTick(() => this.$refs.prose.focus());
+    }
     if (
       localStorage.getItem("/get_offers_by_category/Fashionempty?") === "true"
     ) {
@@ -283,6 +313,13 @@ export default {
       this.showFurnitureBlock = false;
     } else {
       this.showFurnitureBlock = true;
+    }
+    if (
+      localStorage.getItem("/get_offers_by_category/Groceryempty?") === "true"
+    ) {
+      this.showGroceryBlock = false;
+    } else {
+      this.showGroceryBlock = true;
     }
   },
 };
@@ -334,6 +371,7 @@ export default {
 .c-img {
   height: 200px;
 }
+
 @media screen and (min-width: 800px) {
   .c-img {
     height: 250px;

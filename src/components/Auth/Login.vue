@@ -204,9 +204,11 @@ export default {
                 };
                 localStorage.setItem("profile", JSON.stringify(storedata));
                 this.$router.push("/verifycoupon");
+              } else if (res.data.status === 403) {
+                this.$router.push("/waiting_for_admin_approval");
               } else {
+                localStorage.clear();
                 alert(res.data.msg);
-                console.log(res.data.msg);
               }
             })
             .catch((err) => {

@@ -148,36 +148,39 @@
             placeholder="Registered Shop Name"
             class="login-input"
             style="border-top: none; border-radius: 0px 0px 5px 5px"
-          /><!--
+          />
+          <!-- <br />
           <br />
-          <br />
-          <h5 style="color: #999999">tell Customers your active time</h5>
-          <div class="weekco">
-            <div
-              class="week"
-              v-for="days in days"
-              :key="days.length"
-              @click="get_date(days.index)"
+          <h6>Choose shop image</h6>
+          <cropper
+            :src="dp"
+            class="cropper"
+            :stencil-props="{
+              aspectRatio: 16 / 10,
+            }"
+            ref="cropper"
+          ></cropper>
+          <input
+            accept="image/*"
+            name="image"
+            id="file"
+            @change="loadFile"
+            type="file"
+            placeholder="Shop Image"
+            class="login-input"
+          />
+          <div class="no_btn" id="no_btn" style="text-align: center">
+            <b-button
+              variant="primary"
+              @click="crop"
+              id="crop"
+              style="margin: 10px"
+              >Crop</b-button
             >
-              {{ days.day }}
-            </div>
-          </div>
-          <br />
-          <div style="display: block">
-            <center>
-              <b-time
-                v-model="opening_time"
-                locale="en"
-                @context="days.onContext"
-              ></b-time>
-              To
-              <b-time
-                v-model="closing_time"
-                locale="en"
-                @context="onContext"
-              ></b-time>
-            </center>
-          </div>-->
+            <b-button variant="primary" @click="encodeImageFileAsURL"
+              >set profile image</b-button
+            >
+          </div> -->
           <button @click="Sellersignup()" class="login-button">Register</button>
           <a href="/login" style="float: right"
             >already have an account? login here</a
@@ -195,6 +198,8 @@ import topnav from "../Seller/topnav.vue";
 import bcrypt from "bcryptjs";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+// import { Cropper } from "vue-advanced-cropper";
+import "vue-advanced-cropper/dist/style.css";
 export default {
   components: { topnav, Sitefooter },
   data() {
@@ -234,6 +239,7 @@ export default {
         },
       ],
       context: null,
+      dp: "",
     };
   },
   mounted() {
@@ -250,6 +256,16 @@ export default {
       });
   },
   methods: {
+    crop() {
+      const { coordinates, canvas } = this.$refs.cropper.getResult();
+      this.coordinates = coordinates;
+      this.dp = canvas.toDataURL();
+      this.encodeImageFileAsURL();
+    },
+    loadFile(event) {
+      this.dp = URL.createObjectURL(event.target.files[0]);
+      document.getElementById("no_btn").style.display = "block";
+    },
     onContext(ctx) {
       this.context = ctx;
     },
@@ -311,7 +327,11 @@ export default {
           .then((res) => {
             alert(res.data.msg);
             if (res.data.status === 200) {
+              localStorage.setItem("sptoken", res.data.jwt);
               this.$router.push("/seller/verifymail");
+
+              console.log("hello");
+              console.log(res);
             } else {
               this.init();
             }
@@ -386,6 +406,38 @@ export default {
       const salt = bcrypt.genSaltSync(10);
       return bcrypt.hashSync(password, salt);
     },
+    encodeImageFileAsURL(element) {
+      var file = element.target.files[0];
+
+      var reader = new FileReader();
+      this.newimg = reader.result.toString();
+      console.log("jwt now = ", this.jwt);
+      reader.onloadend = function () {
+        // Upload image to api
+        const profile_token = JSON.parse(localStorage.getItem("profile")).token;
+        const url = BASE_URL + "/seller/image";
+        console.log(this.jwt);
+        const options = {
+          headers: {
+            Authorization: `Bearer ${profile_token}`,
+          },
+        };
+        console.log(options);
+        const payload = {
+          image: reader.result,
+        };
+        console.log(payload);
+        axios
+          .post(url, payload, options)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+      reader.readAsDataURL(file);
+    },
   },
 };
 window.onload = function () {
@@ -394,6 +446,9 @@ window.onload = function () {
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
+.no_btn {
+  display: none;
+}
 .weekco {
   width: 100%;
   justify-content: space-between;

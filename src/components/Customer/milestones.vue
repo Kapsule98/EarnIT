@@ -20,27 +20,52 @@
         <h3 style="border-bottom: 1px solid #cccccc; padding: 10px">
           Your Milestones
         </h3>
+        <h5>
+          You are having {{ credit }} Lemmecoins in your account. Shop more
+          coupons to get more LemmeCoins!
+        </h5>
         <br /><br /><br />
         <div class="upcontain">
-          <div class="circle">
-            <i class="fa fa-check" style="padding: 0; margin: 0"></i>
-            <div class="line"></div>
-            <div class="text">20 Coins</div>
-          </div>
-          <div class="circle">
-            <i class="fa fa-check" style="padding: 0; margin: 0"></i>
-            <div class="line" style="background: #dbdbdb"></div>
-            <div class="text">80 Coins</div>
-          </div>
-          <div class="circle" style="border-color: #dbdbdb; color: #dbdbdb">
-            <i class="fa fa-close"></i>
-            <div class="line" style="background: #dbdbdb"></div>
-            <div class="text">20 Coins</div>
-          </div>
-          <div class="circle" style="border-color: #dbdbdb; color: #dbdbdb">
-            <i class="fa fa-close"></i>
+          <div class="circle" id="circle1">
+            <i
+              v-if="reach1 === true"
+              class="fa fa-check"
+              style="padding: 0; margin: 0"
+            ></i>
+            <i v-else class="fa fa-close" style="padding: 0; margin: 0"></i>
 
-            <div class="text">80 Coins</div>
+            <div class="line" id="line1"></div>
+            <div class="text">50 Coins</div>
+          </div>
+          <div class="circle" id="circle2">
+            <i
+              v-if="reach2 === true"
+              class="fa fa-check"
+              style="padding: 0; margin: 0"
+            ></i>
+            <i v-else class="fa fa-close" style="padding: 0; margin: 0"></i>
+            <div class="line" id="line2"></div>
+            <div class="text">100 Coins</div>
+          </div>
+          <div class="circle" id="circle3">
+            <i
+              v-if="reach3 === true"
+              class="fa fa-check"
+              style="padding: 0; margin: 0"
+            ></i>
+            <i v-else class="fa fa-close" style="padding: 0; margin: 0"></i>
+            <div class="line" id="line3"></div>
+            <div class="text">150 Coins</div>
+          </div>
+          <div class="circle" id="circle4">
+            <i
+              v-if="reach4 === true"
+              class="fa fa-check"
+              style="padding: 0; margin: 0"
+            ></i>
+            <i v-else class="fa fa-close" style="padding: 0; margin: 0"></i>
+
+            <div class="text">200 Coins</div>
           </div>
         </div>
         <br /><br /><br />
@@ -68,8 +93,55 @@
 <script>
 import topnav from "../Seller/topnav.vue";
 import Sitefooter from "./sitefooter.vue";
+import axios from "axios";
+import { BASE_URL } from "../../utils/constants";
 export default {
   components: { topnav, Sitefooter },
+  data() {
+    return {
+      credit: "",
+      reach1: false,
+      reach2: false,
+      reach3: false,
+      reach4: false,
+    };
+  },
+  mounted() {
+    const offersurl = BASE_URL + "/credit";
+    let JWTToken = this.$session.get("token");
+    axios
+      .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+      .then((response) => {
+        this.credit = parseInt(response.data.credit_points);
+
+        if (this.credit > 49) {
+          document.getElementById("circle1").style.border = "3px solid #008cff";
+          document.getElementById("circle1").style.color = "#008cff";
+          this.reach1 = true;
+        }
+        if (this.credit > 99) {
+          document.getElementById("circle2").style.border = "3px solid #008cff";
+          document.getElementById("circle2").style.color = "#008cff";
+          document.getElementById("line1").style.background = "#008cff";
+          this.reach2 = true;
+        }
+        if (this.credit > 149) {
+          document.getElementById("circle3").style.border = "3px solid #008cff";
+          document.getElementById("circle3").style.color = "#008cff";
+          document.getElementById("line2").style.background = "#008cff";
+          this.reach3 = true;
+        }
+        if (this.credit > 199) {
+          document.getElementById("circle4").style.border = "3px solid #008cff";
+          document.getElementById("circle4").style.color = "#008cff";
+          document.getElementById("line3").style.background = "#008cff";
+          this.reach4 = true;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
 };
 </script>
 
@@ -86,11 +158,11 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 3px solid #008cff;
+  border: 3px solid #dbdbdb;
   text-align: center;
   line-height: 50px;
   vertical-align: middle;
-  color: #008cff;
+  color: #dbdbdb;
   padding: 0;
   margin: 0;
   margin-left: 45px;
@@ -106,7 +178,8 @@ export default {
   height: 3px;
   width: 50px;
   vertical-align: middle;
-  background-color: #008cff;
+
+  background-color: #dbdbdb;
   z-index: -2;
 }
 .text {

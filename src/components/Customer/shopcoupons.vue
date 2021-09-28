@@ -49,12 +49,10 @@
             <a
               v-if="Array.isArray(list.location)"
               :href="
-                '//www.google.com/maps/@' +
+                '//www.google.com/maps/dir/21.193800,81.350900/' +
                 list.location[0].toPrecision(7) +
                 ',' +
-                list.location[1].toPrecision(7) +
-                ',' +
-                '18.29z'
+                list.location[1].toPrecision(7)
               "
               target="_blank"
               style="text-decoration: none"
@@ -67,7 +65,7 @@
           </div>
           <div class="w3-third" style="padding: 20px">
             <img
-              src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
+              :src="image"
               alt="..."
               width="100%"
               onclick="document.getElementById('modal01').style.display='block'"
@@ -91,92 +89,99 @@
                       <span style="color: #008cff">Offers</span>
                     </template>
 
-                    <div
-                      class="couponcard"
-                      v-for="offers in list.offers"
-                      :key="offers.length"
-                    >
-                      <div class="w3-row">
-                        <div class="w3-col m9">
-                          <div
-                            class="card_remaining"
-                            v-if="offers.quantity <= 5"
-                          >
-                            Hurry only {{ offers.quantity }} left!
-                          </div>
-
-                          <div
-                            class="card_item"
-                            v-if="offers.type === 'ITEM_DISCOUNT'"
-                          >
-                            {{ offers.discount_percent }}% off on
-                            <span
-                              v-b-tooltip.hover
-                              :title="offers.products + ' '"
+                    <div v-for="offers in list.offers" :key="offers.length">
+                      <div
+                        v-if="
+                          Math.floor(new Date().getTime() / 1000.0) <
+                            offers.validity[1] &&
+                          Math.floor(new Date().getTime() / 1000.0) >
+                            offers.validity[0] &&
+                          offers.quantity > 0
+                        "
+                        class="couponcard"
+                      >
+                        <div class="w3-row">
+                          <div class="w3-col m9">
+                            <div
+                              class="card_remaining"
+                              v-if="offers.quantity <= 5"
                             >
+                              Hurry only {{ offers.quantity }} left!
+                            </div>
+
+                            <div
+                              class="card_item"
+                              v-if="offers.type === 'ITEM_DISCOUNT'"
+                            >
+                              {{ offers.discount_percent }}% off on
                               <span
-                                v-for="(prods, index1) in offers.products"
-                                :key="prods.offer_text"
+                                v-b-tooltip.hover
+                                :title="offers.products + ' '"
                               >
-                                {{ offers.products[index1] }}
                                 <span
-                                  v-if="
-                                    index1 !=
-                                    Object.keys(offers.products).length - 1
-                                  "
-                                  >,
+                                  v-for="(prods, index1) in offers.products"
+                                  :key="prods.offer_text"
+                                >
+                                  {{ offers.products[index1] }}
+                                  <span
+                                    v-if="
+                                      index1 !=
+                                      Object.keys(offers.products).length - 1
+                                    "
+                                    >,
+                                  </span>
                                 </span>
                               </span>
-                            </span>
-                          </div>
-                          <div class="card_item" v-else>
-                            <span class="offno"
-                              >{{ offers.discount_percent }}%</span
-                            >
-                            off on Total Bill
-                          </div>
+                            </div>
+                            <div class="card_item" v-else>
+                              <span class="offno"
+                                >{{ offers.discount_percent }}%</span
+                              >
+                              off on Total Bill
+                            </div>
 
-                          <div class="w3-row">
-                            <div class="w3-col m8">
-                              <div class="card_leftcoupons">
-                                {{ offers.quantity }} Coupons Left
+                            <div class="w3-row">
+                              <div class="w3-col m8">
+                                <div class="card_leftcoupons">
+                                  {{ offers.quantity }} Coupons Left
+                                </div>
                               </div>
-                            </div>
-                            <div class="w3-col m4">
-                              <div class="card_validity">
-                                valid till
-                                {{
-                                  moment(offers.validity[1] * 1000).format(
-                                    "DD/MM/YY"
-                                  )
-                                }}
+                              <div class="w3-col m4">
+                                <div class="card_validity">
+                                  valid till
+                                  {{
+                                    moment(offers.validity[1] * 1000).format(
+                                      "DD/MM/YY"
+                                    )
+                                  }}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="w3-col m3">
-                          <button
-                            v-on:click="
-                              addToCart(offers.offer_text, list.seller_email)
-                            "
-                            class="w3-button"
-                            style="
-                              width: 80%;
-                              margin: 30px 10%;
-                              background: #008cff;
-                              color: white;
-                            "
-                          >
-                            <i
-                              class="fa fa-shopping-cart"
-                              aria-hidden="true"
-                            ></i>
-                            Add to cart
-                          </button>
-                        </div>
-                        <div class="minval">
-                          offer valid on a minimum purchase of
-                          <i class="fa fa-rupee"></i> {{ offers.min_val }}
+                          <div class="w3-col m3">
+                            <button
+                              v-on:click="
+                                addToCart(offers.offer_text, list.seller_email)
+                              "
+                              class="w3-button"
+                              style="
+                                width: 80%;
+                                margin: 30px 10%;
+                                background: #008cff;
+                                color: white;
+                              "
+                            >
+                              <i
+                                class="fa fa-shopping-cart"
+                                aria-hidden="true"
+                              ></i>
+                              Add to cart
+                            </button>
+                          </div>
+                          <div class="minval">
+                            offer valid on a minimum purchase of
+                            <i class="fa fa-rupee"></i> {{ offers.min_val }}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -199,22 +204,10 @@
                       {{ list.shop_name }}
                     </h5>
                     <br />
-                    <h5>Adress</h5>
+                    <h5>Address</h5>
                     <p>{{ list.address }}</p>
-                    <h4>phone:</h4>
+                    <h4>Phone:</h4>
                     <p>+{{ list.contact_no }}</p>
-                    <p
-                      style="
-                        background: #008cff;
-                        width: fit-content;
-                        color: white;
-                        padding: 3px 7px;
-                        border-radius: 4px;
-                        font-size: 16px;
-                      "
-                    >
-                      open : 9 am - 8pm Mon-Fri
-                    </p>
                   </b-tab>
                 </b-tabs>
               </b-card>
@@ -222,24 +215,28 @@
           </div>
           <div class="w3-third" style="padding: 20px">
             <div class="w3-card" style="padding: 20px; box-shadow: none">
-              <h4>
-                <i class="fa fa-share-alt" style="color: #008cff"></i> Share
-                this page
+              <h4 @click="sharePage()">
+                <i class="fa fa-share-alt" style="color: #008cff"></i>
+                Share this page
               </h4>
               <h3>
                 <i
+                  @click="sharePage()"
                   class="fa fa-instagram"
                   style="color: #008cff; padding: 10px"
                 ></i>
                 <i
+                  @click="sharePage()"
                   class="fa fa-facebook"
                   style="color: #008cff; padding: 10px"
                 ></i>
                 <i
+                  @click="sharePage()"
                   class="fa fa-snapchat"
                   style="color: #008cff; padding: 10px"
                 ></i>
                 <i
+                  @click="sharePage()"
                   class="fa fa-pinterest"
                   style="color: #008cff; padding: 10px"
                 ></i>
@@ -250,17 +247,6 @@
       </div>
     </div>
 
-    <div
-      id="modal01"
-      class="w3-modal w3-animate-zoom"
-      onclick="this.style.display='none'"
-    >
-      <img
-        class="w3-modal-content"
-        src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
-        style="width: 60%; margin-left: 20%; margin-top: -2%"
-      />
-    </div>
     <bottomnav></bottomnav>
     <sitefooter></sitefooter>
   </div>
@@ -282,6 +268,8 @@ export default {
   data() {
     return {
       list: [],
+      image: "",
+      email: "",
     };
   },
   mounted() {
@@ -291,12 +279,46 @@ export default {
       .then((response) => {
         this.list = response.data;
         console.log(this.list);
+        this.email = this.list.seller_email;
+
+        this.getImage();
       })
       .catch((err) => {
         console.log(err);
       });
   },
   methods: {
+    getImage() {
+      const url = BASE_URL + "/seller_image/" + this.email;
+      axios
+        .get(url)
+        .then((response) => {
+          if (response.status === 200) {
+            if (response.data.msg === "seller image does not exist") {
+              this.image = "/img/def.d3b94f4a.png";
+            } else {
+              this.image = response.data.toString();
+            }
+
+            console.log(response.data.msg);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    sharePage() {
+      if (navigator.share) {
+        navigator
+          .share({
+            title: "Shop Coupons from Lemmmebuy.in",
+            text: "Hey I found this amazing offer on Lemmebuy.in! You will love it.",
+            url: window.location.href,
+          })
+          .then(() => console.log("Successful share"))
+          .catch((error) => console.log("Error sharing", error));
+      }
+    },
     addToCart(offer_text, email) {
       if (localStorage.getItem("log") === "true") {
         const payload = {
