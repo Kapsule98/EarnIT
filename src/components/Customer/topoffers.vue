@@ -11,7 +11,7 @@
         1200: { items: 3 },
       }"
       :stagePadding="0"
-      :loop="true"
+      :loop="false"
       :autoplay="true"
       :nav="false"
       :dots="false"
