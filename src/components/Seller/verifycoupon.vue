@@ -594,10 +594,11 @@ export default {
           axios
             .post(url, payload, options)
             .then((response) => {
-              if (response.status === 200) {
+              console.log(response.data)
+              if (response.data.status === 200) {
                 alert("Coupon Sucessfully Reedemed.");
               } else {
-                alert("Coupon reedem unsucessfull!");
+                alert("There was a problem in redeeming the coupon : "+response.data.msg );
               }
             })
             .catch((error) => {
