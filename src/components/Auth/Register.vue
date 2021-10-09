@@ -195,7 +195,6 @@
 <script>
 import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "../Seller/topnav.vue";
-import bcrypt from "bcryptjs";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 // import { Cropper } from "vue-advanced-cropper";
@@ -307,8 +306,6 @@ export default {
             alert(error.message);
           }
         );
-        const hash_pass = this.encryptPassword(this.password);
-        console.log(hash_pass);
         const seller = {
           password: this.password,
           username: this.username,
@@ -352,8 +349,6 @@ export default {
         this.init();
         return;
       } else {
-        const hash_pass = this.encryptPassword(this.password);
-        console.log(hash_pass);
         const user = {
           username: this.username,
           password: this.password,
@@ -401,10 +396,6 @@ export default {
       this.shop_category = [];
       this.shop_name = "";
       this.location = "";
-    },
-    encryptPassword(password) {
-      const salt = bcrypt.genSaltSync(10);
-      return bcrypt.hashSync(password, salt);
     },
     encodeImageFileAsURL(element) {
       var file = element.target.files[0];
