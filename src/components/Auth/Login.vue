@@ -97,7 +97,6 @@ import axios from "axios";
 // import eventBus from "../../utils/eventBus";
 import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "../Seller/topnav.vue";
-import bcrypt from "bcryptjs";
 export default {
   components: { topnav, Sitefooter },
   data() {
@@ -133,9 +132,7 @@ export default {
       if (this.username === "" || this.password === "") {
         alert("Please fill mandatory fields");
         this.init();
-      } else {
-        const hash_pass = this.encryptPassword(this.password);
-        console.log(hash_pass);
+      } else {    
         const user = {
           username: this.username,
           password: this.password,
@@ -231,11 +228,6 @@ export default {
       } else {
         document.getElementsByClassName("actvtab")[0].style.right = "0%";
       }
-    },
-
-    encryptPassword(password) {
-      const salt = bcrypt.genSaltSync(10);
-      return bcrypt.hashSync(password, salt);
     },
   },
 };
