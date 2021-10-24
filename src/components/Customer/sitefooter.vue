@@ -37,7 +37,6 @@
       >
         <div class="w3-col m2 s6" style="margin-top: 10px">
           <a href=""><div class="coltop">ABOUT</div></a>
-          <a href=""><div>Contact Us</div></a>
           <a href="/about"><div>About Us</div></a>
           <a href="/admin/register"><div>Admin</div></a>
         </div>
@@ -47,14 +46,12 @@
         </div> -->
         <div class="w3-col m3 s6" style="margin-top: 10px">
           <router-link to="/contact">
-            <b-button variant="primary"
-              ><div
-                class="coltop"
-                style="display: block; font-weight: 600; color: white"
-              >
-                Contact Us
-              </div></b-button
+            <div
+              class="coltop"
+              style="display: block; font-weight: 600; color: white"
             >
+              Contact Us
+            </div>
           </router-link>
           <br /><br />
           <a href="https://www.facebook.com/Lemmebuyin-267448181767528/"

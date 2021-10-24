@@ -113,6 +113,7 @@ export default {
   },
   mounted() {
     this.getAllOffers();
+    localStorage.setItem(this.category + "empty?", false);
   },
   methods: {
     getAllOffers() {
@@ -286,6 +287,10 @@ export default {
   width: 100%;
   height: 220px;
   z-index: -1;
+  /* background: radial-gradient(rgb(0, 132, 255), rgb(0, 195, 255)); */
+  background: url("../../assets/dribbble-loader-green.gif");
+  background-position: center;
+  background-repeat: no-repeat;
 }
 a {
   text-decoration: none;

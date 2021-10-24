@@ -33,6 +33,7 @@
       :display_categories="true"
       :landing="true"
     ></topnav>
+    <spinner v-if="loading"></spinner>
     <div class="greyback"></div>
     <div class="w3-container mopad">
       <div class="w3-card" style="background: white">
@@ -257,8 +258,9 @@ import Sitefooter from "./sitefooter.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import Bottomnav from "./bottomnav.vue";
+import Spinner from "./spinner.vue";
 export default {
-  components: { topnav, Sitefooter, Bottomnav },
+  components: { topnav, Sitefooter, Bottomnav, Spinner },
   props: {
     seller: {
       type: String,
@@ -267,12 +269,14 @@ export default {
   },
   data() {
     return {
+      loading: false,
       list: [],
       image: "",
       email: "",
     };
   },
   mounted() {
+    this.loading = true;
     const url = BASE_URL + "/get_offers_by_shop/" + this.seller;
     axios
       .get(url)
@@ -285,7 +289,8 @@ export default {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => (this.loading = false));
   },
   methods: {
     getImage() {
@@ -320,6 +325,7 @@ export default {
       }
     },
     addToCart(offer_text, email) {
+      this.loading = true;
       if (localStorage.getItem("log") === "true") {
         const payload = {
           offer_text: offer_text,
@@ -347,7 +353,8 @@ export default {
           .catch((error) => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
-          });
+          })
+          .finally(() => (this.loading = false));
       } else {
         this.$router.push("/login");
       }

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <spinner v-if="loading"></spinner>
     <div class="login-box">
       <div class="login-header-box">
         <div class="login-header" style="border-bottom: none">Verify Email</div>
@@ -29,6 +30,7 @@
           style="border-top: none; border-radius: 0 0 10px 10px"
         />
         <button @click="verifymail()" class="login-button">Verify Email</button>
+        An OTP has been sent to your mail. Check in spam if not found.
       </div>
     </div>
   </div>
@@ -37,9 +39,12 @@
 <script>
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import spinner from "../Customer/spinner.vue";
 export default {
+  components: { spinner },
   data() {
     return {
+      loading: false,
       username: "",
       otp: "",
       email: "",
@@ -52,6 +57,7 @@ export default {
       this.email = "";
     },
     verifymail() {
+      this.loading = true;
       const url = BASE_URL + "/admin";
       const payload = {
         username: this.username,
@@ -66,7 +72,8 @@ export default {
         .catch((err) => {
           console.log(err);
           this.init();
-        });
+        })
+        .finally(() => (this.loading = false));
     },
   },
 };
