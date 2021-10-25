@@ -144,10 +144,7 @@
           <allapi></allapi>
         </div>
       </b-card>
-      <b-card
-        style="margin-top: 4px; border: none; border-radius: 0"
-        v-if="showGroceryBlock === true"
-      >
+      <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h4 style="padding: 20px">
           Grocery<router-link
             :to="{ path: '/search', query: { category: 'Grocery' } }"
@@ -158,10 +155,7 @@
         <topoffers category="/get_offers_by_category/Grocery"></topoffers>
         <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
       </b-card>
-      <b-card
-        style="margin-top: 4px; border: none; border-radius: 0"
-        v-if="showFoodBlock === true"
-      >
+      <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h4 style="padding: 20px">
           Food
           <router-link :to="{ path: '/search', query: { category: 'Food' } }"
@@ -173,10 +167,7 @@
 
         <!--<catoffers category="/get_offers_by_category/Food"></catoffers>-->
       </b-card>
-      <b-card
-        style="margin-top: 4px; border: none; border-radius: 0"
-        v-if="showElectronicsBlock === true"
-      >
+      <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h4 style="padding: 20px">
           Electronics
           <router-link
@@ -188,10 +179,7 @@
         <topoffers category="/get_offers_by_category/Electronics"></topoffers>
         <!--<catoffers category="/get_offers_by_category/Electronics"></catoffers>-->
       </b-card>
-      <b-card
-        style="margin-top: 4px; border: none; border-radius: 0"
-        v-if="showFashionBlock === true"
-      >
+      <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h4 style="padding: 20px">
           Fashion
           <router-link :to="{ path: '/search', query: { category: 'Fashion' } }"
@@ -202,10 +190,7 @@
         <topoffers category="/get_offers_by_category/Fashion"></topoffers>
         <!--<catoffers category="/get_offers_by_category/Fashion"></catoffers>-->
       </b-card>
-      <b-card
-        style="margin-top: 4px; border: none; border-radius: 0"
-        v-if="showHealthBlock === true"
-      >
+      <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h4 style="padding: 20px">
           Health<router-link
             :to="{ path: '/search', query: { category: 'Health' } }"
@@ -216,10 +201,7 @@
         <topoffers category="/get_offers_by_category/Health"></topoffers>
         <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
       </b-card>
-      <b-card
-        style="margin-top: 4px; border: none; border-radius: 0"
-        v-if="showFurnitureBlock === true"
-      >
+      <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h4 style="padding: 20px">
           Furniture<router-link
             :to="{ path: '/search', query: { category: 'Furniture' } }"
@@ -279,51 +261,51 @@ export default {
     if (this.$session.get("user_type") === "customer") {
       this.$nextTick(() => this.$refs.prose.focus());
     }
-    if (
-      localStorage.getItem("/get_offers_by_category/Fashionempty?") === "true"
-    ) {
-      this.showFashionBlock = false;
-      // alert(this.showFashionBlock);
-    } else {
-      this.showFashionBlock = true;
-      // alert(localStorage.getItem("/get_offers_by_category/Fashionempty?"));
-      // alert(this.showFashionBlock);
-    }
+    // if (
+    //   localStorage.getItem("/get_offers_by_category/Fashionempty?") === "true"
+    // ) {
+    //   this.showFashionBlock = false;
+    //   // alert(this.showFashionBlock);
+    // } else {
+    //   this.showFashionBlock = true;
+    //   // alert(localStorage.getItem("/get_offers_by_category/Fashionempty?"));
+    //   // alert(this.showFashionBlock);
+    // }
 
-    if (
-      localStorage.getItem("/get_offers_by_category/Healthempty?") === "true"
-    ) {
-      this.showHealthBlock = false;
-    } else {
-      this.showHealthBlock = true;
-    }
-    if (localStorage.getItem("/get_offers_by_category/Foodempty?") === "true") {
-      this.showFoodBlock = false;
-    } else {
-      this.showFoodBlock = true;
-    }
-    if (
-      localStorage.getItem("/get_offers_by_category/Electronicsempty?") ===
-      "true"
-    ) {
-      this.showElectronicsBlock = false;
-    } else {
-      this.showElectronicsBlock = true;
-    }
-    if (
-      localStorage.getItem("/get_offers_by_category/Furnitureempty?") === "true"
-    ) {
-      this.showFurnitureBlock = false;
-    } else {
-      this.showFurnitureBlock = true;
-    }
-    if (
-      localStorage.getItem("/get_offers_by_category/Groceryempty?") === "true"
-    ) {
-      this.showGroceryBlock = false;
-    } else {
-      this.showGroceryBlock = true;
-    }
+    // if (
+    //   localStorage.getItem("/get_offers_by_category/Healthempty?") === "true"
+    // ) {
+    //   this.showHealthBlock = false;
+    // } else {
+    //   this.showHealthBlock = true;
+    // }
+    // if (localStorage.getItem("/get_offers_by_category/Foodempty?") === "true") {
+    //   this.showFoodBlock = false;
+    // } else {
+    //   this.showFoodBlock = true;
+    // }
+    // if (
+    //   localStorage.getItem("/get_offers_by_category/Electronicsempty?") ===
+    //   "true"
+    // ) {
+    //   this.showElectronicsBlock = false;
+    // } else {
+    //   this.showElectronicsBlock = true;
+    // }
+    // if (
+    //   localStorage.getItem("/get_offers_by_category/Furnitureempty?") === "true"
+    // ) {
+    //   this.showFurnitureBlock = false;
+    // } else {
+    //   this.showFurnitureBlock = true;
+    // }
+    // if (
+    //   localStorage.getItem("/get_offers_by_category/Groceryempty?") === "true"
+    // ) {
+    //   this.showGroceryBlock = false;
+    // } else {
+    //   this.showGroceryBlock = true;
+    // }
   },
 };
 </script>
