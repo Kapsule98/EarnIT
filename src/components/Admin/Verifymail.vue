@@ -15,7 +15,7 @@
         />
 
         <input
-          type="password"
+          type="ptext"
           v-model="otp"
           placeholder="OTP"
           class="login-input"
