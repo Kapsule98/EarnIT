@@ -2,24 +2,24 @@
   <div>
     <div class="cat_tab">
       <router-link :to="{ path: '/search', query: { category: 'Fashion' } }">
-        <img class="cat_cir_img" src="../../assets/fashion.jpg" alt=""
+        <img class="cat_cir_img" src="../../assets/fashion.jpg" alt=".."
       /></router-link>
       <router-link :to="{ path: '/search', query: { category: 'Health' } }">
-        <img class="cat_cir_img" src="../../assets/health.jpg" alt="" />
+        <img class="cat_cir_img" src="../../assets/health.jpg" alt=".." />
       </router-link>
       <router-link :to="{ path: '/search', query: { category: 'Grocery' } }">
-        <img class="cat_cir_img" src="../../assets/grocery.png" alt="" />
+        <img class="cat_cir_img" src="../../assets/grocery.png" alt=".." />
       </router-link>
       <router-link :to="{ path: '/search', query: { category: 'Furnishing' } }">
-        <img class="cat_cir_img" src="../../assets/furnishing.jpg" alt="" />
+        <img class="cat_cir_img" src="../../assets/furnishing.jpg" alt=".." />
       </router-link>
       <router-link :to="{ path: '/search', query: { category: 'Food' } }">
-        <img class="cat_cir_img" src="../../assets/food.jpg" alt="" />
+        <img class="cat_cir_img" src="../../assets/food.jpg" alt=".." />
       </router-link>
       <router-link
         :to="{ path: '/search', query: { category: 'Electronics' } }"
       >
-        <img class="cat_cir_img" src="../../assets/electronics.jpg" alt="" />
+        <img class="cat_cir_img" src="../../assets/electronics.jpg" alt=".." />
       </router-link>
     </div>
     <carousel
@@ -35,9 +35,24 @@
       :dots="false"
       video:true
     >
-      <img src="../../assets/0001.jpg" width="100%" class="homeposters" />
-      <img src="../../assets/0002.jpg" width="100%" class="homeposters" />
-      <img src="../../assets/0003.jpg" width="100%" class="homeposters" />
+      <img
+        src="../../assets/0001.jpg"
+        width="100%"
+        alt="poster"
+        class="homeposters"
+      />
+      <img
+        src="../../assets/0002.jpg"
+        width="100%"
+        alt="poster"
+        class="homeposters"
+      />
+      <img
+        src="../../assets/0003.jpg"
+        width="100%"
+        alt="poster"
+        class="homeposters"
+      />
     </carousel>
   </div>
 </template>
