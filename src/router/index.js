@@ -204,6 +204,17 @@ const routes = [
     component: () => import('../components/Admin/Login.vue')
   },
   {
+    beforeEnter:guardMyrouteAdmin,
+    path: '/admin/home',
+    name: 'AdminHome',
+    component: () => import('../components/Admin/Home.vue')
+  },
+  {
+    path: '/admin/users',
+    name: 'AdminUserDetail',
+    component: () => import('../components/Admin/Users.vue')
+  },
+  {
     beforeEnter: guardMyrouteAdmin,
     path: '/admin/shop',
     name: 'AdminShopPermission',
@@ -219,6 +230,16 @@ const routes = [
     path: '/waiting_for_admin_approval',
     name: 'admin',
     component: () => import('../components/Seller/admin.vue')
+  },
+  {
+    path: '/admin/forgotpassword',
+    name: 'AdminForgotPassword',
+    component: () => import ('../components/Admin/ForgotPassword.vue')
+  },
+  {
+    path: '/admin/resetpassword',
+    name: 'AdminResetPassword',
+    component: () => import ('../components/Admin/ResetPassword.vue')
   },
   {
  

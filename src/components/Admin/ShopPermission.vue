@@ -17,11 +17,11 @@
       </div>
       <div>
         <button
-          @click="gotoAdminManagement"
+          @click="gotoAdminHome"
           class="button"
           style="float: right"
         >
-          Admin management
+          Admin Home
         </button>
       </div>
     </b-card>
@@ -78,13 +78,17 @@ export default {
         .post(url, payload, options)
         .then((res) => {
           console.log(res);
+          if(res.status === 200) {
+            alert(res.data)
+            this.$router.go(0)
+          }
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    gotoAdminManagement() {
-      this.$router.push("/admin/permission");
+    gotoAdminHome() {
+      this.$router.push("/admin/home");
     },
   },
 };

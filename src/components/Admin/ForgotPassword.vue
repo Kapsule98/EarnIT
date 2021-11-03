@@ -1,78 +1,51 @@
 <template>
-  <div>
+    <!-- <div>
+        <label> Username </label><input v-model="username" type="text"/>
+        <button @click="sendOTP"> Send OTP </button>
+    </div> -->
     <div class="login-box">
-      <div class="login-header-box">
-        <div class="login-header" style="border-bottom: none">Login</div>
-      </div>
-      <div class="login-content-box">
+        <div class="login-header-box">
+        <div class="login-header" style="border-bottom: none">Forgot password</div>
+        </div>
+        <div class="login-content-box">
         <input
-          type="text"
-          v-model="username"
-          placeholder="Username"
-          class="login-input"
-          style="border-radius: 10px 10px 0 0"
+            type="text"
+            v-model="username"
+            placeholder="Username"
+            class="login-input"
+            style="border-radius: 10px 10px 0 0"
         />
-
-        <input
-          type="password"
-          v-model="password"
-          placeholder="Password"
-          class="login-input"
-          style="border-top: none; border-radius: 0 0 10px 10px"
-        />
-
-        <button @click="login" class="login-button">Login as admin</button>
-        <button @click="gotoRegister" class="login-button">Register</button>
-        <a href="/admin/forgotpassword" style="float: right">forgot password?</a>
-      </div>
+        <button @click="sendOTP()" class="login-button">Reset Password</button>
+        </div>
     </div>
-  </div>
 </template>
+
 <script>
-import axios from "axios";
-import { BASE_URL } from "../../utils/constants";
+import { BASE_URL } from '../../utils/constants'
+import axios from 'axios'
 export default {
-  data() {
-    return {
-      username: "",
-      password: "",
-    };
-  },
-  methods: {
-    init() {
-      this.username = "";
-      this.password = "";
+    data() {
+        return {
+            username:''
+        }
     },
-    login() {
-      const url = BASE_URL + "/admin/login";
-      const payload = {
-        username: this.username,
-        password: this.password,
-      };
-      axios
-        .post(url, payload)
-        .then((res) => {
-          console.log(res);
-          if (res.status === 200) {
-            if (res.data.status === 200) {
-              alert(res.data.msg);
-              localStorage.adminJWT = res.data.jwt;
-              this.$router.push("/admin/home");
+    methods:{
+        sendOTP() {
+            const url = BASE_URL + '/admin/cred';
+            const payload = {
+                'username':this.username
             }
-          } else {
-            this.init();
-            console.log(res.data);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    gotoRegister() {
-      this.$router.push("/admin/register");
-    },
-  },
-};
+            axios.post(url,payload).then(res => {
+                console.log(res)
+                if(res.status == 200 && res.data.status == 200) {
+                    this.$router.push('/admin/resetpassword')
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+    }
+}
 </script>
 
 <style scoped>
