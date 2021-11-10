@@ -1,13 +1,65 @@
 <template>
   <div>
-      <button @click="setModeUser()">Users</button>
-      <button @click="setModeSeller()">Sellers</button>
-      <div v-if="mode">
-          {{userlist}}
+      <b-tabs content-class="mt-3">
+        <b-tab title="Users" active>
+          <div>
+            <b-card v-for="user,idx in userlist" :key="idx">
+                <div>Name: {{user.display_name}}</div>
+                <div>Email: {{user.email}}</div>
+                <div>Phone: {{user.phone}}</div>
+                <div>Credit points earned: {{user.credit_points}}</div>
+                <div>Money Saved: {{user.money_saved}}</div>
+            </b-card>
+          </div>
+        </b-tab>
+        <b-tab title="Sellers">
+          <div>
+            <b-card v-for="shop,idx in sellerlist" :key="idx">
+                <div>Address {{shop.address}}</div>
+                <div>Category {{shop.category}}</div>
+                <div>Contact no {{shop.contact_no}}</div>
+                <div>Name {{shop.display_name}}</div>
+                <div>Email {{shop.email}}</div>
+                <div>Owner Name {{shop.owner_name}}</div>
+                <div>Products
+                    <ul>
+                        <li v-for="prd,i in shop.products" :key=i>
+                            {{prd}}
+                        </li>
+                    </ul>
+                </div>
+                <div>Shop Name {{shop.shop_name}}</div>
+            </b-card>
+          </div>
+        </b-tab>
+      </b-tabs>
+      <!-- <div v-if="mode">
+          <b-card v-for="user,idx in userlist" :key="idx">
+                <div>Name: {{user.display_name}}</div>
+                <div>Email: {{user.email}}</div>
+                <div>Phone: {{user.phone}}</div>
+                <div>Credit points earned: {{user.credit_points}}</div>
+                <div>Money Saved: {{user.money_saved}}</div>
+          </b-card>
       </div>
       <div v-else>
-          {{sellerlist}}
-      </div>
+            <b-card v-for="shop,idx in sellerlist" :key="idx">
+                <div>Address {{shop.address}}</div>
+                <div>Category {{shop.category}}</div>
+                <div>Contact no {{shop.contact_no}}</div>
+                <div>Name {{shop.display_name}}</div>
+                <div>Email {{shop.email}}</div>
+                <div>Owner Name {{shop.owner_name}}</div>
+                <div>Products
+                    <ul>
+                        <li v-for="prd,i in shop.products" :key=i>
+                            {{prd}}
+                        </li>
+                    </ul>
+                </div>
+                <div>Shop Name {{shop.shop_name}}</div>
+            </b-card>
+      </div> -->
       <button @click="gotoAdminHome()">Admin Home</button>
   </div>
 </template>
@@ -69,5 +121,19 @@ export default {
 </script>
 
 <style>
-
+button {
+  width: fit-content;
+  padding: 7px 10px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid rgb(0, 195, 255);
+  color: white;
+  font-size: 20px;
+  background: rgb(0, 195, 255);
+  margin: 20px 20px 0px 0px;
+  transition: 0.2s ease-in-out;
+}
+button:hover {
+  opacity: 0.5;
+}
 </style>

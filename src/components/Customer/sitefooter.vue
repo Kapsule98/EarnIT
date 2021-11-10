@@ -37,7 +37,6 @@
       >
         <div class="w3-col m2 s6" style="margin-top: 10px">
           <a href=""><div class="coltop">ABOUT</div></a>
-          <a href=""><div>Contact Us</div></a>
           <a href="/about"><div>About Us</div></a>
           <a href="/admin/register"><div>Admin</div></a>
         </div>
