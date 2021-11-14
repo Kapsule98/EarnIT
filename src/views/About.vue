@@ -75,14 +75,14 @@
             <team
               name="Sameer Ranjan"
               designation="Founder"
-              :image="require('../assets/sameer.png')"
+              :image="require('../assets/sameer.jpg')"
             ></team>
           </div>
           <div class="w3-col m4">
             <team
               name="Shishir Ranjan"
               designation="Co-founder"
-              :image="require('../assets/shishir.png')"
+              :image="require('../assets/shishir.jpg')"
             ></team>
           </div>
           <div class="w3-col m4">
