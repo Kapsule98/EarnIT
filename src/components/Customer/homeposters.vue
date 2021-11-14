@@ -8,7 +8,7 @@
         <img class="cat_cir_img" src="../../assets/health.jpg" alt=".." />
       </router-link>
       <router-link :to="{ path: '/search', query: { category: 'Grocery' } }">
-        <img class="cat_cir_img" src="../../assets/grocery.png" alt=".." />
+        <img class="cat_cir_img" src="../../assets/grocery.jpg" alt=".." />
       </router-link>
       <router-link :to="{ path: '/search', query: { category: 'Furnishing' } }">
         <img class="cat_cir_img" src="../../assets/furnishing.jpg" alt=".." />
