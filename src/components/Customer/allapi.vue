@@ -1,97 +1,112 @@
 <template>
-  <div v-if="mapped.length > 0">
-    <!---->
+  <div>
+    <div v-if="loading">
+      <img
+        class="img"
+        src="../../assets/data-loader.gif"
+        alt="loading..."
+        width="200"
+      />
+    </div>
+    <div v-else>
+      <div v-if="mapped.length > 0">
+        <!---->
 
-    <carousel
-      :autoplayTimeout="3000"
-      :autoplayHoverPause="true"
-      :responsive="{
-        0: { items: 1, nav: false },
-        600: { items: 3, nav: true },
-        1200: { items: 3 },
-      }"
-      :stagePadding="0"
-      :loop="false"
-      :autoplay="true"
-      :nav="false"
-      :dots="false"
-      ><template v-for="offer in mapped">
-        <div
-          v-if="
-            Math.floor(new Date().getTime() / 1000.0) <
-              list.active_offers[offer.index].validity[1] &&
-            Math.floor(new Date().getTime() / 1000.0) >
-              list.active_offers[offer.index].validity[0] &&
-            list.active_offers[offer.index].quantity > 0
-          "
-          :key="offer.length"
-          class="hovclass"
-        >
-          <router-link
-            :to="{
-              path: '/seller',
-              query: {
-                seller: list.active_offers[offer.index].seller_email,
-              },
-            }"
-          >
-            <div class="couponhome">
-              <div class="c2-back">
-                <imgstore
-                  :email="list.active_offers[offer.index].seller_email"
-                ></imgstore>
-              </div>
-              <div class="c2-left">
-                {{ list.active_offers[offer.index].quantity }} coupons left
-              </div>
-            </div>
+        <carousel
+          :autoplayTimeout="3000"
+          :autoplayHoverPause="true"
+          :responsive="{
+            0: { items: 1, nav: false },
+            600: { items: 3, nav: true },
+            1200: { items: 3 },
+          }"
+          :stagePadding="0"
+          :loop="false"
+          :autoplay="true"
+          :nav="false"
+          :dots="false"
+          ><template v-for="offer in mapped">
             <div
-              class="l-offer"
-              v-if="list.active_offers[offer.index].type === 'ITEM_DISCOUNT'"
+              v-if="
+                Math.floor(new Date().getTime() / 1000.0) <
+                  list.active_offers[offer.index].validity[1] &&
+                Math.floor(new Date().getTime() / 1000.0) >
+                  list.active_offers[offer.index].validity[0] &&
+                list.active_offers[offer.index].quantity > 0
+              "
+              :key="offer.length"
+              class="hovclass"
             >
-              <span class="offno">{{ offer.value }}%</span> off on
-              <span
-                v-b-tooltip.hover
-                :title="list.active_offers[offer.index].products + ' '"
+              <router-link
+                :to="{
+                  path: '/seller',
+                  query: {
+                    seller: list.active_offers[offer.index].seller_email,
+                  },
+                }"
               >
-                <span
-                  v-for="(prods, index1) in list.active_offers[offer.index]
-                    .products"
-                  :key="prods.offer_text"
+                <div class="couponhome">
+                  <div class="c2-back">
+                    <imgstore
+                      :email="list.active_offers[offer.index].seller_email"
+                    ></imgstore>
+                  </div>
+                  <div class="c2-left">
+                    {{ list.active_offers[offer.index].quantity }} coupons left
+                  </div>
+                </div>
+                <div
+                  class="l-offer"
+                  v-if="
+                    list.active_offers[offer.index].type === 'ITEM_DISCOUNT'
+                  "
                 >
-                  {{ list.active_offers[offer.index].products[index1] }}
+                  <span class="offno">{{ offer.value }}%</span> off on
                   <span
-                    v-if="
-                      index1 !=
-                      Object.keys(list.active_offers[offer.index].products)
-                        .length -
-                        1
-                    "
-                    >,
+                    v-b-tooltip.hover
+                    :title="list.active_offers[offer.index].products + ' '"
+                  >
+                    <span
+                      v-for="(prods, index1) in list.active_offers[offer.index]
+                        .products"
+                      :key="prods.offer_text"
+                    >
+                      {{ list.active_offers[offer.index].products[index1] }}
+                      <span
+                        v-if="
+                          index1 !=
+                          Object.keys(list.active_offers[offer.index].products)
+                            .length -
+                            1
+                        "
+                        >,
+                      </span>
+                    </span>
                   </span>
-                </span>
-              </span>
-            </div>
-            <div class="l-offer" v-else>
-              <span class="offno">{{ offer.value }}%</span> off on Total Bill
-            </div>
-            <div class="shopname">
-              {{ list.active_offers[offer.index].seller_display_name }}
+                </div>
+                <div class="l-offer" v-else>
+                  <span class="offno">{{ offer.value }}%</span> off on Total
+                  Bill
+                </div>
+                <div class="shopname">
+                  {{ list.active_offers[offer.index].seller_display_name }}
 
-              <button class="vshop">View Shop</button>
+                  <button class="vshop">View Shop</button>
+                </div>
+                <div class="c2-validity">
+                  offer valid till
+                  {{
+                    moment(
+                      list.active_offers[offer.index].validity[1] * 1000
+                    ).format("MMM Do YY")
+                  }}
+                </div>
+              </router-link>
             </div>
-            <div class="c2-validity">
-              offer valid till
-              {{
-                moment(
-                  list.active_offers[offer.index].validity[1] * 1000
-                ).format("MMM Do YY")
-              }}
-            </div>
-          </router-link>
-        </div>
-      </template>
-    </carousel>
+          </template>
+        </carousel>
+      </div>
+    </div>
   </div>
   <!---->
 </template>
@@ -106,6 +121,7 @@ export default {
   props: ["category", "alloffers"],
   data() {
     return {
+      loading: false,
       list: [],
       result: [],
       mapped: [],
@@ -147,7 +163,8 @@ export default {
         })
         .catch((err) => {
           console.error(err);
-        });
+        })
+        .finally(() => (this.loading = false));
     },
   },
 };
@@ -281,6 +298,9 @@ export default {
   width: 100%;
   height: 220px;
   z-index: -1;
+  background: url("../../assets/dribbble-loader-green.gif");
+  background-position: center;
+  background-repeat: no-repeat;
 }
 a {
   text-decoration: none;

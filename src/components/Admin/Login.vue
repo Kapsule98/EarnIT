@@ -1,5 +1,6 @@
 <template>
   <div>
+    <spinner v-if="loading"></spinner>
     <div class="login-box">
       <div class="login-header-box">
         <div class="login-header" style="border-bottom: none">Login</div>
@@ -31,11 +32,14 @@
 <script>
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import spinner from "../Customer/spinner.vue";
 export default {
+  components: { spinner },
   data() {
     return {
       username: "",
       password: "",
+      loading: false,
     };
   },
   methods: {
@@ -44,6 +48,7 @@ export default {
       this.password = "";
     },
     login() {
+      this.loading = true;
       const url = BASE_URL + "/admin/login";
       const payload = {
         username: this.username,
@@ -66,7 +71,8 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-        });
+        })
+        .finally(() => (this.loading = false));
     },
     gotoRegister() {
       this.$router.push("/admin/register");

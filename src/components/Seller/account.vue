@@ -11,7 +11,7 @@
       link5=""
       active3="active_nav"
     ></topnav>
-
+    <spinner v-if="loading"></spinner>
     <div class="w3-card c-m" style="background: white; margin-top: -30px">
       <div class="showfilter">
         <button class="showbtn" v-on:click="showFilter()">
@@ -145,12 +145,14 @@ import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "./topnav.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import Spinner from "../Customer/spinner.vue";
 export default {
   components: {
     topnav,
     Sitefooter,
+    Spinner,
   },
-  data() {
+  Spinnerta() {
     return {
       user: {},
       status: undefined,
@@ -162,6 +164,7 @@ export default {
       prod: [],
       del: [],
       myToggle: false,
+      loading: false,
     };
   },
   mounted() {
@@ -197,6 +200,7 @@ export default {
       document.getElementsByClassName("reduce")[0].style.display = "none";
     },
     getProducts() {
+      this.loading = true;
       const url = BASE_URL + "/seller/product";
       let JWTToken = this.$session.get("token");
       axios
@@ -206,9 +210,11 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-        });
+        })
+        .finally(() => (this.loading = false));
     },
     addProduct() {
+      this.loading = true;
       if (this.addproduct !== null) {
         this.prod.push(this.addproduct);
         const payload = {
@@ -227,11 +233,13 @@ export default {
           .catch((error) => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
-          });
+          })
+          .finally(() => (this.loading = false));
         this.$router.go();
       }
     },
     deleteProduct(products) {
+      this.loading = true;
       this.del.push(products);
 
       const offersurl = BASE_URL + "/seller/product";
@@ -249,7 +257,8 @@ export default {
         .then(() => {})
         .catch((err) => {
           console.log(err);
-        });
+        })
+        .finally(() => (this.loading = false));
       this.$router.go();
     },
     getEarning() {

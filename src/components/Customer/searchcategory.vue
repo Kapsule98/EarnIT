@@ -34,7 +34,7 @@
       :landing="true"
     ></topnav>
     <!--<allcatrgories></allcatrgories>-->
-
+    <spinner v-if="loading"></spinner>
     <div class="w3-row">
       <div class="showfilter">
         <p style="padding: 10px; float: left">
@@ -270,8 +270,9 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import Bottomnav from "./bottomnav.vue";
 import Imgstore from "./imgstore.vue";
+import Spinner from "./spinner.vue";
 export default {
-  components: { topnav, Sitefooter, Bottomnav, Imgstore },
+  components: { topnav, Sitefooter, Bottomnav, Imgstore, Spinner },
   props: {
     category: {
       type: String,
@@ -286,6 +287,7 @@ export default {
       mapped: [],
       allcategories: [],
       discfilter: 0,
+      loading: false,
     };
   },
   mounted() {
@@ -350,6 +352,7 @@ export default {
     },
 
     getAllOffers() {
+      this.loading = true;
       const offersurl = BASE_URL + "/get_all_offers";
       let JWTToken = this.$session.get("token");
       axios
@@ -381,7 +384,8 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-        });
+        })
+        .finally(() => (this.loading = false));
     },
   },
 };
@@ -515,6 +519,9 @@ export default {
   width: 100%;
   height: 220px;
   z-index: -1;
+  background: url("../../assets/dribbble-loader-green.gif");
+  background-position: center;
+  background-repeat: no-repeat;
 }
 a {
   text-decoration: none;

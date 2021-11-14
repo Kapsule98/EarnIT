@@ -14,7 +14,7 @@
       link5=""
     >
     </topnav>
-
+    <spinner v-if="loading"></spinner>
     <div class="login-box">
       <div class="login-header-box">
         <div class="login-header" style="border-bottom: none">
@@ -93,10 +93,12 @@ import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "../Seller/topnav.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import Spinner from "../Customer/spinner.vue";
 export default {
-  components: { topnav, Sitefooter },
+  components: { topnav, Sitefooter, Spinner },
   data() {
     return {
+      loading: false,
       username: "",
       otp: "",
       password: "",
@@ -113,6 +115,7 @@ export default {
   mounted() {},
   methods: {
     sendmail() {
+      this.loading = true;
       const payload = {
         username: this.username,
       };
@@ -141,9 +144,11 @@ export default {
         .catch((error) => {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
-        });
+        })
+        .finally(() => (this.loading = false));
     },
     resetPassword() {
+      this.loading = true;
       if (this.password === this.cnfpassword) {
         this.finalpassword = this.password;
       } else {
@@ -181,7 +186,8 @@ export default {
         .catch((error) => {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
-        });
+        })
+        .finally(() => (this.loading = false));
     },
     openlogin() {
       this.$router.push("/login");

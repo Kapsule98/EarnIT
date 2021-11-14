@@ -24,6 +24,7 @@
             Verify Email
           </button>
         </div>
+        An OTP has been sent to your mail. Check in spam if not found.
       </div>
     </div>
   </div>
