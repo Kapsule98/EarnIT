@@ -120,7 +120,7 @@
             >
               <div class="top_categories">
                 <img
-                  src="../../assets/grocery.png"
+                  src="../../assets/grocery.jpg"
                   alt="ss"
                   width="100%"
                   class="catimg"
