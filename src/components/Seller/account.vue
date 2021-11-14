@@ -152,7 +152,7 @@ export default {
     Sitefooter,
     Spinner,
   },
-  Spinnerta() {
+  data() {
     return {
       user: {},
       status: undefined,
