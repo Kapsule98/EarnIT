@@ -4,16 +4,19 @@
     <b-card class="back">
       <div class="w3-col m3"><br /></div>
       <div class="w3-col m6">
-        <div v-for="(req, idx) in reqList" :key="idx">
-          {{ req }}
-          <button @click="decide(req, 1)" class="login-button">Approve</button>
-          <button @click="decide(req, 0)" class="login-button">Deny</button>
-        </div>
+        <b-card class="card">
+          <div v-for="(req, idx) in reqList" :key="idx" class="admin-request">
+            <div>{{req.email}}</div>
+            <div>{{req.display_name}}</div>
+            <button @click="decide(req, 1)" class="button">Approve</button>
+            <button @click="decide(req, 0)" class="button deny">Deny</button>
+          </div>
+        </b-card>
         <div>
-          <button @click="gotoShopManagement" class="login-button">
-            Shop management
+          <button @click="gotoAdminHome" class="button">
+            Admin Home
           </button>
-          <button @click="logout" class="login-button logout">Logout</button>
+          <button @click="logout" class="button deny">Logout</button>
         </div>
       </div>
     </b-card>
@@ -70,6 +73,10 @@ export default {
         .post(url, payload, options)
         .then((res) => {
           console.log(res);
+          if(res.status === 200) {
+            alert(res.data);
+          }
+          this.$router.go();
         })
         .catch((err) => {
           console.log(err);
@@ -79,8 +86,8 @@ export default {
       localStorage.clear();
       this.$router.push("/");
     },
-    gotoShopManagement() {
-      this.$router.push("/admin/shop");
+    gotoAdminHome() {
+      this.$router.push("/admin/home");
     },
   },
 };
@@ -92,20 +99,24 @@ export default {
   background: rgb(215, 239, 250);
   padding: 40px 10px;
 }
-.login-button {
-  width: 100%;
-  padding: 10px;
+.button {
+  width: fit-content;
+  padding: 7px 10px;
   text-align: center;
   border-radius: 5px;
   border: 1px solid rgb(0, 195, 255);
   color: white;
   font-size: 20px;
   background: rgb(0, 195, 255);
-  margin: 20px 0px;
+  margin: 20px 20px 0px 0px;
   transition: 0.2s ease-in-out;
 }
-.login-button:hover {
+.button:hover {
   opacity: 0.5;
+}
+.deny {
+  background: rgba(165, 0, 0, 0.884);
+  border: 1px solid rgba(165, 0, 0, 0.884);
 }
 .logout {
   background: rgba(165, 0, 0, 0.884);

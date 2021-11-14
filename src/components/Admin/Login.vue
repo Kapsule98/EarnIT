@@ -24,6 +24,7 @@
 
         <button @click="login" class="login-button">Login as admin</button>
         <button @click="gotoRegister" class="login-button">Register</button>
+        <a href="/admin/forgotpassword" style="float: right">forgot password?</a>
       </div>
     </div>
   </div>
@@ -61,7 +62,7 @@ export default {
             if (res.data.status === 200) {
               alert(res.data.msg);
               localStorage.adminJWT = res.data.jwt;
-              this.$router.push("/admin/permission");
+              this.$router.push("/admin/home");
             }
           } else {
             this.init();
