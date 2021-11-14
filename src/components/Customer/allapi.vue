@@ -3,7 +3,7 @@
     <div v-if="loading">
       <img
         class="img"
-        src="../../assets/data-loader.gif"
+        src="../../assets/dribbble-loader-green.gif"
         alt="loading..."
         width="200"
       />
