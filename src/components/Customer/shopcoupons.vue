@@ -40,9 +40,13 @@
         <div class="w3-row">
           <div class="w3-twothird" style="padding: 20px">
             <p class="domain">{{ list.category }}</p>
-            <p class="shopname">{{ list.shop_name }}</p>
+            <p class="shopname">{{ list.shop_name }}</p> 
             <p class="shoplocation">
               <i class="fa fa-map-marker"></i> {{ list.address }}
+            </p>
+            <a :href="gmapLink"> Show on map</a>
+            <p>
+              {{Shopbio}}
             </p>
             <p class="shoplocation">
               <i class="fa fa-phone"></i>{{ list.contact_no }}
@@ -273,6 +277,8 @@ export default {
       list: [],
       image: "",
       email: "",
+      Shopbio:"",
+      gmapLink:null,
     };
   },
   mounted() {
@@ -284,7 +290,8 @@ export default {
         this.list = response.data;
         console.log(this.list);
         this.email = this.list.seller_email;
-
+        this.gmapLink = this.list.location;
+        this.getShopBio();
         this.getImage();
       })
       .catch((err) => {
@@ -293,6 +300,17 @@ export default {
       .finally(() => (this.loading = false));
   },
   methods: {
+    getShopBio() {
+      const url = BASE_URL + '/seller/bio?email=' + this.email;
+      axios.get(url).then(res => {
+        if(res.status === 200 && res.data.status ===200) {
+          console.log(res)
+          this.Shopbio = res.data.bio;
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     getImage() {
       const url = BASE_URL + "/seller_image/" + this.email;
       axios
