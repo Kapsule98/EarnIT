@@ -31,17 +31,6 @@
               <!-- Date Joined : 2 jun 2021 | user since 2 months-->
             </p>
             <div class="w3-row">
-              <!--<div class="w3-third">
-                <b-card style="margin: 10px; text-align: center">
-                  <span class="tealbg">{{
-                    coupons_sold.number_customers
-                  }}</span>
-
-                  <template #footer>
-                    <div class="c-head">Number of Customers</div>
-                  </template>
-                </b-card>
-              </div>-->
               <div class="w3-third">
                 <b-card style="margin: 10px; text-align: center">
                   <span class="tealbg">{{ coupons_sold }}</span>
@@ -65,26 +54,6 @@
           </b-card>
         </div>
         <div class="w3-third" style="padding: 20px">
-          <!-- <b-card>
-            <h4 class="mt-3">
-              Shop Status
-              <b-button
-                style="float: right"
-                v-if="myToggle === true"
-                :pressed.sync="myToggle"
-                variant="primary"
-                >OPEN</b-button
-              >
-              <b-button
-                style="float: right"
-                v-else
-                :pressed.sync="myToggle"
-                variant="danger"
-              >
-                CLOSE
-              </b-button>
-            </h4>
-          </b-card>-->
           <div class="filter">
             <div class="closeFilter">
               <button v-on:click="closeFilter()" class="closebtn">close</button>
@@ -106,7 +75,7 @@
                 placeholder="Enter Product Name..."
                 v-model="addproduct"
               />
-              <button class="addprod" v-on:click="addProduct()">
+              <button class="addprod" v-on:click="addNewProduct()">
                 <i class="fa fa-plus"></i>
               </button>
 
@@ -213,8 +182,9 @@ export default {
         })
         .finally(() => (this.loading = false));
     },
-    addProduct() {
+    addNewProduct() {
       this.loading = true;
+      console.log(this.addProduct)
       if (this.addproduct !== null) {
         this.prod.push(this.addproduct);
         const payload = {

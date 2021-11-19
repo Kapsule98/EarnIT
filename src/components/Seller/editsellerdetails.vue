@@ -87,9 +87,30 @@
                   ></b-form-input>
                 </td>
               </tr>
+              <tr>
+                <td class="detail">Shop Bio</td>
+                <td class="description">
+                  <b-form-input
+                    type="text"
+                    v-model="bio"
+                  ></b-form-input>
+                </td>
+              </tr>
+              <tr>
+                <td class="detail">Location</td>
+                <td class="description">
+                  <b-form-input
+                    type="text"
+                    v-model="location"
+                  ></b-form-input>
+                </td>
+              </tr>
+              <tr>
+                <td class="detail"> <a :href="location">View on map</a> </td>
+              </tr>
             </table>
           </form>
-          <GmapMap
+          <!-- <GmapMap
             :center="{ lat: 21.1938, lng: 81.3509 }"
             :zoom="12"
             map-type-id="terrain"
@@ -103,7 +124,7 @@
               :clickable="true"
               :draggable="true"
             />
-          </GmapMap>
+          </GmapMap> -->
           <b-button
             variant="primary"
             style="float: right; margin: 10px"
@@ -146,13 +167,15 @@ export default {
       shop_address: this.$session.get("user_data").address,
       shop_contact: this.$session.get("user_data").contact_no,
       shop_category: this.$session.get("user_data").category,
-      location: [],
+      location:this.$session.get("user_data").location,
+      bio:"",
       image: "",
       allcategories: [],
       dp: "",
     };
   },
   mounted() {
+    this.getShopBio();
     if (this.$session.get("user_type") === "seller") {
       document.getElementsByClassName("topnav")[0].style.height = "70px";
     }
@@ -206,12 +229,6 @@ export default {
           console.log(err);
         });
     },
-    mark(event) {
-      this.location = [event.latLng.lat(), event.latLng.lng()];
-      this.$session.set("user_data".location, this.location);
-      console.log(this.$session.get("userdata".location));
-    },
-
     updateDetails() {
       var r = confirm("You will need to signin again to update your changes!");
       if (r == true) {
@@ -219,6 +236,7 @@ export default {
           this.updateShopName();
         }
         if (this.location) {
+          console.log("updating location")
           this.updateLocation();
         }
         if (this.shop_contact) {
@@ -226,6 +244,9 @@ export default {
         }
         if (this.address) {
           this.updateAddress();
+        }
+        if (this.bio) {
+          this.updateBio();
         }
       }
     },
@@ -253,6 +274,7 @@ export default {
     },
 
     updateLocation() {
+      console.log("updating location",this.location)
       const payload = {
         location: this.location,
       };
@@ -271,10 +293,40 @@ export default {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
-
-      console.log(this.shop_location);
     },
-
+    getShopBio() {
+      const url = BASE_URL + '/seller/bio';
+      const accessToken = this.$session.get("token");
+      const options = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      axios.get(url,options).then(res => {
+        if(res.status === 200 && res.data.status ===200) {
+          this.bio = res.data.bio;
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    updateBio() {
+      const url = BASE_URL + '/seller/bio';
+      const payload = {
+        'bio':this.bio
+      }
+      const accessToken = this.$session.get("token");
+      const options = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      axios.post(url,payload,options).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      }) 
+    },
     updateContact() {
       const payload = {
         contact: this.shop_contact,
