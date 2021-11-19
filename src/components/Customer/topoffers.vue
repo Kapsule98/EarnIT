@@ -6,9 +6,9 @@
       :autoplayTimeout="3000"
       :autoplayHoverPause="true"
       :responsive="{
-        0: { items: 1, nav: false },
-        600: { items: 3, nav: true },
-        1200: { items: 3 },
+        0: { items: 2, nav: false },
+        600: { items: 5, nav: true },
+        1200: { items: 5 },
       }"
       :stagePadding="0"
       :loop="false"
@@ -77,16 +77,16 @@
             <div class="shopname">
               {{ list.offers[offer.index].display_name }}
 
-              <button class="vshop">View Shop</button>
+              <!-- <button class="vshop">View Shop</button> -->
             </div>
-            <div class="c2-validity">
+            <!-- <div class="c2-validity">
               offer valid till
               {{
                 moment(list.offers[offer.index].validity[1] * 1000).format(
                   "DD-MM-YYYY"
                 )
               }}
-            </div>
+            </div> -->
           </router-link>
         </div>
       </template>
@@ -118,11 +118,11 @@ export default {
   methods: {
     getAllOffers() {
       const offersurl = BASE_URL + this.category;
-      // let JWTToken = this.$session.get("token");
       axios
         .get(offersurl)
         .then((response) => {
           this.list = response.data;
+          console.log(response.data);
           if (this.list.offers.length === 0) {
             localStorage.setItem(this.category + "empty?", true);
           } else {
@@ -132,19 +132,15 @@ export default {
           for (var i = 0; i < this.list.offers.length; i++) {
             discount[i] = this.list.offers[i].discount_percent;
           }
-          // the array to be sorted
 
-          // temporary array holds objects with position and sort-value
           var mapped = discount.map(function (el, i) {
             return { index: i, value: el };
           });
 
-          // sorting the mapped array containing the reduced values
           mapped.sort(function (a, b) {
             return b.value - a.value;
           });
 
-          // container for the resulting order
           var result = mapped.map(function (el) {
             return discount[el.index];
           });
@@ -162,7 +158,7 @@ export default {
 .couponhome {
   position: relative;
   width: 90%;
-  height: 220px;
+  height: 140px;
   margin: 10px auto 0px auto;
   background: rgba(0, 0, 0, 0.082);
   overflow: hidden;
@@ -183,7 +179,7 @@ export default {
   margin-left: 5%;
   margin-right: 5%;
   padding: 10px;
-  font-size: 20px;
+  font-size: 16px;
   color: rgb(92, 92, 92);
   text-transform: capitalize;
 }
@@ -285,7 +281,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 220px;
+  height: 140px;
   z-index: -1;
   /* background: radial-gradient(rgb(0, 132, 255), rgb(0, 195, 255)); */
   background: url("../../assets/dribbble-loader-green.gif");

@@ -3,7 +3,7 @@
     <img src="../../assets/def.png" width="100%" height="220px" />
   </div>
   <div v-else>
-    <img :src="image" width="100%" height="220px" />
+    <img :src="image" width="100%" height="140px" />
   </div>
 </template>
 

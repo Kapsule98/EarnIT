@@ -2,24 +2,30 @@
   <div>
     <div class="cat_tab">
       <router-link :to="{ path: '/search', query: { category: 'Fashion' } }">
-        <img class="cat_cir_img" src="../../assets/fashion.jpg" alt=".."
-      /></router-link>
+        <img class="cat_cir_img" src="../../assets/fashion.jpg" alt=".." />
+        <div class="caption">fashion</div></router-link
+      >
       <router-link :to="{ path: '/search', query: { category: 'Health' } }">
         <img class="cat_cir_img" src="../../assets/health.jpg" alt=".." />
+        <div class="caption">health</div>
       </router-link>
       <router-link :to="{ path: '/search', query: { category: 'Grocery' } }">
         <img class="cat_cir_img" src="../../assets/grocery.jpg" alt=".." />
+        <div class="caption">grocery</div>
       </router-link>
       <router-link :to="{ path: '/search', query: { category: 'Furnishing' } }">
         <img class="cat_cir_img" src="../../assets/furnishing.jpg" alt=".." />
+        <div class="caption">furniture</div>
       </router-link>
       <router-link :to="{ path: '/search', query: { category: 'Food' } }">
         <img class="cat_cir_img" src="../../assets/food.jpg" alt=".." />
+        <div class="caption">food</div>
       </router-link>
       <router-link
         :to="{ path: '/search', query: { category: 'Electronics' } }"
       >
         <img class="cat_cir_img" src="../../assets/electronics.jpg" alt=".." />
+        <div class="caption">electronics</div>
       </router-link>
     </div>
     <carousel
@@ -97,6 +103,7 @@ a:hover {
 .cat_tab {
   display: none;
 }
+
 @media screen and (max-width: 600px) {
   .homeposters {
     width: 98% !important;
@@ -106,7 +113,7 @@ a:hover {
   .cat_tab {
     display: block;
     width: 100%;
-    height: 80px;
+    height: 110px;
     overflow-y: hidden;
     overflow-x: auto;
     display: flex;
@@ -120,7 +127,15 @@ a:hover {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    margin: 10px 7px;
+    margin: 10px 7px 2px 7px;
+  }
+  .caption {
+    display: block;
+    font-size: 18px;
+    color: black;
+    line-height: 1;
+    text-align: center;
+    text-transform: capitalize;
   }
 }
 </style>

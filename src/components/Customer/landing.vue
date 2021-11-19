@@ -1,6 +1,7 @@
 <template>
   <div>
-    <topnav
+    <testing></testing>
+    <!-- <topnav
       v-if="this.$session.get('user_type') !== 'seller'"
       link3="Account"
       link4='<i class="fa fa-shopping-cart"></i> Cart '
@@ -33,14 +34,15 @@
       :searchbar="true"
       :display_categories="true"
       :landing="true"
-    ></topnav>
+    ></topnav> -->
 
     <loader v-if="isLoading"></loader>
-    <homeposters style="margin-top: -30px; width: 100%"></homeposters>
+    <!-- <homeposters style="margin-top: -30px; width: 100%"></homeposters> -->
+    <product></product>
+    <br /><br />
     <div class="backwrap">
-      <div class="lessm">
+      <!-- <div class="lessm">
         <div class="w3-row" style="background-color: #e8e8e8">
-          <!--5-6 Categories like pharmacy etc on clicking on it more products of this kind will be shown>-->
           <div class="w3-col m2 s4">
             <router-link
               :to="{ path: '/search', query: { category: 'Fashion' } }"
@@ -130,9 +132,8 @@
             </router-link>
           </div>
         </div>
-      </div>
-
-      <b-card style="margin-top: 4px; border: none; border-radius: 0">
+      </div> -->
+      <!-- <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h4 style="padding: 0px">
           Grab maximum discounts!
           <router-link :to="{ path: '/search', query: { alloffers: true } }"
@@ -143,8 +144,9 @@
         <div class="w3-container" style="padding: 20px 0px">
           <allapi></allapi>
         </div>
-      </b-card>
-      <b-card style="margin-top: 4px; border: none; border-radius: 0">
+      </b-card> -->
+
+      <!-- <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h4 style="padding: 20px">
           Grocery<router-link
             :to="{ path: '/search', query: { category: 'Grocery' } }"
@@ -153,7 +155,6 @@
         </h4>
 
         <topoffers category="/get_offers_by_category/Grocery"></topoffers>
-        <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
       </b-card>
       <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h4 style="padding: 20px">
@@ -165,7 +166,6 @@
 
         <topoffers category="/get_offers_by_category/Food"></topoffers>
 
-        <!--<catoffers category="/get_offers_by_category/Food"></catoffers>-->
       </b-card>
       <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h4 style="padding: 20px">
@@ -177,7 +177,6 @@
         </h4>
 
         <topoffers category="/get_offers_by_category/Electronics"></topoffers>
-        <!--<catoffers category="/get_offers_by_category/Electronics"></catoffers>-->
       </b-card>
       <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h4 style="padding: 20px">
@@ -188,7 +187,6 @@
         </h4>
 
         <topoffers category="/get_offers_by_category/Fashion"></topoffers>
-        <!--<catoffers category="/get_offers_by_category/Fashion"></catoffers>-->
       </b-card>
       <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h4 style="padding: 20px">
@@ -199,7 +197,6 @@
         </h4>
 
         <topoffers category="/get_offers_by_category/Health"></topoffers>
-        <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
       </b-card>
       <b-card style="margin-top: 4px; border: none; border-radius: 0">
         <h4 style="padding: 20px">
@@ -210,8 +207,7 @@
         </h4>
 
         <topoffers category="/get_offers_by_category/Furniture"></topoffers>
-        <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
-      </b-card>
+      </b-card> -->
 
       <bottomnav v-if="this.$session.get('user_type') !== 'seller'"></bottomnav>
       <sitefooter></sitefooter>
@@ -219,23 +215,27 @@
   </div>
 </template>
 <script>
-import topnav from "../Seller/topnav.vue";
-import homeposters from "./homeposters.vue";
-import topoffers from "./topoffers.vue";
+// import topnav from "../Seller/topnav.vue";
+// import homeposters from "./homeposters.vue";
+// import topoffers from "./topoffers.vue";
 import Sitefooter from "./sitefooter.vue";
 //import Catoffers from "./catoffers.vue";
-import Allapi from "./allapi.vue";
+// import Allapi from "./allapi.vue";
 import loader from "../Seller/loader.vue";
 import Bottomnav from "./bottomnav.vue";
+import Testing from "./testing.vue";
+import Product from "./product.vue";
 export default {
   components: {
-    topnav,
+    // topnav,
     Sitefooter,
-    topoffers,
-    homeposters,
-    Allapi,
+    // topoffers,
+    // homeposters,
+    // Allapi,
     Bottomnav,
     loader,
+    Testing,
+    Product,
   },
   data() {
     return {
