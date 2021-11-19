@@ -306,16 +306,6 @@
         ></b-form-input>
         <div class="mt-2">Value: {{ quantity }}</div>
         <br />
-        <label for="range-1">Minimum Purchase</label>
-        <b-form-input
-          id="range-1"
-          v-model="min_val"
-          type="range"
-          min="0"
-          max="5000"
-          step="100"
-        ></b-form-input>
-        <div class="mt-2">Value: Rs {{ min_val }}</div>
         <b-form-group
           label="Discount type"
           v-slot="{ ariaDescribedby }"
@@ -330,6 +320,16 @@
         </b-form-group>
 
         <div v-if="discountType === 'ITEM_DISCOUNT'">
+          <label for="range-0">Minimum Purchase</label>
+          <b-form-input
+            id="range-0"
+            v-model="min_val"
+            type="range"
+            min="0"
+            max="5000"
+            step="100"
+          ></b-form-input>
+          <div class="mt-2">Value: Rs {{ min_val }}</div>
           <label for="range-1">Discount percent on item</label>
           <b-form-input
             id="range-1"
@@ -349,6 +349,16 @@
           <br />
         </div>
         <div v-if="discountType === 'BILL_DISCOUNT'">
+          <label for="range-0">Minimum Purchase</label>
+          <b-form-input
+            id="range-0"
+            v-model="min_val"
+            type="range"
+            min="0"
+            max="5000"
+            step="100"
+          ></b-form-input>
+          <div class="mt-2">Value: Rs {{ min_val }}</div>
           <label for="range-2">Discount percent on total bill</label>
           <b-form-input
             id="range-2"
@@ -362,9 +372,31 @@
           </div>
           <br />
         </div>
-        <div v-if="discountType === 'dextraitem'">
-          <label><span style="padding: 2px 5px">Enter offer :</span></label
-          ><input type="text" v-model="customdiscount" />
+        <div v-if="discountType === 'FIXED'">
+          <label for="range-1">Fixed price discount</label>
+          <label><span style="padding: 2px 5px">Orignal Price:</span></label>
+          <div class="offer_text">
+            <input
+              type="text"
+              v-model="mrp"
+              placeholder="Orignal MRP of product"
+            />
+          </div>
+          <label><span style="padding: 2px 5px">Offered Price:</span></label>
+          <div class="offer_text">
+            <input
+              type="text"
+              v-model="offerPrice"
+              placeholder="Offered price of product"
+            />
+          </div>
+          <multiselect
+            placeholder="Select Product/s"
+            v-model="products"
+            :options="getproducts.products"
+            :multiple="true"
+          />
+          <br />
         </div>
         <div v-if="discountType != ''">
           <label><span style="padding: 2px 5px">Validity</span> </label>
@@ -427,7 +459,7 @@ export default {
       dTypeoptions: [
         { text: "Discount on item", value: "ITEM_DISCOUNT" },
         { text: "Discount on total bill", value: "BILL_DISCOUNT" },
-        //{ text: "Extra Items", value: "ITEM_FREE" },
+        { text: "Fixed price offer", value: "FIXED" },
       ],
       itemdiscountpercent: "",
       billdiscountpercent: "",
@@ -446,6 +478,8 @@ export default {
       rdiscountType: "",
       rdiscount_percent: "",
       rmin_val: "",
+      mrp:"",
+      offerPrice:"",
     };
   },
   mounted() {
@@ -647,6 +681,8 @@ export default {
           quantity: parseInt(this.quantity),
           min_val: parseInt(this.min_val),
           products: this.products,
+          mrp:parseInt(this.mrp),
+          offer_price:parseInt(this.offerPrice)
         },
       };
 

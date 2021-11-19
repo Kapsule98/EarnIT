@@ -75,7 +75,7 @@
                 placeholder="Enter Product Name..."
                 v-model="addproduct"
               />
-              <button class="addprod" v-on:click="addProduct()">
+              <button class="addprod" v-on:click="addNewProduct()">
                 <i class="fa fa-plus"></i>
               </button>
 
@@ -182,8 +182,9 @@ export default {
         })
         .finally(() => (this.loading = false));
     },
-    addProduct() {
+    addNewProduct() {
       this.loading = true;
+      console.log(this.addProduct)
       if (this.addproduct !== null) {
         this.prod.push(this.addproduct);
         const payload = {
