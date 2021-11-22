@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <img :src="image" width="100%" height="220px" />
+  <div v-if="def">
+    <img src="../../assets/def.png" width="100%" height="220px" />
+  </div>
+  <div v-else>
+    <img :src="image" width="100%" height="140px" />
   </div>
 </template>
 
@@ -13,6 +16,7 @@ export default {
   data() {
     return {
       image: "",
+      def: false,
     };
   },
   mounted() {
@@ -22,6 +26,12 @@ export default {
       .get(offersurl)
       .then((response) => {
         this.image = response.data.toString();
+
+        if (response.status !== 200) {
+          this.def = true;
+        } else {
+          this.def = false;
+        }
       })
       .catch((err) => {
         console.log(err);

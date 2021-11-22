@@ -15,6 +15,7 @@
       :searchbar="true"
       :display_categories="true"
     ></topnav>
+    <spinner v-if="loading"></spinner>
     <div class="w3-container">
       <div class="w3-card" style="padding: 10px">
         <h3 style="border-bottom: 1px solid #cccccc; padding: 10px">
@@ -71,18 +72,13 @@
         <br /><br /><br />
         <h3 style="margin: 20px">How Coins can be used?</h3>
         <p style="margin: 20px">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla
-          dolorum similique, aliquid id voluptatem laudantium veritatis, illo
-          molestias magni tempore praesentium quidem quas animi adipisci?
-          Adipisci consequuntur, illo perferendis minus autem suscipit voluptas
-          quis nesciunt sunt tenetur alias consequatur accusantium fugiat sequi
-          ut, dolor a id excepturi earum distinctio nulla maxime sint. Quas
-          velit, corporis sed vero minus debitis ad? Soluta veniam cupiditate
-          dolore, repellendus ea error ullam excepturi nesciunt sequi cumque
-          vero laudantium non necessitatibus obcaecati ipsa iusto delectus
-          porro. Non vitae consectetur quod eius vel tempore illum officiis,
-          deleniti laudantium et mollitia velit modi sapiente cumque molestias
-          ad?
+          Hello shopping enthusiasts, we have introduced Super Coins to give you
+          more exciting gifts in the form of best coupons or prizes. To avail
+          those gifts, one needs to reach the milestone. Milestones can easily
+          be achieved by shopping more, and earn more Super Coins. Once you
+          reach the milestone, you will get your guaranteed fascinating gifts
+          and rewards. Explora más! Comprar más! Ganar mas! (Explore more! Shop
+          more! Earn more!)
         </p>
         <br /><br /><br />
       </div>
@@ -95,8 +91,9 @@ import topnav from "../Seller/topnav.vue";
 import Sitefooter from "./sitefooter.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import Spinner from "./spinner.vue";
 export default {
-  components: { topnav, Sitefooter },
+  components: { topnav, Sitefooter, Spinner },
   data() {
     return {
       credit: "",
@@ -104,9 +101,11 @@ export default {
       reach2: false,
       reach3: false,
       reach4: false,
+      loading: false,
     };
   },
   mounted() {
+    this.loading = true;
     const offersurl = BASE_URL + "/credit";
     let JWTToken = this.$session.get("token");
     axios
@@ -140,7 +139,8 @@ export default {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => (this.loading = false));
   },
 };
 </script>

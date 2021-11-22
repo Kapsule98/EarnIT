@@ -33,15 +33,20 @@
       :display_categories="true"
       :landing="true"
     ></topnav>
+    <spinner v-if="loading"></spinner>
     <div class="greyback"></div>
     <div class="w3-container mopad">
       <div class="w3-card" style="background: white">
         <div class="w3-row">
           <div class="w3-twothird" style="padding: 20px">
             <p class="domain">{{ list.category }}</p>
-            <p class="shopname">{{ list.shop_name }}</p>
+            <p class="shopname">{{ list.shop_name }}</p> 
             <p class="shoplocation">
               <i class="fa fa-map-marker"></i> {{ list.address }}
+            </p>
+            <a :href="gmapLink"> Show on map</a>
+            <p>
+              {{Shopbio}}
             </p>
             <p class="shoplocation">
               <i class="fa fa-phone"></i>{{ list.contact_no }}
@@ -257,8 +262,9 @@ import Sitefooter from "./sitefooter.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import Bottomnav from "./bottomnav.vue";
+import Spinner from "./spinner.vue";
 export default {
-  components: { topnav, Sitefooter, Bottomnav },
+  components: { topnav, Sitefooter, Bottomnav, Spinner },
   props: {
     seller: {
       type: String,
@@ -267,12 +273,16 @@ export default {
   },
   data() {
     return {
+      loading: false,
       list: [],
       image: "",
       email: "",
+      Shopbio:"",
+      gmapLink:null,
     };
   },
   mounted() {
+    this.loading = true;
     const url = BASE_URL + "/get_offers_by_shop/" + this.seller;
     axios
       .get(url)
@@ -280,14 +290,27 @@ export default {
         this.list = response.data;
         console.log(this.list);
         this.email = this.list.seller_email;
-
+        this.gmapLink = this.list.location;
+        this.getShopBio();
         this.getImage();
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => (this.loading = false));
   },
   methods: {
+    getShopBio() {
+      const url = BASE_URL + '/seller/bio?email=' + this.email;
+      axios.get(url).then(res => {
+        if(res.status === 200 && res.data.status ===200) {
+          console.log(res)
+          this.Shopbio = res.data.bio;
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     getImage() {
       const url = BASE_URL + "/seller_image/" + this.email;
       axios
@@ -320,6 +343,7 @@ export default {
       }
     },
     addToCart(offer_text, email) {
+      this.loading = true;
       if (localStorage.getItem("log") === "true") {
         const payload = {
           offer_text: offer_text,
@@ -347,7 +371,8 @@ export default {
           .catch((error) => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
-          });
+          })
+          .finally(() => (this.loading = false));
       } else {
         this.$router.push("/login");
       }

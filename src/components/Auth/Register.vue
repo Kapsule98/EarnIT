@@ -14,7 +14,7 @@
       url6="/"
     >
     </topnav>
-
+    <spinner v-if="loading"></spinner>
     <div class="login-box">
       <div class="login-header-box">
         <div class="login-header" style="border-bottom: none">Register as</div>
@@ -199,10 +199,12 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 // import { Cropper } from "vue-advanced-cropper";
 import "vue-advanced-cropper/dist/style.css";
+import Spinner from "../Customer/spinner.vue";
 export default {
-  components: { topnav, Sitefooter },
+  components: { topnav, Sitefooter, Spinner },
   data() {
     return {
+      loading: false,
       active_time: [],
       opening_time: "",
       closing_time: "",
@@ -283,6 +285,7 @@ export default {
       this.active_time[index] = [this.opening_time];
     },
     Sellersignup() {
+      this.loading = true;
       if (
         this.username === "" ||
         this.password === "" ||
@@ -336,10 +339,12 @@ export default {
           })
           .catch((err) => {
             console.log(err);
-          });
+          })
+          .finally(() => (this.loading = false));
       }
     },
     CustomerSignup() {
+      this.loading = true;
       if (
         this.username === "" ||
         this.password === "" ||
@@ -369,7 +374,8 @@ export default {
           })
           .catch((err) => {
             console.log(err);
-          });
+          })
+          .finally(() => (this.loading = false));
       }
     },
     openTab(type) {

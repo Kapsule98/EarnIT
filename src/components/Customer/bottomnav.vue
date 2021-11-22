@@ -96,7 +96,11 @@ export default {
     };
   },
   mounted() {
-    this.cartitems = localStorage.getItem("cartitems");
+    if ("cartitems" in localStorage) {
+      this.cartitems = localStorage.getItem("cartitems");
+    } else {
+      this.cartitems = 0;
+    }
   },
 };
 </script>

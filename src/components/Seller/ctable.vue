@@ -1,5 +1,6 @@
 <template>
   <div>
+    <spinner v-if="loading"></spinner>
     <input
       type="text"
       id="myInput"
@@ -74,14 +75,18 @@
 <script>
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import spinner from "../Customer/spinner.vue";
 //import moment from "moment";
 export default {
+  components: { spinner },
   data() {
     return {
       history: {},
+      loading: false,
     };
   },
   mounted() {
+    this.loading = true;
     this.user = this.$session.get("user_data");
     const offersurl = BASE_URL + "/seller/history";
     let JWTToken = this.$session.get("token");
@@ -122,7 +127,8 @@ export default {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => (this.loading = false));
   },
   methods: {
     keymonitor: function () {

@@ -15,6 +15,7 @@
       :searchbar="true"
       :display_categories="true"
     ></topnav>
+    <spinner v-if="loading"></spinner>
     <div class="greyback"></div>
     <div class="w3-container">
       <div class="w3-row">
@@ -130,7 +131,7 @@
           </b-card>
         </div>
         <div class="w3-quarter p-card">
-          <b-card style="margin-top: 0px">
+          <!-- <b-card style="margin-top: 0px">
             <h4>You may be intrested in</h4>
             <div class="couponhome">
               <div class="c2-back">
@@ -143,7 +144,7 @@
               <div class="c2-shop">Rakesh Digital</div>
               <div class="c2-validity">offer valid til 2 jun 2021</div>
             </div>
-          </b-card>
+          </b-card> -->
         </div>
       </div>
     </div>
@@ -157,8 +158,9 @@ import Sitefooter from "./sitefooter.vue";
 import { BASE_URL } from "../../utils/constants";
 import axios from "axios";
 import Bottomnav from "./bottomnav.vue";
+import Spinner from "./spinner.vue";
 export default {
-  components: { topnav, Sitefooter, Bottomnav },
+  components: { topnav, Sitefooter, Bottomnav, Spinner },
   data() {
     return {
       cart: [],
@@ -168,6 +170,7 @@ export default {
       nextTime: "",
       showstatus: true,
       empty: false,
+      loading: false,
     };
   },
   mounted() {
@@ -183,6 +186,7 @@ export default {
   },
   methods: {
     redeemOffer(offer_text, email) {
+      this.loading = true;
       var r = confirm(
         "After reedeming the coupon it will be valid only for 5 minutes!"
       );
@@ -218,12 +222,14 @@ export default {
           .catch((error) => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
-          });
+          })
+          .finally(() => (this.loading = false));
       } else {
         document.getElementById("reedem").style.color = "white";
       }
     },
     getCart() {
+      this.loading = true;
       const offersurl = BASE_URL + "/cart";
       let JWTToken = this.$session.get("token");
       console.log(JWTToken);
@@ -243,9 +249,11 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-        });
+        })
+        .finally(() => (this.loading = false));
     },
     removeItem(offer_text, email) {
+      this.loading = true;
       const offersurl = BASE_URL + "/cart";
       let JWTToken = this.$session.get("token");
 
@@ -265,7 +273,8 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-        });
+        })
+        .finally(() => (this.loading = false));
       this.$router.go();
     },
   },
