@@ -1,66 +1,103 @@
 <template>
   <div>
-    <h1 class="heading" style="margin-top: 400px">Exclusive Coupons</h1>
+    <h1 class="heading" style="margin-top: 40px">Exclusive Coupons</h1>
 
     <allapi></allapi>
     <div v-for="iters in allcategories" :key="iters.index">
-      <h1 class="heading" style="margin-top: 0px">{{ iters }} Deals</h1>
+      <h1 class="heading iterdeal" style="margin-top: 0px">
+        {{ iters }} Deals
+      </h1>
 
-      <b-row style="padding: 10px 20px; background: white" no-gutters>
+      <b-row
+        style="padding: 10px 20px; background: white"
+        no-gutters
+        class="iterrow"
+      >
         <b-col sm="12">
-          <b-row no-gutters>
-            <b-col sm="2" cols="6" v-for="no in items" :key="no.index">
-              <router-link to="/product_description">
-                <div class="product_card">
-                  <div>
-                    <img
-                      src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=820&q=80"
-                      alt=""
-                      class="product_img"
-                    />
-                  </div>
-                  <div class="product_name">
-                    Encore Seafoods Stuffed Alaskan Salmon {{ no }}
-                  </div>
-                  <div class="shop_name">by aditya mega mart</div>
-                  <div class="disc">50% OFF</div>
-                  <div class="product_cost">
-                    <i class="fa fa-inr" aria-hidden="true"></i> 500
-                    <del> <i class="fa fa-inr" aria-hidden="true"></i>650</del>
-                  </div>
+          <b-row no-gutters class="product_row">
+            <template v-for="offer in mapped">
+              <b-col
+                sm="2"
+                cols="6"
+                :key="offer.length"
+                v-if="
+                  Math.floor(new Date().getTime() / 1000.0) <
+                    list.active_offers[offer.index].validity[1] &&
+                  Math.floor(new Date().getTime() / 1000.0) >
+                    list.active_offers[offer.index].validity[0] &&
+                  list.active_offers[offer.index].quantity > 0 &&
+                  list.active_offers[offer.index].type === 'FIXED' &&
+                  list.active_offers[offer.index].category === iters
+                "
+              >
+                <router-link to="/product_description">
+                  <div class="product_card">
+                    <div>
+                      <img
+                        :src="list.active_offers[offer.index].image_url"
+                        alt=""
+                        class="product_img"
+                      />
+                    </div>
+                    <div class="product_name">
+                      <span
+                        v-b-tooltip.hover
+                        :title="list.active_offers[offer.index].products + ' '"
+                      >
+                        {{
+                          list.active_offers[offer.index].products.toString()
+                        }}
+                      </span>
+                    </div>
+                    <div class="shop_name">
+                      {{ list.active_offers[offer.index].seller_display_name }}
+                    </div>
+                    <div class="disc">
+                      {{
+                        Math.round(
+                          ((list.active_offers[offer.index].mrp -
+                            list.active_offers[offer.index].offer_price) /
+                            list.active_offers[offer.index].mrp) *
+                            100
+                        )
+                      }}% OFF
+                    </div>
+                    <div class="product_cost">
+                      <i class="fa fa-inr" aria-hidden="true"></i>
+                      {{ list.active_offers[offer.index].offer_price }}
+                      <del>
+                        <i class="fa fa-inr" aria-hidden="true"></i>
+                        {{ list.active_offers[offer.index].mrp }}</del
+                      >
+                    </div>
 
-                  <div class="addtocart">
-                    <b-icon-cart3 mb-2></b-icon-cart3>
+                    <div class="addtocart">
+                      <b-icon-cart3 mb-2></b-icon-cart3>
+                    </div>
                   </div>
-                </div>
-              </router-link>
-            </b-col>
+                </router-link>
+              </b-col>
+            </template>
           </b-row>
         </b-col>
-        <!-- <b-col sm="3" cols="6">
-          <div class="ad_img_wrap">
-            <img :src="image[index]" alt=".." class="ad_img" />
-            <div class="img_fill"></div>
-            <div class="fill_text">
-              Get Best Deals on {{ iters }}
-              <div class="gobutton">
-                View all <b-icon-arrow-right></b-icon-arrow-right>
-              </div>
-            </div></div
-        ></b-col> -->
       </b-row>
-      <div class="viewall">
+      <div class="viewall iterbtn">
         View All <b-icon-arrow-right></b-icon-arrow-right>
       </div>
-      <div class="bbot"></div>
-      <h1 class="heading" style="margin-top: 0px">
-        Latest Coupons in {{ iters }}
-      </h1>
-      <topoffers :category="'/get_offers_by_category/' + iters"></topoffers>
-      <div class="viewall">
-        View All <b-icon-arrow-right></b-icon-arrow-right>
+
+      <div class="showcoupon">
+        <div class="bbot"></div>
+        <h1 class="heading" style="margin-top: 0px">
+          Latest Coupons in {{ iters }}
+        </h1>
+        <topoffers :category="'/get_offers_by_category/' + iters"></topoffers>
+        <div class="viewall">
+          <router-link :to="{ path: '/search', query: { category: iters } }">
+            View All <b-icon-arrow-right></b-icon-arrow-right
+          ></router-link>
+        </div>
+        <div class="bbot iterbot"></div>
       </div>
-      <div class="bbot"></div>
     </div>
   </div>
 </template>
@@ -71,6 +108,8 @@ import { BASE_URL } from "../../utils/constants";
 import Allapi from "./allapi.vue";
 import { BIconCart3, BIconArrowRight } from "bootstrap-vue";
 import Topoffers from "./topoffers.vue";
+// import Imgstore from "./imgstore.vue";
+
 export default {
   components: {
     BIconCart3,
@@ -80,8 +119,11 @@ export default {
   },
   data() {
     return {
-      items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       allcategories: [],
+      loading: false,
+      list: [],
+      result: [],
+      mapped: [],
     };
   },
   mounted() {
@@ -95,11 +137,85 @@ export default {
       .catch((err) => {
         console.log(err);
       });
+    this.getAllOffers();
+  },
+  methods: {
+    getAllOffers() {
+      const offersurl = BASE_URL + "/get_all_offers";
+      axios
+        .get(offersurl)
+        .then((response) => {
+          this.list = response.data;
+          // console.log(response.data);
+          var discount = [];
+
+          for (var i = 0; i < this.list.active_offers.length; i++) {
+            discount[i] = this.list.active_offers[i].discount_percent;
+          }
+
+          var mapped = discount.map(function (el, i) {
+            return { index: i, value: el };
+          });
+
+          // sorting the mapped array containing the reduced values
+          mapped.sort(function (a, b) {
+            return b.value - a.value;
+          });
+
+          // container for the resulting order
+          var result = mapped.map(function (el) {
+            return discount[el.index];
+          });
+          this.result = result;
+          this.mapped = mapped;
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+        .finally(() => {
+          this.loading = false;
+          var len = document.getElementsByClassName("product_row").length;
+          var qwe = document.getElementsByClassName("product_row");
+          for (var v = 0; v < len; v++) {
+            var bnm = document.getElementsByClassName("showcoupon");
+            var ert = bnm[v].getElementsByClassName("couponhome").length;
+
+            if (ert === 0) {
+              document.getElementsByClassName("showcoupon")[v].style.display =
+                "none";
+            }
+            var rty = qwe[v].getElementsByClassName("product_card").length;
+            if (rty === 0) {
+              document.getElementsByClassName("iterdeal")[v].style.display =
+                "none";
+              document.getElementsByClassName("iterbtn")[v].style.display =
+                "none";
+              document.getElementsByClassName("iterrow")[v].style.display =
+                "none";
+              document.getElementsByClassName("iterbot")[v].style.display =
+                "none";
+            }
+            for (var o = 0; o < rty; o++) {
+              if (o > 11) {
+                var disk =
+                  qwe[v].querySelectorAll(".product_card")[o].parentElement
+                    .parentElement;
+
+                disk.style.display = "none";
+              }
+            }
+          }
+        });
+    },
   },
 };
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+  color: white;
+}
 .viewall {
   width: 200px;
   margin: 10px auto;
@@ -311,6 +427,10 @@ body {
   color: black;
   line-height: 1.2;
   padding: 10px 0px;
+  height: 50px;
+  overflow: hidden;
+  -o-text-overflow: ellipsis; /* Opera < 11*/
+  text-overflow: ellipsis; /* IE, Safari (WebKit), Opera >= 11, FF > 6 */
 }
 .product_cost {
   font-family: "Quicksand", sans-serif;

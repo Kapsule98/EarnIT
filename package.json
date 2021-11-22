@@ -11,6 +11,7 @@
   "dependencies": {
     "@babel/core": "^7.15.5",
     "axios": "^0.21.1",
+    "blob-to-base64": "^1.0.2",
     "bootstrap-vue": "^2.21.2",
     "chart.js": "^3.4.1",
     "core-js": "^3.17.2",

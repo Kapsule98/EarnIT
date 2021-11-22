@@ -94,7 +94,7 @@
                 Categories <i class="fa fa-angle-down"></i>
               </button>
               <div class="dropdown-content">
-                <div v-for="items in allcategories" :key="items.length">
+                <div v-for="items in allcategories" :key="items.index">
                   <router-link
                     :to="{ path: '/search', query: { category: items } }"
                     >{{ items }}</router-link

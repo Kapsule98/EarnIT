@@ -11,6 +11,7 @@
       link5=""
       active1="active_nav"
     ></topnav>
+
     <div class="w3-container">
       <div class="w3-row">
         <div class="w3-third form">
@@ -114,7 +115,7 @@
                   v-bind:offer_text="offer.offer_text"
                 ></couponcard>
                 <couponcard
-                  v-else
+                  v-else-if="offer.type !== 'FIXED'"
                   v-b-tooltip.hover
                   title="Total Bill"
                   name="Total Bill"
@@ -124,6 +125,20 @@
                     ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
                   "
                   v-bind:offer_text="offer.offer_text"
+                ></couponcard>
+                <couponcard
+                  v-else-if="offer.type === 'FIXED'"
+                  v-b-tooltip.hover
+                  :title="offer.products[0]"
+                  :name="offer.products[0]"
+                  v-bind:discount="Math.round(offer.discount_percent) + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  v-bind:validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  v-bind:offer_text="offer.offer_text"
+                  :mrp="'Rs ' + offer.mrp"
+                  :offer_price="'Rs ' + offer.offer_price"
                 ></couponcard>
               </div>
             </div>
@@ -169,7 +184,7 @@
                   :offer_text="offer.offer_text"
                 ></couponcard>
                 <couponcard
-                  v-else
+                  v-else-if="offer.type !== 'FIXED'"
                   v-b-tooltip.hover
                   title="Total Bill"
                   :planned="true"
@@ -183,6 +198,20 @@
                     ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
                   "
                   :offer_text="offer.offer_text"
+                ></couponcard>
+                <couponcard
+                  v-else-if="offer.type === 'FIXED'"
+                  v-b-tooltip.hover
+                  :title="offer.products[0]"
+                  :name="offer.products[0]"
+                  v-bind:discount="Math.round(offer.discount_percent) + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  v-bind:validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  v-bind:offer_text="offer.offer_text"
+                  :mrp="'Rs ' + offer.mrp"
+                  :offer_price="'Rs ' + offer.offer_price"
                 ></couponcard>
               </div>
             </div>
@@ -216,7 +245,7 @@
                   :offer_text="offer.offer_text"
                 ></couponcard>
                 <couponcard
-                  v-else
+                  v-else-if="offer.type !== 'FIXED'"
                   v-b-tooltip.hover
                   title="Ttal Bill"
                   :expired="true"
@@ -227,6 +256,20 @@
                     ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
                   "
                   :offer_text="offer.offer_text"
+                ></couponcard>
+                <couponcard
+                  v-else-if="offer.type === 'FIXED'"
+                  v-b-tooltip.hover
+                  :title="offer.products[0]"
+                  :name="offer.products.toString()"
+                  v-bind:discount="Math.round(offer.discount_percent) + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  v-bind:validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  v-bind:offer_text="offer.offer_text"
+                  :mrp="'Rs ' + offer.mrp"
+                  :offer_price="'Rs ' + offer.offer_price"
                 ></couponcard>
                 <div id="repeatmodal" class="w3-modal">
                   <div class="w3-modal-content w3-animate-zoom w3-card-4">
@@ -394,7 +437,7 @@
             placeholder="Select Product/s"
             v-model="products"
             :options="getproducts.products"
-            :multiple="true"
+            :multiple="false"
           />
           <br />
         </div>
@@ -413,6 +456,55 @@
           />
         </div>
       </div>
+      <div>
+        <label><span style="padding: 2px 5px">Description :</span></label>
+        <div class="offer_text">
+          <textarea
+            style="width: 100%"
+            type="text"
+            v-model="bio"
+            placeholder="Product Description..."
+          ></textarea>
+        </div>
+      </div>
+      <div class="w3-row">
+        <label><span style="padding: 2px 5px">Add Image :</span></label>
+
+        <div class="w3-col m12">
+          <!--   <img v-bind:src="image" style="width: 100%" id="proimg" />-->
+          <cropper
+            :src="dp"
+            class="cropper"
+            :stencil-props="{
+              aspectRatio: 16 / 10,
+            }"
+            ref="cropper"
+          ></cropper>
+
+          <br />
+          <div class="no_btn" id="no_btn">
+            <b-button
+              variant="primary"
+              @click="crop"
+              id="crop"
+              style="margin: 10px"
+              >Crop</b-button
+            >
+          </div>
+          <div style="float: right; margin-top: 10px">
+            <!-- <input @change="handleImage" type="file" accept="image/*"> -->
+            <input
+              type="file"
+              accept="image/*"
+              name="image"
+              id="filer"
+              @change="loadFile"
+            />
+          </div>
+          <!-- <img :src="image" alt="" width="100%" /> -->
+        </div>
+      </div>
+
       <b-button class="login-button" block @click="addCouponDetails()"
         >Add Coupon</b-button
       >
@@ -424,6 +516,7 @@
 </template>
 
 <script>
+import "vue-advanced-cropper/dist/style.css";
 import topnav from "./topnav.vue";
 import couponcard from "./couponcard.vue";
 import Sitefooter from "../Customer/sitefooter.vue";
@@ -431,9 +524,10 @@ import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import { Cropper } from "vue-advanced-cropper";
 
 export default {
-  components: { couponcard, topnav, Sitefooter, DatePicker },
+  components: { couponcard, topnav, Sitefooter, DatePicker, Cropper },
 
   data() {
     return {
@@ -457,7 +551,7 @@ export default {
       show: true,
       discountType: "",
       dTypeoptions: [
-        { text: "Discount on item", value: "ITEM_DISCOUNT" },
+        // { text: "Discount on item", value: "ITEM_DISCOUNT" },
         { text: "Discount on total bill", value: "BILL_DISCOUNT" },
         { text: "Fixed price offer", value: "FIXED" },
       ],
@@ -478,8 +572,19 @@ export default {
       rdiscountType: "",
       rdiscount_percent: "",
       rmin_val: "",
-      mrp:"",
-      offerPrice:"",
+      mrp: "",
+      offerPrice: "",
+      bio: "",
+      image_base64: "",
+      coordinates: {
+        width: 0,
+        height: 0,
+        left: 0,
+        top: 0,
+      },
+      newimg: "",
+      image: "",
+      dp: "",
     };
   },
   mounted() {
@@ -492,6 +597,48 @@ export default {
   },
 
   methods: {
+    crop() {
+      const { coordinates, canvas } = this.$refs.cropper.getResult();
+      this.coordinates = coordinates;
+      this.dp = canvas.toDataURL();
+    },
+
+    loadFile(event) {
+      // var reader = new FileReader();
+      // reader.readAsDataURL(event.target.files[0]);
+      // reader.onload = function () {
+      //   this.dp = reader.result;
+      //   reader.readAsDataURL(event.target.files[0]);
+      // };
+      // this.dp = URL.createObjectURL(event.target.files[0]);
+      // document.getElementById("no_btn").style.display = "block";
+      // alert(this.dp);
+      //or
+      //import imageToBase64 from 'image-to-base64/browser';
+      let base64String = "";
+
+      var file = event.target.files[0];
+      var reader = new FileReader();
+      console.log("next");
+      reader.onload = function () {
+        base64String = reader.result;
+
+        // imageBase64Stringsep = base64String;
+
+        // alert(imageBase64Stringsep);
+        this.dp = base64String;
+        console.log(base64String);
+        localStorage.setItem("tempblob", base64String);
+      };
+      reader.readAsDataURL(file);
+      this.dp = localStorage.getItem("tempblob");
+      localStorage.setItem("tempblob", null);
+
+      // alert(this.dp);
+
+      console.log("Base64String about to be printed");
+    },
+
     addrepeat(offer_text) {
       const url = BASE_URL + "/seller/offer";
       let JWTToken = this.$session.get("token");
@@ -628,11 +775,14 @@ export default {
           axios
             .post(url, payload, options)
             .then((response) => {
-              console.log(response.data)
+              console.log(response.data);
               if (response.data.status === 200) {
                 alert("Coupon Sucessfully Reedemed.");
               } else {
-                alert("There was a problem in redeeming the coupon : "+response.data.msg );
+                alert(
+                  "There was a problem in redeeming the coupon : " +
+                    response.data.msg
+                );
               }
             })
             .catch((error) => {
@@ -667,6 +817,7 @@ export default {
       this.$refs["couponModal"].show();
     },
     addCouponDetails() {
+      document.getElementById("crop").click();
       var epoch = [];
       epoch[0] = this.validity[0].getTime() / 1000.0;
       epoch[1] = this.validity[1].getTime() / 1000.0;
@@ -681,11 +832,13 @@ export default {
           quantity: parseInt(this.quantity),
           min_val: parseInt(this.min_val),
           products: this.products,
-          mrp:parseInt(this.mrp),
-          offer_price:parseInt(this.offerPrice)
+          mrp: parseInt(this.mrp),
+          offer_price: parseInt(this.offerPrice),
+          bio: this.bio,
+          image_base64: this.dp,
         },
       };
-
+      console.log(payload);
       const url = BASE_URL + "/seller/offer";
       const accessToken = this.$session.get("token");
       const options = {
@@ -709,7 +862,7 @@ export default {
 
       this.$refs["couponModal"].hide();
 
-      this.$router.go();
+      // this.$router.go();
     },
     getUser() {
       this.user = this.$session.get("user_data");
@@ -722,6 +875,7 @@ export default {
         .then((response) => {
           this.getoffers = response.data;
           //console.log(this.getoffers);
+          console.log(response.data);
         })
         .catch((err) => {
           console.log(err);
