@@ -60,6 +60,7 @@
               <img :src="image" alt="" width="50%" />
             </div>
           </div>
+
           <form action="">
             <table style="width: 100%" class="accountable">
               <tr>
@@ -90,23 +91,17 @@
               <tr>
                 <td class="detail">Shop Bio</td>
                 <td class="description">
-                  <b-form-input
-                    type="text"
-                    v-model="bio"
-                  ></b-form-input>
+                  <b-form-input type="text" v-model="bio"></b-form-input>
                 </td>
               </tr>
               <tr>
                 <td class="detail">Location</td>
                 <td class="description">
-                  <b-form-input
-                    type="text"
-                    v-model="location"
-                  ></b-form-input>
+                  <b-form-input type="text" v-model="location"></b-form-input>
                 </td>
               </tr>
               <tr>
-                <td class="detail"> <a :href="location">View on map</a> </td>
+                <td class="detail"><a :href="location">View on map</a></td>
               </tr>
             </table>
           </form>
@@ -167,8 +162,8 @@ export default {
       shop_address: this.$session.get("user_data").address,
       shop_contact: this.$session.get("user_data").contact_no,
       shop_category: this.$session.get("user_data").category,
-      location:this.$session.get("user_data").location,
-      bio:"",
+      location: this.$session.get("user_data").location,
+      bio: "",
       image: "",
       allcategories: [],
       dp: "",
@@ -236,7 +231,7 @@ export default {
           this.updateShopName();
         }
         if (this.location) {
-          console.log("updating location")
+          console.log("updating location");
           this.updateLocation();
         }
         if (this.shop_contact) {
@@ -274,7 +269,7 @@ export default {
     },
 
     updateLocation() {
-      console.log("updating location",this.location)
+      console.log("updating location", this.location);
       const payload = {
         location: this.location,
       };
@@ -295,37 +290,43 @@ export default {
         });
     },
     getShopBio() {
-      const url = BASE_URL + '/seller/bio';
+      const url = BASE_URL + "/seller/bio";
       const accessToken = this.$session.get("token");
       const options = {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       };
-      axios.get(url,options).then(res => {
-        if(res.status === 200 && res.data.status ===200) {
-          this.bio = res.data.bio;
-        }
-      }).catch(err => {
-        console.log(err)
-      })
+      axios
+        .get(url, options)
+        .then((res) => {
+          if (res.status === 200 && res.data.status === 200) {
+            this.bio = res.data.bio;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     updateBio() {
-      const url = BASE_URL + '/seller/bio';
+      const url = BASE_URL + "/seller/bio";
       const payload = {
-        'bio':this.bio
-      }
+        bio: this.bio,
+      };
       const accessToken = this.$session.get("token");
       const options = {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       };
-      axios.post(url,payload,options).then(res => {
-        console.log(res)
-      }).catch(err => {
-        console.log(err)
-      }) 
+      axios
+        .post(url, payload, options)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     updateContact() {
       const payload = {

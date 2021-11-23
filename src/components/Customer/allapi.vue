@@ -31,7 +31,8 @@
                   list.active_offers[offer.index].validity[1] &&
                 Math.floor(new Date().getTime() / 1000.0) >
                   list.active_offers[offer.index].validity[0] &&
-                list.active_offers[offer.index].quantity > 0
+                list.active_offers[offer.index].quantity > 0 &&
+                list.active_offers[offer.index].type !== 'FIXED'
               "
               :key="offer.length"
               class="hovclass"
@@ -137,7 +138,7 @@ export default {
         .get(offersurl)
         .then((response) => {
           this.list = response.data;
-
+          // console.log(response.data);
           var discount = [];
 
           for (var i = 0; i < this.list.active_offers.length; i++) {
@@ -299,6 +300,7 @@ export default {
   height: 140px;
   z-index: -1;
   background: url("../../assets/dribbble-loader-green.gif");
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }

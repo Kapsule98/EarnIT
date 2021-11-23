@@ -172,6 +172,10 @@ const routes = [
   {
     path: "/product_description",
     name: "description",
+    props: (route) => ({
+      seller: route.query.seller,
+      offer_text: route.query.offer_text,
+    }),
     component: () => import("../components/Customer/description.vue"),
   },
   {

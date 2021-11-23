@@ -42,19 +42,19 @@
       video:true
     >
       <img
-        src="../../assets/0001.jpg"
+        src="../../assets/new1.jpg"
         width="100%"
         alt="poster"
         class="homeposters"
       />
       <img
-        src="../../assets/0002.jpg"
+        src="../../assets/new2.jpg"
         width="100%"
         alt="poster"
         class="homeposters"
       />
       <img
-        src="../../assets/0003.jpg"
+        src="../../assets/new3.jpg"
         width="100%"
         alt="poster"
         class="homeposters"
@@ -100,8 +100,35 @@ a:hover {
 .homeposters {
   width: 100%;
 }
+
 .cat_tab {
+  display: block;
+  width: fit-content;
+  height: 110px;
+  overflow-y: hidden;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: row;
+  padding: 0px 5px;
+  text-align: center;
+  margin: 2px auto;
+}
+.cat_tab::-webkit-scrollbar {
   display: none;
+}
+.cat_cir_img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin: 10px 20px 2px 20px;
+}
+.caption {
+  display: block;
+  font-size: 18px;
+  color: black;
+  line-height: 1;
+  text-align: center;
+  text-transform: capitalize;
 }
 
 @media screen and (max-width: 600px) {

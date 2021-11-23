@@ -11,6 +11,7 @@
       link5=""
       active1="active_nav"
     ></topnav>
+
     <div class="w3-container">
       <div class="w3-row">
         <div class="w3-third form">
@@ -102,19 +103,7 @@
                 "
               >
                 <couponcard
-                  v-if="offer.type === 'ITEM_DISCOUNT'"
-                  v-b-tooltip.hover
-                  :title="offer.products + ' '"
-                  :name="offer.products[0]"
-                  v-bind:discount="offer.discount_percent + '%'"
-                  v-bind:left="offer.quantity + ' coupons'"
-                  v-bind:validity="
-                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
-                  "
-                  v-bind:offer_text="offer.offer_text"
-                ></couponcard>
-                <couponcard
-                  v-else
+                  v-if="offer.type !== 'FIXED'"
                   v-b-tooltip.hover
                   title="Total Bill"
                   name="Total Bill"
@@ -124,6 +113,20 @@
                     ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
                   "
                   v-bind:offer_text="offer.offer_text"
+                ></couponcard>
+                <couponcard
+                  v-else-if="offer.type === 'FIXED'"
+                  v-b-tooltip.hover
+                  :title="offer.products.toString()"
+                  :name="offer.products.toString()"
+                  v-bind:discount="Math.round(offer.discount_percent) + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  v-bind:validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  v-bind:offer_text="offer.offer_text"
+                  :mrp="'Rs ' + offer.mrp"
+                  :offer_price="'Rs ' + offer.offer_price"
                 ></couponcard>
               </div>
             </div>
@@ -153,23 +156,7 @@
                 "
               >
                 <couponcard
-                  v-if="offer.type === 'ITEM_DISCOUNT'"
-                  v-b-tooltip.hover
-                  :title="offer.products + ' '"
-                  :planned="true"
-                  :validfrom="
-                    moment(offer.validity[0] * 1000).format('DD-MM-YYYY')
-                  "
-                  :name="offer.products[0]"
-                  :discount="offer.discount_percent + '%'"
-                  :left="offer.quantity + ' coupons'"
-                  :validity="
-                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
-                  "
-                  :offer_text="offer.offer_text"
-                ></couponcard>
-                <couponcard
-                  v-else
+                  v-if="offer.type !== 'FIXED'"
                   v-b-tooltip.hover
                   title="Total Bill"
                   :planned="true"
@@ -183,6 +170,21 @@
                     ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
                   "
                   :offer_text="offer.offer_text"
+                ></couponcard>
+                <couponcard
+                  v-else-if="offer.type === 'FIXED'"
+                  v-b-tooltip.hover
+                  :title="offer.products[0]"
+                  :name="offer.products[0]"
+                  :planned="true"
+                  v-bind:discount="Math.round(offer.discount_percent) + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  v-bind:validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  v-bind:offer_text="offer.offer_text"
+                  :mrp="'Rs ' + offer.mrp"
+                  :offer_price="'Rs ' + offer.offer_price"
                 ></couponcard>
               </div>
             </div>
@@ -203,22 +205,9 @@
                 "
               >
                 <couponcard
-                  v-if="offer.type === 'ITEM_DISCOUNT'"
+                  v-if="offer.type !== 'FIXED'"
                   v-b-tooltip.hover
-                  :title="offer.products + ' '"
-                  :expired="true"
-                  :name="offer.products[0]"
-                  v-bind:discount="offer.discount_percent + '%'"
-                  v-bind:left="offer.quantity + ' coupons'"
-                  :validity="
-                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
-                  "
-                  :offer_text="offer.offer_text"
-                ></couponcard>
-                <couponcard
-                  v-else
-                  v-b-tooltip.hover
-                  title="Ttal Bill"
+                  title="Total Bill"
                   :expired="true"
                   name="Total Bill"
                   v-bind:discount="offer.discount_percent + '%'"
@@ -227,6 +216,21 @@
                     ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
                   "
                   :offer_text="offer.offer_text"
+                ></couponcard>
+                <couponcard
+                  v-else-if="offer.type === 'FIXED'"
+                  v-b-tooltip.hover
+                  :title="offer.products.toString()"
+                  :name="offer.products.toString()"
+                  :expired="true"
+                  v-bind:discount="Math.round(offer.discount_percent) + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  v-bind:validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  v-bind:offer_text="offer.offer_text"
+                  :mrp="'Rs ' + offer.mrp"
+                  :offer_price="'Rs ' + offer.offer_price"
                 ></couponcard>
                 <div id="repeatmodal" class="w3-modal">
                   <div class="w3-modal-content w3-animate-zoom w3-card-4">
@@ -390,11 +394,35 @@
               placeholder="Offered price of product"
             />
           </div>
+          <br />
+          <div class="offer_text">
+            <label
+              style="
+                width: 100%;
+                border-bottom: 1px solid#cccccc;
+                padding-bottom: 10px;
+              "
+            >
+              Add a new product
+            </label>
+
+            <input
+              style="width: 70%; border-radius: 4px 0px 0px 4px"
+              type="text"
+              placeholder="Enter Product Name..."
+              v-model="addproduct"
+            />
+            <button class="addprod" v-on:click="addNewProduct()">
+              <i class="fa fa-plus"></i>
+            </button>
+          </div>
+          <br />
+          <label>or select an existing product</label>
           <multiselect
             placeholder="Select Product/s"
             v-model="products"
             :options="getproducts.products"
-            :multiple="true"
+            :multiple="false"
           />
           <br />
         </div>
@@ -413,6 +441,55 @@
           />
         </div>
       </div>
+      <div>
+        <label><span style="padding: 2px 5px">Description :</span></label>
+        <div class="offer_text">
+          <textarea
+            style="width: 100%"
+            type="text"
+            v-model="bio"
+            placeholder="Product Description..."
+          ></textarea>
+        </div>
+      </div>
+      <div class="w3-row" v-if="discountType === 'FIXED'">
+        <label><span style="padding: 2px 5px">Add Image :</span></label>
+
+        <div class="w3-col m12">
+          <!--   <img v-bind:src="image" style="width: 100%" id="proimg" />-->
+          <cropper
+            :src="dp"
+            class="cropper"
+            :stencil-props="{
+              aspectRatio: 16 / 10,
+            }"
+            ref="cropper"
+          ></cropper>
+
+          <br />
+          <div class="no_btn" id="no_btn">
+            <b-button
+              variant="primary"
+              @click="crop"
+              id="crop"
+              style="margin: 10px"
+              >Crop</b-button
+            >
+          </div>
+          <div style="float: right; margin-top: 10px">
+            <!-- <input @change="handleImage" type="file" accept="image/*"> -->
+            <input
+              type="file"
+              accept="image/*"
+              name="image"
+              id="filer"
+              @change="loadFile"
+            />
+          </div>
+          <!-- <img :src="image" alt="" width="100%" /> -->
+        </div>
+      </div>
+
       <b-button class="login-button" block @click="addCouponDetails()"
         >Add Coupon</b-button
       >
@@ -424,6 +501,7 @@
 </template>
 
 <script>
+import "vue-advanced-cropper/dist/style.css";
 import topnav from "./topnav.vue";
 import couponcard from "./couponcard.vue";
 import Sitefooter from "../Customer/sitefooter.vue";
@@ -431,9 +509,10 @@ import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import { Cropper } from "vue-advanced-cropper";
 
 export default {
-  components: { couponcard, topnav, Sitefooter, DatePicker },
+  components: { couponcard, topnav, Sitefooter, DatePicker, Cropper },
 
   data() {
     return {
@@ -457,7 +536,7 @@ export default {
       show: true,
       discountType: "",
       dTypeoptions: [
-        { text: "Discount on item", value: "ITEM_DISCOUNT" },
+        // { text: "Discount on item", value: "ITEM_DISCOUNT" },
         { text: "Discount on total bill", value: "BILL_DISCOUNT" },
         { text: "Fixed price offer", value: "FIXED" },
       ],
@@ -478,8 +557,21 @@ export default {
       rdiscountType: "",
       rdiscount_percent: "",
       rmin_val: "",
-      mrp:"",
-      offerPrice:"",
+      mrp: "",
+      offerPrice: "",
+      bio: "",
+      image_base64: "",
+      coordinates: {
+        width: 0,
+        height: 0,
+        left: 0,
+        top: 0,
+      },
+      newimg: "",
+      image: "",
+      dp: "",
+      prod: [],
+      addproduct: null,
     };
   },
   mounted() {
@@ -492,6 +584,41 @@ export default {
   },
 
   methods: {
+    addNewProduct() {
+      console.log(this.addProduct);
+      if (this.addproduct !== null) {
+        this.prod.push(this.addproduct);
+        const payload = {
+          products: this.prod,
+        };
+        const accessToken = this.$session.get("token");
+        const options = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+        const url = BASE_URL + "/seller/product";
+        axios
+          .post(url, payload, options)
+          .then()
+          .catch((error) => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+        this.getProducts();
+      }
+    },
+    crop() {
+      const { coordinates, canvas } = this.$refs.cropper.getResult();
+      this.coordinates = coordinates;
+      this.dp = canvas.toDataURL();
+    },
+
+    loadFile(event) {
+      this.dp = URL.createObjectURL(event.target.files[0]);
+      document.getElementById("no_btn").style.display = "block";
+    },
+
     addrepeat(offer_text) {
       const url = BASE_URL + "/seller/offer";
       let JWTToken = this.$session.get("token");
@@ -597,6 +724,11 @@ export default {
 
         if (this.r_offertxt === atxt) {
           this.r_min_val = this.getoffers.active_offers[i].min_val;
+          if (this.getoffers.active_offers[i].offer_price !== "") {
+            this.r_total = this.getoffers.active_offers[i].offer_price;
+            this.r_discount =
+              this.getoffers.active_offers[i].mrp - this.r_total;
+          }
         }
       }
 
@@ -628,18 +760,21 @@ export default {
           axios
             .post(url, payload, options)
             .then((response) => {
-              console.log(response.data)
+              console.log(response.data);
               if (response.data.status === 200) {
                 alert("Coupon Sucessfully Reedemed.");
               } else {
-                alert("There was a problem in redeeming the coupon : "+response.data.msg );
+                alert(
+                  "There was a problem in redeeming the coupon : " +
+                    response.data.msg
+                );
               }
             })
             .catch((error) => {
               this.errorMessage = error.message;
               console.error("There was an error!", error);
             });
-          //this.$router.go();
+          this.$router.go();
         }
       }
     },
@@ -667,6 +802,11 @@ export default {
       this.$refs["couponModal"].show();
     },
     addCouponDetails() {
+      if (this.discountType === "FIXED") {
+        document.getElementById("crop").click();
+
+        this.image_base64 = null;
+      }
       var epoch = [];
       epoch[0] = this.validity[0].getTime() / 1000.0;
       epoch[1] = this.validity[1].getTime() / 1000.0;
@@ -681,11 +821,13 @@ export default {
           quantity: parseInt(this.quantity),
           min_val: parseInt(this.min_val),
           products: this.products,
-          mrp:parseInt(this.mrp),
-          offer_price:parseInt(this.offerPrice)
+          mrp: parseInt(this.mrp),
+          offer_price: parseInt(this.offerPrice),
+          bio: this.bio,
+          image_base64: this.dp,
         },
       };
-
+      console.log(payload);
       const url = BASE_URL + "/seller/offer";
       const accessToken = this.$session.get("token");
       const options = {
@@ -704,7 +846,7 @@ export default {
         })
         .catch((error) => {
           this.errorMessage = error.message;
-          console.error("There was an error!", error);
+          alert.error("There was an error!", error);
         });
 
       this.$refs["couponModal"].hide();
@@ -722,6 +864,7 @@ export default {
         .then((response) => {
           this.getoffers = response.data;
           //console.log(this.getoffers);
+          console.log(response.data);
         })
         .catch((err) => {
           console.log(err);
@@ -732,6 +875,19 @@ export default {
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
+.addprod {
+  background: rgb(0 140 255);
+  padding: 4px 8px;
+  border: none;
+  color: white;
+  width: 15%;
+  height: 40px;
+
+  margin: 10px auto;
+}
+.no_btn {
+  display: none;
+}
 .offer_text input {
   width: 100%;
   height: 40px;

@@ -23,7 +23,8 @@
               list.offers[offer.index].validity[1] &&
             Math.floor(new Date().getTime() / 1000.0) >
               list.offers[offer.index].validity[0] &&
-            list.offers[offer.index].quantity > 0
+            list.offers[offer.index].quantity > 0 &&
+            list.offers[offer.index].type !== 'FIXED'
           "
           :key="offer.length"
           class="hovclass"
@@ -122,12 +123,7 @@ export default {
         .get(offersurl)
         .then((response) => {
           this.list = response.data;
-          console.log(response.data);
-          if (this.list.offers.length === 0) {
-            localStorage.setItem(this.category + "empty?", true);
-          } else {
-            localStorage.setItem(this.category + "empty?", false);
-          }
+
           var discount = [];
           for (var i = 0; i < this.list.offers.length; i++) {
             discount[i] = this.list.offers[i].discount_percent;
@@ -286,6 +282,7 @@ export default {
   /* background: radial-gradient(rgb(0, 132, 255), rgb(0, 195, 255)); */
   background: url("../../assets/dribbble-loader-green.gif");
   background-position: center;
+  background-size: cover;
   background-repeat: no-repeat;
 }
 a {
