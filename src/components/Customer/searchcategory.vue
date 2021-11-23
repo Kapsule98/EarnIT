@@ -155,8 +155,13 @@
           <div class="w3-row">
             <h3>Sellers</h3>
             <hr />
-            <shops :category="category" v-if="category !== null"></shops>
-            <shops category="all" v-else></shops>
+
+            <shops
+              :category="category"
+              v-if="category !== null"
+              :key="componentKey"
+            ></shops>
+            <shops category="all" :key="componentKey" v-else></shops>
           </div>
         </div>
         <div class="w3-container">
@@ -166,12 +171,17 @@
             <div class="w3-col m3" v-for="offer in mapped" :key="offer.length">
               <div
                 v-if="
-                  (list.active_offers[offer.index].category === category &&
+                  ((list.active_offers[offer.index].category === category &&
                     offer.value > discfilter &&
                     list.active_offers[offer.index].type === 'FIXED') ||
-                  (category === null &&
-                    offer.value > discfilter &&
-                    list.active_offers[offer.index].type === 'FIXED')
+                    (category === null &&
+                      offer.value > discfilter &&
+                      list.active_offers[offer.index].type === 'FIXED')) &&
+                  Math.floor(new Date().getTime() / 1000.0) <
+                    list.active_offers[offer.index].validity[1] &&
+                  Math.floor(new Date().getTime() / 1000.0) >
+                    list.active_offers[offer.index].validity[0] &&
+                  list.active_offers[offer.index].quantity > 0
                 "
                 class="Scard"
               >
@@ -245,12 +255,17 @@
             <div class="w3-col m3" v-for="offer in mapped" :key="offer.length">
               <div
                 v-if="
-                  (list.active_offers[offer.index].category === category &&
+                  ((list.active_offers[offer.index].category === category &&
                     offer.value > discfilter &&
                     list.active_offers[offer.index].type !== 'FIXED') ||
-                  (category === null &&
-                    offer.value > discfilter &&
-                    list.active_offers[offer.index].type !== 'FIXED')
+                    (category === null &&
+                      offer.value > discfilter &&
+                      list.active_offers[offer.index].type !== 'FIXED')) &&
+                  Math.floor(new Date().getTime() / 1000.0) <
+                    list.active_offers[offer.index].validity[1] &&
+                  Math.floor(new Date().getTime() / 1000.0) >
+                    list.active_offers[offer.index].validity[0] &&
+                  list.active_offers[offer.index].quantity > 0
                 "
                 class="Scard"
               >
@@ -408,6 +423,8 @@ export default {
       allcategories: [],
       discfilter: 0,
       loading: false,
+      shopcat: "",
+      componentKey: 0,
     };
   },
   mounted() {
@@ -440,7 +457,13 @@ export default {
       document.getElementsByClassName("reduce")[0].style.display = "none";
     },
     searchCategory(category, index) {
+      // this.shopcat = category;
+      // var container = document.getElementById("shopsfil");
+      // var content = container.innerHTML;
+      // container.innerHTML = content;
+      this.componentKey += 1;
       this.$router.push("/search?category=" + category);
+
       for (var i = 0; i < 20; i++) {
         if (index !== i) {
           document.getElementById("check" + i).checked = false;
@@ -475,27 +498,25 @@ export default {
       this.loading = true;
       const offersurl = BASE_URL + "/get_all_offers";
       let JWTToken = this.$session.get("token");
+      console.log("text1", new Date().getTime());
       axios
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
+          console.log("text2", new Date().getTime());
+
           this.list = response.data;
           var discount = [];
           for (var i = 0; i < this.list.active_offers.length; i++) {
             discount[i] = this.list.active_offers[i].discount_percent;
           }
-          // the array to be sorted
-
-          // temporary array holds objects with position and sort-value
           var mapped = discount.map(function (el, i) {
             return { index: i, value: el };
           });
 
-          // sorting the mapped array containing the reduced values
           mapped.sort(function (a, b) {
             return b.value - a.value;
           });
 
-          // container for the resulting order
           var result = mapped.map(function (el) {
             return discount[el.index];
           });
@@ -505,7 +526,10 @@ export default {
         .catch((err) => {
           console.log(err);
         })
-        .finally(() => (this.loading = false));
+        .finally(() => {
+          this.loading = false;
+          console.log("text3", new Date().getTime());
+        });
     },
   },
 };
@@ -898,6 +922,8 @@ body {
   height: 140px;
   z-index: -1;
   background: url("../../assets/dribbble-loader-green.gif");
+  background-size: cover;
+
   background-position: center;
   background-repeat: no-repeat;
 }

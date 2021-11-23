@@ -67,6 +67,8 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.data.status === 200) {
+            alert("Verify Successful! Please login again.");
+
             this.$router.push("/login");
           } else if (res.data.status === 403) {
             this.$router.push("/waiting_for_admin_approval");

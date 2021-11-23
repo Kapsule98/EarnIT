@@ -282,6 +282,7 @@ export default {
   /* background: radial-gradient(rgb(0, 132, 255), rgb(0, 195, 255)); */
   background: url("../../assets/dribbble-loader-green.gif");
   background-position: center;
+  background-size: cover;
   background-repeat: no-repeat;
 }
 a {

@@ -30,7 +30,15 @@
                   list.active_offers[offer.index].category === iters
                 "
               >
-                <router-link to="/product_description">
+                <router-link
+                  :to="{
+                    path: '/product_description',
+                    query: {
+                      seller: list.active_offers[offer.index].seller_email,
+                      offer_text: list.active_offers[offer.index].offer_text,
+                    },
+                  }"
+                >
                   <div class="product_card">
                     <div>
                       <img
@@ -71,7 +79,15 @@
                       >
                     </div>
 
-                    <div class="addtocart">
+                    <div
+                      class="addtocart"
+                      v-on:click="
+                        addToCart(
+                          list.active_offers[offer.index].offer_text,
+                          list.active_offers[offer.index].seller_email
+                        )
+                      "
+                    >
                       <b-icon-cart3 mb-2></b-icon-cart3>
                     </div>
                   </div>
@@ -206,6 +222,41 @@ export default {
             }
           }
         });
+    },
+    addToCart(offer_text, email) {
+      this.loading = true;
+      if (localStorage.getItem("log") === "true") {
+        const payload = {
+          offer_text: offer_text,
+          seller_email: email,
+        };
+
+        const accessToken = this.$session.get("token");
+        const options = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+        const url = BASE_URL + "/cart";
+        axios
+          .post(url, payload, options)
+          .then((response) => {
+            console.log(response);
+            if (response.data.status === 200) {
+              alert(response.data.msg);
+              this.$router.push("/cart");
+            } else {
+              alert("something went wrong");
+            }
+          })
+          .catch((error) => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          })
+          .finally(() => (this.loading = false));
+      } else {
+        this.$router.push("/login");
+      }
     },
   },
 };

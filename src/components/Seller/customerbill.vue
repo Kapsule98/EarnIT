@@ -47,7 +47,10 @@
                 </div>
               </div>
             </b-card>
-            <b-card style="margin: 10px; color: black">
+            <b-card
+              style="margin: 10px; color: black"
+              v-if="mostused.status === 200"
+            >
               <div class="w3-row" style="text-align: center">
                 <h5>Most used offer:</h5>
                 <div

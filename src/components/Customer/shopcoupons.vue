@@ -88,7 +88,7 @@
                 <b-tabs card>
                   <b-tab active style="font-size: 15px">
                     <template #title>
-                      <span style="color: #008cff">Offers</span>
+                      <span style="color: #008cff">Products</span>
                     </template>
 
                     <div v-for="offers in list.offers" :key="offers.length">
@@ -98,7 +98,8 @@
                             offers.validity[1] &&
                           Math.floor(new Date().getTime() / 1000.0) >
                             offers.validity[0] &&
-                          offers.quantity > 0
+                          offers.quantity > 0 &&
+                          offers.type === 'FIXED'
                         "
                         class="couponcard"
                       >
@@ -237,26 +238,155 @@
 
                     <br />
                   </b-tab>
-                  <b-tab style="color: #666666">
+                  <!-- ========================================================================== -->
+                  <b-tab style="font-size: 15px">
                     <template #title>
-                      <span style="color: #008cff">About</span>
+                      <span style="color: #008cff">Coupons</span>
                     </template>
-                    <h5
-                      class="domain"
-                      style="
-                        padding: 20px 0px;
-                        border-bottom: 1px solid #b5b5b5;
-                        font-size: 20px;
-                        color: #666666;
-                      "
-                    >
-                      {{ list.shop_name }}
-                    </h5>
-                    <br />
-                    <h5>Address</h5>
-                    <p>{{ list.address }}</p>
-                    <h4>Phone:</h4>
-                    <p>+{{ list.contact_no }}</p>
+                    <div v-for="offers in list.offers" :key="offers.length">
+                      <div
+                        v-if="
+                          Math.floor(new Date().getTime() / 1000.0) <
+                            offers.validity[1] &&
+                          Math.floor(new Date().getTime() / 1000.0) >
+                            offers.validity[0] &&
+                          offers.quantity > 0 &&
+                          offers.type !== 'FIXED'
+                        "
+                        class="couponcard"
+                      >
+                        <div class="w3-row">
+                          <div class="w3-col m2" v-if="offers.type === 'FIXED'">
+                            <img :src="offers.image_url" class="product_img" />
+                          </div>
+                          <div class="w3-col m2" v-else>
+                            <div v-if="loaded">
+                              <img :src="image" class="product_img" />
+                            </div>
+                            <div v-else>
+                              <img
+                                src="../../assets/def.png"
+                                class="product_img"
+                              />
+                            </div>
+                          </div>
+                          <div class="w3-col m7">
+                            <div
+                              class="card_remaining"
+                              v-if="offers.quantity <= 5"
+                            >
+                              Hurry only {{ offers.quantity }} left!
+                            </div>
+
+                            <div
+                              class="card_item"
+                              v-if="offers.type === 'ITEM_DISCOUNT'"
+                            >
+                              {{ Math.round(offers.discount_percent) }}% off on
+                              <span
+                                v-b-tooltip.hover
+                                :title="offers.products + ' '"
+                              >
+                                <span
+                                  v-for="(prods, index1) in offers.products"
+                                  :key="prods.offer_text"
+                                >
+                                  {{ offers.products[index1] }}
+                                  <span
+                                    v-if="
+                                      index1 !=
+                                      Object.keys(offers.products).length - 1
+                                    "
+                                    >,
+                                  </span>
+                                </span>
+                              </span>
+                            </div>
+                            <div
+                              class="card_item"
+                              v-else-if="offers.type === 'FIXED'"
+                            >
+                              {{ Math.round(offers.discount_percent) }}% off on
+                              <span
+                                v-b-tooltip.hover
+                                :title="offers.products + ' '"
+                              >
+                                <router-link
+                                  :to="{
+                                    path: '/product_description',
+                                    query: {
+                                      seller: email,
+                                      offer_text: offers.offer_text,
+                                    },
+                                  }"
+                                >
+                                  {{ offers.products.toString() }}
+                                </router-link>
+                              </span>
+                              <div class="product_cost">
+                                <i class="fa fa-inr" aria-hidden="true"></i>
+                                {{ offers.offer_price }}
+                                <del>
+                                  <i class="fa fa-inr" aria-hidden="true"></i>
+                                  {{ offers.mrp }}</del
+                                >
+                              </div>
+                            </div>
+                            <div class="card_item" v-else>
+                              <span class="offno"
+                                >{{
+                                  Math.round(offers.discount_percent)
+                                }}%</span
+                              >
+                              off on Total Bill
+                              <div></div>
+                            </div>
+
+                            <div class="w3-row">
+                              <div class="w3-col m8">
+                                <div class="card_leftcoupons">
+                                  {{ offers.quantity }} Coupons Left
+                                </div>
+                              </div>
+                              <div class="w3-col m4">
+                                <div class="card_validity">
+                                  valid till
+                                  {{
+                                    moment(offers.validity[1] * 1000).format(
+                                      "DD/MM/YY"
+                                    )
+                                  }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="w3-col m3">
+                            <button
+                              v-on:click="
+                                addToCart(offers.offer_text, list.seller_email)
+                              "
+                              class="w3-button"
+                              style="
+                                width: 80%;
+                                margin: 30px 10%;
+                                background: #008cff;
+                                color: white;
+                              "
+                            >
+                              <i
+                                class="fa fa-shopping-cart"
+                                aria-hidden="true"
+                              ></i>
+                              Add to cart
+                            </button>
+                          </div>
+                          <div class="minval" v-if="offers.type !== 'FIXED'">
+                            offer valid on a minimum purchase of
+                            <i class="fa fa-rupee"></i> {{ offers.min_val }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </b-tab>
                 </b-tabs>
               </b-card>

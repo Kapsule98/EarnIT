@@ -63,7 +63,6 @@
     <div class="w3-container">
       <div class="w3-row">
         <div class="w3-twothird">
-          <!---->
           <b-card v-if="history.length === 0">
             <br />
             <br /><br /><br />
@@ -153,7 +152,6 @@
 <script>
 import topnav from "../Seller/topnav.vue";
 import Sitefooter from "./sitefooter.vue";
-
 import Bottomnav from "./bottomnav.vue";
 import { GChart } from "vue-google-charts";
 import axios from "axios";

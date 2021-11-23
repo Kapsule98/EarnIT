@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div v-if="!empty">
     <spinner v-if="loading"></spinner>
+
     <input
       type="text"
       id="myInput"
@@ -70,6 +71,11 @@
       </div>
     </div>
   </div>
+  <div v-else>
+    <b-card class="hideall">
+      <h1>No offers reedemed till now!</h1>
+    </b-card>
+  </div>
 </template>
 
 <script>
@@ -83,6 +89,7 @@ export default {
     return {
       history: {},
       loading: false,
+      empty: false,
     };
   },
   mounted() {
@@ -97,6 +104,9 @@ export default {
         this.history = response.data;
         console.log(this.history);
         var arr = [];
+        if (this.history.history.length === 0) {
+          this.empty = true;
+        }
         for (var i = 0; i < this.history.history.length; i++) {
           arr[i] = this.history.history[i].offer_text;
         }
@@ -112,17 +122,28 @@ export default {
             mostused = key;
           }
         }
-        for (var j = 0; j < this.history.history.length; j++) {
-          if (this.history.history[j].offer_text === mostused) {
-            const storemostused = {
-              offer_text: mostused,
-              count: count,
-              discount: this.history.history[j].discount_percent,
-              type: this.history.history[j].discount_type,
-              products: this.history.history[j].products,
-            };
-            localStorage.setItem("mostused", JSON.stringify(storemostused));
+        if (this.history.history.length > 0) {
+          for (var j = 0; j < this.history.history.length; j++) {
+            if (
+              this.history.history[j].offer_text === mostused &&
+              this.history.history.length != 0
+            ) {
+              const storemostused = {
+                status: 200,
+                offer_text: mostused,
+                count: count,
+                discount: this.history.history[j].discount_percent,
+                type: this.history.history[j].discount_type,
+                products: this.history.history[j].products,
+              };
+              localStorage.setItem("mostused", JSON.stringify(storemostused));
+            }
           }
+        } else {
+          const storemostused = {
+            status: 403,
+          };
+          localStorage.setItem("mostused", JSON.stringify(storemostused));
         }
       })
       .catch((err) => {

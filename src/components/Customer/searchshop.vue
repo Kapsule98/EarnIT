@@ -349,6 +349,7 @@ export default {
   height: 220px;
   z-index: -1;
   background: url("../../assets/dribbble-loader-green.gif");
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
