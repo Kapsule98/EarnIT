@@ -153,12 +153,119 @@
       <div class="w3-col m10" id="Sproducts">
         <div class="w3-container">
           <div class="w3-row">
-            <div class="w3-col m4" v-for="offer in mapped" :key="offer.length">
+            <h3>Sellers</h3>
+            <hr />
+
+            <shops
+              :category="category"
+              v-if="category !== null"
+              :key="componentKey"
+            ></shops>
+            <shops category="all" :key="componentKey" v-else></shops>
+          </div>
+        </div>
+        <div class="w3-container">
+          <div class="w3-row">
+            <h3>Products</h3>
+            <hr />
+            <div class="w3-col m3" v-for="offer in mapped" :key="offer.length">
               <div
                 v-if="
-                  (list.active_offers[offer.index].category === category &&
-                    offer.value > discfilter) ||
-                  (category === null && offer.value > discfilter)
+                  ((list.active_offers[offer.index].category === category &&
+                    offer.value > discfilter &&
+                    list.active_offers[offer.index].type === 'FIXED') ||
+                    (category === null &&
+                      offer.value > discfilter &&
+                      list.active_offers[offer.index].type === 'FIXED')) &&
+                  Math.floor(new Date().getTime() / 1000.0) <
+                    list.active_offers[offer.index].validity[1] &&
+                  Math.floor(new Date().getTime() / 1000.0) >
+                    list.active_offers[offer.index].validity[0] &&
+                  list.active_offers[offer.index].quantity > 0
+                "
+                class="Scard"
+              >
+                <!--  -->
+                <router-link
+                  :to="{
+                    path: '/product_description',
+                    query: {
+                      seller: list.active_offers[offer.index].seller_email,
+                      offer_text: list.active_offers[offer.index].offer_text,
+                    },
+                  }"
+                >
+                  <div class="product_card">
+                    <div>
+                      <img
+                        :src="list.active_offers[offer.index].image_url"
+                        alt=""
+                        class="product_img"
+                      />
+                    </div>
+                    <div class="product_name">
+                      <span
+                        v-b-tooltip.hover
+                        :title="list.active_offers[offer.index].products + ' '"
+                      >
+                        <nav>
+                          {{
+                            list.active_offers[offer.index].products.toString()
+                          }}
+                        </nav>
+                      </span>
+                    </div>
+                    <div class="shop_name">
+                      {{ list.active_offers[offer.index].seller_display_name }}
+                    </div>
+                    <div class="disc">
+                      {{
+                        Math.round(
+                          ((list.active_offers[offer.index].mrp -
+                            list.active_offers[offer.index].offer_price) /
+                            list.active_offers[offer.index].mrp) *
+                            100
+                        )
+                      }}% OFF
+                    </div>
+                    <div class="product_cost">
+                      <i class="fa fa-inr" aria-hidden="true"></i>
+                      {{ list.active_offers[offer.index].offer_price }}
+                      <del>
+                        <i class="fa fa-inr" aria-hidden="true"></i>
+                        {{ list.active_offers[offer.index].mrp }}</del
+                      >
+                    </div>
+
+                    <div class="addtocart">
+                      <b-icon-cart3 mb-2></b-icon-cart3>
+                    </div>
+                  </div>
+                </router-link>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w3-container">
+          <div class="w3-row">
+            <br />
+
+            <h3>Coupons</h3>
+            <hr />
+            <div class="w3-col m3" v-for="offer in mapped" :key="offer.length">
+              <div
+                v-if="
+                  ((list.active_offers[offer.index].category === category &&
+                    offer.value > discfilter &&
+                    list.active_offers[offer.index].type !== 'FIXED') ||
+                    (category === null &&
+                      offer.value > discfilter &&
+                      list.active_offers[offer.index].type !== 'FIXED')) &&
+                  Math.floor(new Date().getTime() / 1000.0) <
+                    list.active_offers[offer.index].validity[1] &&
+                  Math.floor(new Date().getTime() / 1000.0) >
+                    list.active_offers[offer.index].validity[0] &&
+                  list.active_offers[offer.index].quantity > 0
                 "
                 class="Scard"
               >
@@ -203,7 +310,8 @@
                         v-b-tooltip.hover
                         :title="list.active_offers[offer.index].products + ' '"
                       >
-                        <span class="offno">{{ offer.value }}%</span> off on
+                        <span class="offno">{{ offer.value }}%</span>
+                        off on
 
                         <span
                           v-for="(prods, index3) in list.active_offers[
@@ -226,6 +334,33 @@
                         </span>
                       </nav>
                     </div>
+                    <div
+                      class="l-offer"
+                      v-else-if="
+                        list.active_offers[offer.index].type === 'FIXED'
+                      "
+                    >
+                      <nav
+                        v-b-tooltip.hover
+                        :title="list.active_offers[offer.index].products + ' '"
+                      >
+                        <span class="offno"
+                          >{{
+                            (
+                              ((list.active_offers[offer.index].mrp -
+                                list.active_offers[offer.index].offer_price) /
+                                list.active_offers[offer.index].mrp) *
+                              100
+                            ).toPrecision(2)
+                          }}%</span
+                        >
+                        off on
+
+                        {{
+                          list.active_offers[offer.index].products.toString()
+                        }}
+                      </nav>
+                    </div>
                     <div class="l-offer" v-else>
                       <nav>
                         <span class="offno">{{ offer.value }}%</span> off on
@@ -235,16 +370,16 @@
                     <div class="shopname">
                       {{ list.active_offers[offer.index].seller_display_name }}
 
-                      <button class="vshop">View Shop</button>
+                      <!-- <button class="vshop">View Shop</button> -->
                     </div>
-                    <div class="c2-validity">
+                    <!-- <div class="c2-validity">
                       offer valid till
                       {{
                         moment(
                           list.active_offers[offer.index].validity[1] * 1000
                         ).format("DD-MM-YYYY")
                       }}
-                    </div>
+                    </div> -->
                   </router-link>
                 </div>
               </div>
@@ -253,7 +388,6 @@
         </div>
       </div>
     </div>
-
     <div class="reduce"></div>
     <bottomnav></bottomnav>
     <sitefooter></sitefooter>
@@ -271,8 +405,9 @@ import { BASE_URL } from "../../utils/constants";
 import Bottomnav from "./bottomnav.vue";
 import Imgstore from "./imgstore.vue";
 import Spinner from "./spinner.vue";
+import Shops from "./shops.vue";
 export default {
-  components: { topnav, Sitefooter, Bottomnav, Imgstore, Spinner },
+  components: { topnav, Sitefooter, Bottomnav, Imgstore, Spinner, Shops },
   props: {
     category: {
       type: String,
@@ -288,6 +423,8 @@ export default {
       allcategories: [],
       discfilter: 0,
       loading: false,
+      shopcat: "",
+      componentKey: 0,
     };
   },
   mounted() {
@@ -320,7 +457,13 @@ export default {
       document.getElementsByClassName("reduce")[0].style.display = "none";
     },
     searchCategory(category, index) {
+      // this.shopcat = category;
+      // var container = document.getElementById("shopsfil");
+      // var content = container.innerHTML;
+      // container.innerHTML = content;
+      this.componentKey += 1;
       this.$router.push("/search?category=" + category);
+
       for (var i = 0; i < 20; i++) {
         if (index !== i) {
           document.getElementById("check" + i).checked = false;
@@ -355,27 +498,25 @@ export default {
       this.loading = true;
       const offersurl = BASE_URL + "/get_all_offers";
       let JWTToken = this.$session.get("token");
+      console.log("text1", new Date().getTime());
       axios
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
+          console.log("text2", new Date().getTime());
+
           this.list = response.data;
           var discount = [];
           for (var i = 0; i < this.list.active_offers.length; i++) {
             discount[i] = this.list.active_offers[i].discount_percent;
           }
-          // the array to be sorted
-
-          // temporary array holds objects with position and sort-value
           var mapped = discount.map(function (el, i) {
             return { index: i, value: el };
           });
 
-          // sorting the mapped array containing the reduced values
           mapped.sort(function (a, b) {
             return b.value - a.value;
           });
 
-          // container for the resulting order
           var result = mapped.map(function (el) {
             return discount[el.index];
           });
@@ -385,16 +526,277 @@ export default {
         .catch((err) => {
           console.log(err);
         })
-        .finally(() => (this.loading = false));
+        .finally(() => {
+          this.loading = false;
+          console.log("text3", new Date().getTime());
+        });
     },
   },
 };
 </script>
 <style scoped>
+a {
+  text-decoration: none;
+  color: white;
+}
+.viewall {
+  width: 200px;
+  margin: 10px auto;
+  background: #008cff;
+  color: white;
+  padding: 8px;
+  text-align: center;
+  border-radius: 28px;
+  cursor: pointer;
+}
+.viewall:hover {
+  opacity: 0.5;
+}
+.bbot {
+  width: 100%;
+  height: 4px;
+  background: rgb(148, 148, 148);
+  margin: 20px 0px;
+}
+a {
+  text-decoration: none;
+}
+body {
+  font-family: "Quicksand", sans-serif;
+}
+.heading {
+  width: 100%;
+  display: flex;
+  margin: 10px 0;
+  margin-top: 0px;
+  font-weight: 900;
+  padding: 10px;
+  font-size: 25px;
+  border-bottom: 1px solid #4242423f;
+  font-family: "Roboto", sans-serif;
+  background: white;
+  border-left: 10px solid #008cff;
+}
+.coupons {
+  background: url("https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80");
+  background-size: cover;
+  position: relative;
+  width: 100%;
+  height: 200px;
+  /* background: #f0e8d5; */
+  /* border-radius: 12px; */
+  margin-bottom: 20px;
+}
+
+.disc {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background: #008cff;
+  color: white;
+  font-size: 16px;
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.5;
+  padding: 5px;
+  z-index: 100;
+}
+/* .filter {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 12px;
+  background-image: linear-gradient(#ff007700, #ff007700, #cc00ff);
+} */
+.shop_name {
+  line-height: 1;
+  font-weight: 600;
+  color: #858585;
+}
+.offer {
+  position: absolute;
+  font-size: 20px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  color: white;
+  bottom: 10px;
+  left: 10px;
+  text-shadow: 2px 2px #000000c5;
+}
+
+@media screen and (max-width: 768px) {
+  .coupons {
+    background: url("https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80");
+    background-size: cover;
+    position: relative;
+    width: 100%;
+    height: 200px;
+    /* background: #f0e8d5; */
+    /* border-radius: 12px; */
+    margin-bottom: 20px;
+  }
+  /* 
+  .filter {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 12px;
+    background-image: linear-gradient(#ff007700, #ff007700, #cc00ff);
+  } */
+
+  .offer {
+    position: absolute;
+    font-size: 20px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    color: white;
+    bottom: 10px;
+    left: 10px;
+    text-shadow: 2px 2px #000000c5;
+  }
+  .heading {
+    width: 100%;
+    display: flex;
+    margin: 20px 0%;
+    margin-top: 20px;
+    font-weight: 900;
+    padding: 20px;
+    font-size: 25px;
+    border-bottom: 1px solid #4242423f;
+    font-family: "Roboto", sans-serif;
+    background: white;
+  }
+}
+.ad_img_wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin-top: 0px;
+  overflow: hidden;
+  border-radius: 16px;
+  text-align: center;
+}
+.ad_img {
+  border-radius: 16px;
+  z-index: -1;
+  height: 100%;
+}
+
+.img_fill {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  border-radius: 16px;
+  background: linear-gradient(rgba(0, 0, 0, 0), rgb(87, 68, 7));
+}
+.fill_text {
+  position: absolute;
+  height: 50%;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  color: white;
+  font-size: 35px;
+  font-weight: 900;
+  padding: 10px;
+  z-index: 101;
+}
+.gobutton {
+  position: absolute;
+  bottom: 20px;
+  right: 10px;
+  padding: 5px 7px;
+  background: #008cff;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  width: fit-content;
+}
+.product_card {
+  position: relative;
+  background-color: #fff;
+  overflow: hidden;
+  max-height: 320px;
+  padding: 25px 15px 20px 15px;
+  width: 100%;
+  /* box-shadow: 0px 2px 6px 4px rgba(0, 0, 0, 0.062); */
+  transition: 0.3s ease-in-out;
+}
+
+.product_card:hover {
+  transform: scale(1.1);
+}
+.product_img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap");
+
+.product_name {
+  font-family: "Quicksand", sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: black;
+  line-height: 1.2;
+  padding: 10px 0px;
+  height: 50px;
+  overflow: hidden;
+  -o-text-overflow: ellipsis; /* Opera < 11*/
+  text-overflow: ellipsis; /* IE, Safari (WebKit), Opera >= 11, FF > 6 */
+}
+.product_cost {
+  font-family: "Quicksand", sans-serif;
+  font-size: 20px;
+  color: #008cff;
+  font-weight: 900;
+  float: left;
+}
+.product_cost del {
+  font-size: 14px;
+  color: rgb(87, 87, 87);
+}
+.addtocart {
+  float: right;
+  padding: 0px 0px;
+  border-radius: 4px;
+  font-size: 20px;
+  font-weight: 900;
+  width: fit-content;
+  color: #170057;
+  transform: scale(0.8);
+}
+.disc {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background: rgb(255, 29, 67);
+  color: white;
+  font-size: 16px;
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.5;
+  padding: 5px;
+  z-index: 100;
+  transform: scale(0.7);
+}
 .couponhome {
   position: relative;
   width: 90%;
-  height: 220px;
+  height: 140px;
   margin: 10px auto 0px auto;
   background: rgba(0, 0, 0, 0.082);
   overflow: hidden;
@@ -517,9 +919,11 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 220px;
+  height: 140px;
   z-index: -1;
   background: url("../../assets/dribbble-loader-green.gif");
+  background-size: cover;
+
   background-position: center;
   background-repeat: no-repeat;
 }

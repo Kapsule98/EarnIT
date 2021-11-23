@@ -106,50 +106,7 @@
               <br />
             </div>
           </div>
-        </div>
-        <div class="w3-col m10" id="Sproducts">
-          <div class="w3-container">
-            <div class="w3-row">
-              <div
-                class="w3-col m4"
-                v-for="shop in list.sellers"
-                :key="shop.length"
-              >
-                <router-link
-                  :to="{
-                    path: '/seller',
-                    query: {
-                      seller: shop.email,
-                    },
-                  }"
-                >
-                  <div class="Scard">
-                    <div class="hovclass">
-                      <div class="couponhome">
-                        <div class="c2-back">
-                          <imgstore :email="shop.email"></imgstore>
-                        </div>
-                      </div>
-                      <div class="l-offer">
-                        <nav>{{ shop.display_name }}</nav>
-                      </div>
-                      <div class="shopname">
-                        <div
-                          class="s-address"
-                          v-b-tooltip.hover
-                          :title="shop.address"
-                        >
-                          {{ shop.address }}
-                        </div>
-
-                        <button class="vshop">View Shop</button>
-                      </div>
-                    </div>
-                  </div>
-                </router-link>
-              </div>
-            </div>
-          </div>
+          <shops :category="category"></shops>
         </div>
       </div>
 
@@ -169,10 +126,11 @@ import Sitefooter from "./sitefooter.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import Bottomnav from "./bottomnav.vue";
-import Imgstore from "./imgstore.vue";
+// import Imgstore from "./imgstore.vue";
 import Spinner from "./spinner.vue";
+import Shops from "./shops.vue";
 export default {
-  components: { topnav, Sitefooter, Bottomnav, Imgstore, Spinner },
+  components: { topnav, Sitefooter, Bottomnav, Spinner, Shops },
   props: {
     category: {
       type: String,
@@ -391,6 +349,7 @@ export default {
   height: 220px;
   z-index: -1;
   background: url("../../assets/dribbble-loader-green.gif");
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }

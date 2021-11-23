@@ -3,7 +3,7 @@
     <img src="../../assets/def.png" width="100%" height="220px" />
   </div>
   <div v-else>
-    <img :src="image" width="100%" height="220px" />
+    <img :src="image" width="100%" height="140px" />
   </div>
 </template>
 
@@ -25,12 +25,13 @@ export default {
     axios
       .get(offersurl)
       .then((response) => {
-        this.image = response.data.toString();
+        this.image = response.data.image;
 
-        if (response.status !== 200) {
-          this.def = true;
-        } else {
+        if (response.status === 200 && response.data.status === 200) {
+          this.image = response.data.image;
           this.def = false;
+        } else {
+          this.def = true;
         }
       })
       .catch((err) => {

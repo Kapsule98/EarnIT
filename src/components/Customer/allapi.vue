@@ -16,11 +16,10 @@
           :autoplayTimeout="3000"
           :autoplayHoverPause="true"
           :responsive="{
-            0: { items: 1, nav: false },
-            600: { items: 3, nav: true },
-            1200: { items: 3 },
+            0: { items: 2, nav: false, stagePadding: 0 },
+            600: { items: 5, nav: true, stagePadding: 30 },
+            1200: { items: 5, stagePadding: 30 },
           }"
-          :stagePadding="0"
           :loop="false"
           :autoplay="true"
           :nav="false"
@@ -32,7 +31,8 @@
                   list.active_offers[offer.index].validity[1] &&
                 Math.floor(new Date().getTime() / 1000.0) >
                   list.active_offers[offer.index].validity[0] &&
-                list.active_offers[offer.index].quantity > 0
+                list.active_offers[offer.index].quantity > 0 &&
+                list.active_offers[offer.index].type !== 'FIXED'
               "
               :key="offer.length"
               class="hovclass"
@@ -91,16 +91,16 @@
                 <div class="shopname">
                   {{ list.active_offers[offer.index].seller_display_name }}
 
-                  <button class="vshop">View Shop</button>
+                  <!-- <button class="vshop">View Shop</button> -->
                 </div>
-                <div class="c2-validity">
+                <!-- <div class="c2-validity">
                   offer valid till
                   {{
                     moment(
                       list.active_offers[offer.index].validity[1] * 1000
                     ).format("MMM Do YY")
                   }}
-                </div>
+                </div> -->
               </router-link>
             </div>
           </template>
@@ -138,7 +138,7 @@ export default {
         .get(offersurl)
         .then((response) => {
           this.list = response.data;
-
+          // console.log(response.data);
           var discount = [];
 
           for (var i = 0; i < this.list.active_offers.length; i++) {
@@ -173,7 +173,7 @@ export default {
 .couponhome {
   position: relative;
   width: 90%;
-  height: 220px;
+  height: 140px;
   margin: 10px auto 0px auto;
   background: rgba(0, 0, 0, 0.082);
   overflow: hidden;
@@ -194,8 +194,8 @@ export default {
   margin-left: 5%;
   margin-right: 5%;
   padding: 10px;
-  font-size: 20px;
-  color: rgb(92, 92, 92);
+  font-size: 16px;
+  color: rgb(44, 44, 44);
   text-transform: capitalize;
 }
 .l-offer {
@@ -218,14 +218,15 @@ export default {
 .offno {
   font-size: 22px;
   font-weight: 700;
+  color: #0072cf;
 }
 .vshop {
   font-size: 13px;
-  color: #0077ff;
+  color: #0072cf;
   background: none;
   text-transform: lowercase;
   font-weight: 600;
-  border: 1px solid#0077ff;
+  border: 1px solid #0072cf;
   width: fit-content;
   border-radius: 3px;
   padding: 2px 14px;
@@ -235,7 +236,7 @@ export default {
 }
 .vshop:hover {
   color: white;
-  background: #0077ff;
+  background: #0072cf;
 }
 .c2-off {
   font-size: 22px;
@@ -275,16 +276,16 @@ export default {
   font-weight: 400;
   display: block;
   background: white;
-  border: 2px solid rgb(0, 162, 255);
+  border: 2px solid #0072cf;
   padding: 2px 3px;
   border-radius: 9px;
 }
 .c2-left {
-  font-size: 12px;
+  font-size: 14px;
   color: rgb(255, 255, 255);
   text-transform: lowercase;
   font-weight: 600;
-  background: #0077ff;
+  background: #0072cf;
   width: fit-content;
   border-radius: 0px 3px 3px 0px;
   padding: 2px 14px;
@@ -296,9 +297,10 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 220px;
+  height: 140px;
   z-index: -1;
   background: url("../../assets/dribbble-loader-green.gif");
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }

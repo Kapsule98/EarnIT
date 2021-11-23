@@ -142,13 +142,6 @@
             </option>
           </select>
 
-          <input
-            v-model="shop_name"
-            type="text"
-            placeholder="Registered Shop Name"
-            class="login-input"
-            style="border-top: none; border-radius: 0px 0px 5px 5px"
-          />
           <!-- <br />
           <br />
           <h6>Choose shop image</h6>
@@ -316,7 +309,7 @@ export default {
           contact_no: this.contact_no,
           address: this.address,
           category: this.shop_category,
-          shop_name: this.shop_name,
+          shop_name: null,
           location: this.location,
           email: this.email,
         };

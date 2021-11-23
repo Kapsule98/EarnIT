@@ -54,7 +54,17 @@
                     </svg>
                     {{ offer.seller_display_name }}
                   </div>
-
+                  <div class="w3-col m3" v-if="offer.type === 'FIXED'">
+                    <img :src="offer.image_url" class="product_img" />
+                  </div>
+                  <div class="w3-col m3" v-else>
+                    <div v-if="loaded">
+                      <img :src="image" class="product_img" />
+                    </div>
+                    <div v-else>
+                      <img src="../../assets/def.png" class="product_img" />
+                    </div>
+                  </div>
                   <div class="card_item" v-if="offer.type === 'ITEM_DISCOUNT'">
                     {{ offer.discount_percent }}% off on
                     <span v-b-tooltip.hover :title="offer.products + ' '">
@@ -71,21 +81,55 @@
                         </span>
                       </span>
                     </span>
+                    <div class="card_validity">
+                      valid till
+                      {{
+                        moment(offer.validity[1] * 1000).format("DD-MM-YYYY")
+                      }}
+                    </div>
+                  </div>
+                  <div class="card_item" v-else-if="offer.type === 'FIXED'">
+                    {{ Math.round(offer.discount_percent) }}% off on
+                    <span v-b-tooltip.hover :title="offer.products + ' '">
+                      <router-link
+                        :to="{
+                          path: '/product_description',
+                          query: {
+                            seller: offer.seller_email,
+                            offer_text: offer.offer_text,
+                          },
+                        }"
+                        >{{ offer.products.toString() }}</router-link
+                      >
+                    </span>
+                    <div class="product_cost">
+                      <i class="fa fa-inr" aria-hidden="true"></i>
+                      {{ offer.offer_price }}
+                      <del>
+                        <i class="fa fa-inr" aria-hidden="true"></i>
+                        {{ offer.mrp }}</del
+                      >
+                    </div>
+                    <div class="card_validity">
+                      valid till
+                      {{
+                        moment(offer.validity[1] * 1000).format("DD-MM-YYYY")
+                      }}
+                    </div>
                   </div>
                   <div class="card_item" v-else>
                     {{ offer.discount_percent }}% off on Total Bill
+                    <div class="card_validity">
+                      valid till
+                      {{
+                        moment(offer.validity[1] * 1000).format("DD-MM-YYYY")
+                      }}
+                    </div>
                   </div>
 
                   <div class="w3-row">
-                    <div class="w3-third"></div>
-                    <div class="w3-third">
-                      <div class="card_validity">
-                        valid till
-                        {{
-                          moment(offer.validity[1] * 1000).format("DD-MM-YYYY")
-                        }}
-                      </div>
-                    </div>
+                    <div class="w3-col m9"><br /></div>
+                    <div class="w3-col m3"></div>
                   </div>
                 </div>
                 <div class="w3-col m3">
@@ -130,22 +174,7 @@
             <div></div>
           </b-card>
         </div>
-        <div class="w3-quarter p-card">
-          <!-- <b-card style="margin-top: 0px">
-            <h4>You may be intrested in</h4>
-            <div class="couponhome">
-              <div class="c2-back">
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKBbMroCwhxlxNUD5rGHdE4yuncOPy4fTwBA&usqp=CAU"
-                />
-              </div>
-              <div class="c2-off">40% OFF on Samsung M30s</div>
-              <div class="c2-left">5 coupons left</div>
-              <div class="c2-shop">Rakesh Digital</div>
-              <div class="c2-validity">offer valid til 2 jun 2021</div>
-            </div>
-          </b-card> -->
-        </div>
+        <div class="w3-quarter p-card"></div>
       </div>
     </div>
     <bottomnav></bottomnav>
@@ -281,6 +310,18 @@ export default {
 };
 </script>
 <style scoped>
+.product_cost {
+  font-size: 20px;
+  color: #303030;
+}
+.product_cost del {
+  font-size: 14px;
+  color: #a3a3a3;
+}
+.product_img {
+  width: 100%;
+  margin-bottom: 20px;
+}
 .p-card {
   padding: 0px 10px;
 }
@@ -343,6 +384,7 @@ export default {
   display: block;
   width: 100%;
   padding: 10px 20px;
+  margin-left: 150px;
 }
 .couponhome {
   position: relative;
@@ -422,6 +464,14 @@ export default {
   }
   .p-card {
     padding: 10px 0px;
+  }
+  .card_remaining {
+    font-size: 15px;
+    color: rgb(51, 51, 51);
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    margin-left: 0px;
   }
 }
 </style>
