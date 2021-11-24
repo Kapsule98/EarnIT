@@ -34,6 +34,7 @@
                 placeholder="enter coupon code"
                 required
                 v-model="r_offertxt"
+                @change="calcoffer()"
               ></b-form-input>
             </b-form-group>
 
@@ -217,21 +218,7 @@
                   "
                   :offer_text="offer.offer_text"
                 ></couponcard>
-                <couponcard
-                  v-else-if="offer.type === 'FIXED'"
-                  v-b-tooltip.hover
-                  :title="offer.products.toString()"
-                  :name="offer.products.toString()"
-                  :expired="true"
-                  v-bind:discount="Math.round(offer.discount_percent) + '%'"
-                  v-bind:left="offer.quantity + ' coupons'"
-                  v-bind:validity="
-                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
-                  "
-                  v-bind:offer_text="offer.offer_text"
-                  :mrp="'Rs ' + offer.mrp"
-                  :offer_price="'Rs ' + offer.offer_price"
-                ></couponcard>
+
                 <div id="repeatmodal" class="w3-modal">
                   <div class="w3-modal-content w3-animate-zoom w3-card-4">
                     <header
@@ -299,7 +286,7 @@
     <b-modal ref="couponModal" hide-footer title="Add coupon details">
       <div class="d-block text-center">
         <h3>Add Coupon details</h3>
-        <label for="range-3">Select no. of Coupons</label>
+        <label for="range-3">Select no. of Coupons/Products</label>
         <b-form-input
           id="range-3"
           v-model="quantity"
@@ -572,6 +559,7 @@ export default {
       dp: "",
       prod: [],
       addproduct: null,
+      r_bio: "",
     };
   },
   mounted() {
@@ -637,6 +625,7 @@ export default {
               this.rdiscountType = l[i].type;
               this.rdiscount_percent = l[i].discount_percent;
               this.rmin_val = l[i].min_val;
+              this.r_bio = l[i].bio;
             }
           }
 
@@ -649,6 +638,7 @@ export default {
               quantity: parseInt(this.rquantity),
               min_val: parseInt(this.rmin_val),
               products: this.rproducts,
+              bio: this.r_bio,
             },
           };
           repoch[0] = this.rvalidity[0].getTime() / 1000.0;
@@ -706,6 +696,24 @@ export default {
         }
       }
     },
+    calcoffer() {
+      for (var i = 0; i < this.getoffers.active_offers.length; i++) {
+        var atxt = this.getoffers.active_offers[i].offer_text;
+        var entxt = document.getElementById("input-1").value;
+        if (
+          entxt === atxt &&
+          this.getoffers.active_offers[i].type === "FIXED"
+        ) {
+          document.getElementById("input-3").value =
+            this.getoffers.active_offers[i].offer_price;
+          document.getElementById("input-4").value =
+            this.getoffers.active_offers[i].mrp -
+            this.getoffers.active_offers[i].offer_price;
+          this.r_total = this.getoffers.active_offers[i].mrp;
+          this.r_discount = this.getoffers.active_offers[i].offer_price;
+        }
+      }
+    },
     getProducts() {
       const url = BASE_URL + "/seller/product";
       let JWTToken = this.$session.get("token");
@@ -724,10 +732,13 @@ export default {
 
         if (this.r_offertxt === atxt) {
           this.r_min_val = this.getoffers.active_offers[i].min_val;
-          if (this.getoffers.active_offers[i].offer_price !== "") {
-            this.r_total = this.getoffers.active_offers[i].offer_price;
-            this.r_discount =
-              this.getoffers.active_offers[i].mrp - this.r_total;
+
+          if (
+            this.getoffers.active_offers[i].offer_price !== "" &&
+            this.offer_type === "FIXED"
+          ) {
+            this.r_total = this.getoffers.active_offers[i].mrp;
+            this.r_discount = this.getoffers.active_offers[i].offer_price;
           }
         }
       }
@@ -784,12 +795,10 @@ export default {
     },
     onReset(event) {
       event.preventDefault();
-      // Reset our form values
       this.form.email = "";
       this.form.name = "";
       this.form.food = null;
       this.form.checked = [];
-      // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {
         this.show = true;
@@ -804,30 +813,45 @@ export default {
     addCouponDetails() {
       if (this.discountType === "FIXED") {
         document.getElementById("crop").click();
-
-        this.image_base64 = null;
       }
       var epoch = [];
       epoch[0] = this.validity[0].getTime() / 1000.0;
       epoch[1] = this.validity[1].getTime() / 1000.0;
-      //TODO validate input and store in db
-      // POST request using axios with error handling
-      const payload = {
-        offer: {
-          validity: epoch,
-          type: this.discountType,
-          discount_percent: parseInt(this.discount_percent),
-          offer_text: this.offer_text,
-          quantity: parseInt(this.quantity),
-          min_val: parseInt(this.min_val),
-          products: this.products,
-          mrp: parseInt(this.mrp),
-          offer_price: parseInt(this.offerPrice),
-          bio: this.bio,
-          image_base64: this.dp,
-        },
-      };
-      console.log(payload);
+      var payload;
+      console.log(this.discountType);
+      if (this.discountType === "FIXED") {
+        payload = {
+          offer: {
+            validity: epoch,
+            type: this.discountType,
+            discount_percent: parseInt(this.discount_percent),
+            offer_text: this.offer_text,
+            quantity: parseInt(this.quantity),
+            min_val: parseInt(this.min_val),
+            products: this.products,
+            mrp: parseInt(this.mrp),
+            offer_price: parseInt(this.offerPrice),
+            bio: this.bio,
+            image_base64: this.dp,
+          },
+        };
+      } else {
+        payload = {
+          offer: {
+            validity: epoch,
+            type: this.discountType,
+            discount_percent: parseInt(this.discount_percent),
+            offer_text: this.offer_text,
+            quantity: parseInt(this.quantity),
+            min_val: parseInt(this.min_val),
+            products: this.products,
+            mrp: parseInt(this.mrp),
+            offer_price: parseInt(this.offerPrice),
+            bio: this.bio,
+          },
+        };
+      }
+      console.log("payload = ", JSON.stringify(payload));
       const url = BASE_URL + "/seller/offer";
       const accessToken = this.$session.get("token");
       const options = {
@@ -863,7 +887,6 @@ export default {
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.getoffers = response.data;
-          //console.log(this.getoffers);
           console.log(response.data);
         })
         .catch((err) => {
