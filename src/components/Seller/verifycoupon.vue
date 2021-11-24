@@ -299,7 +299,7 @@
     <b-modal ref="couponModal" hide-footer title="Add coupon details">
       <div class="d-block text-center">
         <h3>Add Coupon details</h3>
-        <label for="range-3">Select no. of Coupons</label>
+        <label for="range-3">Select no. of Coupons/Products</label>
         <b-form-input
           id="range-3"
           v-model="quantity"

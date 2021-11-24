@@ -11,7 +11,7 @@
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 export default {
-  props: ["email"],
+  props: ["email", "category"],
   components: {},
   data() {
     return {
@@ -26,7 +26,7 @@ export default {
       .get(offersurl)
       .then((response) => {
         this.image = response.data.image;
-
+        alert(this.category);
         if (response.status === 200 && response.data.status === 200) {
           this.image = response.data.image;
           this.def = false;
