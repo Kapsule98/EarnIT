@@ -291,7 +291,7 @@ form.example input[type="text"] {
   border: none;
   float: left;
   display: flex;
-  width: 290px;
+  width: 330px;
   background: #f7fcff;
   margin-top: 0px;
   margin-left: 40px;

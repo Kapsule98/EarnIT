@@ -493,10 +493,10 @@ export default {
         .get(url)
         .then((response) => {
           this.image = "/img/def.png";
-          if (response.status === 200) {
+          if (response.status === 200 && response.data.status === 200) {
             {
               this.loaded = true;
-              this.image = response.data.toString();
+              this.image = response.data.image;
             }
           }
         })

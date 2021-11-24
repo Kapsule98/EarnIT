@@ -34,6 +34,7 @@
                 placeholder="enter coupon code"
                 required
                 v-model="r_offertxt"
+                @change="calcoffer()"
               ></b-form-input>
             </b-form-group>
 
@@ -217,21 +218,7 @@
                   "
                   :offer_text="offer.offer_text"
                 ></couponcard>
-                <couponcard
-                  v-else-if="offer.type === 'FIXED'"
-                  v-b-tooltip.hover
-                  :title="offer.products.toString()"
-                  :name="offer.products.toString()"
-                  :expired="true"
-                  v-bind:discount="Math.round(offer.discount_percent) + '%'"
-                  v-bind:left="offer.quantity + ' coupons'"
-                  v-bind:validity="
-                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
-                  "
-                  v-bind:offer_text="offer.offer_text"
-                  :mrp="'Rs ' + offer.mrp"
-                  :offer_price="'Rs ' + offer.offer_price"
-                ></couponcard>
+
                 <div id="repeatmodal" class="w3-modal">
                   <div class="w3-modal-content w3-animate-zoom w3-card-4">
                     <header
@@ -572,6 +559,7 @@ export default {
       dp: "",
       prod: [],
       addproduct: null,
+      r_bio: "",
     };
   },
   mounted() {
@@ -637,6 +625,7 @@ export default {
               this.rdiscountType = l[i].type;
               this.rdiscount_percent = l[i].discount_percent;
               this.rmin_val = l[i].min_val;
+              this.r_bio = l[i].bio;
             }
           }
 
@@ -649,6 +638,7 @@ export default {
               quantity: parseInt(this.rquantity),
               min_val: parseInt(this.rmin_val),
               products: this.rproducts,
+              bio: this.r_bio,
             },
           };
           repoch[0] = this.rvalidity[0].getTime() / 1000.0;
@@ -706,6 +696,24 @@ export default {
         }
       }
     },
+    calcoffer() {
+      for (var i = 0; i < this.getoffers.active_offers.length; i++) {
+        var atxt = this.getoffers.active_offers[i].offer_text;
+        var entxt = document.getElementById("input-1").value;
+        if (
+          entxt === atxt &&
+          this.getoffers.active_offers[i].type === "FIXED"
+        ) {
+          document.getElementById("input-3").value =
+            this.getoffers.active_offers[i].offer_price;
+          document.getElementById("input-4").value =
+            this.getoffers.active_offers[i].mrp -
+            this.getoffers.active_offers[i].offer_price;
+          this.r_total = this.getoffers.active_offers[i].mrp;
+          this.r_discount = this.getoffers.active_offers[i].offer_price;
+        }
+      }
+    },
     getProducts() {
       const url = BASE_URL + "/seller/product";
       let JWTToken = this.$session.get("token");
@@ -724,7 +732,11 @@ export default {
 
         if (this.r_offertxt === atxt) {
           this.r_min_val = this.getoffers.active_offers[i].min_val;
-          if (this.getoffers.active_offers[i].offer_price !== "") {
+
+          if (
+            this.getoffers.active_offers[i].offer_price !== "" &&
+            this.offer_type === "FIXED"
+          ) {
             this.r_total = this.getoffers.active_offers[i].mrp;
             this.r_discount = this.getoffers.active_offers[i].offer_price;
           }
