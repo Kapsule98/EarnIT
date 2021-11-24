@@ -784,12 +784,10 @@ export default {
     },
     onReset(event) {
       event.preventDefault();
-      // Reset our form values
       this.form.email = "";
       this.form.name = "";
       this.form.food = null;
       this.form.checked = [];
-      // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {
         this.show = true;
@@ -810,8 +808,6 @@ export default {
       var epoch = [];
       epoch[0] = this.validity[0].getTime() / 1000.0;
       epoch[1] = this.validity[1].getTime() / 1000.0;
-      //TODO validate input and store in db
-      // POST request using axios with error handling
       const payload = {
         offer: {
           validity: epoch,
@@ -863,7 +859,6 @@ export default {
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.getoffers = response.data;
-          //console.log(this.getoffers);
           console.log(response.data);
         })
         .catch((err) => {

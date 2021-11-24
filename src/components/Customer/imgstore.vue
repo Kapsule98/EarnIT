@@ -17,6 +17,7 @@ export default {
     return {
       image: "",
       def: false,
+      furdef: false,
     };
   },
   mounted() {
@@ -26,12 +27,15 @@ export default {
       .get(offersurl)
       .then((response) => {
         this.image = response.data.image;
-        alert(this.category);
+
         if (response.status === 200 && response.data.status === 200) {
           this.image = response.data.image;
           this.def = false;
         } else {
           this.def = true;
+          if (this.category === "Furniture") {
+            this.furdef = true;
+          }
         }
       })
       .catch((err) => {
