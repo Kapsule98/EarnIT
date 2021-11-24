@@ -10,8 +10,6 @@
     </div>
     <div v-else>
       <div v-if="mapped.length > 0">
-        <!---->
-
         <carousel
           :autoplayTimeout="3000"
           :autoplayHoverPause="true"
@@ -49,6 +47,7 @@
                   <div class="c2-back">
                     <imgstore
                       :email="list.active_offers[offer.index].seller_email"
+                      :category="list.active_offers[offer.index].category"
                     ></imgstore>
                   </div>
                   <div class="c2-left">
@@ -138,7 +137,6 @@ export default {
         .get(offersurl)
         .then((response) => {
           this.list = response.data;
-          // console.log(response.data);
           var discount = [];
 
           for (var i = 0; i < this.list.active_offers.length; i++) {
@@ -149,12 +147,10 @@ export default {
             return { index: i, value: el };
           });
 
-          // sorting the mapped array containing the reduced values
           mapped.sort(function (a, b) {
             return b.value - a.value;
           });
 
-          // container for the resulting order
           var result = mapped.map(function (el) {
             return discount[el.index];
           });

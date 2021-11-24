@@ -171,6 +171,7 @@ export default {
                 this.$router.push("/");
               } else {
                 alert(res.data.msg);
+                this.loading = false;
               }
             })
             .catch((err) => {

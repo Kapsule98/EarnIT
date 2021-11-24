@@ -1,6 +1,27 @@
 <template>
   <div v-if="def">
-    <img src="../../assets/def.png" width="100%" height="220px" />
+    <div v-if="furdef">
+      <img src="../../assets/furnituredef.jpg" width="100%" height="140px" />
+    </div>
+    <div v-if="eledef">
+      <img src="../../assets/electronicsdef.jpg" width="100%" height="140px" />
+    </div>
+    <div v-if="grodef">
+      <img src="../../assets/grocerydef.jpg" width="100%" height="140px" />
+    </div>
+    <div v-if="foodef">
+      <img src="../../assets/Fooddef.jpg" width="100%" height="140px" />
+    </div>
+    <div v-if="headef">
+      <img src="../../assets/pharmacydef.jpg" width="100%" height="140px" />
+    </div>
+    <div v-if="fasdef">
+      <img src="../../assets/fashiondef.jpg" width="100%" height="140px" />
+    </div>
+
+    <div v-else>
+      <img src="../../assets/def.png" width="100%" height="220px" />
+    </div>
   </div>
   <div v-else>
     <img :src="image" width="100%" height="140px" />
@@ -11,12 +32,18 @@
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 export default {
-  props: ["email"],
+  props: ["email", "category"],
   components: {},
   data() {
     return {
       image: "",
       def: false,
+      furdef: false,
+      fasdef: false,
+      eledef: false,
+      grodef: false,
+      foodef: false,
+      headef: false,
     };
   },
   mounted() {
@@ -32,6 +59,19 @@ export default {
           this.def = false;
         } else {
           this.def = true;
+          if (this.category === "Furniture") {
+            this.furdef = true;
+          } else if (this.category === "Electronics") {
+            this.eledef = true;
+          } else if (this.category === "Grocery") {
+            this.grodef = true;
+          } else if (this.category === "Health") {
+            this.heafurdef = true;
+          } else if (this.category === "Food") {
+            this.foofurdef = true;
+          } else if (this.category === "Fashion") {
+            this.fasfurdef = true;
+          }
         }
       })
       .catch((err) => {
