@@ -47,7 +47,10 @@
                 </div>
               </div>
             </b-card>
-            <b-card style="margin: 10px; color: black">
+            <b-card
+              style="margin: 10px; color: black"
+              v-if="mostused.status === 200"
+            >
               <div class="w3-row" style="text-align: center">
                 <h5>Most used offer:</h5>
                 <div
@@ -57,13 +60,13 @@
                 >
                   <div class="body">
                     <div class="bodyback">{{ mostused.discount }}%</div>
-                    <h4 class="title" v-if="mostused.type === 'ITEM_DISCOUNT'">
-                      {{ mostused.products[0] }}
+                    <h4 class="title" v-if="mostused.type === 'FIXED'">
+                      {{ mostused.products.toString() }}
                     </h4>
                     <h4 class="title" v-else>Total Bill</h4>
 
                     <h2 class="how_much">
-                      <b> {{ mostused.discount }}% </b>
+                      <b> {{ Math.round(mostused.discount) }}% </b>
                     </h2>
                     <h3>OFF</h3>
                   </div>
@@ -105,13 +108,14 @@ export default {
     };
   },
   mounted() {
+    this.mostused = JSON.parse(localStorage.getItem("mostused"));
+
     if (this.$session.get("user_type") === "seller") {
       document.getElementsByClassName("topnav")[0].style.height = "70px";
     }
     this.user = this.$session.get("user_data");
     this.getEarning();
     this.getCouponsSold();
-    this.mostused = JSON.parse(localStorage.getItem("mostused"));
   },
   methods: {
     getEarning() {

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- <testing></testing> -->
     <topnav
       v-if="this.$session.get('user_type') !== 'seller'"
       link3="Account"
@@ -37,182 +38,9 @@
 
     <loader v-if="isLoading"></loader>
     <homeposters style="margin-top: -30px; width: 100%"></homeposters>
+    <product></product>
+    <br /><br />
     <div class="backwrap">
-      <div class="lessm">
-        <div class="w3-row" style="background-color: #e8e8e8">
-          <!--5-6 Categories like pharmacy etc on clicking on it more products of this kind will be shown>-->
-          <div class="w3-col m2 s4">
-            <router-link
-              :to="{ path: '/search', query: { category: 'Fashion' } }"
-            >
-              <div class="top_categories">
-                <img
-                  src="../../assets/fashion.jpg"
-                  alt="ss"
-                  width="100%"
-                  class="catimg"
-                />
-                <p class="offhead">Fashion</p>
-              </div>
-            </router-link>
-          </div>
-          <div class="w3-col m2 s4">
-            <router-link
-              :to="{ path: '/search', query: { category: 'Electronics' } }"
-            >
-              <div class="top_categories">
-                <img
-                  src="../../assets/electronics.jpg"
-                  alt="ss"
-                  width="100%"
-                  class="catimg"
-                />
-                <p class="offhead">Electronics</p>
-              </div>
-            </router-link>
-          </div>
-          <div class="w3-col m2 s4">
-            <router-link
-              :to="{ path: '/search', query: { category: 'Furnishing' } }"
-            >
-              <div class="top_categories">
-                <img
-                  src="../../assets/furnishing.jpg"
-                  alt="ss"
-                  width="100%"
-                  class="catimg"
-                />
-                <p class="offhead">Furniture</p>
-              </div>
-            </router-link>
-          </div>
-          <div class="w3-col m2 s4">
-            <router-link
-              :to="{ path: '/search', query: { category: 'Health' } }"
-            >
-              <div class="top_categories">
-                <img
-                  src="../../assets/health.jpg"
-                  alt="ss"
-                  width="100%"
-                  class="catimg"
-                />
-                <p class="offhead">Health</p>
-              </div>
-            </router-link>
-          </div>
-          <div class="w3-col m2 s4">
-            <router-link :to="{ path: '/search', query: { category: 'Food' } }">
-              <div class="top_categories">
-                <img
-                  src="../../assets/food.jpg"
-                  alt="ss"
-                  width="100%"
-                  class="catimg"
-                />
-                <p class="offhead">Food</p>
-              </div>
-            </router-link>
-          </div>
-          <div class="w3-col m2 s4">
-            <router-link
-              :to="{ path: '/search', query: { category: 'Grocery' } }"
-            >
-              <div class="top_categories">
-                <img
-                  src="../../assets/grocery.jpg"
-                  alt="ss"
-                  width="100%"
-                  class="catimg"
-                />
-                <p class="offhead">Grocery</p>
-              </div>
-            </router-link>
-          </div>
-        </div>
-      </div>
-
-      <b-card style="margin-top: 4px; border: none; border-radius: 0">
-        <h4 style="padding: 0px">
-          Grab maximum discounts!
-          <router-link :to="{ path: '/search', query: { alloffers: true } }"
-            ><a href="" class="vall" style="margin-right: -10px">View all</a>
-          </router-link>
-        </h4>
-
-        <div class="w3-container" style="padding: 20px 0px">
-          <allapi></allapi>
-        </div>
-      </b-card>
-      <b-card style="margin-top: 4px; border: none; border-radius: 0">
-        <h4 style="padding: 20px">
-          Grocery<router-link
-            :to="{ path: '/search', query: { category: 'Grocery' } }"
-            ><a href="" class="vall">View all</a></router-link
-          >
-        </h4>
-
-        <topoffers category="/get_offers_by_category/Grocery"></topoffers>
-        <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
-      </b-card>
-      <b-card style="margin-top: 4px; border: none; border-radius: 0">
-        <h4 style="padding: 20px">
-          Food
-          <router-link :to="{ path: '/search', query: { category: 'Food' } }"
-            ><a href="" class="vall">View all</a></router-link
-          >
-        </h4>
-
-        <topoffers category="/get_offers_by_category/Food"></topoffers>
-
-        <!--<catoffers category="/get_offers_by_category/Food"></catoffers>-->
-      </b-card>
-      <b-card style="margin-top: 4px; border: none; border-radius: 0">
-        <h4 style="padding: 20px">
-          Electronics
-          <router-link
-            :to="{ path: '/search', query: { category: 'Electronics' } }"
-            ><a href="" class="vall">View all</a></router-link
-          >
-        </h4>
-
-        <topoffers category="/get_offers_by_category/Electronics"></topoffers>
-        <!--<catoffers category="/get_offers_by_category/Electronics"></catoffers>-->
-      </b-card>
-      <b-card style="margin-top: 4px; border: none; border-radius: 0">
-        <h4 style="padding: 20px">
-          Fashion
-          <router-link :to="{ path: '/search', query: { category: 'Fashion' } }"
-            ><a href="" class="vall">View all</a></router-link
-          >
-        </h4>
-
-        <topoffers category="/get_offers_by_category/Fashion"></topoffers>
-        <!--<catoffers category="/get_offers_by_category/Fashion"></catoffers>-->
-      </b-card>
-      <b-card style="margin-top: 4px; border: none; border-radius: 0">
-        <h4 style="padding: 20px">
-          Health<router-link
-            :to="{ path: '/search', query: { category: 'Health' } }"
-            ><a href="" class="vall">View all</a></router-link
-          >
-        </h4>
-
-        <topoffers category="/get_offers_by_category/Health"></topoffers>
-        <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
-      </b-card>
-      <b-card style="margin-top: 4px; border: none; border-radius: 0">
-        <h4 style="padding: 20px">
-          Furniture<router-link
-            :to="{ path: '/search', query: { category: 'Furniture' } }"
-            ><a href="" class="vall">View all</a></router-link
-          >
-        </h4>
-
-        <topoffers category="/get_offers_by_category/Furniture"></topoffers>
-        <!--<catoffers category="/get_offers_by_category/Health"></catoffers>-->
-      </b-card>
-
       <bottomnav v-if="this.$session.get('user_type') !== 'seller'"></bottomnav>
       <sitefooter></sitefooter>
     </div>
@@ -221,30 +49,21 @@
 <script>
 import topnav from "../Seller/topnav.vue";
 import homeposters from "./homeposters.vue";
-import topoffers from "./topoffers.vue";
 import Sitefooter from "./sitefooter.vue";
-//import Catoffers from "./catoffers.vue";
-import Allapi from "./allapi.vue";
 import loader from "../Seller/loader.vue";
 import Bottomnav from "./bottomnav.vue";
+import Product from "./product.vue";
 export default {
   components: {
     topnav,
     Sitefooter,
-    topoffers,
     homeposters,
-    Allapi,
     Bottomnav,
     loader,
+    Product,
   },
   data() {
     return {
-      showFashionBlock: false,
-      showHealthBlock: false,
-      showFoodBlock: false,
-      showElectronicsBlock: false,
-      showFurnitureBlock: false,
-      showGroceryBlock: false,
       isLoading: true,
     };
   },
@@ -261,51 +80,6 @@ export default {
     if (this.$session.get("user_type") === "customer") {
       this.$nextTick(() => this.$refs.prose.focus());
     }
-    // if (
-    //   localStorage.getItem("/get_offers_by_category/Fashionempty?") === "true"
-    // ) {
-    //   this.showFashionBlock = false;
-    //   // alert(this.showFashionBlock);
-    // } else {
-    //   this.showFashionBlock = true;
-    //   // alert(localStorage.getItem("/get_offers_by_category/Fashionempty?"));
-    //   // alert(this.showFashionBlock);
-    // }
-
-    // if (
-    //   localStorage.getItem("/get_offers_by_category/Healthempty?") === "true"
-    // ) {
-    //   this.showHealthBlock = false;
-    // } else {
-    //   this.showHealthBlock = true;
-    // }
-    // if (localStorage.getItem("/get_offers_by_category/Foodempty?") === "true") {
-    //   this.showFoodBlock = false;
-    // } else {
-    //   this.showFoodBlock = true;
-    // }
-    // if (
-    //   localStorage.getItem("/get_offers_by_category/Electronicsempty?") ===
-    //   "true"
-    // ) {
-    //   this.showElectronicsBlock = false;
-    // } else {
-    //   this.showElectronicsBlock = true;
-    // }
-    // if (
-    //   localStorage.getItem("/get_offers_by_category/Furnitureempty?") === "true"
-    // ) {
-    //   this.showFurnitureBlock = false;
-    // } else {
-    //   this.showFurnitureBlock = true;
-    // }
-    // if (
-    //   localStorage.getItem("/get_offers_by_category/Groceryempty?") === "true"
-    // ) {
-    //   this.showGroceryBlock = false;
-    // } else {
-    //   this.showGroceryBlock = true;
-    // }
   },
 };
 </script>

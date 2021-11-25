@@ -19,6 +19,7 @@
           <b> {{ discount }} </b>
         </h2>
         <h3>OFF</h3>
+        {{ offer_price }} <del>{{ mrp }}</del>
       </div>
       <div class="usecode">{{ left }}</div>
       <h6>Code: {{ offer_text }}</h6>
@@ -51,6 +52,8 @@ export default {
     "planned",
     "validfrom",
     "expired",
+    "offer_price",
+    "mrp",
   ],
   //components: { DatePicker },
   data() {

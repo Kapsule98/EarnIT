@@ -142,45 +142,6 @@
             </option>
           </select>
 
-          <input
-            v-model="shop_name"
-            type="text"
-            placeholder="Registered Shop Name"
-            class="login-input"
-            style="border-top: none; border-radius: 0px 0px 5px 5px"
-          />
-          <!-- <br />
-          <br />
-          <h6>Choose shop image</h6>
-          <cropper
-            :src="dp"
-            class="cropper"
-            :stencil-props="{
-              aspectRatio: 16 / 10,
-            }"
-            ref="cropper"
-          ></cropper>
-          <input
-            accept="image/*"
-            name="image"
-            id="file"
-            @change="loadFile"
-            type="file"
-            placeholder="Shop Image"
-            class="login-input"
-          />
-          <div class="no_btn" id="no_btn" style="text-align: center">
-            <b-button
-              variant="primary"
-              @click="crop"
-              id="crop"
-              style="margin: 10px"
-              >Crop</b-button
-            >
-            <b-button variant="primary" @click="encodeImageFileAsURL"
-              >set profile image</b-button
-            >
-          </div> -->
           <button @click="Sellersignup()" class="login-button">Register</button>
           <a href="/login" style="float: right"
             >already have an account? login here</a
@@ -316,7 +277,7 @@ export default {
           contact_no: this.contact_no,
           address: this.address,
           category: this.shop_category,
-          shop_name: this.shop_name,
+          shop_name: this.displayname,
           location: this.location,
           email: this.email,
         };
