@@ -815,6 +815,7 @@ export default {
       if (this.discountType === "FIXED") {
         document.getElementById("crop").click();
       }
+      var arrprod = [this.products];
       var epoch = [];
       epoch[0] = this.validity[0].getTime() / 1000.0;
       epoch[1] = this.validity[1].getTime() / 1000.0;
@@ -829,7 +830,7 @@ export default {
             offer_text: this.offer_text,
             quantity: parseInt(this.quantity),
             min_val: parseInt(this.min_val),
-            products: this.products,
+            products: arrprod,
             mrp: parseInt(this.mrp),
             offer_price: parseInt(this.offerPrice),
             bio: this.bio,
@@ -864,6 +865,8 @@ export default {
       axios
         .post(url, payload, options)
         .then((response) => {
+          console.log("prod", this.products);
+          console.log("prodarr", arrprod);
           if (response.status === 200) {
             alert("Coupon added Sucessfully");
             console.log(response);
