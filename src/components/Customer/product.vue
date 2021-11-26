@@ -98,7 +98,9 @@
         </b-col>
       </b-row>
       <div class="viewall iterbtn">
-        View All <b-icon-arrow-right></b-icon-arrow-right>
+        <router-link :to="{ path: '/search', query: { category: iters } }">
+          View All <b-icon-arrow-right></b-icon-arrow-right
+        ></router-link>
       </div>
 
       <div class="showcoupon">

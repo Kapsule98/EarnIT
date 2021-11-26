@@ -18,10 +18,9 @@
     <div v-if="fasdef">
       <img src="../../assets/fashiondef.jpg" width="100%" height="140px" />
     </div>
-
-    <div v-else>
+    <!-- <div v-else>
       <img src="../../assets/def.png" width="100%" height="220px" />
-    </div>
+    </div> -->
   </div>
   <div v-else>
     <img :src="image" width="100%" height="140px" />
@@ -53,12 +52,13 @@ export default {
       .get(offersurl)
       .then((response) => {
         this.image = response.data.image;
-
+        console.log(response);
         if (response.status === 200 && response.data.status === 200) {
           this.image = response.data.image;
           this.def = false;
         } else {
           this.def = true;
+          // alert(this.category);
           if (this.category === "Furniture") {
             this.furdef = true;
           } else if (this.category === "Electronics") {
@@ -66,11 +66,11 @@ export default {
           } else if (this.category === "Grocery") {
             this.grodef = true;
           } else if (this.category === "Health") {
-            this.heafurdef = true;
+            this.headef = true;
           } else if (this.category === "Food") {
-            this.foofurdef = true;
+            this.foodef = true;
           } else if (this.category === "Fashion") {
-            this.fasfurdef = true;
+            this.fasdef = true;
           }
         }
       })

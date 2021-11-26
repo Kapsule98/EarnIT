@@ -195,7 +195,7 @@ export default {
       const { coordinates, canvas } = this.$refs.cropper.getResult();
       this.coordinates = coordinates;
       this.dp = canvas.toDataURL();
-      // this.encodeImageFileAsURL();  Multiple calls ???
+      this.encodeImageFileAsURL();
     },
     loadFile(event) {
       this.dp = URL.createObjectURL(event.target.files[0]);
@@ -214,7 +214,7 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
-            this.dp = res.data.toString();
+            this.dp = res.data.image;
             console.log(res);
           } else {
             console.log("Some error occured");

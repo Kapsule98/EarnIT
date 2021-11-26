@@ -79,7 +79,7 @@
             <b-button
               variant="primary"
               style="float: right; background: #008cff"
-              v-on:click="verifyCoupon()"
+              @click="verifyCoupon()"
               >Verify</b-button
             >
           </b-form>
@@ -268,7 +268,7 @@
                         <button
                           class="login-button"
                           style="max-width: 300px"
-                          v-on:click="addrepeat(offer.offer_text)"
+                          @click="addrepeat(offer.offer_text)"
                         >
                           repeat offer
                         </button>
@@ -399,7 +399,7 @@
               placeholder="Enter Product Name..."
               v-model="addproduct"
             />
-            <button class="addprod" v-on:click="addNewProduct()">
+            <button class="addprod" @click="addNewProduct()">
               <i class="fa fa-plus"></i>
             </button>
           </div>
@@ -600,6 +600,7 @@ export default {
       const { coordinates, canvas } = this.$refs.cropper.getResult();
       this.coordinates = coordinates;
       this.dp = canvas.toDataURL();
+      this.encodeImageFileAsURL();
     },
 
     loadFile(event) {
@@ -870,12 +871,13 @@ export default {
         })
         .catch((error) => {
           this.errorMessage = error.message;
-          alert.error("There was an error!", error);
+          error("There was an error!", error);
+          alert(error);
         });
 
       this.$refs["couponModal"].hide();
 
-      this.$router.go();
+      //this.$router.go();
     },
     getUser() {
       this.user = this.$session.get("user_data");

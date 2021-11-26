@@ -356,9 +356,9 @@
                         >
                         off on
 
-                        {{
+                        <!-- {{
                           list.active_offers[offer.index].products.toString()
-                        }}
+                        }} -->
                       </nav>
                     </div>
                     <div class="l-offer" v-else>
@@ -502,6 +502,7 @@ export default {
       axios
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
+          console.log(response);
           console.log("text2", new Date().getTime());
 
           this.list = response.data;
