@@ -239,7 +239,7 @@
                     <br />
                   </b-tab>
                   <!-- ========================================================================== -->
-                  <b-tab style="font-size: 15px">
+                  <b-tab style="font-size: 15px" active>
                     <template #title>
                       <span style="color: #008cff">Coupons</span>
                     </template>

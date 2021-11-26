@@ -3,14 +3,12 @@
     <div class="coupon_box">
       <div class="body">
         <div v-if="expired === true">
-          <div class="remove" v-on:click="repeat()">
+          <div class="remove" @click="repeat()">
             <i class="fa fa-refresh" aria-hidden="true"></i>
           </div>
         </div>
         <div v-else>
-          <div class="remove" v-on:click="removeOffer(offer_text)">
-            &#x2212;
-          </div>
+          <div class="remove" @click="removeOffer(offer_text)">&#x2212;</div>
         </div>
         <div class="bodyback">{{ discount }}</div>
         <h4 class="title">{{ name }}</h4>
