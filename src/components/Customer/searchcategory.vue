@@ -356,9 +356,9 @@
                         >
                         off on
 
-                        <!-- {{
+                        {{
                           list.active_offers[offer.index].products.toString()
-                        }} -->
+                        }}
                       </nav>
                     </div>
                     <div class="l-offer" v-else>
