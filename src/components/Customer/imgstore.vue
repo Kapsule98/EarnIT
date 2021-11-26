@@ -1,22 +1,22 @@
 <template>
   <div v-if="def">
     <div v-if="furdef">
-      <img src="../../assets/furnituredef.jpg" width="100%" height="140px" />
+      <img src="../../assets/Furnituredef.jpg" width="100%" height="140px" />
     </div>
     <div v-if="eledef">
-      <img src="../../assets/electronicsdef.jpg" width="100%" height="140px" />
+      <img src="../../assets/Electronicsdef.jpg" width="100%" height="140px" />
     </div>
     <div v-if="grodef">
-      <img src="../../assets/grocerydef.jpg" width="100%" height="140px" />
+      <img src="../../assets/Grocerydef.jpg" width="100%" height="140px" />
     </div>
     <div v-if="foodef">
       <img src="../../assets/Fooddef.jpg" width="100%" height="140px" />
     </div>
     <div v-if="headef">
-      <img src="../../assets/pharmacydef.jpg" width="100%" height="140px" />
+      <img src="../../assets/Pharmacydef.jpg" width="100%" height="140px" />
     </div>
     <div v-if="fasdef">
-      <img src="../../assets/fashiondef.jpg" width="100%" height="140px" />
+      <img src="../../assets/Fashiondef.jpg" width="100%" height="140px" />
     </div>
     <!-- <div v-else>
       <img src="../../assets/def.png" width="100%" height="220px" />
