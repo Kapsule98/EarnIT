@@ -20,7 +20,10 @@
                 <div class="hovclass">
                   <div class="couponhome">
                     <div class="c2-back">
-                      <imgstore :email="shop.email"></imgstore>
+                      <imgstore
+                        :email="shop.email"
+                        :category="shop.category"
+                      ></imgstore>
                     </div>
                   </div>
                   <div class="l-offer">

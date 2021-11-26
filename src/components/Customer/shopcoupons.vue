@@ -39,7 +39,7 @@
       <div class="w3-card" style="background: white">
         <div class="w3-row">
           <div class="w3-twothird" style="padding: 20px">
-            <p class="domain">{{ list.category }}</p>
+            <p class="domain">{{ category }}</p>
             <p class="shopname">{{ list.shop_name }}</p>
             <p class="shoplocation">
               <i class="fa fa-map-marker"></i> {{ list.address }}
@@ -256,20 +256,7 @@
                         class="couponcard"
                       >
                         <div class="w3-row">
-                          <div class="w3-col m2" v-if="offers.type === 'FIXED'">
-                            <img :src="offers.image_url" class="product_img" />
-                          </div>
-                          <div class="w3-col m2" v-else>
-                            <div v-if="loaded">
-                              <img :src="image" class="product_img" />
-                            </div>
-                            <div v-else>
-                              <img
-                                src="../../assets/def.png"
-                                class="product_img"
-                              />
-                            </div>
-                          </div>
+                          <div class="w3-col m2"></div>
                           <div class="w3-col m7">
                             <div
                               class="card_remaining"
@@ -449,11 +436,13 @@ export default {
     return {
       loading: false,
       list: [],
-      image: "",
+      image: "../../assets/def.png",
       email: "",
       Shopbio: "",
       gmapLink: null,
-      loaded: false,
+      category: "",
+      imail: "",
+      loaded: true,
     };
   },
   mounted() {
@@ -465,6 +454,10 @@ export default {
         this.list = response.data;
         this.email = this.list.seller_email;
         this.gmapLink = this.list.location;
+        if (this.list.offers.length > 0) {
+          this.category = this.list.offers[0].category;
+        }
+        console.log(this.category, this.list);
         this.getShopBio();
         this.getImage();
       })
@@ -492,7 +485,7 @@ export default {
       axios
         .get(url)
         .then((response) => {
-          this.image = "/img/def.png";
+          this.image = "../../assets/def.png";
           if (response.status === 200 && response.data.status === 200) {
             {
               this.loaded = true;

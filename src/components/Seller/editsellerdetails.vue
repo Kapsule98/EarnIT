@@ -213,7 +213,7 @@ export default {
         .get(url, options)
         .then((res) => {
           console.log(res);
-          if (res.status === 200) {
+          if (res.status === 200 && res.data.status === 200) {
             this.dp = res.data.image;
             console.log(res);
           } else {
