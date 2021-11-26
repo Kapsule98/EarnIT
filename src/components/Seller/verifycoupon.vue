@@ -573,7 +573,6 @@ export default {
 
   methods: {
     addNewProduct() {
-      console.log(this.addProduct);
       if (this.addproduct !== null) {
         this.prod.push(this.addproduct);
         const payload = {
@@ -617,7 +616,6 @@ export default {
         .get(url, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.rgetoffers = response.data;
-          //console.log(this.rgetoffers);
           var l = this.rgetoffers.active_offers;
 
           for (var i = 0; i < l.length; i++) {
@@ -663,8 +661,6 @@ export default {
               console.error("There was an error!", error);
             });
 
-          console.log("discount type = ", this.discountType);
-          console.log();
           //this.$router.go();
         })
 
@@ -820,7 +816,6 @@ export default {
       epoch[0] = this.validity[0].getTime() / 1000.0;
       epoch[1] = this.validity[1].getTime() / 1000.0;
       var payload;
-      console.log(this.discountType);
       if (this.discountType === "FIXED") {
         payload = {
           offer: {
@@ -853,7 +848,6 @@ export default {
           },
         };
       }
-      console.log("payload = ", JSON.stringify(payload));
       const url = BASE_URL + "/seller/offer";
       const accessToken = this.$session.get("token");
       const options = {
@@ -861,12 +855,11 @@ export default {
           Authorization: `Bearer ${accessToken}`,
         },
       };
-
+      console.log("prod", this.products);
+      console.log("prodarr", arrprod);
       axios
         .post(url, payload, options)
         .then((response) => {
-          console.log("prod", this.products);
-          console.log("prodarr", arrprod);
           if (response.status === 200) {
             alert("Coupon added Sucessfully");
             console.log(response);
