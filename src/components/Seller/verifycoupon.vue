@@ -670,7 +670,6 @@ export default {
           console.log(err);
         });
     },
-    //
     calcdisc() {
       for (var i = 0; i < this.getoffers.active_offers.length; i++) {
         var ta = this.r_total;
