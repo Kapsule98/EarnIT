@@ -26,7 +26,11 @@
                       ></imgstore>
                     </div>
                   </div>
-                  <div class="l-offer">
+                  <div
+                    class="l-offer"
+                    v-b-tooltip.hover
+                    :title="shop.display_name"
+                  >
                     <nav>{{ shop.display_name }}</nav>
                   </div>
                   <div class="shopname">

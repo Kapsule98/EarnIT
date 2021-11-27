@@ -165,11 +165,13 @@
           </div>
         </div>
         <div class="w3-container">
-          <div class="w3-row">
+          <b-row>
             <h3>Products</h3>
             <hr />
-            <div class="w3-col m3" v-for="offer in mapped" :key="offer.length">
-              <div
+            <template v-for="offer in mapped">
+              <b-col
+                sm="3"
+                cols="6"
                 v-if="
                   ((list.active_offers[offer.index].category === category &&
                     offer.value > discfilter &&
@@ -183,68 +185,76 @@
                     list.active_offers[offer.index].validity[0] &&
                   list.active_offers[offer.index].quantity > 0
                 "
-                class="Scard"
+                :key="offer.length"
               >
-                <!--  -->
-                <router-link
-                  :to="{
-                    path: '/product_description',
-                    query: {
-                      seller: list.active_offers[offer.index].seller_email,
-                      offer_text: list.active_offers[offer.index].offer_text,
-                    },
-                  }"
-                >
-                  <div class="product_card">
-                    <div>
-                      <img
-                        :src="list.active_offers[offer.index].image_url"
-                        alt=""
-                        class="product_img"
-                      />
-                    </div>
-                    <div class="product_name">
-                      <span
-                        v-b-tooltip.hover
-                        :title="list.active_offers[offer.index].products + ' '"
-                      >
-                        <nav>
-                          {{
-                            list.active_offers[offer.index].products.toString()
-                          }}
-                        </nav>
-                      </span>
-                    </div>
-                    <div class="shop_name">
-                      {{ list.active_offers[offer.index].seller_display_name }}
-                    </div>
-                    <div class="disc">
-                      {{
-                        Math.round(
-                          ((list.active_offers[offer.index].mrp -
-                            list.active_offers[offer.index].offer_price) /
-                            list.active_offers[offer.index].mrp) *
-                            100
-                        )
-                      }}% OFF
-                    </div>
-                    <div class="product_cost">
-                      <i class="fa fa-inr" aria-hidden="true"></i>
-                      {{ list.active_offers[offer.index].offer_price }}
-                      <del>
+                <div class="Scard">
+                  <!--  -->
+                  <router-link
+                    :to="{
+                      path: '/product_description',
+                      query: {
+                        seller: list.active_offers[offer.index].seller_email,
+                        offer_text: list.active_offers[offer.index].offer_text,
+                      },
+                    }"
+                  >
+                    <div class="product_card">
+                      <div>
+                        <img
+                          :src="list.active_offers[offer.index].image_url"
+                          alt=""
+                          class="product_img"
+                        />
+                      </div>
+                      <div class="product_name">
+                        <span
+                          v-b-tooltip.hover
+                          :title="
+                            list.active_offers[offer.index].products + ' '
+                          "
+                        >
+                          <nav>
+                            {{
+                              list.active_offers[
+                                offer.index
+                              ].products.toString()
+                            }}
+                          </nav>
+                        </span>
+                      </div>
+                      <div class="shop_name">
+                        {{
+                          list.active_offers[offer.index].seller_display_name
+                        }}
+                      </div>
+                      <div class="disc">
+                        {{
+                          Math.round(
+                            ((list.active_offers[offer.index].mrp -
+                              list.active_offers[offer.index].offer_price) /
+                              list.active_offers[offer.index].mrp) *
+                              100
+                          )
+                        }}% OFF
+                      </div>
+                      <div class="product_cost">
                         <i class="fa fa-inr" aria-hidden="true"></i>
-                        {{ list.active_offers[offer.index].mrp }}</del
-                      >
-                    </div>
+                        {{ list.active_offers[offer.index].offer_price }}
+                        <del>
+                          <i class="fa fa-inr" aria-hidden="true"></i>
+                          {{ list.active_offers[offer.index].mrp }}</del
+                        >
+                      </div>
 
-                    <div class="addtocart">
-                      <b-icon-cart3 mb-2></b-icon-cart3>
+                      <div class="addtocart">
+                        <b-icon-cart3 mb-2></b-icon-cart3>
+                      </div>
                     </div>
-                  </div>
-                </router-link>
-              </div>
-            </div>
-          </div>
+                  </router-link>
+                </div>
+              </b-col>
+            </template>
+          </b-row>
         </div>
         <div class="w3-container">
           <div class="w3-row">
@@ -367,7 +377,13 @@
                         Total Bill
                       </nav>
                     </div>
-                    <div class="shopname">
+                    <div
+                      class="shopname"
+                      v-b-tooltip.hover
+                      :title="
+                        list.active_offers[offer.index].seller_display_name
+                      "
+                    >
                       {{ list.active_offers[offer.index].seller_display_name }}
 
                       <!-- <button class="vshop">View Shop</button> -->
@@ -821,6 +837,11 @@ body {
   font-size: 20px;
   color: rgb(92, 92, 92);
   text-transform: capitalize;
+  white-space: nowrap;
+  width: 90%; /* IE6 needs any width */
+  overflow: hidden; /* "overflow" value must be different from  visible"*/
+  -o-text-overflow: ellipsis; /* Opera < 11*/
+  text-overflow: ellipsis; /* IE, Safari (WebKit), Opera >= 11, FF > 6 */
 }
 .l-offer {
   margin-left: 5%;
