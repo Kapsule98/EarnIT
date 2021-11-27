@@ -898,7 +898,6 @@ export default {
     },
   },
 };
-// learning to deploy unsucessfully
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
