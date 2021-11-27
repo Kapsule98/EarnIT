@@ -194,7 +194,7 @@ export default {
     crop() {
       const { coordinates, canvas } = this.$refs.cropper.getResult();
       this.coordinates = coordinates;
-      this.dp = canvas.toDataURL();
+      this.dp = canvas.toDataURL("image/jpeg");
       this.encodeImageFileAsURL();
     },
     loadFile(event) {
