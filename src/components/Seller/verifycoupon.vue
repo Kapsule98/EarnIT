@@ -786,7 +786,7 @@ export default {
               this.errorMessage = error.message;
               console.error("There was an error!", error);
             });
-          // this.$router.go();
+          this.$router.go();
         }
       }
     },
