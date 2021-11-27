@@ -856,6 +856,7 @@ export default {
           Authorization: `Bearer ${accessToken}`,
         },
       };
+      console.log("payload", payload);
       console.log("prod", this.products);
       console.log("prodarr", arrprod);
       axios
