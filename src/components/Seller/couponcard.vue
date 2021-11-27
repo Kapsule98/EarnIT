@@ -3,14 +3,12 @@
     <div class="coupon_box">
       <div class="body">
         <div v-if="expired === true">
-          <div class="remove" v-on:click="repeat()">
+          <div class="remove" @click="repeat()">
             <i class="fa fa-refresh" aria-hidden="true"></i>
           </div>
         </div>
         <div v-else>
-          <div class="remove" v-on:click="removeOffer(offer_text)">
-            &#x2212;
-          </div>
+          <div class="remove" @click="removeOffer(offer_text)">&#x2212;</div>
         </div>
         <div class="bodyback">{{ discount }}</div>
         <h4 class="title">{{ name }}</h4>
@@ -19,6 +17,7 @@
           <b> {{ discount }} </b>
         </h2>
         <h3>OFF</h3>
+        {{ offer_price }} <del>{{ mrp }}</del>
       </div>
       <div class="usecode">{{ left }}</div>
       <h6>Code: {{ offer_text }}</h6>
@@ -51,6 +50,8 @@ export default {
     "planned",
     "validfrom",
     "expired",
+    "offer_price",
+    "mrp",
   ],
   //components: { DatePicker },
   data() {
@@ -88,8 +89,6 @@ export default {
             console.log(err);
           });
         this.$router.go();
-      } else {
-        document.getElementById("reedem").style.color = "white";
       }
     },
   },

@@ -14,6 +14,7 @@
       link5=""
       :searchbar="true"
     ></topnav>
+    <spinner v-if="loading"></spinner>
     <div class="greyback"></div>
     <div class="w3-container" style="margin-bottom: 10px; margin-top: -20px">
       <b-card style="min-height: 110px">
@@ -62,7 +63,6 @@
     <div class="w3-container">
       <div class="w3-row">
         <div class="w3-twothird">
-          <!---->
           <b-card v-if="history.length === 0">
             <br />
             <br /><br /><br />
@@ -152,15 +152,16 @@
 <script>
 import topnav from "../Seller/topnav.vue";
 import Sitefooter from "./sitefooter.vue";
-
 import Bottomnav from "./bottomnav.vue";
 import { GChart } from "vue-google-charts";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import Spinner from "./spinner.vue";
 export default {
-  components: { topnav, Sitefooter, Bottomnav, GChart },
+  components: { topnav, Sitefooter, Bottomnav, GChart, Spinner },
   data() {
     return {
+      loading: false,
       history: [],
       totalspent: 0,
       totalsaved: 0,
@@ -177,6 +178,7 @@ export default {
     };
   },
   mounted() {
+    this.loading = true;
     const offersurl = BASE_URL + "/history";
     let JWTToken = this.$session.get("token");
     axios
@@ -210,7 +212,8 @@ export default {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => (this.loading = false));
   },
 };
 </script>

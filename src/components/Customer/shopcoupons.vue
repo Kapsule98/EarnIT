@@ -33,15 +33,20 @@
       :display_categories="true"
       :landing="true"
     ></topnav>
+    <spinner v-if="loading"></spinner>
     <div class="greyback"></div>
     <div class="w3-container mopad">
       <div class="w3-card" style="background: white">
         <div class="w3-row">
           <div class="w3-twothird" style="padding: 20px">
-            <p class="domain">{{ list.category }}</p>
+            <p class="domain">{{ category }}</p>
             <p class="shopname">{{ list.shop_name }}</p>
             <p class="shoplocation">
               <i class="fa fa-map-marker"></i> {{ list.address }}
+            </p>
+            <a :href="gmapLink"> Show on map</a>
+            <p>
+              {{ Shopbio }}
             </p>
             <p class="shoplocation">
               <i class="fa fa-phone"></i>{{ list.contact_no }}
@@ -63,14 +68,11 @@
               ></a
             >
           </div>
-          <div class="w3-third" style="padding: 20px">
-            <img
-              :src="image"
-              alt="..."
-              width="100%"
-              onclick="document.getElementById('modal01').style.display='block'"
-              class="w3-hover-opacity"
-            />
+          <div class="w3-third" style="padding: 20px" v-if="loaded">
+            <img :src="image" alt="..." width="100%" />
+          </div>
+          <div class="w3-third" style="padding: 20px" v-else>
+            <img src="../../assets/def.png" alt="..." width="100%" />
           </div>
         </div>
       </div>
@@ -86,7 +88,7 @@
                 <b-tabs card>
                   <b-tab active style="font-size: 15px">
                     <template #title>
-                      <span style="color: #008cff">Offers</span>
+                      <span style="color: #008cff">Products</span>
                     </template>
 
                     <div v-for="offers in list.offers" :key="offers.length">
@@ -96,12 +98,27 @@
                             offers.validity[1] &&
                           Math.floor(new Date().getTime() / 1000.0) >
                             offers.validity[0] &&
-                          offers.quantity > 0
+                          offers.quantity > 0 &&
+                          offers.type === 'FIXED'
                         "
                         class="couponcard"
                       >
                         <div class="w3-row">
-                          <div class="w3-col m9">
+                          <div class="w3-col m2" v-if="offers.type === 'FIXED'">
+                            <img :src="offers.image_url" class="product_img" />
+                          </div>
+                          <div class="w3-col m2" v-else>
+                            <div v-if="loaded">
+                              <img :src="image" class="product_img" />
+                            </div>
+                            <div v-else>
+                              <img
+                                src="../../assets/def.png"
+                                class="product_img"
+                              />
+                            </div>
+                          </div>
+                          <div class="w3-col m7">
                             <div
                               class="card_remaining"
                               v-if="offers.quantity <= 5"
@@ -113,7 +130,7 @@
                               class="card_item"
                               v-if="offers.type === 'ITEM_DISCOUNT'"
                             >
-                              {{ offers.discount_percent }}% off on
+                              {{ Math.round(offers.discount_percent) }}% off on
                               <span
                                 v-b-tooltip.hover
                                 :title="offers.products + ' '"
@@ -133,11 +150,44 @@
                                 </span>
                               </span>
                             </div>
+                            <div
+                              class="card_item"
+                              v-else-if="offers.type === 'FIXED'"
+                            >
+                              {{ Math.round(offers.discount_percent) }}% off on
+                              <span
+                                v-b-tooltip.hover
+                                :title="offers.products + ' '"
+                              >
+                                <router-link
+                                  :to="{
+                                    path: '/product_description',
+                                    query: {
+                                      seller: email,
+                                      offer_text: offers.offer_text,
+                                    },
+                                  }"
+                                >
+                                  {{ offers.products.toString() }}
+                                </router-link>
+                              </span>
+                              <div class="product_cost">
+                                <i class="fa fa-inr" aria-hidden="true"></i>
+                                {{ offers.offer_price }}
+                                <del>
+                                  <i class="fa fa-inr" aria-hidden="true"></i>
+                                  {{ offers.mrp }}</del
+                                >
+                              </div>
+                            </div>
                             <div class="card_item" v-else>
                               <span class="offno"
-                                >{{ offers.discount_percent }}%</span
+                                >{{
+                                  Math.round(offers.discount_percent)
+                                }}%</span
                               >
                               off on Total Bill
+                              <div></div>
                             </div>
 
                             <div class="w3-row">
@@ -178,7 +228,7 @@
                               Add to cart
                             </button>
                           </div>
-                          <div class="minval">
+                          <div class="minval" v-if="offers.type !== 'FIXED'">
                             offer valid on a minimum purchase of
                             <i class="fa fa-rupee"></i> {{ offers.min_val }}
                           </div>
@@ -188,26 +238,142 @@
 
                     <br />
                   </b-tab>
-                  <b-tab style="color: #666666">
+                  <!-- ========================================================================== -->
+                  <b-tab style="font-size: 15px" active>
                     <template #title>
-                      <span style="color: #008cff">About</span>
+                      <span style="color: #008cff">Coupons</span>
                     </template>
-                    <h5
-                      class="domain"
-                      style="
-                        padding: 20px 0px;
-                        border-bottom: 1px solid #b5b5b5;
-                        font-size: 20px;
-                        color: #666666;
-                      "
-                    >
-                      {{ list.shop_name }}
-                    </h5>
-                    <br />
-                    <h5>Address</h5>
-                    <p>{{ list.address }}</p>
-                    <h4>Phone:</h4>
-                    <p>+{{ list.contact_no }}</p>
+                    <div v-for="offers in list.offers" :key="offers.length">
+                      <div
+                        v-if="
+                          Math.floor(new Date().getTime() / 1000.0) <
+                            offers.validity[1] &&
+                          Math.floor(new Date().getTime() / 1000.0) >
+                            offers.validity[0] &&
+                          offers.quantity > 0 &&
+                          offers.type !== 'FIXED'
+                        "
+                        class="couponcard"
+                      >
+                        <div class="w3-row">
+                          <div class="w3-col m2"></div>
+                          <div class="w3-col m7">
+                            <div
+                              class="card_remaining"
+                              v-if="offers.quantity <= 5"
+                            >
+                              Hurry only {{ offers.quantity }} left!
+                            </div>
+
+                            <div
+                              class="card_item"
+                              v-if="offers.type === 'ITEM_DISCOUNT'"
+                            >
+                              {{ Math.round(offers.discount_percent) }}% off on
+                              <span
+                                v-b-tooltip.hover
+                                :title="offers.products + ' '"
+                              >
+                                <span
+                                  v-for="(prods, index1) in offers.products"
+                                  :key="prods.offer_text"
+                                >
+                                  {{ offers.products[index1] }}
+                                  <span
+                                    v-if="
+                                      index1 !=
+                                      Object.keys(offers.products).length - 1
+                                    "
+                                    >,
+                                  </span>
+                                </span>
+                              </span>
+                            </div>
+                            <div
+                              class="card_item"
+                              v-else-if="offers.type === 'FIXED'"
+                            >
+                              {{ Math.round(offers.discount_percent) }}% off on
+                              <span
+                                v-b-tooltip.hover
+                                :title="offers.products + ' '"
+                              >
+                                <router-link
+                                  :to="{
+                                    path: '/product_description',
+                                    query: {
+                                      seller: email,
+                                      offer_text: offers.offer_text,
+                                    },
+                                  }"
+                                >
+                                  {{ offers.products.toString() }}
+                                </router-link>
+                              </span>
+                              <div class="product_cost">
+                                <i class="fa fa-inr" aria-hidden="true"></i>
+                                {{ offers.offer_price }}
+                                <del>
+                                  <i class="fa fa-inr" aria-hidden="true"></i>
+                                  {{ offers.mrp }}</del
+                                >
+                              </div>
+                            </div>
+                            <div class="card_item" v-else>
+                              <span class="offno"
+                                >{{
+                                  Math.round(offers.discount_percent)
+                                }}%</span
+                              >
+                              off on Total Bill
+                              <div></div>
+                            </div>
+
+                            <div class="w3-row">
+                              <div class="w3-col m8">
+                                <div class="card_leftcoupons">
+                                  {{ offers.quantity }} Coupons Left
+                                </div>
+                              </div>
+                              <div class="w3-col m4">
+                                <div class="card_validity">
+                                  valid till
+                                  {{
+                                    moment(offers.validity[1] * 1000).format(
+                                      "DD/MM/YY"
+                                    )
+                                  }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="w3-col m3">
+                            <button
+                              v-on:click="
+                                addToCart(offers.offer_text, list.seller_email)
+                              "
+                              class="w3-button"
+                              style="
+                                width: 80%;
+                                margin: 30px 10%;
+                                background: #008cff;
+                                color: white;
+                              "
+                            >
+                              <i
+                                class="fa fa-shopping-cart"
+                                aria-hidden="true"
+                              ></i>
+                              Add to cart
+                            </button>
+                          </div>
+                          <div class="minval" v-if="offers.type !== 'FIXED'">
+                            offer valid on a minimum purchase of
+                            <i class="fa fa-rupee"></i> {{ offers.min_val }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </b-tab>
                 </b-tabs>
               </b-card>
@@ -257,8 +423,9 @@ import Sitefooter from "./sitefooter.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import Bottomnav from "./bottomnav.vue";
+import Spinner from "./spinner.vue";
 export default {
-  components: { topnav, Sitefooter, Bottomnav },
+  components: { topnav, Sitefooter, Bottomnav, Spinner },
   props: {
     seller: {
       type: String,
@@ -267,40 +434,63 @@ export default {
   },
   data() {
     return {
+      loading: false,
       list: [],
-      image: "",
+      image: "../../assets/def.png",
       email: "",
+      Shopbio: "",
+      gmapLink: null,
+      category: "",
+      imail: "",
+      loaded: true,
     };
   },
   mounted() {
+    this.loading = true;
     const url = BASE_URL + "/get_offers_by_shop/" + this.seller;
     axios
       .get(url)
       .then((response) => {
         this.list = response.data;
-        console.log(this.list);
         this.email = this.list.seller_email;
-
+        this.gmapLink = this.list.location;
+        if (this.list.offers.length > 0) {
+          this.category = this.list.offers[0].category;
+        }
+        console.log(this.category, this.list);
+        this.getShopBio();
         this.getImage();
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => (this.loading = false));
   },
   methods: {
+    getShopBio() {
+      const url = BASE_URL + "/seller/bio?email=" + this.email;
+      axios
+        .get(url)
+        .then((res) => {
+          if (res.status === 200 && res.data.status === 200) {
+            this.Shopbio = res.data.bio;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     getImage() {
       const url = BASE_URL + "/seller_image/" + this.email;
       axios
         .get(url)
         .then((response) => {
-          if (response.status === 200) {
-            if (response.data.msg === "seller image does not exist") {
-              this.image = "/img/def.d3b94f4a.png";
-            } else {
-              this.image = response.data.toString();
+          this.image = "../../assets/def.png";
+          if (response.status === 200 && response.data.status === 200) {
+            {
+              this.loaded = true;
+              this.image = response.data.image;
             }
-
-            console.log(response.data.msg);
           }
         })
         .catch((err) => {
@@ -320,6 +510,7 @@ export default {
       }
     },
     addToCart(offer_text, email) {
+      this.loading = true;
       if (localStorage.getItem("log") === "true") {
         const payload = {
           offer_text: offer_text,
@@ -336,7 +527,6 @@ export default {
         axios
           .post(url, payload, options)
           .then((response) => {
-            console.log(response);
             if (response.data.status === 200) {
               alert(response.data.msg);
               this.$router.push("/cart");
@@ -347,7 +537,8 @@ export default {
           .catch((error) => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
-          });
+          })
+          .finally(() => (this.loading = false));
       } else {
         this.$router.push("/login");
       }
@@ -356,6 +547,18 @@ export default {
 };
 </script>
 <style scoped>
+.product_cost {
+  font-size: 20px;
+  color: #303030;
+}
+.product_cost del {
+  font-size: 14px;
+  color: #a3a3a3;
+}
+.product_img {
+  width: 100%;
+  margin-bottom: 20px;
+}
 .minval {
   float: right;
 }

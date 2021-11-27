@@ -14,7 +14,7 @@
       url6="/"
     >
     </topnav>
-
+    <spinner v-if="loading"></spinner>
     <div class="login-box">
       <div class="login-header-box">
         <div class="login-header" style="border-bottom: none">Register as</div>
@@ -142,45 +142,6 @@
             </option>
           </select>
 
-          <input
-            v-model="shop_name"
-            type="text"
-            placeholder="Registered Shop Name"
-            class="login-input"
-            style="border-top: none; border-radius: 0px 0px 5px 5px"
-          />
-          <!-- <br />
-          <br />
-          <h6>Choose shop image</h6>
-          <cropper
-            :src="dp"
-            class="cropper"
-            :stencil-props="{
-              aspectRatio: 16 / 10,
-            }"
-            ref="cropper"
-          ></cropper>
-          <input
-            accept="image/*"
-            name="image"
-            id="file"
-            @change="loadFile"
-            type="file"
-            placeholder="Shop Image"
-            class="login-input"
-          />
-          <div class="no_btn" id="no_btn" style="text-align: center">
-            <b-button
-              variant="primary"
-              @click="crop"
-              id="crop"
-              style="margin: 10px"
-              >Crop</b-button
-            >
-            <b-button variant="primary" @click="encodeImageFileAsURL"
-              >set profile image</b-button
-            >
-          </div> -->
           <button @click="Sellersignup()" class="login-button">Register</button>
           <a href="/login" style="float: right"
             >already have an account? login here</a
@@ -195,15 +156,16 @@
 <script>
 import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "../Seller/topnav.vue";
-import bcrypt from "bcryptjs";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 // import { Cropper } from "vue-advanced-cropper";
 import "vue-advanced-cropper/dist/style.css";
+import Spinner from "../Customer/spinner.vue";
 export default {
-  components: { topnav, Sitefooter },
+  components: { topnav, Sitefooter, Spinner },
   data() {
     return {
+      loading: false,
       active_time: [],
       opening_time: "",
       closing_time: "",
@@ -284,6 +246,7 @@ export default {
       this.active_time[index] = [this.opening_time];
     },
     Sellersignup() {
+      this.loading = true;
       if (
         this.username === "" ||
         this.password === "" ||
@@ -307,8 +270,6 @@ export default {
             alert(error.message);
           }
         );
-        const hash_pass = this.encryptPassword(this.password);
-        console.log(hash_pass);
         const seller = {
           password: this.password,
           username: this.username,
@@ -316,7 +277,7 @@ export default {
           contact_no: this.contact_no,
           address: this.address,
           category: this.shop_category,
-          shop_name: this.shop_name,
+          shop_name: this.displayname,
           location: this.location,
           email: this.email,
         };
@@ -339,10 +300,12 @@ export default {
           })
           .catch((err) => {
             console.log(err);
-          });
+          })
+          .finally(() => (this.loading = false));
       }
     },
     CustomerSignup() {
+      this.loading = true;
       if (
         this.username === "" ||
         this.password === "" ||
@@ -352,8 +315,6 @@ export default {
         this.init();
         return;
       } else {
-        const hash_pass = this.encryptPassword(this.password);
-        console.log(hash_pass);
         const user = {
           username: this.username,
           password: this.password,
@@ -374,7 +335,8 @@ export default {
           })
           .catch((err) => {
             console.log(err);
-          });
+          })
+          .finally(() => (this.loading = false));
       }
     },
     openTab(type) {
@@ -401,10 +363,6 @@ export default {
       this.shop_category = [];
       this.shop_name = "";
       this.location = "";
-    },
-    encryptPassword(password) {
-      const salt = bcrypt.genSaltSync(10);
-      return bcrypt.hashSync(password, salt);
     },
     encodeImageFileAsURL(element) {
       var file = element.target.files[0];

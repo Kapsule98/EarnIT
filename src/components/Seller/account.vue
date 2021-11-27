@@ -11,7 +11,7 @@
       link5=""
       active3="active_nav"
     ></topnav>
-
+    <spinner v-if="loading"></spinner>
     <div class="w3-card c-m" style="background: white; margin-top: -30px">
       <div class="showfilter">
         <button class="showbtn" v-on:click="showFilter()">
@@ -31,17 +31,6 @@
               <!-- Date Joined : 2 jun 2021 | user since 2 months-->
             </p>
             <div class="w3-row">
-              <!--<div class="w3-third">
-                <b-card style="margin: 10px; text-align: center">
-                  <span class="tealbg">{{
-                    coupons_sold.number_customers
-                  }}</span>
-
-                  <template #footer>
-                    <div class="c-head">Number of Customers</div>
-                  </template>
-                </b-card>
-              </div>-->
               <div class="w3-third">
                 <b-card style="margin: 10px; text-align: center">
                   <span class="tealbg">{{ coupons_sold }}</span>
@@ -65,26 +54,6 @@
           </b-card>
         </div>
         <div class="w3-third" style="padding: 20px">
-          <!-- <b-card>
-            <h4 class="mt-3">
-              Shop Status
-              <b-button
-                style="float: right"
-                v-if="myToggle === true"
-                :pressed.sync="myToggle"
-                variant="primary"
-                >OPEN</b-button
-              >
-              <b-button
-                style="float: right"
-                v-else
-                :pressed.sync="myToggle"
-                variant="danger"
-              >
-                CLOSE
-              </b-button>
-            </h4>
-          </b-card>-->
           <div class="filter">
             <div class="closeFilter">
               <button v-on:click="closeFilter()" class="closebtn">close</button>
@@ -106,7 +75,7 @@
                 placeholder="Enter Product Name..."
                 v-model="addproduct"
               />
-              <button class="addprod" v-on:click="addProduct()">
+              <button class="addprod" v-on:click="addNewProduct()">
                 <i class="fa fa-plus"></i>
               </button>
 
@@ -145,10 +114,12 @@ import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "./topnav.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import Spinner from "../Customer/spinner.vue";
 export default {
   components: {
     topnav,
     Sitefooter,
+    Spinner,
   },
   data() {
     return {
@@ -162,6 +133,7 @@ export default {
       prod: [],
       del: [],
       myToggle: false,
+      loading: false,
     };
   },
   mounted() {
@@ -197,6 +169,7 @@ export default {
       document.getElementsByClassName("reduce")[0].style.display = "none";
     },
     getProducts() {
+      this.loading = true;
       const url = BASE_URL + "/seller/product";
       let JWTToken = this.$session.get("token");
       axios
@@ -206,9 +179,12 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-        });
+        })
+        .finally(() => (this.loading = false));
     },
-    addProduct() {
+    addNewProduct() {
+      this.loading = true;
+      console.log(this.addProduct)
       if (this.addproduct !== null) {
         this.prod.push(this.addproduct);
         const payload = {
@@ -227,11 +203,13 @@ export default {
           .catch((error) => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
-          });
+          })
+          .finally(() => (this.loading = false));
         this.$router.go();
       }
     },
     deleteProduct(products) {
+      this.loading = true;
       this.del.push(products);
 
       const offersurl = BASE_URL + "/seller/product";
@@ -249,7 +227,8 @@ export default {
         .then(() => {})
         .catch((err) => {
           console.log(err);
-        });
+        })
+        .finally(() => (this.loading = false));
       this.$router.go();
     },
     getEarning() {

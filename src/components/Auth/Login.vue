@@ -14,7 +14,7 @@
       link5=""
     >
     </topnav>
-
+    <spinner v-if="loading"></spinner>
     <div class="login-box">
       <div class="login-header-box">
         <div class="login-header" style="border-bottom: none">Login as</div>
@@ -97,13 +97,15 @@ import axios from "axios";
 // import eventBus from "../../utils/eventBus";
 import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "../Seller/topnav.vue";
-import bcrypt from "bcryptjs";
+// import bcrypt from "bcryptjs";
+import Spinner from "../Customer/spinner.vue";
 export default {
-  components: { topnav, Sitefooter },
+  components: { topnav, Sitefooter, Spinner },
   data() {
     return {
       username: "",
       password: "",
+      loading: false,
     };
   },
   mounted() {
@@ -130,12 +132,11 @@ export default {
   },
   methods: {
     login(type) {
+      this.loading = true;
       if (this.username === "" || this.password === "") {
         alert("Please fill mandatory fields");
         this.init();
       } else {
-        const hash_pass = this.encryptPassword(this.password);
-        console.log(hash_pass);
         const user = {
           username: this.username,
           password: this.password,
@@ -170,12 +171,14 @@ export default {
                 this.$router.push("/");
               } else {
                 alert(res.data.msg);
+                this.loading = false;
               }
             })
             .catch((err) => {
               console.log(err);
               alert(err);
-            });
+            })
+            .finally(() => (this.loading = false));
         }
         if (type === "seller") {
           const url = BASE_URL + "/seller/login";
@@ -231,11 +234,6 @@ export default {
       } else {
         document.getElementsByClassName("actvtab")[0].style.right = "0%";
       }
-    },
-
-    encryptPassword(password) {
-      const salt = bcrypt.genSaltSync(10);
-      return bcrypt.hashSync(password, salt);
     },
   },
 };

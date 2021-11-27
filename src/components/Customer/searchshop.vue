@@ -1,159 +1,118 @@
 <template>
   <div>
-    <topnav
-      v-if="this.$session.get('user_type') !== 'seller'"
-      link3="Account"
-      link4='<i class="fa fa-shopping-cart"></i> Cart '
-      link5='<i class="fa fa-user"></i> Login'
-      url1="/"
-      url2="/"
-      url3="/dashboard"
-      url4="/cart"
-      url5="/login"
-      url6="/"
-      link1=""
-      link2=""
-      :display_categories="true"
-      :productsearch="true"
-    ></topnav>
-    <topnav
-      v-if="this.$session.get('user_type') === 'seller'"
-      link3="Account"
-      link4="Dashboard"
-      link5='<i class="fa fa-user"></i> Login'
-      url1="/"
-      url2="/"
-      url3="/account"
-      url4="/verifycoupon"
-      url5="/login"
-      url6="/"
-      link1=""
-      link2=""
-      :searchbar="true"
-      :display_categories="true"
-      :landing="true"
-    ></topnav>
-    <!--<allcatrgories></allcatrgories>-->
+    <div class="fullpage">
+      <topnav
+        v-if="this.$session.get('user_type') !== 'seller'"
+        link3="Account"
+        link4='<i class="fa fa-shopping-cart"></i> Cart '
+        link5='<i class="fa fa-user"></i> Login'
+        url1="/"
+        url2="/"
+        url3="/dashboard"
+        url4="/cart"
+        url5="/login"
+        url6="/"
+        link1=""
+        link2=""
+        :display_categories="true"
+        :productsearch="true"
+      ></topnav>
+      <topnav
+        v-if="this.$session.get('user_type') === 'seller'"
+        link3="Account"
+        link4="Dashboard"
+        link5='<i class="fa fa-user"></i> Login'
+        url1="/"
+        url2="/"
+        url3="/account"
+        url4="/verifycoupon"
+        url5="/login"
+        url6="/"
+        link1=""
+        link2=""
+        :searchbar="true"
+        :display_categories="true"
+        :landing="true"
+      ></topnav>
+      <!--<allcatrgories></allcatrgories>-->
+      <spinner v-if="loading"></spinner>
+      <div class="w3-row">
+        <div class="showfilter">
+          <p style="padding: 10px; float: left">
+            Search By :
 
-    <div class="w3-row">
-      <div class="showfilter">
-        <p style="padding: 10px; float: left">
-          Search By :
-
-          <router-link to="/search?alloffers=true"
-            ><input type="radio" id="torad2" /> product
-          </router-link>
-          |
-          <router-link to="/search_by_shop?category=all"
-            ><input type="radio" id="torad1" checked /> shop
-          </router-link>
-        </p>
-        <button class="showbtn" v-on:click="showFilter()">
-          category <i class="fa fa-angle-down"></i>
-        </button>
-      </div>
-      <div class="filter">
-        <div class="closeFilter">
-          <button v-on:click="closeFilter()" class="closebtn">close</button>
+            <router-link to="/search?alloffers=true"
+              ><input type="radio" id="torad2" /> product
+            </router-link>
+            |
+            <router-link to="/search_by_shop?category=all"
+              ><input type="radio" id="torad1" checked /> shop
+            </router-link>
+          </p>
+          <button class="showbtn" v-on:click="showFilter()">
+            category <i class="fa fa-angle-down"></i>
+          </button>
         </div>
-        <div class="w3-col m2">
-          <div class="w3-container" style="border-right: 2px solid #cccccc">
-            <h5>Category</h5>
-
-            <div
-              style="display: block; line-height: 0.5"
-              v-for="(items, index) in allcategories"
-              :key="items"
-            >
-              <input
-                v-if="items === category"
-                style="margin: 3px"
-                type="checkbox"
-                checked="true"
-                :id="'check' + index"
-                v-on:click="searchShop(items, index)"
-              />
-              <input
-                v-else
-                style="margin: 3px"
-                type="checkbox"
-                :id="'check' + index"
-                v-on:click="searchShop(items, index)"
-              />
-              <label :for="'check' + index"> {{ items }}</label>
-            </div>
-            <br />
-            <h5>Search by</h5>
-            <div style="display: block; line-height: 0.5">
-              <input
-                style="margin: 3px"
-                type="checkbox"
-                id="sby1"
-                v-on:click="byFilter(1, 1)"
-              />
-              <label for="sby1"> Product</label>
-            </div>
-            <div style="display: block; line-height: 0.5">
-              <input
-                style="margin: 3px"
-                type="checkbox"
-                id="sby2"
-                v-on:click="byFilter(2, 2)"
-              />
-              <label for="sby2">Shop</label>
-            </div>
-            <br />
+        <div class="filter">
+          <div class="closeFilter">
+            <button v-on:click="closeFilter()" class="closebtn">close</button>
           </div>
-        </div>
-      </div>
-      <div class="w3-col m10" id="Sproducts">
-        <div class="w3-container">
-          <div class="w3-row">
-            <div
-              class="w3-col m4"
-              v-for="shop in list.sellers"
-              :key="shop.length"
-            >
-              <router-link
-                :to="{
-                  path: '/seller',
-                  query: {
-                    seller: shop.email,
-                  },
-                }"
+          <div class="w3-col m2">
+            <div class="w3-container" style="border-right: 2px solid #cccccc">
+              <h5>Category</h5>
+
+              <div
+                style="display: block; line-height: 0.5"
+                v-for="(items, index) in allcategories"
+                :key="items"
               >
-                <div class="Scard">
-                  <div class="hovclass">
-                    <div class="couponhome">
-                      <div class="c2-back">
-                        <imgstore :email="shop.email"></imgstore>
-                      </div>
-                    </div>
-                    <div class="l-offer">
-                      <nav>{{ shop.display_name }}</nav>
-                    </div>
-                    <div class="shopname">
-                      <div
-                        class="s-address"
-                        v-b-tooltip.hover
-                        :title="shop.address"
-                      >
-                        {{ shop.address }}
-                      </div>
-
-                      <button class="vshop">View Shop</button>
-                    </div>
-                  </div>
-                </div>
-              </router-link>
+                <input
+                  v-if="items === category"
+                  style="margin: 3px"
+                  type="checkbox"
+                  checked="true"
+                  :id="'check' + index"
+                  v-on:click="searchShop(items, index)"
+                />
+                <input
+                  v-else
+                  style="margin: 3px"
+                  type="checkbox"
+                  :id="'check' + index"
+                  v-on:click="searchShop(items, index)"
+                />
+                <label :for="'check' + index"> {{ items }}</label>
+              </div>
+              <br />
+              <h5>Search by</h5>
+              <div style="display: block; line-height: 0.5">
+                <input
+                  style="margin: 3px"
+                  type="checkbox"
+                  id="sby1"
+                  v-on:click="byFilter(1, 1)"
+                />
+                <label for="sby1"> Product</label>
+              </div>
+              <div style="display: block; line-height: 0.5">
+                <input
+                  style="margin: 3px"
+                  type="checkbox"
+                  id="sby2"
+                  v-on:click="byFilter(2, 2)"
+                />
+                <label for="sby2">Shop</label>
+              </div>
+              <br />
             </div>
           </div>
+          <shops :category="category"></shops>
         </div>
       </div>
-    </div>
 
-    <bottomnav></bottomnav>
-    <div class="reduce"></div>
+      <bottomnav></bottomnav>
+      <div class="reduce"></div>
+    </div>
     <sitefooter></sitefooter>
   </div>
 </template>
@@ -167,9 +126,11 @@ import Sitefooter from "./sitefooter.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import Bottomnav from "./bottomnav.vue";
-import Imgstore from "./imgstore.vue";
+// import Imgstore from "./imgstore.vue";
+import Spinner from "./spinner.vue";
+import Shops from "./shops.vue";
 export default {
-  components: { topnav, Sitefooter, Bottomnav, Imgstore },
+  components: { topnav, Sitefooter, Bottomnav, Spinner, Shops },
   props: {
     category: {
       type: String,
@@ -179,6 +140,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       list: [],
       allcategories: [],
     };
@@ -230,6 +192,7 @@ export default {
       }
     },
     getShops() {
+      this.loading = true;
       const offersurl = BASE_URL + "/get_shops/" + this.category;
       axios
         .get(offersurl)
@@ -239,12 +202,16 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-        });
+        })
+        .finally(() => (this.loading = false));
     },
   },
 };
 </script>
 <style scoped>
+.fullpage {
+  min-height: 600px;
+}
 .couponhome {
   position: relative;
   width: 90%;
@@ -381,6 +348,10 @@ export default {
   width: 100%;
   height: 220px;
   z-index: -1;
+  background: url("../../assets/dribbble-loader-green.gif");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 a {
   text-decoration: none;
