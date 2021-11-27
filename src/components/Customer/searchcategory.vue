@@ -300,6 +300,7 @@
                       <div class="c2-back">
                         <imgstore
                           :email="list.active_offers[offer.index].seller_email"
+                          :category="list.active_offers[offer.index].category"
                         ></imgstore>
                       </div>
                       <div class="c2-left">

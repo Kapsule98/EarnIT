@@ -560,6 +560,7 @@ export default {
       prod: [],
       addproduct: null,
       r_bio: "",
+      loading: true,
     };
   },
   mounted() {
@@ -662,7 +663,7 @@ export default {
               console.error("There was an error!", error);
             });
 
-          //this.$router.go();
+          this.$router.go();
         })
 
         .catch((err) => {
@@ -725,6 +726,7 @@ export default {
         });
     },
     verifyCoupon() {
+      this.load;
       for (var i = 0; i < this.getoffers.active_offers.length; i++) {
         var atxt = this.getoffers.active_offers[i].offer_text;
 
@@ -783,7 +785,7 @@ export default {
               this.errorMessage = error.message;
               console.error("There was an error!", error);
             });
-          this.$router.go();
+          // this.$router.go();
         }
       }
     },
