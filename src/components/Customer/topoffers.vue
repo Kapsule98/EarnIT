@@ -39,6 +39,7 @@
               <div class="c2-back">
                 <imgstore
                   :email="list.offers[offer.index].seller_email"
+                  :category="list.offers[offer.index].category"
                 ></imgstore>
               </div>
               <div class="c2-left">
