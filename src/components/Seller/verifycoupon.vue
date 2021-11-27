@@ -598,12 +598,13 @@ export default {
     crop() {
       const { coordinates, canvas } = this.$refs.cropper.getResult();
       this.coordinates = coordinates;
-      this.dp = canvas.toDataURL();
-      this.encodeImageFileAsURL();
+      this.dp = canvas.toDataURL("image/jpeg");
+      console.log(this.dp);
     },
 
     loadFile(event) {
       this.dp = URL.createObjectURL(event.target.files[0]);
+      console.log(this.dp);
       document.getElementById("no_btn").style.display = "block";
     },
 
