@@ -52,7 +52,6 @@ export default {
       .get(offersurl)
       .then((response) => {
         this.image = response.data.image;
-        console.log(response);
         if (response.status === 200 && response.data.status === 200) {
           this.image = response.data.image;
           this.def = false;

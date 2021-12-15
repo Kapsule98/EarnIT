@@ -18,7 +18,6 @@
     <div class="login-box">
       <div class="login-header-box">
         <div class="login-header" style="border-bottom: none">Register as</div>
-
         <div class="w3-row">
           <a
             href="javascript:void(0)"
@@ -142,6 +141,21 @@
             </option>
           </select>
 
+          <select
+            required
+            class="select"
+            name="location"
+            v-model="shop_location"
+            style="border-top: none"
+          >
+            <option class="option" value="" disabled selected hidden>
+              Location...
+            </option>
+            <option class="option">Bhilai</option>
+            <option class="option">Raipur</option>
+            <option class="option">Durg</option>
+          </select>
+
           <button @click="Sellersignup()" class="login-button">Register</button>
           <a href="/login" style="float: right"
             >already have an account? login here</a
@@ -202,6 +216,7 @@ export default {
       ],
       context: null,
       dp: "",
+      shop_location: "",
     };
   },
   mounted() {
@@ -254,6 +269,7 @@ export default {
         this.contact_no === "" ||
         this.address === "" ||
         this.email === "" ||
+        this.shop_location === "" ||
         this.shop_category.length === 0
       ) {
         alert("Please fill mandatory fields");
@@ -280,6 +296,7 @@ export default {
           shop_name: this.displayname,
           location: this.location,
           email: this.email,
+          city: this.shop_location,
         };
         const url = BASE_URL + "/seller/register";
         const payload = seller;

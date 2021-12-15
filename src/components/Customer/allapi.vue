@@ -131,36 +131,52 @@ export default {
   },
   methods: {
     getAllOffers() {
-      const offersurl = BASE_URL + "/get_all_offers";
-
-      axios
-        .get(offersurl)
-        .then((response) => {
-          this.list = response.data;
-          var discount = [];
-
-          for (var i = 0; i < this.list.active_offers.length; i++) {
-            discount[i] = this.list.active_offers[i].discount_percent;
-          }
-
-          var mapped = discount.map(function (el, i) {
-            return { index: i, value: el };
-          });
-
-          mapped.sort(function (a, b) {
-            return b.value - a.value;
-          });
-
-          var result = mapped.map(function (el) {
-            return discount[el.index];
-          });
-          this.result = result;
-          this.mapped = mapped;
-        })
-        .catch((err) => {
-          console.error(err);
-        })
-        .finally(() => (this.loading = false));
+      if ("get_all_offers" in sessionStorage) {
+        var sdata = JSON.parse(sessionStorage.getItem("get_all_offers"));
+        this.list = sdata;
+        var discount = [];
+        for (var i = 0; i < this.list.active_offers.length; i++) {
+          discount[i] = this.list.active_offers[i].discount_percent;
+        }
+        var mapped = discount.map(function (el, i) {
+          return { index: i, value: el };
+        });
+        mapped.sort(function (a, b) {
+          return b.value - a.value;
+        });
+        var result = mapped.map(function (el) {
+          return discount[el.index];
+        });
+        this.result = result;
+        this.mapped = mapped;
+        this.loading = false;
+      } else {
+        const offersurl = BASE_URL + "/get_all_offers";
+        axios
+          .get(offersurl)
+          .then((response) => {
+            this.list = response.data;
+            var discount = [];
+            for (var i = 0; i < this.list.active_offers.length; i++) {
+              discount[i] = this.list.active_offers[i].discount_percent;
+            }
+            var mapped = discount.map(function (el, i) {
+              return { index: i, value: el };
+            });
+            mapped.sort(function (a, b) {
+              return b.value - a.value;
+            });
+            var result = mapped.map(function (el) {
+              return discount[el.index];
+            });
+            this.result = result;
+            this.mapped = mapped;
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => (this.loading = false));
+      }
     },
   },
 };

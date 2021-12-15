@@ -37,17 +37,6 @@
     <spinner v-if="loading"></spinner>
     <div class="w3-row">
       <div class="showfilter">
-        <!-- <p style="padding: 10px; float: left">
-          Search By :
-
-          <router-link to="/search?alloffers=true"
-            ><input type="radio" id="torad2" checked /> product
-          </router-link>
-          |
-          <router-link to="/search_by_shop?category=all"
-            ><input type="radio" id="torad1" /> shop
-          </router-link>
-        </p> -->
         <button class="showbtn" v-on:click="showFilter()">
           Filter <i class="fa fa-angle-down"></i>
         </button>
@@ -64,7 +53,7 @@
                 <u>clear filters</u>
               </button>
             </h3>
-            <div>
+            <!-- <div>
               <h5>Category</h5>
               <div
                 style="display: block; line-height: 0.5"
@@ -88,7 +77,7 @@
                 />
                 <label :for="'check' + index"> {{ items }}</label>
               </div>
-            </div>
+            </div> -->
             <div style="display: none">
               <br />
               <h5>Search by :</h5>
@@ -204,33 +193,44 @@
       </div>
 
       <div class="w3-col m10" id="Sproducts">
-        <br />
+        <h2 style="padding: 10px 20px; color: grey">
+          <b-icon-search></b-icon-search> Results for "{{ value }}"
+        </h2>
         <b-tabs content-class="mt-3">
-          <b-tab title="Products" :active="offer_type === 'fixed_price'">
+          <b-tab title="Products">
             <div class="w3-container">
               <b-row>
                 <h3>Products</h3>
                 <hr />
-                <template v-for="offer in mapped">
+                <br />
+                <br />
+                <div v-if="productEmpty">
+                  <b-container>
+                    <b-card>
+                      <br /><br />
+                      <center>
+                        <h1 style="color: grey">
+                          No product found for "{{ value }}"!
+                        </h1>
+                        <br /><br />
+                      </center>
+                    </b-card>
+                  </b-container>
+                </div>
+                <template v-for="offer in productSearch">
                   <b-col
                     sm="3"
                     cols="6"
-                    v-if="
-                      ((list.active_offers[offer.index].category === category &&
-                        offer.value > discfilter &&
-                        list.active_offers[offer.index].type === 'FIXED') ||
-                        (category === null &&
-                          offer.value > discfilter &&
-                          list.active_offers[offer.index].type === 'FIXED')) &&
-                      Math.floor(new Date().getTime() / 1000.0) <
-                        list.active_offers[offer.index].validity[1] &&
-                      Math.floor(new Date().getTime() / 1000.0) >
-                        list.active_offers[offer.index].validity[0] &&
-                      list.active_offers[offer.index].quantity > 0 &&
-                      list.active_offers[offer.index].offer_price > prange1 &&
-                      list.active_offers[offer.index].offer_price < prange2
-                    "
                     :key="offer.length"
+                    v-if="
+                      offer.offer_price > prange1 &&
+                      offer.offer_price < prange2 &&
+                      Math.floor(new Date().getTime() / 1000.0) <
+                        offer.validity[1] &&
+                      Math.floor(new Date().getTime() / 1000.0) >
+                        offer.validity[0] &&
+                      offer.quantity > 0
+                    "
                   >
                     <div class="Scard">
                       <!--  -->
@@ -238,17 +238,15 @@
                         :to="{
                           path: '/product_description',
                           query: {
-                            seller:
-                              list.active_offers[offer.index].seller_email,
-                            offer_text:
-                              list.active_offers[offer.index].offer_text,
+                            seller: offer.seller_email,
+                            offer_text: offer.offer_text,
                           },
                         }"
                       >
                         <div class="product_card">
                           <div>
                             <img
-                              :src="list.active_offers[offer.index].image_url"
+                              :src="offer.image_url"
                               alt=""
                               class="product_img"
                             />
@@ -256,41 +254,25 @@
                           <div class="product_name">
                             <span
                               v-b-tooltip.hover
-                              :title="
-                                list.active_offers[offer.index].products + ' '
-                              "
+                              :title="offer.products + ' '"
                             >
                               <nav>
-                                {{
-                                  list.active_offers[
-                                    offer.index
-                                  ].products.toString()
-                                }}
+                                {{ offer.products.toString() }}
                               </nav>
                             </span>
                           </div>
                           <div class="shop_name">
-                            {{
-                              list.active_offers[offer.index]
-                                .seller_display_name
-                            }}
+                            {{ offer.seller_display_name }}
                           </div>
                           <div class="disc">
-                            {{
-                              Math.round(
-                                ((list.active_offers[offer.index].mrp -
-                                  list.active_offers[offer.index].offer_price) /
-                                  list.active_offers[offer.index].mrp) *
-                                  100
-                              )
-                            }}% OFF
+                            {{ Math.round(offer.discount_percent) }}% OFF
                           </div>
                           <div class="product_cost">
                             <i class="fa fa-inr" aria-hidden="true"></i>
-                            {{ list.active_offers[offer.index].offer_price }}
+                            {{ offer.offer_price }}
                             <del>
                               <i class="fa fa-inr" aria-hidden="true"></i>
-                              {{ list.active_offers[offer.index].mrp }}</del
+                              {{ offer.mrp }}</del
                             >
                           </div>
 
@@ -306,39 +288,47 @@
             </div>
           </b-tab>
 
-          <b-tab title="Coupons" :active="offer_type === 'bill_discount'">
+          <b-tab title="Coupons">
             <div class="w3-container">
               <div class="w3-row">
                 <br />
                 <h3>Coupons</h3>
                 <hr />
+                <div v-if="couponEmpty">
+                  <b-container>
+                    <b-card>
+                      <br /><br />
+                      <center>
+                        <h1 style="color: grey">
+                          No coupon found for "{{ value }}"!
+                        </h1>
+                        <br /><br />
+                      </center>
+                    </b-card>
+                  </b-container>
+                </div>
                 <div
-                  class="w3-col m3 s6"
-                  v-for="offer in mapped"
-                  :key="offer.length"
+                  class="w3-col m3"
+                  v-for="coupon in couponSearch"
+                  :key="coupon.length"
                 >
                   <div
                     v-if="
-                      ((list.active_offers[offer.index].category === category &&
-                        offer.value > discfilter &&
-                        list.active_offers[offer.index].type !== 'FIXED') ||
-                        (category === null &&
-                          offer.value > discfilter &&
-                          list.active_offers[offer.index].type !== 'FIXED')) &&
+                      coupon.discount_percent > discfilter &&
                       Math.floor(new Date().getTime() / 1000.0) <
-                        list.active_offers[offer.index].validity[1] &&
+                        coupon.validity[1] &&
                       Math.floor(new Date().getTime() / 1000.0) >
-                        list.active_offers[offer.index].validity[0] &&
-                      list.active_offers[offer.index].quantity > 0
+                        coupon.validity[0] &&
+                      coupon.quantity > 0
                     "
                     class="Scard"
                   >
                     <div
                       v-if="
                         Math.floor(new Date().getTime() / 1000.0) <
-                          list.active_offers[offer.index].validity[1] &&
+                          coupon.validity[1] &&
                         Math.floor(new Date().getTime() / 1000.0) >
-                          list.active_offers[offer.index].validity[0]
+                          coupon.validity[0]
                       "
                       class="hovclass"
                     >
@@ -346,128 +336,41 @@
                         :to="{
                           path: '/seller',
                           query: {
-                            seller:
-                              list.active_offers[offer.index].seller_email,
+                            seller: coupon.seller_email,
                           },
                         }"
                       >
                         <div class="couponhome">
                           <div class="c2-back">
                             <imgstore
-                              :email="
-                                list.active_offers[offer.index].seller_email
-                              "
-                              :category="
-                                list.active_offers[offer.index].category
-                              "
+                              :email="coupon.seller_email"
+                              :category="coupon.category"
                             ></imgstore>
                           </div>
                           <div class="c2-left">
-                            {{ list.active_offers[offer.index].quantity }}
+                            {{ coupon.quantity }}
                             coupons left
                           </div>
                           <div class="c2-off"></div>
 
-                          <div class="c2-shop"><!--{{ shop_name }}--></div>
+                          <div class="c2-shop"></div>
                         </div>
-                        <div
-                          class="l-offer"
-                          v-if="
-                            list.active_offers[offer.index].type ===
-                            'ITEM_DISCOUNT'
-                          "
-                        >
-                          <nav
-                            v-b-tooltip.hover
-                            :title="
-                              list.active_offers[offer.index].products + ' '
-                            "
-                          >
-                            <span class="offno">{{ offer.value }}%</span>
-                            off on
 
-                            <span
-                              v-for="(prods, index3) in list.active_offers[
-                                offer.index
-                              ].products"
-                              :key="prods.offer_text"
-                            >
-                              {{
-                                list.active_offers[offer.index].products[index3]
-                              }}
-
-                              <span
-                                v-if="
-                                  index3 !=
-                                  Object.keys(
-                                    list.active_offers[offer.index].products
-                                  ).length -
-                                    1
-                                "
-                                >,
-                              </span>
-                            </span>
-                          </nav>
-                        </div>
-                        <div
-                          class="l-offer"
-                          v-else-if="
-                            list.active_offers[offer.index].type === 'FIXED'
-                          "
-                        >
-                          <nav
-                            v-b-tooltip.hover
-                            :title="
-                              list.active_offers[offer.index].products + ' '
-                            "
-                          >
-                            <span class="offno"
-                              >{{
-                                (
-                                  ((list.active_offers[offer.index].mrp -
-                                    list.active_offers[offer.index]
-                                      .offer_price) /
-                                    list.active_offers[offer.index].mrp) *
-                                  100
-                                ).toPrecision(2)
-                              }}%</span
-                            >
-                            off on
-
-                            {{
-                              list.active_offers[
-                                offer.index
-                              ].products.toString()
-                            }}
-                          </nav>
-                        </div>
-                        <div class="l-offer" v-else>
+                        <div class="l-offer">
                           <nav>
-                            <span class="offno">{{ offer.value }}%</span> off on
-                            Total Bill
+                            <span class="offno"
+                              >{{ coupon.discount_percent }}%</span
+                            >
+                            off on Total Bill
                           </nav>
                         </div>
                         <div
                           class="shopname"
                           v-b-tooltip.hover
-                          :title="
-                            list.active_offers[offer.index].seller_display_name
-                          "
+                          :title="coupon.seller_display_name"
                         >
-                          {{
-                            list.active_offers[offer.index].seller_display_name
-                          }}
-
-                          <!-- <button class="vshop">View Shop</button> -->
+                          {{ coupon.seller_display_name }}
                         </div>
-                        <!-- <div class="c2-validity">
-                      offer valid till
-                      {{
-                        moment(
-                          list.active_offers[offer.index].validity[1] * 1000
-                        ).format("DD-MM-YYYY")
-                      }}
-                    </div> -->
                       </router-link>
                     </div>
                   </div>
@@ -483,13 +386,62 @@
               <div class="w3-row">
                 <h3>Sellers</h3>
                 <hr />
+                <div v-if="sellerEmpty">
+                  <b-container>
+                    <b-card>
+                      <br /><br />
+                      <center>
+                        <h1 style="color: grey">
+                          No seller found for "{{ value }}"!
+                        </h1>
+                        <br /><br />
+                      </center>
+                    </b-card>
+                  </b-container>
+                </div>
+                <div
+                  class="w3-col m3 s6"
+                  v-for="shop in sellerSearch"
+                  :key="shop.length"
+                >
+                  <router-link
+                    :to="{
+                      path: '/seller',
+                      query: {
+                        seller: shop.email,
+                      },
+                    }"
+                  >
+                    <div class="Scard">
+                      <div class="hovclass">
+                        <div class="couponhome">
+                          <div class="c2-back">
+                            <imgstore :email="shop.email"></imgstore>
+                          </div>
+                        </div>
+                        <div
+                          class="l-offer"
+                          v-b-tooltip.hover
+                          :title="shop.name"
+                        >
+                          <nav>{{ shop.name }}</nav>
+                        </div>
+                        <div class="shopname">
+                          <div
+                            class="s-address"
+                            v-b-tooltip.hover
+                            :title="shop.address"
+                          >
+                            {{ shop.address }}
+                          </div>
 
-                <shops
-                  :category="category"
-                  v-if="category !== null"
-                  :key="componentKey"
-                ></shops>
-                <shops category="all" :key="componentKey" v-else></shops>
+                          <!-- <button class="vshop">View Shop</button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </router-link>
+                </div>
+                <!-- <div id="nresult"></div> -->
               </div>
             </div>
           </b-tab>
@@ -513,15 +465,27 @@ import { BASE_URL } from "../../utils/constants";
 import Bottomnav from "./bottomnav.vue";
 import Imgstore from "./imgstore.vue";
 import Spinner from "./spinner.vue";
-import Shops from "./shops.vue";
+import { BIconSearch } from "bootstrap-vue";
+
 export default {
-  components: { topnav, Sitefooter, Bottomnav, Imgstore, Spinner, Shops },
+  components: {
+    topnav,
+    Sitefooter,
+    Bottomnav,
+    Imgstore,
+    Spinner,
+    BIconSearch,
+  },
   props: {
     category: {
       type: String,
       default: null,
     },
     offer_type: {
+      type: String,
+      default: null,
+    },
+    value: {
       type: String,
       default: null,
     },
@@ -539,9 +503,107 @@ export default {
       componentKey: 0,
       prange1: 0,
       prange2: Number.MAX_SAFE_INTEGER,
+      sellerSearch: [],
+      productSearch: [],
+      couponSearch: [],
+      offershop: [],
+      couponEmpty: false,
+      sellerEmpty: false,
+      productEmpty: false,
     };
   },
+
   mounted() {
+    document.getElementById("result").innerHTML = "";
+    var filter = this.value.toUpperCase();
+    var nsdata = JSON.parse(sessionStorage.getItem("get_all_offers"));
+    var sndata = JSON.parse(sessionStorage.getItem("shops"));
+
+    for (var i = 0; i < nsdata.count; i++) {
+      var name = "";
+      var url = "";
+      var type = "";
+      if (nsdata.active_offers[i].type === "FIXED") {
+        name = nsdata.active_offers[i].products[0];
+        url =
+          "/product_description?seller=" +
+          nsdata.active_offers[i].seller_email +
+          "&offer_text=" +
+          nsdata.active_offers[i].offer_text;
+      }
+
+      if (name.toUpperCase().indexOf(filter) > -1) {
+        this.productSearch.push({
+          seller_email: nsdata.active_offers[i].seller_email,
+          offer_text: nsdata.active_offers[i].offer_text,
+          seller_display_name: nsdata.active_offers[i].shop_name,
+          offer_price: nsdata.active_offers[i].offer_price,
+          mrp: nsdata.active_offers[i].mrp,
+          validity: nsdata.active_offers[i].validity,
+          type: nsdata.active_offers[i].type,
+          products: nsdata.active_offers[i].products,
+          discount_percent: nsdata.active_offers[i].discount_percent,
+          image_url: nsdata.active_offers[i].image_url,
+          quantity: nsdata.active_offers[i].quantity,
+        });
+        document.getElementById("result").innerHTML +=
+          "<div class='seresw'><a href='" +
+          url +
+          "' class='seres'>" +
+          name +
+          " by " +
+          nsdata.active_offers[i].seller_display_name +
+          " in " +
+          nsdata.active_offers[i].category +
+          type +
+          "</a></a><div class='stype'>in Offer</div></div></div>" +
+          "<br>";
+      }
+    }
+    for (var k = 0; k < sndata.sellers.length; k++) {
+      var sname = sndata.sellers[k].shop_name;
+
+      for (var y = 0; y < sndata.sellers[k].products.length; y++) {
+        var pname = sndata.sellers[k].products[y];
+
+        if (pname.toUpperCase().indexOf(filter) > -1) {
+          for (var e = 0; e < nsdata.count; e++) {
+            if (
+              sndata.sellers[k].email === nsdata.active_offers[e].seller_email
+            ) {
+              if (nsdata.active_offers[e].type === "BILL_DISCOUNT") {
+                this.couponSearch.push({
+                  seller_email: nsdata.active_offers[e].seller_email,
+                  seller_display_name: nsdata.active_offers[e].shop_name,
+                  validity: nsdata.active_offers[e].validity,
+                  discount_percent: nsdata.active_offers[e].discount_percent,
+                  image_url: nsdata.active_offers[e].image_url,
+                  quantity: nsdata.active_offers[e].quantity,
+                  category: nsdata.active_offers[e].category,
+                });
+              }
+            }
+          }
+        }
+      }
+      if (sname.toUpperCase().indexOf(filter) > -1) {
+        this.sellerSearch.push({
+          email: sndata.sellers[k].email,
+          name: sndata.sellers[k].shop_name,
+          address: sndata.sellers[k].address,
+        });
+      }
+    }
+    if (this.couponSearch.length === 0) {
+      this.couponEmpty = true;
+    }
+    if (this.productSearch.length === 0) {
+      this.productEmpty = true;
+    }
+    if (this.sellerSearch.length === 0) {
+      this.sellerEmpty = true;
+    }
+
     this.getAllOffers();
     document.getElementById("sby1").checked = true;
     if ("categories" in sessionStorage) {
@@ -561,6 +623,105 @@ export default {
         });
     }
   },
+  watch: {
+    value: function () {
+      this.productSearch = [];
+      this.sellerSearch = [];
+      this.couponSearch = [];
+      this.productEmpty = false;
+      this.sellerEmpty = false;
+      this.couponEmpty = false;
+      document.getElementById("result").innerHTML = "";
+      var filter = this.value.toUpperCase();
+      var nsdata = JSON.parse(sessionStorage.getItem("get_all_offers"));
+      var sndata = JSON.parse(sessionStorage.getItem("shops"));
+
+      for (var i = 0; i < nsdata.count; i++) {
+        var name = "";
+        var url = "";
+        var type = "";
+        if (nsdata.active_offers[i].type === "FIXED") {
+          name = nsdata.active_offers[i].products[0];
+          url =
+            "/product_description?seller=" +
+            nsdata.active_offers[i].seller_email +
+            "&offer_text=" +
+            nsdata.active_offers[i].offer_text;
+        }
+
+        if (name.toUpperCase().indexOf(filter) > -1) {
+          this.productSearch.push({
+            seller_email: nsdata.active_offers[i].seller_email,
+            offer_text: nsdata.active_offers[i].offer_text,
+            seller_display_name: nsdata.active_offers[i].shop_name,
+            offer_price: nsdata.active_offers[i].offer_price,
+            mrp: nsdata.active_offers[i].mrp,
+            validity: nsdata.active_offers[i].validity,
+            type: nsdata.active_offers[i].type,
+            products: nsdata.active_offers[i].products,
+            discount_percent: nsdata.active_offers[i].discount_percent,
+            image_url: nsdata.active_offers[i].image_url,
+            quantity: nsdata.active_offers[i].quantity,
+          });
+          document.getElementById("result").innerHTML +=
+            "<div class='seresw'><a href='" +
+            url +
+            "' class='seres'>" +
+            name +
+            " by " +
+            nsdata.active_offers[i].seller_display_name +
+            " in " +
+            nsdata.active_offers[i].category +
+            type +
+            "</a></a><div class='stype'>in Offer</div></div></div>" +
+            "<br>";
+        }
+      }
+      for (var k = 0; k < sndata.sellers.length; k++) {
+        var sname = sndata.sellers[k].shop_name;
+
+        for (var y = 0; y < sndata.sellers[k].products.length; y++) {
+          var pname = sndata.sellers[k].products[y];
+
+          if (pname.toUpperCase().indexOf(filter) > -1) {
+            for (var e = 0; e < nsdata.count; e++) {
+              if (
+                sndata.sellers[k].email === nsdata.active_offers[e].seller_email
+              ) {
+                if (nsdata.active_offers[e].type === "BILL_DISCOUNT") {
+                  this.couponSearch.push({
+                    seller_email: nsdata.active_offers[e].seller_email,
+                    seller_display_name: nsdata.active_offers[e].shop_name,
+                    validity: nsdata.active_offers[e].validity,
+                    discount_percent: nsdata.active_offers[e].discount_percent,
+                    image_url: nsdata.active_offers[e].image_url,
+                    quantity: nsdata.active_offers[e].quantity,
+                    category: nsdata.active_offers[e].category,
+                  });
+                }
+              }
+            }
+          }
+        }
+        if (sname.toUpperCase().indexOf(filter) > -1) {
+          this.sellerSearch.push({
+            email: sndata.sellers[k].email,
+            name: sndata.sellers[k].shop_name,
+            address: sndata.sellers[k].address,
+          });
+        }
+      }
+      if (this.couponSearch.length === 0) {
+        this.couponEmpty = true;
+      }
+      if (this.productSearch.length === 0) {
+        this.productEmpty = true;
+      }
+      if (this.sellerSearch.length === 0) {
+        this.sellerEmpty = true;
+      }
+    },
+  },
   methods: {
     clearFilter() {
       this.$router.push("/search?alloffers=true");
@@ -577,10 +738,6 @@ export default {
       document.getElementsByClassName("reduce")[0].style.display = "none";
     },
     searchCategory(category, index) {
-      // this.shopcat = category;
-      // var container = document.getElementById("shopsfil");
-      // var content = container.innerHTML;
-      // container.innerHTML = content;
       this.componentKey += 1;
       this.$router.push("/search?category=" + category);
 
@@ -898,9 +1055,10 @@ body {
   line-height: 1.2;
   padding: 10px 0px;
   height: 50px;
+  text-overflow: ellipsis;
   overflow: hidden;
-  -o-text-overflow: ellipsis; /* Opera < 11*/
-  text-overflow: ellipsis; /* IE, Safari (WebKit), Opera >= 11, FF > 6 */
+
+  white-space: nowrap;
 }
 .product_cost {
   font-family: "Quicksand", sans-serif;
@@ -969,9 +1127,10 @@ body {
   text-transform: capitalize;
   white-space: nowrap;
   width: 90%; /* IE6 needs any width */
-  overflow: hidden; /* "overflow" value must be different from  visible"*/
-  -o-text-overflow: ellipsis; /* Opera < 11*/
-  text-overflow: ellipsis; /* IE, Safari (WebKit), Opera >= 11, FF > 6 */
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  white-space: nowrap;
 }
 .l-offer {
   margin-left: 5%;
@@ -986,9 +1145,10 @@ body {
   border-bottom: 2px solid rgb(212, 212, 212);
   white-space: nowrap;
   width: 90%; /* IE6 needs any width */
-  overflow: hidden; /* "overflow" value must be different from  visible"*/
-  -o-text-overflow: ellipsis; /* Opera < 11*/
-  text-overflow: ellipsis; /* IE, Safari (WebKit), Opera >= 11, FF > 6 */
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  white-space: nowrap;
 }
 .offno {
   font-size: 22px;

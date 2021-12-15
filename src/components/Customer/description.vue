@@ -1,5 +1,6 @@
 <template>
   <div>
+    <spinner v-if="loading"></spinner>
     <topnav
       link3="Account"
       link4='<i class="fa fa-shopping-cart"></i> Cart '
@@ -15,6 +16,7 @@
       :searchbar="true"
       :display_categories="true"
     ></topnav>
+
     <b-card>
       <b-container>
         <b-row>
@@ -85,8 +87,9 @@ import topnav from "../Seller/topnav.vue";
 import Sitefooter from "./sitefooter.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import Spinner from "./spinner.vue";
 export default {
-  components: { topnav, Sitefooter },
+  components: { topnav, Sitefooter, Spinner },
   props: {
     seller: {
       type: String,
@@ -107,9 +110,11 @@ export default {
       shop: "",
       img: "",
       email: "",
+      loading: false,
     };
   },
   mounted() {
+    this.loading = true;
     const url = BASE_URL + "/get_offers_by_shop/" + this.seller;
     axios
       .get(url)
@@ -131,7 +136,8 @@ export default {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => (this.loading = false));
   },
   methods: {
     addToCart(offer_text, email) {

@@ -116,19 +116,19 @@ export default {
   left: 0;
   display: none;
   width: 100%;
-  box-shadow: 0 0 9px rgb(0 0 0 / 12%);
-  height: 60px;
+  box-shadow: 0 0 9px rgba(44, 44, 44, 0.473);
+  height: 48px;
   background: rgb(255, 255, 255);
   z-index: 10000;
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: 10px 50px;
 }
 
 .b-link {
   position: relative;
   text-align: center;
   font-weight: 400;
-  font-size: 13px;
+  font-size: 11px;
   line-height: 1;
 }
 .nofitems {

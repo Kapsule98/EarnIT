@@ -457,7 +457,7 @@ export default {
         if (this.list.offers.length > 0) {
           this.category = this.list.offers[0].category;
         }
-        console.log(this.category, this.list);
+        console.log(this.list);
         this.getShopBio();
         this.getImage();
       })

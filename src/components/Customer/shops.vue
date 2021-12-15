@@ -4,7 +4,7 @@
       <div class="w3-container">
         <div class="w3-row">
           <div
-            class="w3-col m3"
+            class="w3-col m3 s6"
             v-for="shop in list.sellers"
             :key="shop.length"
           >
@@ -82,42 +82,25 @@ export default {
   },
   mounted() {
     this.getShops();
+    if ("categories" in sessionStorage) {
+      var sdata = JSON.parse(sessionStorage.getItem("categories"));
+
+      this.allcategories = sdata.categories;
+    } else {
+      const offersurl = BASE_URL + "/categories";
+      let JWTToken = this.$session.get("token");
+      axios
+        .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .then((response) => {
+          this.allcategories = response.data.categories;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
     // document.getElementById("sby2").checked = true;
-    const offersurl = BASE_URL + "/categories";
-    let JWTToken = this.$session.get("token");
-    axios
-      .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
-      .then((response) => {
-        this.allcategories = response.data.categories;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   },
   methods: {
-    // searchShop(category, index) {
-    //   this.$router.push("/search_by_shop?category=" + category);
-    //   this.$router.go();
-    //   this.getShops();
-    //   for (var i = 0; i < 20; i++) {
-    //     if (index !== i) {
-    //       document.getElementById("check" + i).checked = false;
-    //     } else {
-    //       document.getElementById("check" + i).checked = true;
-    //     }
-    //   }
-    // },
-    // byFilter(p) {
-    //   if (this.category === "all" && p === 1) {
-    //     this.$router.push("/search?alloffers=true");
-    //   } else {
-    //     if (p === 1) {
-    //       this.$router.push("/search?category=" + this.category);
-    //     } else if (p === 2) {
-    //       document.getElementById("sby2").checked = true;
-    //     }
-    //   }
-    // },
     getShops() {
       this.loading = true;
       const offersurl = BASE_URL + "/get_shops/" + this.category;
@@ -169,10 +152,11 @@ export default {
 .s-address {
   float: left;
   max-width: 65%; /* IE6 needs any width */
-  overflow: hidden; /* "overflow" value must be different from  visible"*/
-  -o-text-overflow: ellipsis; /* Opera < 11*/
-  text-overflow: ellipsis; /* IE, Safari (WebKit), Opera >= 11, FF > 6 */
+
   height: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .l-offer {
   margin-left: 5%;
@@ -187,9 +171,9 @@ export default {
   border-bottom: 2px solid rgb(212, 212, 212);
   white-space: nowrap;
   width: 90%; /* IE6 needs any width */
-  overflow: hidden; /* "overflow" value must be different from  visible"*/
-  -o-text-overflow: ellipsis; /* Opera < 11*/
-  text-overflow: ellipsis; /* IE, Safari (WebKit), Opera >= 11, FF > 6 */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .offno {
   font-size: 22px;

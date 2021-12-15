@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="heroback">
+    <div class="strip"></div>
     <div class="cat_tab">
       <router-link :to="{ path: '/search', query: { category: 'Fashion' } }">
         <img class="cat_cir_img" src="../../assets/fashion.jpg" alt=".." />
@@ -70,6 +71,13 @@ export default {
 };
 </script>
 <style scoped>
+/* .strip {
+  height: 30px;
+  width: 100%;
+  margin-top: -40px;
+  background: linear-gradient(rgb(93, 217, 255), white);
+  border-bottom: 2px solid rgb(255, 255, 255);
+} */
 .next {
   position: absolute;
   top: 40%;
@@ -117,16 +125,17 @@ a:hover {
   display: none;
 }
 .cat_cir_img {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   margin: 10px 20px 2px 20px;
 }
 .caption {
   display: block;
-  font-size: 18px;
+  font-size: 16px;
   color: black;
   line-height: 1;
+  font-weight: 400;
   text-align: center;
   text-transform: capitalize;
 }
