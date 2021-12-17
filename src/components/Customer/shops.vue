@@ -16,7 +16,7 @@
                 },
               }"
             >
-              <div class="Scard">
+              <div class="Scard" v-if="shop_loc === shop.city">
                 <div class="hovclass">
                   <div class="couponhome">
                     <div class="c2-back">
@@ -78,9 +78,18 @@ export default {
       loading: false,
       list: [],
       allcategories: [],
+      shop_loc: "",
     };
   },
   mounted() {
+    if ("get_location" in sessionStorage) {
+      if (sessionStorage.getItem("get_location") === "Bhilai,Durg") {
+        this.shop_loc = "Bhilai";
+      }
+      if (sessionStorage.getItem("get_location") === "Raipur") {
+        this.shop_loc = "Raipur";
+      }
+    }
     this.getShops();
     if ("categories" in sessionStorage) {
       var sdata = JSON.parse(sessionStorage.getItem("categories"));

@@ -19,7 +19,13 @@ export default {
   },
   methods: {
     func1() {
-      const url = BASE_URL + "/get_all_offers";
+      var url = BASE_URL + "/get_all_offers";
+      if ("get_location" in sessionStorage) {
+        url =
+          BASE_URL +
+          "/get_offers_in_city/" +
+          sessionStorage.getItem("get_location");
+      }
       axios
         .get(url)
         .then((response) => {
@@ -27,9 +33,13 @@ export default {
             "get_all_offers",
             JSON.stringify(response.data)
           );
+          console.log(response);
         })
         .catch((err) => {
           console.error(err);
+        })
+        .then(() => {
+          this.$router.go();
         });
     },
     func2() {

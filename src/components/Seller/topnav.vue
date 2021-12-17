@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <localstore></localstore>
+    <localstore :key="componentKey"></localstore>
 
     <div id="nav" class="topnav">
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
@@ -8,6 +8,19 @@
         <router-link to="/"
           ><img src="../../assets/flogo.png" alt="" class="mainlogo"
         /></router-link>
+        <div class="strip">
+          <i class="fa fa-map-marker"></i>
+          <select
+            name="location"
+            class="droplo"
+            id="local"
+            @change="setlocation"
+          >
+            <option value="all" disabled selected hidden>Select</option>
+            <option value="Bhilai,Durg">Bhilai</option>
+            <option value="Raipur">Raipur</option>
+          </select>
+        </div>
       </div>
       <div class="left searchbar">
         <div class="example" v-if="searchbar === true">
@@ -158,6 +171,7 @@ export default {
       allcategories: [],
       searchvalue: "",
       input: "",
+      componentKey: 0,
     };
   },
 
@@ -187,6 +201,11 @@ export default {
     "landing",
   ],
   mounted() {
+    if ("get_location" in sessionStorage) {
+      document.getElementById("local").value =
+        sessionStorage.getItem("get_location");
+    }
+
     this.user = this.$session.get("user_data");
     const offersurl = BASE_URL + "/categories";
     let JWTToken = this.$session.get("token");
@@ -211,7 +230,7 @@ export default {
       var sdata = JSON.parse(sessionStorage.getItem("get_all_offers"));
       var sndata = JSON.parse(sessionStorage.getItem("shops"));
 
-      for (var i = 0; i < sdata.count; i++) {
+      for (var i = 0; i < sdata.active_offers.length; i++) {
         var name = "";
         var url = "";
         var type = "";
@@ -263,6 +282,15 @@ export default {
     },
   },
   methods: {
+    setlocation() {
+      sessionStorage.setItem(
+        "get_location",
+        document.getElementById("local").value
+      );
+      sessionStorage.removeItem("get_all_offers");
+
+      this.componentKey += 1;
+    },
     divert() {
       document.getElementById("searchtab").style.display = "none";
       document.getElementById("nav").style.position = "relative";
@@ -315,7 +343,31 @@ export default {
 body {
   font-family: "Assistant", sans-serif;
 }
-
+.fa-map-marker {
+  padding: 0px 5px;
+  padding-bottom: 4px;
+  color: rgb(0, 87, 248);
+  display: block;
+  font-size: 24px;
+}
+.droplo {
+  background: rgba(255, 255, 255, 0.788);
+  border-radius: 4px;
+  border: none;
+}
+.droplo:focus {
+  outline-color: rgb(0, 98, 209);
+}
+.strip {
+  text-align: center;
+  float: right;
+  /* width: 100%; */
+  margin-top: 0px;
+  margin-right: -20px;
+  padding: 2px 6px;
+  font-size: 12px;
+  /* border-bottom: 2px solid rgb(255, 255, 255); */
+}
 .backbtn {
   margin-top: -10px;
   font-size: 25px;
@@ -330,7 +382,7 @@ body {
     height: 1.4em;
     text-overflow: ellipsis;
     overflow: hidden;
-
+    padding-left: 20px;
     white-space: nowrap;
   }
 }
@@ -466,13 +518,11 @@ form.example::after {
   margin-bottom: 40px;
   position: relative;
   width: 100%;
-  box-shadow: 0 0 10px 0 rgb(93, 217, 255);
   padding: 14px 20px;
   height: 70px;
   font-size: 18px;
   z-index: 1000;
   background: linear-gradient(to right, rgb(93, 217, 255), rgb(82, 255, 212));
-  box-shadow: 0 0 10px 0 rgb(0 0 0 / 30%);
 }
 
 .topnavlink a {

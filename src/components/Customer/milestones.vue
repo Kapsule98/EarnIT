@@ -60,11 +60,15 @@
           </div>
           <div class="circle" id="circle4">
             <i
+              class="gift"
               v-if="reach4 === true"
-              class="fa fa-check"
               style="padding: 0; margin: 0"
+            >
+              <b-icon-gift></b-icon-gift
             ></i>
-            <i v-else class="fa fa-close" style="padding: 0; margin: 0"></i>
+            <i v-else class="gift" style="padding: 0; margin: 0">
+              <b-icon-gift></b-icon-gift
+            ></i>
 
             <div class="text">200 Coins</div>
           </div>
@@ -92,8 +96,9 @@ import Sitefooter from "./sitefooter.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import Spinner from "./spinner.vue";
+import { BIconGift } from "bootstrap-vue";
 export default {
-  components: { topnav, Sitefooter, Spinner },
+  components: { topnav, Sitefooter, Spinner, BIconGift },
   data() {
     return {
       credit: "",
@@ -146,6 +151,10 @@ export default {
 </script>
 
 <style scoped>
+.gift {
+  color: rgb(255, 0, 157);
+  font-size: 20px;
+}
 .upcontain {
   padding: 20px;
   display: flex;

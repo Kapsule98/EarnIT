@@ -1,6 +1,5 @@
 <template>
   <div class="heroback">
-    <div class="strip"></div>
     <div class="cat_tab">
       <router-link :to="{ path: '/search', query: { category: 'Fashion' } }">
         <img class="cat_cir_img" src="../../assets/fashion.jpg" alt=".." />
@@ -66,18 +65,14 @@
 
 <script>
 import carousel from "vue-owl-carousel";
+
 export default {
   components: { carousel },
+
+  methods: {},
 };
 </script>
 <style scoped>
-/* .strip {
-  height: 30px;
-  width: 100%;
-  margin-top: -40px;
-  background: linear-gradient(rgb(93, 217, 255), white);
-  border-bottom: 2px solid rgb(255, 255, 255);
-} */
 .next {
   position: absolute;
   top: 40%;

@@ -519,7 +519,7 @@ export default {
     var nsdata = JSON.parse(sessionStorage.getItem("get_all_offers"));
     var sndata = JSON.parse(sessionStorage.getItem("shops"));
 
-    for (var i = 0; i < nsdata.count; i++) {
+    for (var i = 0; i < nsdata.active_offers.length; i++) {
       var name = "";
       var url = "";
       var type = "";
@@ -567,7 +567,7 @@ export default {
         var pname = sndata.sellers[k].products[y];
 
         if (pname.toUpperCase().indexOf(filter) > -1) {
-          for (var e = 0; e < nsdata.count; e++) {
+          for (var e = 0; e < nsdata.active_offers.length; e++) {
             if (
               sndata.sellers[k].email === nsdata.active_offers[e].seller_email
             ) {
@@ -635,8 +635,7 @@ export default {
       var filter = this.value.toUpperCase();
       var nsdata = JSON.parse(sessionStorage.getItem("get_all_offers"));
       var sndata = JSON.parse(sessionStorage.getItem("shops"));
-
-      for (var i = 0; i < nsdata.count; i++) {
+      for (var i = 0; i < nsdata.active_offers.length; i++) {
         var name = "";
         var url = "";
         var type = "";
@@ -684,7 +683,7 @@ export default {
           var pname = sndata.sellers[k].products[y];
 
           if (pname.toUpperCase().indexOf(filter) > -1) {
-            for (var e = 0; e < nsdata.count; e++) {
+            for (var e = 0; e < nsdata.active_offers.length; e++) {
               if (
                 sndata.sellers[k].email === nsdata.active_offers[e].seller_email
               ) {
