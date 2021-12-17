@@ -119,8 +119,19 @@ const routes = [
   {
     path: "/search",
     name: "searchcategory",
-    props: (route) => ({ category: route.query.category }),
+    props: (route) => ({
+      category: route.query.category,
+      offer_type: route.query.offer_type,
+    }),
     component: () => import("../components/Customer/searchcategory.vue"),
+  },
+  {
+    path: "/get_result",
+    name: "searchnext",
+    props: (route) => ({
+      value: route.query.value,
+    }),
+    component: () => import("../components/Customer/searchnext.vue"),
   },
   {
     path: "/seller",
@@ -168,6 +179,11 @@ const routes = [
     path: "/contact",
     name: "contact",
     component: () => import("../components/Customer/contact.vue"),
+  },
+  {
+    path: "/faqs",
+    name: "faqs",
+    component: () => import("../components/Customer/faq.vue"),
   },
   {
     path: "/product_description",

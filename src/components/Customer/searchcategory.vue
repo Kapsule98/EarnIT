@@ -37,7 +37,7 @@
     <spinner v-if="loading"></spinner>
     <div class="w3-row">
       <div class="showfilter">
-        <p style="padding: 10px; float: left">
+        <!-- <p style="padding: 10px; float: left">
           Search By :
 
           <router-link to="/search?alloffers=true"
@@ -47,7 +47,7 @@
           <router-link to="/search_by_shop?category=all"
             ><input type="radio" id="torad1" /> shop
           </router-link>
-        </p>
+        </p> -->
         <button class="showbtn" v-on:click="showFilter()">
           Filter <i class="fa fa-angle-down"></i>
         </button>
@@ -64,332 +64,403 @@
                 <u>clear filters</u>
               </button>
             </h3>
-
-            <h5>Category</h5>
-
-            <div
-              style="display: block; line-height: 0.5"
-              v-for="(items, index) in allcategories"
-              :key="items"
-            >
-              <input
-                v-if="items === category"
-                style="margin: 3px"
-                type="checkbox"
-                checked="true"
-                :id="'check' + index"
-                v-on:click="searchCategory(items, index)"
-              />
-              <input
-                v-else
-                style="margin: 3px"
-                type="checkbox"
-                :id="'check' + index"
-                v-on:click="searchCategory(items, index)"
-              />
-              <label :for="'check' + index"> {{ items }}</label>
+            <div>
+              <h5>Category</h5>
+              <div
+                style="display: block; line-height: 0.5"
+                v-for="(items, index) in allcategories"
+                :key="items"
+              >
+                <input
+                  v-if="items === category"
+                  style="margin: 3px"
+                  type="checkbox"
+                  checked="true"
+                  :id="'check' + index"
+                  v-on:click="searchCategory(items, index)"
+                />
+                <input
+                  v-else
+                  style="margin: 3px"
+                  type="checkbox"
+                  :id="'check' + index"
+                  v-on:click="searchCategory(items, index)"
+                />
+                <label :for="'check' + index"> {{ items }}</label>
+              </div>
+            </div>
+            <div style="display: none">
+              <br />
+              <h5>Search by :</h5>
+              <div style="display: block; line-height: 0.5">
+                <input
+                  style="margin: 3px"
+                  type="checkbox"
+                  id="sby1"
+                  v-on:click="byFilter(1)"
+                />
+                <label for="sby1"> Product</label>
+              </div>
+              <div style="display: block; line-height: 0.5">
+                <input
+                  style="margin: 3px"
+                  type="checkbox"
+                  id="sby2"
+                  v-on:click="byFilter(2)"
+                />
+                <label for="sby2">Seller</label>
+              </div>
             </div>
             <br />
-            <h5>Search by :</h5>
-            <div style="display: block; line-height: 0.5">
-              <input
-                style="margin: 3px"
-                type="checkbox"
-                id="sby1"
-                v-on:click="byFilter(1)"
-              />
-              <label for="sby1"> Product</label>
-            </div>
-            <div style="display: block; line-height: 0.5">
-              <input
-                style="margin: 3px"
-                type="checkbox"
-                id="sby2"
-                v-on:click="byFilter(2)"
-              />
-              <label for="sby2">Seller</label>
+            <div>
+              <h5>Discount</h5>
+
+              <div style="display: block; line-height: 0.5">
+                <input
+                  style="margin: 3px"
+                  type="checkbox"
+                  id="disc1"
+                  v-on:click="priceFilter(10, 1)"
+                />
+                <label for="disc1"> 10% or more</label>
+              </div>
+
+              <div style="display: block; line-height: 0.5">
+                <input
+                  style="margin: 3px"
+                  type="checkbox"
+                  id="disc2"
+                  v-on:click="priceFilter(25, 2)"
+                />
+                <label for="disc2"> 25% or more</label>
+              </div>
+              <div style="display: block; line-height: 0.5">
+                <input
+                  style="margin: 3px"
+                  type="checkbox"
+                  id="disc3"
+                  v-on:click="priceFilter(40, 3)"
+                />
+                <label for="disc3"> 40% or more</label>
+              </div>
+              <div style="display: block; line-height: 0.5">
+                <input
+                  style="margin: 3px"
+                  type="checkbox"
+                  id="disc4"
+                  v-on:click="priceFilter(50, 4)"
+                />
+                <label for="disc4"> 50% or more</label>
+              </div>
             </div>
             <br />
-            <h5>Discount</h5>
-            <div style="display: block; line-height: 0.5">
-              <input
-                style="margin: 3px"
-                type="checkbox"
-                id="disc1"
-                v-on:click="priceFilter(10, 1)"
-              />
-              <label for="disc1"> 10% or more</label>
-            </div>
-            <div style="display: block; line-height: 0.5">
-              <input
-                style="margin: 3px"
-                type="checkbox"
-                id="disc2"
-                v-on:click="priceFilter(25, 2)"
-              />
-              <label for="disc2"> 25% or more</label>
-            </div>
-            <div style="display: block; line-height: 0.5">
-              <input
-                style="margin: 3px"
-                type="checkbox"
-                id="disc3"
-                v-on:click="priceFilter(40, 3)"
-              />
-              <label for="disc3"> 40% or more</label>
-            </div>
-            <div style="display: block; line-height: 0.5">
-              <input
-                style="margin: 3px"
-                type="checkbox"
-                id="disc4"
-                v-on:click="priceFilter(50, 4)"
-              />
-              <label for="disc4"> 50% or more</label>
+            <div>
+              <h5>Price Range</h5>
+
+              <div style="display: block; line-height: 0.5">
+                <input
+                  style="margin: 3px"
+                  type="radio"
+                  id="range1"
+                  name="prfil"
+                  v-on:click="RangeFilter(0, 500)"
+                />
+                <label for="range1">less than Rs 499 </label>
+              </div>
+
+              <div style="display: block; line-height: 0.5">
+                <input
+                  style="margin: 3px"
+                  type="radio"
+                  id="range2"
+                  name="prfil"
+                  v-on:click="RangeFilter(500, 1000)"
+                />
+                <label for="range2">Rs 500 to Rs 999</label>
+              </div>
+              <div style="display: block; line-height: 0.5">
+                <input
+                  style="margin: 3px"
+                  type="radio"
+                  id="range3"
+                  name="prfil"
+                  v-on:click="RangeFilter(1000, 5000)"
+                />
+                <label for="range3">Rs 1000 to Rs 4999</label>
+              </div>
+              <div style="display: block; line-height: 0.5">
+                <input
+                  style="margin: 3px"
+                  type="radio"
+                  id="range4"
+                  name="prfil"
+                  v-on:click="RangeFilter(5000, Number.MAX_SAFE_INTEGER)"
+                />
+                <label for="range4">more than Rs 5000</label>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="w3-col m10" id="Sproducts">
-        <div class="w3-container">
-          <div class="w3-row">
-            <h3>Sellers</h3>
-            <hr />
 
-            <shops
-              :category="category"
-              v-if="category !== null"
-              :key="componentKey"
-            ></shops>
-            <shops category="all" :key="componentKey" v-else></shops>
-          </div>
-        </div>
-        <div class="w3-container">
-          <b-row>
-            <h3>Products</h3>
-            <hr />
-            <template v-for="offer in mapped">
-              <b-col
-                sm="3"
-                cols="6"
-                v-if="
-                  ((list.active_offers[offer.index].category === category &&
-                    offer.value > discfilter &&
-                    list.active_offers[offer.index].type === 'FIXED') ||
-                    (category === null &&
-                      offer.value > discfilter &&
-                      list.active_offers[offer.index].type === 'FIXED')) &&
-                  Math.floor(new Date().getTime() / 1000.0) <
-                    list.active_offers[offer.index].validity[1] &&
-                  Math.floor(new Date().getTime() / 1000.0) >
-                    list.active_offers[offer.index].validity[0] &&
-                  list.active_offers[offer.index].quantity > 0
-                "
-                :key="offer.length"
-              >
-                <div class="Scard">
-                  <!--  -->
-                  <router-link
-                    :to="{
-                      path: '/product_description',
-                      query: {
-                        seller: list.active_offers[offer.index].seller_email,
-                        offer_text: list.active_offers[offer.index].offer_text,
-                      },
-                    }"
+      <div class="w3-col m10" id="Sproducts">
+        <br />
+        <b-tabs content-class="mt-3">
+          <b-tab title="Products" :active="offer_type === 'fixed_price'">
+            <div class="w3-container">
+              <b-row>
+                <h3>Products</h3>
+                <hr />
+                <template v-for="offer in mapped">
+                  <b-col
+                    sm="3"
+                    cols="6"
+                    v-if="
+                      ((list.active_offers[offer.index].category === category &&
+                        offer.value > discfilter &&
+                        list.active_offers[offer.index].type === 'FIXED') ||
+                        (category === null &&
+                          offer.value > discfilter &&
+                          list.active_offers[offer.index].type === 'FIXED')) &&
+                      Math.floor(new Date().getTime() / 1000.0) <
+                        list.active_offers[offer.index].validity[1] &&
+                      Math.floor(new Date().getTime() / 1000.0) >
+                        list.active_offers[offer.index].validity[0] &&
+                      list.active_offers[offer.index].quantity > 0 &&
+                      list.active_offers[offer.index].offer_price > prange1 &&
+                      list.active_offers[offer.index].offer_price < prange2
+                    "
+                    :key="offer.length"
                   >
-                    <div class="product_card">
-                      <div>
-                        <img
-                          :src="list.active_offers[offer.index].image_url"
-                          alt=""
-                          class="product_img"
-                        />
-                      </div>
-                      <div class="product_name">
-                        <span
-                          v-b-tooltip.hover
-                          :title="
-                            list.active_offers[offer.index].products + ' '
+                    <div class="Scard">
+                      <!--  -->
+                      <router-link
+                        :to="{
+                          path: '/product_description',
+                          query: {
+                            seller:
+                              list.active_offers[offer.index].seller_email,
+                            offer_text:
+                              list.active_offers[offer.index].offer_text,
+                          },
+                        }"
+                      >
+                        <div class="product_card">
+                          <div>
+                            <img
+                              :src="list.active_offers[offer.index].image_url"
+                              alt=""
+                              class="product_img"
+                            />
+                          </div>
+                          <div class="product_name">
+                            <span
+                              v-b-tooltip.hover
+                              :title="
+                                list.active_offers[offer.index].products + ' '
+                              "
+                            >
+                              <nav>
+                                {{
+                                  list.active_offers[
+                                    offer.index
+                                  ].products.toString()
+                                }}
+                              </nav>
+                            </span>
+                          </div>
+                          <div class="shop_name">
+                            {{
+                              list.active_offers[offer.index]
+                                .seller_display_name
+                            }}
+                          </div>
+                          <div class="disc">
+                            {{
+                              Math.round(
+                                ((list.active_offers[offer.index].mrp -
+                                  list.active_offers[offer.index].offer_price) /
+                                  list.active_offers[offer.index].mrp) *
+                                  100
+                              )
+                            }}% OFF
+                          </div>
+                          <div class="product_cost">
+                            <i class="fa fa-inr" aria-hidden="true"></i>
+                            {{ list.active_offers[offer.index].offer_price }}
+                            <del>
+                              <i class="fa fa-inr" aria-hidden="true"></i>
+                              {{ list.active_offers[offer.index].mrp }}</del
+                            >
+                          </div>
+
+                          <div class="addtocart">
+                            <b-icon-cart3 mb-2></b-icon-cart3>
+                          </div>
+                        </div>
+                      </router-link>
+                    </div>
+                  </b-col>
+                </template>
+              </b-row>
+            </div>
+          </b-tab>
+
+          <b-tab title="Coupons" :active="offer_type === 'bill_discount'">
+            <div class="w3-container">
+              <div class="w3-row">
+                <br />
+                <h3>Coupons</h3>
+                <hr />
+                <div
+                  class="w3-col m3 s6"
+                  v-for="offer in mapped"
+                  :key="offer.length"
+                >
+                  <div
+                    v-if="
+                      ((list.active_offers[offer.index].category === category &&
+                        offer.value > discfilter &&
+                        list.active_offers[offer.index].type !== 'FIXED') ||
+                        (category === null &&
+                          offer.value > discfilter &&
+                          list.active_offers[offer.index].type !== 'FIXED')) &&
+                      Math.floor(new Date().getTime() / 1000.0) <
+                        list.active_offers[offer.index].validity[1] &&
+                      Math.floor(new Date().getTime() / 1000.0) >
+                        list.active_offers[offer.index].validity[0] &&
+                      list.active_offers[offer.index].quantity > 0
+                    "
+                    class="Scard"
+                  >
+                    <div
+                      v-if="
+                        Math.floor(new Date().getTime() / 1000.0) <
+                          list.active_offers[offer.index].validity[1] &&
+                        Math.floor(new Date().getTime() / 1000.0) >
+                          list.active_offers[offer.index].validity[0]
+                      "
+                      class="hovclass"
+                    >
+                      <router-link
+                        :to="{
+                          path: '/seller',
+                          query: {
+                            seller:
+                              list.active_offers[offer.index].seller_email,
+                          },
+                        }"
+                      >
+                        <div class="couponhome">
+                          <div class="c2-back">
+                            <imgstore
+                              :email="
+                                list.active_offers[offer.index].seller_email
+                              "
+                              :category="
+                                list.active_offers[offer.index].category
+                              "
+                            ></imgstore>
+                          </div>
+                          <div class="c2-left">
+                            {{ list.active_offers[offer.index].quantity }}
+                            coupons left
+                          </div>
+                          <div class="c2-off"></div>
+
+                          <div class="c2-shop"><!--{{ shop_name }}--></div>
+                        </div>
+                        <div
+                          class="l-offer"
+                          v-if="
+                            list.active_offers[offer.index].type ===
+                            'ITEM_DISCOUNT'
                           "
                         >
-                          <nav>
+                          <nav
+                            v-b-tooltip.hover
+                            :title="
+                              list.active_offers[offer.index].products + ' '
+                            "
+                          >
+                            <span class="offno">{{ offer.value }}%</span>
+                            off on
+
+                            <span
+                              v-for="(prods, index3) in list.active_offers[
+                                offer.index
+                              ].products"
+                              :key="prods.offer_text"
+                            >
+                              {{
+                                list.active_offers[offer.index].products[index3]
+                              }}
+
+                              <span
+                                v-if="
+                                  index3 !=
+                                  Object.keys(
+                                    list.active_offers[offer.index].products
+                                  ).length -
+                                    1
+                                "
+                                >,
+                              </span>
+                            </span>
+                          </nav>
+                        </div>
+                        <div
+                          class="l-offer"
+                          v-else-if="
+                            list.active_offers[offer.index].type === 'FIXED'
+                          "
+                        >
+                          <nav
+                            v-b-tooltip.hover
+                            :title="
+                              list.active_offers[offer.index].products + ' '
+                            "
+                          >
+                            <span class="offno"
+                              >{{
+                                (
+                                  ((list.active_offers[offer.index].mrp -
+                                    list.active_offers[offer.index]
+                                      .offer_price) /
+                                    list.active_offers[offer.index].mrp) *
+                                  100
+                                ).toPrecision(2)
+                              }}%</span
+                            >
+                            off on
+
                             {{
                               list.active_offers[
                                 offer.index
                               ].products.toString()
                             }}
                           </nav>
-                        </span>
-                      </div>
-                      <div class="shop_name">
-                        {{
-                          list.active_offers[offer.index].seller_display_name
-                        }}
-                      </div>
-                      <div class="disc">
-                        {{
-                          Math.round(
-                            ((list.active_offers[offer.index].mrp -
-                              list.active_offers[offer.index].offer_price) /
-                              list.active_offers[offer.index].mrp) *
-                              100
-                          )
-                        }}% OFF
-                      </div>
-                      <div class="product_cost">
-                        <i class="fa fa-inr" aria-hidden="true"></i>
-                        {{ list.active_offers[offer.index].offer_price }}
-                        <del>
-                          <i class="fa fa-inr" aria-hidden="true"></i>
-                          {{ list.active_offers[offer.index].mrp }}</del
+                        </div>
+                        <div class="l-offer" v-else>
+                          <nav>
+                            <span class="offno">{{ offer.value }}%</span> off on
+                            Total Bill
+                          </nav>
+                        </div>
+                        <div
+                          class="shopname"
+                          v-b-tooltip.hover
+                          :title="
+                            list.active_offers[offer.index].seller_display_name
+                          "
                         >
-                      </div>
+                          {{
+                            list.active_offers[offer.index].seller_display_name
+                          }}
 
-                      <div class="addtocart">
-                        <b-icon-cart3 mb-2></b-icon-cart3>
-                      </div>
-                    </div>
-                  </router-link>
-                </div>
-              </b-col>
-            </template>
-          </b-row>
-        </div>
-        <div class="w3-container">
-          <div class="w3-row">
-            <br />
-
-            <h3>Coupons</h3>
-            <hr />
-            <div class="w3-col m3" v-for="offer in mapped" :key="offer.length">
-              <div
-                v-if="
-                  ((list.active_offers[offer.index].category === category &&
-                    offer.value > discfilter &&
-                    list.active_offers[offer.index].type !== 'FIXED') ||
-                    (category === null &&
-                      offer.value > discfilter &&
-                      list.active_offers[offer.index].type !== 'FIXED')) &&
-                  Math.floor(new Date().getTime() / 1000.0) <
-                    list.active_offers[offer.index].validity[1] &&
-                  Math.floor(new Date().getTime() / 1000.0) >
-                    list.active_offers[offer.index].validity[0] &&
-                  list.active_offers[offer.index].quantity > 0
-                "
-                class="Scard"
-              >
-                <div
-                  v-if="
-                    Math.floor(new Date().getTime() / 1000.0) <
-                      list.active_offers[offer.index].validity[1] &&
-                    Math.floor(new Date().getTime() / 1000.0) >
-                      list.active_offers[offer.index].validity[0]
-                  "
-                  class="hovclass"
-                >
-                  <router-link
-                    :to="{
-                      path: '/seller',
-                      query: {
-                        seller: list.active_offers[offer.index].seller_email,
-                      },
-                    }"
-                  >
-                    <div class="couponhome">
-                      <div class="c2-back">
-                        <imgstore
-                          :email="list.active_offers[offer.index].seller_email"
-                          :category="list.active_offers[offer.index].category"
-                        ></imgstore>
-                      </div>
-                      <div class="c2-left">
-                        {{ list.active_offers[offer.index].quantity }} coupons
-                        left
-                      </div>
-                      <div class="c2-off"></div>
-
-                      <div class="c2-shop"><!--{{ shop_name }}--></div>
-                    </div>
-                    <div
-                      class="l-offer"
-                      v-if="
-                        list.active_offers[offer.index].type === 'ITEM_DISCOUNT'
-                      "
-                    >
-                      <nav
-                        v-b-tooltip.hover
-                        :title="list.active_offers[offer.index].products + ' '"
-                      >
-                        <span class="offno">{{ offer.value }}%</span>
-                        off on
-
-                        <span
-                          v-for="(prods, index3) in list.active_offers[
-                            offer.index
-                          ].products"
-                          :key="prods.offer_text"
-                        >
-                          {{ list.active_offers[offer.index].products[index3] }}
-
-                          <span
-                            v-if="
-                              index3 !=
-                              Object.keys(
-                                list.active_offers[offer.index].products
-                              ).length -
-                                1
-                            "
-                            >,
-                          </span>
-                        </span>
-                      </nav>
-                    </div>
-                    <div
-                      class="l-offer"
-                      v-else-if="
-                        list.active_offers[offer.index].type === 'FIXED'
-                      "
-                    >
-                      <nav
-                        v-b-tooltip.hover
-                        :title="list.active_offers[offer.index].products + ' '"
-                      >
-                        <span class="offno"
-                          >{{
-                            (
-                              ((list.active_offers[offer.index].mrp -
-                                list.active_offers[offer.index].offer_price) /
-                                list.active_offers[offer.index].mrp) *
-                              100
-                            ).toPrecision(2)
-                          }}%</span
-                        >
-                        off on
-
-                        {{
-                          list.active_offers[offer.index].products.toString()
-                        }}
-                      </nav>
-                    </div>
-                    <div class="l-offer" v-else>
-                      <nav>
-                        <span class="offno">{{ offer.value }}%</span> off on
-                        Total Bill
-                      </nav>
-                    </div>
-                    <div
-                      class="shopname"
-                      v-b-tooltip.hover
-                      :title="
-                        list.active_offers[offer.index].seller_display_name
-                      "
-                    >
-                      {{ list.active_offers[offer.index].seller_display_name }}
-
-                      <!-- <button class="vshop">View Shop</button> -->
-                    </div>
-                    <!-- <div class="c2-validity">
+                          <!-- <button class="vshop">View Shop</button> -->
+                        </div>
+                        <!-- <div class="c2-validity">
                       offer valid till
                       {{
                         moment(
@@ -397,12 +468,32 @@
                         ).format("DD-MM-YYYY")
                       }}
                     </div> -->
-                  </router-link>
+                      </router-link>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </b-tab>
+          <b-tab>
+            <template #title>
+              <div>Sellers</div>
+            </template>
+            <div class="w3-container">
+              <div class="w3-row">
+                <h3>Sellers</h3>
+                <hr />
+
+                <shops
+                  :category="category"
+                  v-if="category !== null"
+                  :key="componentKey"
+                ></shops>
+                <shops category="all" :key="componentKey" v-else></shops>
+              </div>
+            </div>
+          </b-tab>
+        </b-tabs>
       </div>
     </div>
     <div class="reduce"></div>
@@ -430,6 +521,10 @@ export default {
       type: String,
       default: null,
     },
+    offer_type: {
+      type: String,
+      default: null,
+    },
   },
 
   data() {
@@ -442,21 +537,29 @@ export default {
       loading: false,
       shopcat: "",
       componentKey: 0,
+      prange1: 0,
+      prange2: Number.MAX_SAFE_INTEGER,
     };
   },
   mounted() {
     this.getAllOffers();
     document.getElementById("sby1").checked = true;
-    const offersurl = BASE_URL + "/categories";
-    let JWTToken = this.$session.get("token");
-    axios
-      .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
-      .then((response) => {
-        this.allcategories = response.data.categories;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if ("categories" in sessionStorage) {
+      var sdata = JSON.parse(sessionStorage.getItem("categories"));
+
+      this.allcategories = sdata.categories;
+    } else {
+      const offersurl = BASE_URL + "/categories";
+      let JWTToken = this.$session.get("token");
+      axios
+        .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+        .then((response) => {
+          this.allcategories = response.data.categories;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   },
   methods: {
     clearFilter() {
@@ -499,6 +602,10 @@ export default {
         }
       }
     },
+    RangeFilter(min, max) {
+      this.prange1 = min;
+      this.prange2 = max;
+    },
     byFilter(p) {
       if (this.category === null && p !== 1) {
         this.$router.push("/search_by_shop?category=all");
@@ -512,42 +619,64 @@ export default {
     },
 
     getAllOffers() {
-      this.loading = true;
-      const offersurl = BASE_URL + "/get_all_offers";
-      let JWTToken = this.$session.get("token");
-      console.log("text1", new Date().getTime());
-      axios
-        .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
-        .then((response) => {
-          console.log(response);
-          console.log("text2", new Date().getTime());
-
-          this.list = response.data;
-          var discount = [];
-          for (var i = 0; i < this.list.active_offers.length; i++) {
-            discount[i] = this.list.active_offers[i].discount_percent;
-          }
-          var mapped = discount.map(function (el, i) {
-            return { index: i, value: el };
-          });
-
-          mapped.sort(function (a, b) {
-            return b.value - a.value;
-          });
-
-          var result = mapped.map(function (el) {
-            return discount[el.index];
-          });
-          this.result = result;
-          this.mapped = mapped;
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          this.loading = false;
-          console.log("text3", new Date().getTime());
+      if ("get_all_offers" in sessionStorage) {
+        var sdata = JSON.parse(sessionStorage.getItem("get_all_offers"));
+        this.list = sdata;
+        var discount = [];
+        for (var i = 0; i < this.list.active_offers.length; i++) {
+          discount[i] = this.list.active_offers[i].discount_percent;
+        }
+        var mapped = discount.map(function (el, i) {
+          return { index: i, value: el };
         });
+
+        mapped.sort(function (a, b) {
+          return b.value - a.value;
+        });
+
+        var result = mapped.map(function (el) {
+          return discount[el.index];
+        });
+        this.result = result;
+        this.mapped = mapped;
+      } else {
+        this.loading = true;
+        const offersurl = BASE_URL + "/get_all_offers";
+        let JWTToken = this.$session.get("token");
+        console.log("text1", new Date().getTime());
+        axios
+          .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
+          .then((response) => {
+            console.log(response);
+            console.log("text2", new Date().getTime());
+
+            this.list = response.data;
+            var discount = [];
+            for (var i = 0; i < this.list.active_offers.length; i++) {
+              discount[i] = this.list.active_offers[i].discount_percent;
+            }
+            var mapped = discount.map(function (el, i) {
+              return { index: i, value: el };
+            });
+
+            mapped.sort(function (a, b) {
+              return b.value - a.value;
+            });
+
+            var result = mapped.map(function (el) {
+              return discount[el.index];
+            });
+            this.result = result;
+            this.mapped = mapped;
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {
+            this.loading = false;
+            console.log("text3", new Date().getTime());
+          });
+      }
     },
   },
 };

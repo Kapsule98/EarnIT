@@ -21,9 +21,11 @@
       <br />
       <br />
       <p><i class="fa fa-envelope"></i> Email : contact@lemmebuy.in</p>
-      <p><i class="fa fa-phone"></i> Phone no. 9752614409</p>
-      <br /><br />
-    </b-card>
+      <p>
+        <i class="fa fa-phone" style="transform: rotate(90deg)"></i> Phone no.
+        +91 8109214409 <br /><br /></p
+    ></b-card>
+
     <br /><br /><br />
     <sitefooter></sitefooter>
   </div>

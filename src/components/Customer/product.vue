@@ -98,19 +98,29 @@
         </b-col>
       </b-row>
       <div class="viewall iterbtn">
-        <router-link :to="{ path: '/search', query: { category: iters } }">
+        <router-link
+          :to="{
+            path: '/search',
+            query: { category: iters, offer_type: 'fixed_price' },
+          }"
+        >
           View All <b-icon-arrow-right></b-icon-arrow-right
         ></router-link>
       </div>
 
       <div class="showcoupon">
-        <div class="bbot"></div>
+        <!-- <div class="bbot"></div> -->
         <h1 class="heading" style="margin-top: 0px">
           Latest Coupons in {{ iters }}
         </h1>
         <topoffers :category="'/get_offers_by_category/' + iters"></topoffers>
         <div class="viewall">
-          <router-link :to="{ path: '/search', query: { category: iters } }">
+          <router-link
+            :to="{
+              path: '/search',
+              query: { category: iters, offer_type: 'bill_discount' },
+            }"
+          >
             View All <b-icon-arrow-right></b-icon-arrow-right
           ></router-link>
         </div>
@@ -159,71 +169,130 @@ export default {
   },
   methods: {
     getAllOffers() {
-      const offersurl = BASE_URL + "/get_all_offers";
-      axios
-        .get(offersurl)
-        .then((response) => {
-          this.list = response.data;
-          // console.log(response.data);
-          var discount = [];
+      if ("get_all_offers" in sessionStorage) {
+        var sdata = JSON.parse(sessionStorage.getItem("get_all_offers"));
+        this.list = sdata;
+        var discount = [];
+        for (var i = 0; i < this.list.active_offers.length; i++) {
+          discount[i] = this.list.active_offers[i].discount_percent;
+        }
+        var mapped = discount.map(function (el, i) {
+          return { index: i, value: el };
+        });
 
-          for (var i = 0; i < this.list.active_offers.length; i++) {
-            discount[i] = this.list.active_offers[i].discount_percent;
-          }
+        // sorting the mapped array containing the reduced values
+        mapped.sort(function (a, b) {
+          return b.value - a.value;
+        });
 
-          var mapped = discount.map(function (el, i) {
-            return { index: i, value: el };
-          });
-
-          // sorting the mapped array containing the reduced values
-          mapped.sort(function (a, b) {
-            return b.value - a.value;
-          });
-
-          // container for the resulting order
-          var result = mapped.map(function (el) {
-            return discount[el.index];
-          });
-          this.result = result;
-          this.mapped = mapped;
-        })
-        .catch((err) => {
-          console.error(err);
-        })
-        .finally(() => {
-          this.loading = false;
-          var len = document.getElementsByClassName("product_row").length;
-          var qwe = document.getElementsByClassName("product_row");
-          for (var v = 0; v < len; v++) {
-            var bnm = document.getElementsByClassName("showcoupon");
-            var ert = bnm[v].getElementsByClassName("couponhome").length;
-
-            if (ert === 0) {
-              document.getElementsByClassName("showcoupon")[v].style.display =
-                "none";
+        // container for the resulting order
+        var result = mapped.map(function (el) {
+          return discount[el.index];
+        });
+        this.result = result;
+        this.mapped = mapped;
+        this.clearreq();
+      } else {
+        const offersurl = BASE_URL + "/get_all_offers";
+        axios
+          .get(offersurl)
+          .then((response) => {
+            this.list = response.data;
+            var discount = [];
+            for (var i = 0; i < this.list.active_offers.length; i++) {
+              discount[i] = this.list.active_offers[i].discount_percent;
             }
-            var rty = qwe[v].getElementsByClassName("product_card").length;
-            if (rty === 0) {
-              document.getElementsByClassName("iterdeal")[v].style.display =
-                "none";
-              document.getElementsByClassName("iterbtn")[v].style.display =
-                "none";
-              document.getElementsByClassName("iterrow")[v].style.display =
-                "none";
-              document.getElementsByClassName("iterbot")[v].style.display =
-                "none";
-            }
-            for (var o = 0; o < rty; o++) {
-              if (o > 11) {
-                var disk =
-                  qwe[v].querySelectorAll(".product_card")[o].parentElement
-                    .parentElement;
 
-                disk.style.display = "none";
+            var mapped = discount.map(function (el, i) {
+              return { index: i, value: el };
+            });
+
+            // sorting the mapped array containing the reduced values
+            mapped.sort(function (a, b) {
+              return b.value - a.value;
+            });
+
+            // container for the resulting order
+            var result = mapped.map(function (el) {
+              return discount[el.index];
+            });
+            this.result = result;
+            this.mapped = mapped;
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => {
+            this.loading = false;
+            var len = document.getElementsByClassName("product_row").length;
+            var qwe = document.getElementsByClassName("product_row");
+            for (var v = 0; v < len; v++) {
+              var bnm = document.getElementsByClassName("showcoupon");
+              var ert = bnm[v].getElementsByClassName("couponhome").length;
+
+              if (ert === 0) {
+                document.getElementsByClassName("showcoupon")[v].style.display =
+                  "none";
+              }
+              var rty = qwe[v].getElementsByClassName("product_card").length;
+              if (rty === 0) {
+                document.getElementsByClassName("iterdeal")[v].style.display =
+                  "none";
+                document.getElementsByClassName("iterbtn")[v].style.display =
+                  "none";
+                document.getElementsByClassName("iterrow")[v].style.display =
+                  "none";
+                document.getElementsByClassName("iterbot")[v].style.display =
+                  "none";
+              }
+              for (var o = 0; o < rty; o++) {
+                if (o > 11) {
+                  var disk =
+                    qwe[v].querySelectorAll(".product_card")[o].parentElement
+                      .parentElement;
+
+                  disk.style.display = "none";
+                }
               }
             }
+          });
+      }
+    },
+    clearreq() {
+      window.setTimeout(function () {
+        this.loading = false;
+        var len = document.getElementsByClassName("product_row").length;
+        var qwe = document.getElementsByClassName("product_row");
+        for (var v = 0; v < len; v++) {
+          var bnm = document.getElementsByClassName("showcoupon");
+          var ert = bnm[v].getElementsByClassName("couponhome").length;
+
+          if (ert === 0) {
+            document.getElementsByClassName("showcoupon")[v].style.display =
+              "none";
           }
-        });
+          var rty = qwe[v].getElementsByClassName("product_card").length;
+          if (rty === 0) {
+            document.getElementsByClassName("iterdeal")[v].style.display =
+              "none";
+            document.getElementsByClassName("iterbtn")[v].style.display =
+              "none";
+            document.getElementsByClassName("iterrow")[v].style.display =
+              "none";
+            document.getElementsByClassName("iterbot")[v].style.display =
+              "none";
+          }
+          for (var o = 0; o < rty; o++) {
+            if (o > 11) {
+              var disk =
+                qwe[v].querySelectorAll(".product_card")[o].parentElement
+                  .parentElement;
+
+              disk.style.display = "none";
+            }
+          }
+        }
+      }, 10000);
     },
     addToCart(offer_text, email) {
       this.loading = true;

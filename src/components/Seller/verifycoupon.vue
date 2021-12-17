@@ -286,22 +286,28 @@
     <b-modal ref="couponModal" hide-footer title="Add coupon details">
       <div class="d-block text-center">
         <h3>Add Coupon details</h3>
-        <label for="range-3">Select no. of Coupons/Products</label>
+        <label for="range-3" style="color: #0077ff; font-weight: bold"
+          >Select no. of Coupons/Products</label
+        >
+        <!-- <div class="offer_text">
+          <input
+            type="number"
+            v-model="offerPrice"
+            placeholder="select quantity"
+          />
+        </div> -->
         <b-form-input
           id="range-3"
           v-model="quantity"
-          type="range"
+          type="number"
           min="0"
           max="50"
           step="1"
         ></b-form-input>
-        <div class="mt-2">Value: {{ quantity }}</div>
+        <!-- <div class="mt-2">Value: {{ quantity }}</div> -->
         <br />
-        <b-form-group
-          label="Discount type"
-          v-slot="{ ariaDescribedby }"
-          style="padding: 20px 5px"
-        >
+        <label style="color: #0077ff; font-weight: bold">Discount type</label>
+        <b-form-group v-slot="{ ariaDescribedby }" style="padding: 20px 5px">
           <b-form-radio-group
             v-model="discountType"
             :options="dTypeoptions"
@@ -340,7 +346,9 @@
           <br />
         </div>
         <div v-if="discountType === 'BILL_DISCOUNT'">
-          <label for="range-0">Minimum Purchase</label>
+          <label for="range-0" style="color: #0077ff; font-weight: bold"
+            >Minimum Purchase</label
+          >
           <b-form-input
             id="range-0"
             v-model="min_val"
@@ -350,7 +358,9 @@
             step="100"
           ></b-form-input>
           <div class="mt-2">Value: Rs {{ min_val }}</div>
-          <label for="range-2">Discount percent on total bill</label>
+          <label for="range-2" style="color: #0077ff; font-weight: bold"
+            >Discount percent on total bill</label
+          >
           <b-form-input
             id="range-2"
             v-model="discount_percent"
@@ -364,8 +374,12 @@
           <br />
         </div>
         <div v-if="discountType === 'FIXED'">
-          <label for="range-1">Fixed price discount</label>
-          <label><span style="padding: 2px 5px">Orignal Price:</span></label>
+          <br />
+          <label
+            ><span style="color: #0077ff; font-weight: bold; padding: 2px 5px"
+              >Orignal Price:</span
+            ></label
+          >
           <div class="offer_text">
             <input
               type="text"
@@ -373,7 +387,11 @@
               placeholder="Orignal MRP of product"
             />
           </div>
-          <label><span style="padding: 2px 5px">Offered Price:</span></label>
+          <label
+            ><span style="color: #0077ff; font-weight: bold; padding: 2px 5px"
+              >Offered Price:</span
+            ></label
+          >
           <div class="offer_text">
             <input
               type="text"
@@ -390,7 +408,9 @@
                 padding-bottom: 10px;
               "
             >
-              Add a new product
+              <div style="color: #0077ff; font-weight: bold">
+                Add a new product
+              </div>
             </label>
 
             <input
@@ -404,7 +424,9 @@
             </button>
           </div>
           <br />
-          <label>or select an existing product</label>
+          <label style="color: #0077ff; font-weight: bold"
+            >or select an existing product</label
+          >
           <multiselect
             placeholder="Select Product/s"
             v-model="products"
@@ -414,12 +436,20 @@
           <br />
         </div>
         <div v-if="discountType != ''">
-          <label><span style="padding: 2px 5px">Validity</span> </label>
+          <label
+            ><span style="padding: 2px 5px; color: #0077ff; font-weight: bold"
+              >Validity</span
+            >
+          </label>
           <date-picker v-model="validity" type="date" range></date-picker>
         </div>
       </div>
       <div>
-        <label><span style="padding: 2px 5px">Offer Text :</span></label>
+        <label
+          ><span style="padding: 2px 5px; color: #0077ff; font-weight: bold"
+            >Offer Text :</span
+          ></label
+        >
         <div class="offer_text">
           <input
             type="text"
@@ -429,7 +459,11 @@
         </div>
       </div>
       <div>
-        <label><span style="padding: 2px 5px">Description :</span></label>
+        <label
+          ><span style="padding: 2px 5px; color: #0077ff; font-weight: bold"
+            >Description :</span
+          ></label
+        >
         <div class="offer_text">
           <textarea
             style="width: 100%"
@@ -440,7 +474,11 @@
         </div>
       </div>
       <div class="w3-row" v-if="discountType === 'FIXED'">
-        <label><span style="padding: 2px 5px">Add Image :</span></label>
+        <label
+          ><span style="padding: 2px 5px; color: #0077ff; font-weight: bold"
+            >Add Image :</span
+          ></label
+        >
 
         <div class="w3-col m12">
           <!--   <img v-bind:src="image" style="width: 100%" id="proimg" />-->
@@ -524,8 +562,8 @@ export default {
       discountType: "",
       dTypeoptions: [
         // { text: "Discount on item", value: "ITEM_DISCOUNT" },
-        { text: "Discount on total bill", value: "BILL_DISCOUNT" },
-        { text: "Fixed price offer", value: "FIXED" },
+        { text: "Total Bill", value: "BILL_DISCOUNT" },
+        { text: "Product", value: "FIXED" },
       ],
       itemdiscountpercent: "",
       billdiscountpercent: "",
@@ -570,7 +608,11 @@ export default {
       document.getElementsByClassName("topnav")[0].style.height = "70px";
     }
   },
-
+  watch: {
+    getproducts: function () {
+      this.getProducts();
+    },
+  },
   methods: {
     addNewProduct() {
       if (this.addproduct !== null) {
@@ -592,7 +634,6 @@ export default {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
           });
-        this.getProducts();
       }
     },
     crop() {

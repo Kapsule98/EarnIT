@@ -38,6 +38,7 @@
         <div class="w3-col m2 s6" style="margin-top: 10px">
           <a href=""><div class="coltop">ABOUT</div></a>
           <a href="/about"><div>About Us</div></a>
+          <a href="/contact"> <div>Contact Us</div> </a>
           <a href="/admin/register"><div>Admin</div></a>
         </div>
         <!-- <div class="w3-col m3 s6" style="margin-top: 10px">
@@ -45,15 +46,15 @@
           <a href=""><div>FAQs</div></a>
         </div> -->
         <div class="w3-col m3 s6" style="margin-top: 10px">
-          <router-link to="/contact">
+          <router-link to="/faqs">
             <div
               class="coltop"
               style="display: block; font-weight: 600; color: white"
             >
-              Contact Us
+              FAQs
             </div>
           </router-link>
-          <br /><br />
+          <br />
           <a href="https://www.facebook.com/Lemmebuyin-267448181767528/"
             ><i
               class="fa fa-facebook"
@@ -63,6 +64,12 @@
           <a href="https://www.instagram.com/lemmebuy.in?r=nametag"
             ><i
               class="fa fa-instagram"
+              style="margin-right: 20px; font-size: 20px"
+            ></i
+          ></a>
+          <a href="https://www.linkedin.com/company/lemmebuy"
+            ><i
+              class="fa fa-linkedin"
               style="margin-right: 10px; font-size: 20px"
             ></i
           ></a>

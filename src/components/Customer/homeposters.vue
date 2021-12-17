@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="heroback">
     <div class="cat_tab">
       <router-link :to="{ path: '/search', query: { category: 'Fashion' } }">
         <img class="cat_cir_img" src="../../assets/fashion.jpg" alt=".." />
@@ -65,8 +65,11 @@
 
 <script>
 import carousel from "vue-owl-carousel";
+
 export default {
   components: { carousel },
+
+  methods: {},
 };
 </script>
 <style scoped>
@@ -117,16 +120,17 @@ a:hover {
   display: none;
 }
 .cat_cir_img {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   margin: 10px 20px 2px 20px;
 }
 .caption {
   display: block;
-  font-size: 18px;
+  font-size: 16px;
   color: black;
   line-height: 1;
+  font-weight: 400;
   text-align: center;
   text-transform: capitalize;
 }

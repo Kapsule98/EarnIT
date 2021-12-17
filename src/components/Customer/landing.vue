@@ -70,7 +70,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.isLoading = false;
-    }, 1500);
+    }, 3000);
     if (this.$session.get("user_type") === "seller" && this.landing === true) {
       document.getElementsByClassName("topnav")[0].style.height = "70px";
       if (window.scrollX < 700) {

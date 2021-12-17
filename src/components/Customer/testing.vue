@@ -1,5 +1,11 @@
 <template>
   <div>
+    <b-container style="overflow: scroll">
+      <input type="text" v-on:keydown="newSearch()" v-model="input" />
+      <div id="result"></div>
+      <div id="demo">hi</div></b-container
+    >
+
     <div class="nav_out">
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
       <div class="nav_logo">
@@ -92,13 +98,70 @@ export default {
   data() {
     return {
       items: [1, 2, 3, 4, 5, 6, 7, 8],
+      input: "",
     };
   },
   mounted() {
+    var sndata = JSON.parse(sessionStorage.getItem("shops"));
+
+    document.getElementById("demo").innerHTML = JSON.stringify(sndata);
     document.querySelectorAll(".filter")[0].style.backgroundColor =
       " linear-gradient(#ff007700, #ff007700, #cc00ff)";
   },
-  methods: {},
+  methods: {
+    newSearch() {
+      var count = 0;
+      document.getElementById("result").innerHTML = "";
+      var filter = this.input.toUpperCase();
+      var sdata = JSON.parse(sessionStorage.getItem("get_all_offers"));
+      var sndata = JSON.parse(sessionStorage.getItem("shops"));
+
+      for (var k = 0; k < sndata.sellers.length; k++) {
+        var surl = "";
+        var sname = sndata.sellers[k].shop_name;
+
+        if (sname.toUpperCase().indexOf(filter) > -1 && count < 10) {
+          count++;
+
+          document.getElementById("result").innerHTML +=
+            "<a href='" + surl + "'>" + sname + "</a>" + "<br>";
+        }
+      }
+      for (var i = 0; i < sdata.count; i++) {
+        var name = "";
+        var url = "";
+        var type = "";
+        if (sdata.active_offers[i].type === "FIXED") {
+          name = sdata.active_offers[i].products[0];
+          url =
+            "/product_description?seller=" +
+            sdata.active_offers[i].seller_email +
+            "&offer_text=" +
+            sdata.active_offers[i].offer_text;
+        }
+        if (sdata.active_offers[i].type === "BILL_DISCOUNT") {
+          name = "Discount on total bill";
+          url = "/seller?seller=" + sdata.active_offers[i].seller_email;
+        }
+        if (name.toUpperCase().indexOf(filter) > -1 && count < 10) {
+          count++;
+
+          document.getElementById("result").innerHTML +=
+            "<a href='" +
+            url +
+            "'>" +
+            name +
+            " by " +
+            sdata.active_offers[i].seller_display_name +
+            " in " +
+            sdata.active_offers[i].category +
+            type +
+            "</a>" +
+            "<br>";
+        }
+      }
+    },
+  },
 };
 </script>
 

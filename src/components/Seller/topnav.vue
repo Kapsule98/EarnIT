@@ -1,26 +1,44 @@
 <template>
   <div id="app">
+    <localstore :key="componentKey"></localstore>
+
     <div id="nav" class="topnav">
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
       <div class="topnavlink left" style="font-weight: 900">
         <router-link to="/"
           ><img src="../../assets/flogo.png" alt="" class="mainlogo"
         /></router-link>
+        <div class="strip">
+          <i class="fa fa-map-marker"></i>
+          <select
+            name="location"
+            class="droplo"
+            id="local"
+            @change="setlocation"
+          >
+            <option value="all" disabled selected hidden>Select</option>
+            <option value="Bhilai,Durg">Bhilai</option>
+            <option value="Raipur">Raipur</option>
+          </select>
+        </div>
       </div>
       <div class="left searchbar">
-        <form class="example" v-if="searchbar === true">
+        <div class="example" v-if="searchbar === true">
           <input
-            id="landsearch"
+            ref="prose"
             type="text"
-            placeholder="Search"
+            placeholder="Search.."
             name="search"
-            v-on:click="search"
+            :value="input"
+            @input="input = $event.target.value"
             autocomplete="off"
+            v-on:click="search"
+            v-on:keyup.enter="divert"
           />
-          <button v-on:click="search">
+          <button v-on:click="divert">
             <i class="fa fa-search"></i>
           </button>
-        </form>
+        </div>
         <form
           action="javascript:void(0);"
           class="example"
@@ -31,18 +49,17 @@
             type="text"
             placeholder="Search.."
             name="search"
-            v-on:input="productSearch()"
-            v-model="searchvalue"
+            :value="input"
+            @input="input = $event.target.value"
             autocomplete="off"
-            autofocus
-            v-on:keydown.enter="alert('yo')"
+            v-on:click="search"
+            v-on:keyup.enter="divert"
           />
           <button type="submit" v-on:click="proSearch()">
             <i class="fa fa-search"></i>
           </button>
         </form>
       </div>
-
       <div class="right">
         <i class="fa fa-times closebtn" v-on:click="closemenu"></i>
         <div
@@ -54,6 +71,7 @@
               this.$session.get('logged_in') === 'true' &&
               this.$session.get('user_type') === 'customer'
             "
+            class="wlcm"
           >
             Hi {{ user.display_name }}!
           </div>
@@ -62,6 +80,7 @@
               this.$session.get('logged_in') === 'true' &&
               this.$session.get('user_type') === 'seller'
             "
+            class="wlcm"
           >
             Hi {{ user.shop_name }}!
           </div>
@@ -126,14 +145,14 @@
           </div>
         </div>
       </div>
-    </div>
-    <!--<div class="catstrip">
-      <center>
-        <div class="catlink" v-for="items in allcategories" :key="items.length">
-          {{ items }}
+      <div class="searchtab" id="searchtab">
+        <div class="backbtn" @click="closeSearch">
+          <b-icon-arrow-return-left></b-icon-arrow-return-left>
         </div>
-      </center>
-    </div>-->
+        <div id="result"></div>
+      </div>
+    </div>
+
     <router-view />
     <div class="reduce"></div>
   </div>
@@ -141,15 +160,18 @@
 <script>
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
-
+import Localstore from "../localstore.vue";
+import { BIconArrowReturnLeft } from "bootstrap-vue";
 export default {
-  components: {},
+  components: { Localstore, BIconArrowReturnLeft },
   data() {
     return {
       user: {},
       status: undefined,
       allcategories: [],
       searchvalue: "",
+      input: "",
+      componentKey: 0,
     };
   },
 
@@ -179,6 +201,11 @@ export default {
     "landing",
   ],
   mounted() {
+    if ("get_location" in sessionStorage) {
+      document.getElementById("local").value =
+        sessionStorage.getItem("get_location");
+    }
+
     this.user = this.$session.get("user_data");
     const offersurl = BASE_URL + "/categories";
     let JWTToken = this.$session.get("token");
@@ -191,30 +218,113 @@ export default {
         console.log(err);
       });
   },
-  methods: {
-    proSearch() {},
-    productSearch() {
-      var input, filter, ul, li, a, i, j, txtValue;
-      input = this.searchvalue;
-      filter = input.toUpperCase();
+  watch: {
+    input: function () {
+      document.getElementById("searchtab").style.display = "block";
 
-      ul = document.getElementById("Sproducts");
-      li = ul.getElementsByClassName("Scard");
-      for (i = 0; i < li.length; i++) {
-        a = li[i].getElementsByTagName("nav");
-        for (j = 0; j < a.length; j++) {
-          txtValue = a[j].textContent || a[j].innerText;
+      document.getElementById("nav").style.position = "fixed";
+      document.getElementById("nav").style.top = "0";
+      var count = 0;
+      document.getElementById("result").innerHTML = "";
+      var filter = this.input.toUpperCase();
+      var sdata = JSON.parse(sessionStorage.getItem("get_all_offers"));
+      var sndata = JSON.parse(sessionStorage.getItem("shops"));
 
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
-          } else {
-            li[i].style.display = "none";
-          }
+      for (var i = 0; i < sdata.active_offers.length; i++) {
+        var name = "";
+        var url = "";
+        var type = "";
+        if (sdata.active_offers[i].type === "FIXED") {
+          name = sdata.active_offers[i].products[0];
+          url =
+            "/product_description?seller=" +
+            sdata.active_offers[i].seller_email +
+            "&offer_text=" +
+            sdata.active_offers[i].offer_text;
+        }
+        // if (sdata.active_offers[i].type === "BILL_DISCOUNT") {
+        //   name = "Discount on total bill";
+        //   url = "/seller?seller=" + sdata.active_offers[i].seller_email;
+        // }
+        if (name.toUpperCase().indexOf(filter) > -1 && count < 10) {
+          count++;
+
+          document.getElementById("result").innerHTML +=
+            "<div class='seresw'><a href='" +
+            url +
+            "' class='seres'>" +
+            name +
+            " by " +
+            sdata.active_offers[i].seller_display_name +
+            " in " +
+            sdata.active_offers[i].category +
+            type +
+            "</a></a><div class='stype'>in Offer</div></div></div>" +
+            "<br>";
+        }
+      }
+      for (var k = 0; k < sndata.sellers.length; k++) {
+        var surl = "/seller?seller=" + sndata.sellers[k].email;
+        var sname = sndata.sellers[k].shop_name;
+
+        if (sname.toUpperCase().indexOf(filter) > -1 && count < 10) {
+          count++;
+
+          document.getElementById("result").innerHTML +=
+            "<div class='seresw'><a href='" +
+            surl +
+            "'class='seres'>" +
+            sname +
+            "</a><div class='stype'>in Seller</div></div>" +
+            "<br> ";
         }
       }
     },
+  },
+  methods: {
+    setlocation() {
+      sessionStorage.setItem(
+        "get_location",
+        document.getElementById("local").value
+      );
+      sessionStorage.removeItem("get_all_offers");
+
+      this.componentKey += 1;
+    },
+    divert() {
+      document.getElementById("searchtab").style.display = "none";
+      document.getElementById("nav").style.position = "relative";
+      this.$router.push("/get_result?value=" + this.input);
+      // this.$router.go("/");
+    },
+    closeSearch() {
+      document.getElementById("searchtab").style.display = "none";
+      document.getElementById("nav").style.position = "relative";
+    },
+    proSearch() {},
+    productSearch() {
+      // var input, filter, ul, li, a, i, j, txtValue;
+      // input = this.searchvalue;
+      // filter = input.toUpperCase();
+      // ul = document.getElementById("Sproducts");
+      // li = ul.getElementsByClassName("Scard");
+      // for (i = 0; i < li.length; i++) {
+      //   a = li[i].getElementsByTagName("nav");
+      //   for (j = 0; j < a.length; j++) {
+      //     txtValue = a[j].textContent || a[j].innerText;
+      //     if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      //       li[i].style.display = "";
+      //     } else {
+      //       li[i].style.display = "none";
+      //     }
+      //   }
+      // }
+    },
     search() {
-      this.$router.push("/search?alloffers=true");
+      document.getElementById("searchtab").style.display = "block";
+      document.getElementById("nav").style.position = "fixed";
+      document.getElementById("nav").style.top = "0";
+      // this.$router.push("/search?alloffers=true");
     },
     openmenu: function () {
       document.getElementsByClassName("right")[0].style.left = "0%";
@@ -228,6 +338,81 @@ export default {
 };
 </script>
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Assistant:wght@400&display=swap");
+
+body {
+  font-family: "Assistant", sans-serif;
+}
+.fa-map-marker {
+  padding: 0px 5px;
+  padding-bottom: 4px;
+  color: rgb(0, 87, 248);
+  display: block;
+  font-size: 24px;
+}
+.droplo {
+  background: rgba(255, 255, 255, 0.788);
+  border-radius: 4px;
+  border: none;
+}
+.droplo:focus {
+  outline-color: rgb(0, 98, 209);
+}
+.strip {
+  text-align: center;
+  float: right;
+  /* width: 100%; */
+  margin-top: 0px;
+  margin-right: -20px;
+  padding: 2px 6px;
+  font-size: 12px;
+  /* border-bottom: 2px solid rgb(255, 255, 255); */
+}
+.backbtn {
+  margin-top: -10px;
+  font-size: 25px;
+  padding: 0px 10px 0px 20px;
+  width: 100%;
+  border-bottom: 1px solid rgba(110, 110, 110, 0.459);
+  margin-bottom: 10px;
+}
+@media screen and (min-width: 1050px) {
+  .wlcm {
+    width: 160px;
+    height: 1.4em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding-left: 20px;
+    white-space: nowrap;
+  }
+}
+.seresw {
+  position: relative;
+  padding: 0px 20px 10px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.123);
+}
+
+.seres {
+  font-size: 16px;
+  color: #474747;
+}
+.stype {
+  color: #858585;
+}
+.searchtab {
+  display: none;
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  height: 110%;
+  background: #ffffff;
+  z-index: 999999999999;
+  padding: 20px 0px;
+  overflow: scroll;
+  padding-bottom: 20%;
+}
 .mainlogo {
   width: 200px;
   margin-top: -5px;
@@ -285,13 +470,13 @@ export default {
   display: block;
 }
 
-form.example input[type="text"] {
+.example input[type="text"] {
   padding: 10px;
   font-size: 18px;
   border: none;
   float: left;
   display: flex;
-  width: 330px;
+  width: 370px;
   background: #f7fcff;
   margin-top: 0px;
   margin-left: 40px;
@@ -304,7 +489,7 @@ form.example input[type="text"]:focus {
 }
 
 /* Style the submit button */
-form.example button {
+.example button {
   float: left;
   width: 50px;
   padding: 10px;
@@ -333,13 +518,11 @@ form.example::after {
   margin-bottom: 40px;
   position: relative;
   width: 100%;
-  box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
   padding: 14px 20px;
   height: 70px;
   font-size: 18px;
-
+  z-index: 1000;
   background: linear-gradient(to right, rgb(93, 217, 255), rgb(82, 255, 212));
-  box-shadow: 0 0 10px 0 rgb(0 0 0 / 30%);
 }
 
 .topnavlink a {
@@ -398,6 +581,16 @@ form.example::after {
   display: inline-flex;
 }
 @media screen and (max-width: 1050px) {
+  .searchtab {
+    position: fixed;
+    top: 120px;
+    left: 0;
+    width: 100%;
+    height: 110%;
+    background: #ffffff;
+    z-index: 9;
+    padding: 20px 0px;
+  }
   .mainlogo {
     width: 150px;
     margin-top: -5px;
@@ -463,7 +656,7 @@ form.example::after {
     color: rgb(255, 255, 255);
     font-size: 25px;
   }
-  form.example input[type="text"] {
+  .example input[type="text"] {
     padding: 10px;
     font-size: 14px;
     border: 2px 0px 2px 2px solid rgb(197, 197, 197);
@@ -478,7 +671,7 @@ form.example::after {
   .searchbar {
     width: 100%;
   }
-  form.example button {
+  .example button {
     float: left;
     width: 15%;
     padding: 10px;
