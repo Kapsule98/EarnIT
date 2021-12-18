@@ -99,11 +99,17 @@
               <div class="w3-row">
                 <div class="w3-col" style="width: 30%">
                   <img
-                    src="https://images.unsplash.com/photo-1560243562-f480284a881f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjZ8fHNob3B8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"
+                    v-if="items.type === 'FIXED'"
+                    :src="items.image_url"
                     width="100%"
                     alt=""
                     style="float: left; padding: 10px"
                   />
+                  <imgstore
+                    v-else
+                    :email="items.seller_email"
+                    :category="items.category"
+                  ></imgstore>
                 </div>
                 <div class="w3-col" style="width: 70%">
                   <div class="a-seller">
@@ -157,8 +163,9 @@ import { GChart } from "vue-google-charts";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import Spinner from "./spinner.vue";
+import Imgstore from "./imgstore.vue";
 export default {
-  components: { topnav, Sitefooter, Bottomnav, GChart, Spinner },
+  components: { topnav, Sitefooter, Bottomnav, GChart, Spinner, Imgstore },
   data() {
     return {
       loading: false,

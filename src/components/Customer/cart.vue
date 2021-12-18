@@ -58,12 +58,11 @@
                     <img :src="offer.image_url" class="product_img" />
                   </div>
                   <div class="w3-col m3" v-else>
-                    <div v-if="loaded">
-                      <img :src="image" class="product_img" />
-                    </div>
-                    <div v-else>
-                      <img src="../../assets/def.png" class="product_img" />
-                    </div>
+                    <img
+                      src="../../assets/def.png"
+                      alt=""
+                      class="product_img"
+                    />
                   </div>
                   <div class="card_item" v-if="offer.type === 'ITEM_DISCOUNT'">
                     {{ offer.discount_percent }}% off on
@@ -188,6 +187,7 @@ import { BASE_URL } from "../../utils/constants";
 import axios from "axios";
 import Bottomnav from "./bottomnav.vue";
 import Spinner from "./spinner.vue";
+
 export default {
   components: { topnav, Sitefooter, Bottomnav, Spinner },
   data() {

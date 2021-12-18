@@ -135,8 +135,8 @@ export default {
   },
   methods: {
     addToCart(offer_text, email) {
-      this.loading = true;
       if (localStorage.getItem("log") === "true") {
+        alert("hello");
         const payload = {
           offer_text: offer_text,
           seller_email: email,
