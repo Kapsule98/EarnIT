@@ -205,7 +205,7 @@
                 <br />
                 <br />
                 <div v-if="productEmpty">
-                  <b-container>
+                  <b-container style="margin-bottom: 100px">
                     <b-card>
                       <br /><br />
                       <center>
@@ -295,7 +295,7 @@
                 <h3>Coupons</h3>
                 <hr />
                 <div v-if="couponEmpty">
-                  <b-container>
+                  <b-container style="margin-bottom: 100px">
                     <b-card>
                       <br /><br />
                       <center>
@@ -387,7 +387,7 @@
                 <h3>Sellers</h3>
                 <hr />
                 <div v-if="sellerEmpty">
-                  <b-container>
+                  <b-container style="margin-bottom: 100px">
                     <b-card>
                       <br /><br />
                       <center>
