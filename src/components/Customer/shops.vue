@@ -16,7 +16,37 @@
                 },
               }"
             >
-              <div class="Scard" v-if="shop_loc === shop.city">
+              <div class="Scard" v-if="notall && shop_loc === shop.city">
+                <div class="hovclass">
+                  <div class="couponhome">
+                    <div class="c2-back">
+                      <imgstore
+                        :email="shop.email"
+                        :category="shop.category"
+                      ></imgstore>
+                    </div>
+                  </div>
+                  <div
+                    class="l-offer"
+                    v-b-tooltip.hover
+                    :title="shop.display_name"
+                  >
+                    <nav>{{ shop.display_name }}</nav>
+                  </div>
+                  <div class="shopname">
+                    <div
+                      class="s-address"
+                      v-b-tooltip.hover
+                      :title="shop.address"
+                    >
+                      {{ shop.address }}
+                    </div>
+
+                    <!-- <button class="vshop">View Shop</button> -->
+                  </div>
+                </div>
+              </div>
+              <div class="Scard" v-else-if="!notall">
                 <div class="hovclass">
                   <div class="couponhome">
                     <div class="c2-back">
@@ -78,7 +108,8 @@ export default {
       loading: false,
       list: [],
       allcategories: [],
-      shop_loc: "",
+      shop_loc: "Bhilai",
+      notall: false,
     };
   },
   mounted() {
@@ -89,6 +120,7 @@ export default {
       if (sessionStorage.getItem("get_location") === "Raipur") {
         this.shop_loc = "Raipur";
       }
+      this.notall = true;
     }
     this.getShops();
     if ("categories" in sessionStorage) {
@@ -113,6 +145,7 @@ export default {
     getShops() {
       this.loading = true;
       const offersurl = BASE_URL + "/get_shops/" + this.category;
+
       axios
         .get(offersurl)
         .then((response) => {

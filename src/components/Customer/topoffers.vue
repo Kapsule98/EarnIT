@@ -24,7 +24,8 @@
             Math.floor(new Date().getTime() / 1000.0) >
               list.offers[offer.index].validity[0] &&
             list.offers[offer.index].quantity > 0 &&
-            list.offers[offer.index].type !== 'FIXED'
+            list.offers[offer.index].type !== 'FIXED' &&
+            show[offer.index]
           "
           :key="offer.length"
           class="hovclass"
@@ -111,6 +112,7 @@ export default {
       list: [],
       result: [],
       mapped: [],
+      show: [],
     };
   },
   mounted() {
@@ -128,8 +130,31 @@ export default {
           var discount = [];
           for (var i = 0; i < this.list.offers.length; i++) {
             discount[i] = this.list.offers[i].discount_percent;
-          }
+            var shopname = this.list.offers[i].display_name;
+            var sndata = JSON.parse(sessionStorage.getItem("shops"));
+            if ("get_location" in sessionStorage) {
+              for (var k = 0; k < sndata.sellers.length; k++) {
+                console.log(
+                  sndata.sellers[k].shop_name,
+                  shopname,
+                  sndata.sellers[k].city,
+                  sessionStorage.getItem("get_location")
+                );
 
+                if (sndata.sellers[k].shop_name === shopname) {
+                  if (
+                    sndata.sellers[k].city ===
+                    sessionStorage.getItem("get_location")
+                  ) {
+                    this.show[i] = true;
+                  }
+                }
+              }
+            } else {
+              this.show[i] = true;
+            }
+          }
+          console.log(this.category, this.show);
           var mapped = discount.map(function (el, i) {
             return { index: i, value: el };
           });

@@ -1,26 +1,21 @@
 <template>
-  <div id="app">
+  <div>
     <localstore :key="componentKey"></localstore>
+    <div class="strip">
+      <i class="fa fa-map-marker"></i> Select Location
 
+      <select name="location" class="droplo" id="local" @change="setlocation">
+        <option value="all" disabled selected>Select</option>
+        <option value="Bhilai">Bhilai</option>
+        <option value="Raipur">Raipur</option>
+      </select>
+    </div>
     <div id="nav" class="topnav">
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
       <div class="topnavlink left" style="font-weight: 900">
         <router-link to="/"
           ><img src="../../assets/flogo.png" alt="" class="mainlogo"
         /></router-link>
-        <div class="strip">
-          <i class="fa fa-map-marker"></i>
-          <select
-            name="location"
-            class="droplo"
-            id="local"
-            @change="setlocation"
-          >
-            <option value="all" disabled selected hidden>Select</option>
-            <option value="Bhilai,Durg">Bhilai</option>
-            <option value="Raipur">Raipur</option>
-          </select>
-        </div>
       </div>
       <div class="left searchbar">
         <div class="example" v-if="searchbar === true">
@@ -113,7 +108,11 @@
                 Categories <i class="fa fa-angle-down"></i>
               </button>
               <div class="dropdown-content">
-                <div v-for="items in allcategories" :key="items.index">
+                <div
+                  v-for="items in allcategories"
+                  :key="items.index"
+                  v-on:click="closemenu"
+                >
                   <router-link
                     :to="{ path: '/search', query: { category: items } }"
                     >{{ items }}</router-link
@@ -346,9 +345,8 @@ body {
 .fa-map-marker {
   padding: 0px 5px;
   padding-bottom: 4px;
-  color: rgb(0, 87, 248);
-  display: block;
-  font-size: 24px;
+  color: rgb(255, 255, 255);
+  font-size: 14px;
 }
 .droplo {
   background: rgba(255, 255, 255, 0.788);
@@ -359,13 +357,18 @@ body {
   outline-color: rgb(0, 98, 209);
 }
 .strip {
-  text-align: center;
+  position: absolute;
+  top: 0;
   float: right;
-  /* width: 100%; */
+  width: 100%;
   margin-top: 0px;
-  margin-right: -20px;
-  padding: 2px 6px;
-  font-size: 12px;
+  padding: 0px 6px;
+  font-size: 14px;
+  height: 30px;
+  background: #008cff;
+  color: white;
+  line-height: 30px;
+  vertical-align: middle;
   /* border-bottom: 2px solid rgb(255, 255, 255); */
 }
 .backbtn {
@@ -515,13 +518,14 @@ form.example::after {
   display: table;
 }
 .topnav {
+  margin-top: 30px;
   margin-bottom: 40px;
   position: relative;
   width: 100%;
   padding: 14px 20px;
   height: 70px;
   font-size: 18px;
-  z-index: 1000;
+  z-index: 10000;
   background: linear-gradient(to right, rgb(93, 217, 255), rgb(82, 255, 212));
 }
 
@@ -607,6 +611,7 @@ form.example::after {
     width: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1999;
+    backdrop-filter: blur(10px);
   }
   .indate {
     padding-left: 20px;

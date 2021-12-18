@@ -153,7 +153,6 @@
             </option>
             <option class="option">Bhilai</option>
             <option class="option">Raipur</option>
-            <option class="option">Durg</option>
           </select>
 
           <button @click="Sellersignup()" class="login-button">Register</button>
