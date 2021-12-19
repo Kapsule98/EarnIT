@@ -155,14 +155,14 @@ a:hover {
     display: none;
   }
   .cat_cir_img {
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    margin: 10px 7px 2px 7px;
+    margin: 10px 8px 2px 8px;
   }
   .caption {
     display: block;
-    font-size: 18px;
+    font-size: 14px;
     color: black;
     line-height: 1;
     text-align: center;

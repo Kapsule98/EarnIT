@@ -365,7 +365,7 @@ body {
   padding: 0px 6px;
   font-size: 14px;
   height: 30px;
-  background: #008cff;
+  background: #002c52;
   color: white;
   line-height: 30px;
   vertical-align: middle;
@@ -619,7 +619,7 @@ form.example::after {
   }
   .topnav {
     height: 120px;
-    margin: 0 0 30px 0px;
+    margin: 30px 0 30px 0px;
   }
   .right {
     position: fixed;
