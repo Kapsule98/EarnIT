@@ -134,13 +134,6 @@ export default {
             var sndata = JSON.parse(sessionStorage.getItem("shops"));
             if ("get_location" in sessionStorage) {
               for (var k = 0; k < sndata.sellers.length; k++) {
-                console.log(
-                  sndata.sellers[k].shop_name,
-                  shopname,
-                  sndata.sellers[k].city,
-                  sessionStorage.getItem("get_location")
-                );
-
                 if (sndata.sellers[k].shop_name === shopname) {
                   if (
                     sndata.sellers[k].city ===
@@ -154,7 +147,6 @@ export default {
               this.show[i] = true;
             }
           }
-          console.log(this.category, this.show);
           var mapped = discount.map(function (el, i) {
             return { index: i, value: el };
           });
