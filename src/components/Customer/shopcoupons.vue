@@ -482,15 +482,17 @@ export default {
     },
     getImage() {
       const url = BASE_URL + "/seller_image/" + this.email;
+
       axios
         .get(url)
         .then((response) => {
+          console.log(response);
           this.image = "../../assets/def.png";
           if (response.status === 200 && response.data.status === 200) {
-            {
-              this.loaded = true;
-              this.image = response.data.image;
-            }
+            this.loaded = true;
+            this.image = response.data.image;
+          } else {
+            this.loaded = false;
           }
         })
         .catch((err) => {
