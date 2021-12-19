@@ -57,7 +57,9 @@
             style="border-top: none; border-radius: 0"
           />
           <button @click="login('customer')" class="login-button">Login</button>
-
+          <button @click="GoogleSignin()" class="login-button">
+            Sign in with google
+          </button>
           <a href="/forgotpassword" style="float: right">forgot password?</a>
           <a href="/register" style="float: left"
             >dont have an account? register here</a
@@ -94,6 +96,7 @@
 <script>
 import { BASE_URL } from "../../utils/constants";
 import axios from "axios";
+import { auth, provider } from "../../firebase/firebaseConfig";
 // import eventBus from "../../utils/eventBus";
 import Sitefooter from "../Customer/sitefooter.vue";
 import topnav from "../Seller/topnav.vue";
@@ -131,6 +134,57 @@ export default {
     document.getElementById("defaultOpen").click();
   },
   methods: {
+    GoogleSignin() {
+      auth
+        .signInWithPopup(provider)
+        .then((result) => {
+          let user = result.user;
+          console.log(user); // User that was authenticated
+          const payload = {
+            email: user.email,
+            display_name: user.displayName,
+            uid: user.uid,
+            phone: user.phoneNumber,
+          };
+          const url = BASE_URL + "/googleauth";
+          axios
+            .post(url, payload)
+            .then((res) => {
+              console.log(res);
+              if (res.data.status === 200) {
+                const user_data = res.data;
+                this.$session.start();
+                this.$session.set("token", user_data.jwt);
+                this.$session.set("user_data", user_data.user);
+                this.$session.set("user_type", "customer");
+                this.$session.set("logged_in", "true");
+                const storedata = {
+                  token: user_data.jwt,
+                  user_data: user_data.user,
+                  user_type: "customer",
+                  logged_in: "true",
+                };
+                localStorage.setItem("log", this.$session.get("logged_in"));
+                localStorage.setItem(
+                  "user_type",
+                  this.$session.get("user_type")
+                );
+                localStorage.setItem("profile", JSON.stringify(storedata));
+                this.$router.push("/");
+              } else {
+                alert(res.data.msg);
+                this.loading = false;
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              alert(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err); // This will give you all the information needed to further debug any errors
+        });
+    },
     login(type) {
       this.loading = true;
       if (this.username === "" || this.password === "") {
@@ -260,7 +314,7 @@ export default {
   letter-spacing: 2px;
 }
 .login-content-box {
-  height: 300px;
+  height: 370px;
   box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
     0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
   border-radius: 0px 0px 10px 10px;
