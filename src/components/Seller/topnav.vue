@@ -1,7 +1,7 @@
 <template>
   <div>
     <localstore :key="componentKey"></localstore>
-    <div class="strip">
+    <div class="strip" id="strip">
       <i class="fa fa-map-marker"></i> Select Location
 
       <select name="location" class="droplo" id="local" @change="setlocation">
@@ -322,7 +322,11 @@ export default {
     search() {
       document.getElementById("searchtab").style.display = "block";
       document.getElementById("nav").style.position = "fixed";
+      document.getElementById("strip").style.position = "fixed";
+
       document.getElementById("nav").style.top = "0";
+      document.getElementById("strip").style.top = "0";
+
       // this.$router.push("/search?alloffers=true");
     },
     openmenu: function () {
@@ -369,6 +373,7 @@ body {
   color: white;
   line-height: 30px;
   vertical-align: middle;
+  z-index: 1000000000;
   /* border-bottom: 2px solid rgb(255, 255, 255); */
 }
 .backbtn {
@@ -406,7 +411,7 @@ body {
 .searchtab {
   display: none;
   position: fixed;
-  top: 70px;
+  top: 100px;
   left: 0;
   width: 100%;
   height: 110%;
@@ -587,7 +592,7 @@ form.example::after {
 @media screen and (max-width: 1050px) {
   .searchtab {
     position: fixed;
-    top: 120px;
+    top: 150px;
     left: 0;
     width: 100%;
     height: 110%;
