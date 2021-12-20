@@ -416,7 +416,10 @@
                       <div class="hovclass">
                         <div class="couponhome">
                           <div class="c2-back">
-                            <imgstore :email="shop.email"></imgstore>
+                            <imgstore
+                              :email="shop.email"
+                              :category="shop.category"
+                            ></imgstore>
                           </div>
                         </div>
                         <div
@@ -514,6 +517,9 @@ export default {
   },
 
   mounted() {
+    this.productSearch = [];
+    this.sellerSearch = [];
+    this.couponSearch = [];
     document.getElementById("result").innerHTML = "";
     var filter = this.value.toUpperCase();
     var nsdata = JSON.parse(sessionStorage.getItem("get_all_offers"));
@@ -565,22 +571,28 @@ export default {
 
       for (var y = 0; y < sndata.sellers[k].products.length; y++) {
         var pname = sndata.sellers[k].products[y];
-
         if (pname.toUpperCase().indexOf(filter) > -1) {
           for (var e = 0; e < nsdata.active_offers.length; e++) {
             if (
               sndata.sellers[k].email === nsdata.active_offers[e].seller_email
             ) {
-              if (nsdata.active_offers[e].type === "BILL_DISCOUNT") {
-                this.couponSearch.push({
-                  seller_email: nsdata.active_offers[e].seller_email,
-                  seller_display_name: nsdata.active_offers[e].shop_name,
-                  validity: nsdata.active_offers[e].validity,
-                  discount_percent: nsdata.active_offers[e].discount_percent,
-                  image_url: nsdata.active_offers[e].image_url,
-                  quantity: nsdata.active_offers[e].quantity,
-                  category: nsdata.active_offers[e].category,
-                });
+              var check = {
+                seller_email: nsdata.active_offers[e].seller_email,
+                seller_display_name: nsdata.active_offers[e].shop_name,
+                validity: nsdata.active_offers[e].validity,
+                discount_percent: nsdata.active_offers[e].discount_percent,
+                image_url: nsdata.active_offers[e].image_url,
+                quantity: nsdata.active_offers[e].quantity,
+                category: nsdata.active_offers[e].category,
+              };
+
+              if (
+                nsdata.active_offers[e].type === "BILL_DISCOUNT" &&
+                JSON.stringify(this.couponSearch).includes(
+                  JSON.stringify(check)
+                ) === false
+              ) {
+                this.couponSearch.push(check);
               }
             }
           }
@@ -591,9 +603,11 @@ export default {
           email: sndata.sellers[k].email,
           name: sndata.sellers[k].shop_name,
           address: sndata.sellers[k].address,
+          category: sndata.sellers[k].category,
         });
       }
     }
+
     if (this.couponSearch.length === 0) {
       this.couponEmpty = true;
     }
@@ -681,7 +695,6 @@ export default {
 
         for (var y = 0; y < sndata.sellers[k].products.length; y++) {
           var pname = sndata.sellers[k].products[y];
-
           if (pname.toUpperCase().indexOf(filter) > -1) {
             for (var e = 0; e < nsdata.active_offers.length; e++) {
               if (
@@ -799,13 +812,9 @@ export default {
         this.loading = true;
         const offersurl = BASE_URL + "/get_all_offers";
         let JWTToken = this.$session.get("token");
-        console.log("text1", new Date().getTime());
         axios
           .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
           .then((response) => {
-            console.log(response);
-            console.log("text2", new Date().getTime());
-
             this.list = response.data;
             var discount = [];
             for (var i = 0; i < this.list.active_offers.length; i++) {
@@ -830,7 +839,6 @@ export default {
           })
           .finally(() => {
             this.loading = false;
-            console.log("text3", new Date().getTime());
           });
       }
     },
