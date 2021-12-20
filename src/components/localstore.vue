@@ -16,6 +16,12 @@ export default {
     if (!("shops" in sessionStorage)) {
       this.func3();
     }
+    if (!("raipur_offers" in sessionStorage)) {
+      this.func4();
+    }
+    if (!("bhilai_offers" in sessionStorage)) {
+      this.func5();
+    }
   },
   methods: {
     func1() {
@@ -26,21 +32,40 @@ export default {
           "/get_offers_in_city/" +
           sessionStorage.getItem("get_location");
       }
-      axios
-        .get(url)
-        .then((response) => {
+      if (sessionStorage.getItem("get_location") === "Raipur") {
+        if ("raipur_offers" in sessionStorage) {
           sessionStorage.setItem(
             "get_all_offers",
-            JSON.stringify(response.data)
+            sessionStorage.getItem("raipur_offers")
           );
-          console.log(response);
-        })
-        .catch((err) => {
-          console.error(err);
-        })
-        .then(() => {
-          this.$router.go();
-        });
+        }
+      } else if (sessionStorage.getItem("get_location") === "Bhilai") {
+        if ("bhilai_offers" in sessionStorage) {
+          sessionStorage.setItem(
+            "get_all_offers",
+            sessionStorage.getItem("bhilai_offers")
+          );
+        }
+      }
+      if (!("get_all_offers" in sessionStorage)) {
+        axios
+          .get(url)
+          .then((response) => {
+            sessionStorage.setItem(
+              "get_all_offers",
+              JSON.stringify(response.data)
+            );
+            console.log(response);
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => {
+            this.$router.go();
+          });
+      } else {
+        this.$router.go();
+      }
     },
     func2() {
       const url = BASE_URL + "/categories";
@@ -60,6 +85,34 @@ export default {
         .get(url)
         .then((response) => {
           sessionStorage.setItem("shops", JSON.stringify(response.data));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    func4() {
+      const url = BASE_URL + "/get_offers_in_city/Raipur";
+      axios
+        .get(url)
+        .then((response) => {
+          sessionStorage.setItem(
+            "raipur_offers",
+            JSON.stringify(response.data)
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    func5() {
+      const url = BASE_URL + "/get_offers_in_city/Bhilai";
+      axios
+        .get(url)
+        .then((response) => {
+          sessionStorage.setItem(
+            "bhilai_offers",
+            JSON.stringify(response.data)
+          );
         })
         .catch((err) => {
           console.log(err);

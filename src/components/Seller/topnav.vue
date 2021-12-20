@@ -286,6 +286,10 @@ export default {
         "get_location",
         document.getElementById("local").value
       );
+      sessionStorage.setItem(
+        "temp_offers",
+        sessionStorage.removeItem("get_all_offers")
+      );
       sessionStorage.removeItem("get_all_offers");
 
       this.componentKey += 1;
@@ -373,7 +377,7 @@ body {
   color: white;
   line-height: 30px;
   vertical-align: middle;
-  z-index: 1000000000;
+  z-index: 10000;
   /* border-bottom: 2px solid rgb(255, 255, 255); */
 }
 .backbtn {
