@@ -243,6 +243,7 @@ export default {
         if (this.bio) {
           this.updateBio();
         }
+        this.$router.push("/logout");
       }
     },
     updateShopName() {
