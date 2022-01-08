@@ -270,11 +270,11 @@ const routes = [
     name: "upimg",
     component: () => import("../components/Seller/upimg.vue"),
   },
-  {
-    path: "/test",
-    name: "test",
-    component: () => import("../components/Customer/testing.vue"),
-  },
+  // {
+  //   path: "/test",
+  //   name: "test",
+  //   component: () => import("../components/Customer/testing.vue"),
+  // },
 ];
 
 const router = new VueRouter({

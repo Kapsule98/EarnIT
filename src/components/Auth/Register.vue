@@ -78,7 +78,12 @@
           >
         </div>
 
-        <div id="shop" class="regtab w3-animate-opacity" style="display: none">
+        <div
+          id="shop"
+          class="regtab w3-animate-opacity"
+          style="display: none"
+          v-if="!showpay"
+        >
           <input
             v-model="username"
             type="text"
@@ -154,12 +159,16 @@
             <option class="option">Bhilai</option>
             <option class="option">Raipur</option>
           </select>
+          <button @click="showpaymethod" class="login-button">
+            Proceed to payment
+          </button>
 
-          <button @click="Sellersignup()" class="login-button">Register</button>
+          <!-- <button @click="Sellersignup()" class="login-button">Register</button> -->
           <a href="/login" style="float: right"
             >already have an account? login here</a
           >
         </div>
+        <testing v-if="showpay"></testing>
       </div>
     </div>
 
@@ -174,10 +183,13 @@ import { BASE_URL } from "../../utils/constants";
 // import { Cropper } from "vue-advanced-cropper";
 import "vue-advanced-cropper/dist/style.css";
 import Spinner from "../Customer/spinner.vue";
+import Testing from "../Customer/testing.vue";
 export default {
-  components: { topnav, Sitefooter, Spinner },
+  components: { topnav, Sitefooter, Spinner, Testing },
+
   data() {
     return {
+      showpay: false,
       loading: false,
       active_time: [],
       opening_time: "",
@@ -232,6 +244,9 @@ export default {
       });
   },
   methods: {
+    showpaymethod() {
+      this.showpay = true;
+    },
     crop() {
       const { coordinates, canvas } = this.$refs.cropper.getResult();
       this.coordinates = coordinates;
