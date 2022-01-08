@@ -29,37 +29,13 @@
                     </ul>
                 </div>
                 <div>Shop Name {{shop.shop_name}}</div>
+                <div>
+                    <button @click="deleteSeller(shop.email)"> Delete Seller </button>
+                </div>
             </b-card>
           </div>
         </b-tab>
       </b-tabs>
-      <!-- <div v-if="mode">
-          <b-card v-for="user,idx in userlist" :key="idx">
-                <div>Name: {{user.display_name}}</div>
-                <div>Email: {{user.email}}</div>
-                <div>Phone: {{user.phone}}</div>
-                <div>Credit points earned: {{user.credit_points}}</div>
-                <div>Money Saved: {{user.money_saved}}</div>
-          </b-card>
-      </div>
-      <div v-else>
-            <b-card v-for="shop,idx in sellerlist" :key="idx">
-                <div>Address {{shop.address}}</div>
-                <div>Category {{shop.category}}</div>
-                <div>Contact no {{shop.contact_no}}</div>
-                <div>Name {{shop.display_name}}</div>
-                <div>Email {{shop.email}}</div>
-                <div>Owner Name {{shop.owner_name}}</div>
-                <div>Products
-                    <ul>
-                        <li v-for="prd,i in shop.products" :key=i>
-                            {{prd}}
-                        </li>
-                    </ul>
-                </div>
-                <div>Shop Name {{shop.shop_name}}</div>
-            </b-card>
-      </div> -->
       <button @click="gotoAdminHome()">Admin Home</button>
   </div>
 </template>
@@ -72,7 +48,6 @@ export default {
         return{
             userlist:[],
             sellerlist:[],
-            mode:true,
         }
     },
     mounted() {
@@ -80,12 +55,6 @@ export default {
         this.fetchUserList();
     },
     methods:{
-        setModeUser() {
-            this.mode = true;
-        },
-        setModeSeller(){
-            this.mode = false;
-        },
         fetchSellerList() {
             const url = BASE_URL + '/get_shops/all';
             axios.get(url).then(res => {
@@ -114,6 +83,25 @@ export default {
         },
         gotoAdminHome(){
             this.$router.push('/admin/home')
+        },
+        deleteSeller(email) {
+            const url = BASE_URL + '/admin/shop/' + email;
+            const jwtToken = localStorage.adminJWT;
+            const options = {
+                headers: {
+                Authorization: `Bearer ${jwtToken}`,
+                },
+            };
+            axios.delete(url,options).then(res => {
+                console.log(res)
+                if(res.status == 200) {
+                    alert(res.data.msg)
+                    this.$router.go()
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+            console.log(email)
         }
 
     }
