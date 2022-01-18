@@ -237,7 +237,7 @@ export default {
         if (this.shop_contact) {
           this.updateContact();
         }
-        if (this.address) {
+        if (this.shop_address) {
           this.updateAddress();
         }
         if (this.bio) {
@@ -261,7 +261,6 @@ export default {
         .post(url, payload, options)
         .then((response) => console.log(response))
         .catch((error) => {
-          this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
 
@@ -285,7 +284,6 @@ export default {
         .post(url, payload, options)
         .then((response) => console.log(response))
         .catch((error) => {
-          this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
     },
@@ -344,7 +342,6 @@ export default {
         .post(url, payload, options)
         .then((response) => console.log(response))
         .catch((error) => {
-          this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
 
@@ -352,7 +349,7 @@ export default {
     },
     updateAddress() {
       const payload = {
-        address: this.shop_adress,
+        address: this.shop_address,
       };
       const url = BASE_URL + "/seller/update_address";
       const accessToken = this.$session.get("token");
@@ -366,7 +363,6 @@ export default {
         .post(url, payload, options)
         .then((response) => console.log(response))
         .catch((error) => {
-          this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
 
@@ -374,16 +370,8 @@ export default {
     },
     encodeImageFileAsURL() {
       document.getElementById("crop").click();
-      // var file = element.target.files[0];
-
-      // var reader = new FileReader();
-      // this.dp = reader.result.toString();
-      // console.log("jwt now = ", this.jwt);
-      //reader.onloadend = function () {
-      // Upload image to api
       const profile_token = JSON.parse(localStorage.getItem("profile")).token;
       const url = BASE_URL + "/seller/image";
-      console.log(this.jwt);
       const options = {
         headers: {
           Authorization: `Bearer ${profile_token}`,
@@ -402,8 +390,7 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-      // };
-      // // reader.readAsDataURL(file);
+
       document.getElementById("no_btn").style.display = "none";
     },
   },
