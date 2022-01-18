@@ -475,8 +475,6 @@
         </div>
       </div>
       <div class="w3-row" v-if="discountType === 'FIXED'">
-        <button @click="justtotest">just to test</button>
-
         <label
           ><span style="padding: 2px 5px; color: #0077ff; font-weight: bold"
             >Add Image :</span
@@ -617,14 +615,6 @@ export default {
     },
   },
   methods: {
-    justtotest() {
-      if (this.offer_text === "") {
-        alert(this.offer_text);
-      }
-
-      // alert(this.products);
-    },
-
     //add new offer
     addCouponDetails() {
       var proceed = false;
