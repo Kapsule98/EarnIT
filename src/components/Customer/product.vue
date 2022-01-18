@@ -525,7 +525,7 @@ body {
   position: relative;
   background-color: #fff;
   overflow: hidden;
-  max-height: 320px;
+  /* max-height: 320px; */
   padding: 25px 15px 20px 15px;
   width: 100%;
   /* box-shadow: 0px 2px 6px 4px rgba(0, 0, 0, 0.062); */

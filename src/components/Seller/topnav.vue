@@ -377,7 +377,7 @@ body {
   color: white;
   line-height: 30px;
   vertical-align: middle;
-  z-index: 10000;
+  z-index: 500;
   /* border-bottom: 2px solid rgb(255, 255, 255); */
 }
 .backbtn {
@@ -534,7 +534,7 @@ form.example::after {
   padding: 14px 20px;
   height: 70px;
   font-size: 18px;
-  z-index: 10000;
+  z-index: 500;
   background: linear-gradient(to right, rgb(93, 217, 255), rgb(82, 255, 212));
 }
 

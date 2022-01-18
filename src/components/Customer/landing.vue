@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <testing></testing> -->
     <topnav
       v-if="this.$session.get('user_type') !== 'seller'"
       link3="Account"

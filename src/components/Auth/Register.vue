@@ -159,11 +159,11 @@
             <option class="option">Bhilai</option>
             <option class="option">Raipur</option>
           </select>
-          <button @click="showpaymethod" class="login-button">
+          <!-- <button @click="showpaymethod" class="login-button">
             Proceed to payment
-          </button>
+          </button> -->
 
-          <!-- <button @click="Sellersignup()" class="login-button">Register</button> -->
+          <button @click="Sellersignup()" class="login-button">Register</button>
           <a href="/login" style="float: right"
             >already have an account? login here</a
           >

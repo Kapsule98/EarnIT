@@ -14,7 +14,7 @@
 
     <div class="w3-container">
       <div class="w3-row">
-        <div class="w3-third form">
+        <!-- <div class="w3-third form">
           <p
             class="heading"
             style="text-transform: capitalize; color: rgb(53, 53, 53)"
@@ -83,14 +83,14 @@
               >Verify</b-button
             >
           </b-form>
-        </div>
-        <div class="w3-twothird" style="padding: 20px">
+        </div> -->
+        <div style="padding: 20px">
           <h2 style="color: #4f4f4f">
             <div class="percent">Live Offers</div>
           </h2>
           <div class="w3-row">
             <div
-              class="w3-third"
+              class="w3-quarter"
               v-for="offer in getoffers.active_offers"
               :key="offer.length"
             >
@@ -131,7 +131,7 @@
                 ></couponcard>
               </div>
             </div>
-            <div class="w3-third">
+            <div class="w3-quarter">
               <div class="addoffer">
                 <button @click="showAddCouponModal()">
                   <div class="plus"><i class="fa fa-plus"></i></div>
@@ -145,7 +145,7 @@
               <div class="percent">Planned Offers</div>
             </h2>
             <div
-              class="w3-third"
+              class="w3-quarter"
               v-for="offer in getoffers.active_offers"
               :key="offer.length"
             >
@@ -195,7 +195,7 @@
               <div class="percent">Expired Offers</div>
             </h2>
             <div
-              class="w3-third"
+              class="w3-quarter"
               v-for="offer in getoffers.active_offers"
               :key="offer.length"
             >
@@ -283,9 +283,10 @@
       </div>
     </div>
 
-    <b-modal ref="couponModal" hide-footer title="Add coupon details">
+    <b-modal ref="couponModal" hide-footer title="Add coupon details" size="lg">
       <div class="d-block text-center">
         <h3>Add Coupon details</h3>
+
         <label for="range-3" style="color: #0077ff; font-weight: bold"
           >Select no. of Coupons/Products</label
         >
@@ -474,6 +475,8 @@
         </div>
       </div>
       <div class="w3-row" v-if="discountType === 'FIXED'">
+        <button @click="justtotest">just to test</button>
+
         <label
           ><span style="padding: 2px 5px; color: #0077ff; font-weight: bold"
             >Add Image :</span
@@ -486,7 +489,7 @@
             :src="dp"
             class="cropper"
             :stencil-props="{
-              aspectRatio: 16 / 10,
+              aspectRatio: 12 / 16,
             }"
             ref="cropper"
           ></cropper>
@@ -570,7 +573,7 @@ export default {
       customdiscount: "",
       value: "500",
       value3: "20",
-      products: [],
+      products: null,
       getproducts: [],
       list: [],
       getoffers: {},
@@ -614,6 +617,99 @@ export default {
     },
   },
   methods: {
+    justtotest() {
+      if (this.offer_text === "") {
+        alert(this.offer_text);
+      }
+
+      // alert(this.products);
+    },
+
+    //add new offer
+    addCouponDetails() {
+      var proceed = false;
+      if (
+        this.products !== null &&
+        this.dp !== "" &&
+        this.offer_text !== "" &&
+        this.mrp !== "" &&
+        this.offerPrice !== ""
+      ) {
+        proceed = true;
+      }
+      if (proceed) {
+        if (this.discountType === "FIXED") {
+          document.getElementById("crop").click();
+        }
+        var arrprod = [this.products];
+        var epoch = [];
+        epoch[0] = this.validity[0].getTime() / 1000.0;
+        epoch[1] = this.validity[1].getTime() / 1000.0;
+        var payload;
+        if (this.discountType === "FIXED") {
+          payload = {
+            offer: {
+              validity: epoch,
+              type: this.discountType,
+              discount_percent: parseInt(this.discount_percent),
+              offer_text: this.offer_text,
+              quantity: parseInt(this.quantity),
+              min_val: parseInt(this.min_val),
+              products: arrprod,
+              mrp: parseInt(this.mrp),
+              offer_price: parseInt(this.offerPrice),
+              bio: this.bio,
+              image_base64: this.dp,
+            },
+          };
+        } else {
+          payload = {
+            offer: {
+              validity: epoch,
+              type: this.discountType,
+              discount_percent: parseInt(this.discount_percent),
+              offer_text: this.offer_text,
+              quantity: parseInt(this.quantity),
+              min_val: parseInt(this.min_val),
+              products: this.products,
+              mrp: parseInt(this.mrp),
+              offer_price: parseInt(this.offerPrice),
+              bio: this.bio,
+            },
+          };
+        }
+        const url = BASE_URL + "/seller/offer";
+        const accessToken = this.$session.get("token");
+        const options = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+        console.log("payload", payload);
+        console.log("prod", this.products);
+        console.log("prodarr", arrprod);
+        axios
+          .post(url, payload, options)
+          .then((response) => {
+            if (response.status === 200) {
+              alert("Coupon added Sucessfully");
+              console.log(response);
+            }
+          })
+          .catch((error) => {
+            this.errorMessage = error.message;
+            error("There was an error!", error);
+            alert(error);
+          });
+
+        this.$refs["couponModal"].hide();
+
+        //this.$router.go();
+      } else {
+        alert("Please fill all the fields");
+      }
+    },
+    //add a new product to seller product list
     addNewProduct() {
       if (this.addproduct !== null) {
         this.prod.push(this.addproduct);
@@ -633,9 +729,13 @@ export default {
           .catch((error) => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
+          })
+          .finally(() => {
+            this.products = this.prod;
           });
       }
     },
+    //crop offer image
     crop() {
       const { coordinates, canvas } = this.$refs.cropper.getResult();
       this.coordinates = coordinates;
@@ -648,7 +748,7 @@ export default {
       console.log(this.dp);
       document.getElementById("no_btn").style.display = "block";
     },
-
+    //repeat expired offer
     addrepeat(offer_text) {
       const url = BASE_URL + "/seller/offer";
       let JWTToken = this.$session.get("token");
@@ -710,6 +810,7 @@ export default {
           console.log(err);
         });
     },
+    //coupon verification helper
     calcdisc() {
       for (var i = 0; i < this.getoffers.active_offers.length; i++) {
         var ta = this.r_total;
@@ -753,6 +854,7 @@ export default {
         }
       }
     },
+    // get existing product list of seller
     getProducts() {
       const url = BASE_URL + "/seller/product";
       let JWTToken = this.$session.get("token");
@@ -765,6 +867,7 @@ export default {
           console.log(err);
         });
     },
+    // verify coupon method
     verifyCoupon() {
       for (var i = 0; i < this.getoffers.active_offers.length; i++) {
         var atxt = this.getoffers.active_offers[i].offer_text;
@@ -849,75 +952,7 @@ export default {
     showAddCouponModal() {
       this.$refs["couponModal"].show();
     },
-    addCouponDetails() {
-      if (this.discountType === "FIXED") {
-        document.getElementById("crop").click();
-      }
-      var arrprod = [this.products];
-      var epoch = [];
-      epoch[0] = this.validity[0].getTime() / 1000.0;
-      epoch[1] = this.validity[1].getTime() / 1000.0;
-      var payload;
-      if (this.discountType === "FIXED") {
-        payload = {
-          offer: {
-            validity: epoch,
-            type: this.discountType,
-            discount_percent: parseInt(this.discount_percent),
-            offer_text: this.offer_text,
-            quantity: parseInt(this.quantity),
-            min_val: parseInt(this.min_val),
-            products: arrprod,
-            mrp: parseInt(this.mrp),
-            offer_price: parseInt(this.offerPrice),
-            bio: this.bio,
-            image_base64: this.dp,
-          },
-        };
-      } else {
-        payload = {
-          offer: {
-            validity: epoch,
-            type: this.discountType,
-            discount_percent: parseInt(this.discount_percent),
-            offer_text: this.offer_text,
-            quantity: parseInt(this.quantity),
-            min_val: parseInt(this.min_val),
-            products: this.products,
-            mrp: parseInt(this.mrp),
-            offer_price: parseInt(this.offerPrice),
-            bio: this.bio,
-          },
-        };
-      }
-      const url = BASE_URL + "/seller/offer";
-      const accessToken = this.$session.get("token");
-      const options = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      };
-      console.log("payload", payload);
-      console.log("prod", this.products);
-      console.log("prodarr", arrprod);
-      axios
-        .post(url, payload, options)
-        .then((response) => {
-          if (response.status === 200) {
-            alert("Coupon added Sucessfully");
-            console.log(response);
-          }
-        })
-        .catch((error) => {
-          this.errorMessage = error.message;
-          error("There was an error!", error);
-          alert(error);
-        });
 
-      this.$refs["couponModal"].hide();
-
-      //this.$router.go();
-    },
     getUser() {
       this.user = this.$session.get("user_data");
     },
@@ -936,7 +971,6 @@ export default {
     },
   },
 };
-// learning to deploy unsucessfully
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
