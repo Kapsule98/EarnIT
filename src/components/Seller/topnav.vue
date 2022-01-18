@@ -619,7 +619,7 @@ form.example::after {
     height: 100%;
     width: 100%;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 1999;
+    z-index: 499;
     backdrop-filter: blur(10px);
   }
   .indate {
