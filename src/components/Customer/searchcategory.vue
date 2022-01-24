@@ -24,7 +24,7 @@
       url1="/"
       url2="/"
       url3="/account"
-      url4="/verifycoupon"
+      url4="/seller/dashboard"
       url5="/login"
       url6="/"
       link1=""

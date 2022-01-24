@@ -434,6 +434,7 @@
             :options="getproducts.products"
             :multiple="false"
           />
+
           <br />
         </div>
         <div v-if="discountType != ''">
@@ -484,7 +485,7 @@
         <div class="w3-col m12">
           <!--   <img v-bind:src="image" style="width: 100%" id="proimg" />-->
           <cropper
-            :src="dp"
+            :src="tempimg"
             class="cropper"
             :stencil-props="{
               aspectRatio: 12 / 16,
@@ -503,7 +504,6 @@
             >
           </div>
           <div style="float: right; margin-top: 10px">
-            <!-- <input @change="handleImage" type="file" accept="image/*"> -->
             <input
               type="file"
               accept="image/*"
@@ -512,7 +512,6 @@
               @change="loadFile"
             />
           </div>
-          <!-- <img :src="image" alt="" width="100%" /> -->
         </div>
       </div>
 
@@ -595,10 +594,12 @@ export default {
       },
       newimg: "",
       image: "",
-      dp: "",
+      dp: [],
       prod: [],
       addproduct: null,
       r_bio: "",
+      imgno: 0,
+      tempimg: "",
     };
   },
   mounted() {
@@ -608,6 +609,7 @@ export default {
     if (this.$session.get("user_type") === "seller") {
       document.getElementsByClassName("topnav")[0].style.height = "70px";
     }
+    this.imgno = 0;
   },
   watch: {
     getproducts: function () {
@@ -632,6 +634,7 @@ export default {
           document.getElementById("crop").click();
         }
         var arrprod = [this.products];
+        var imgprod = this.dp;
         var epoch = [];
         epoch[0] = this.validity[0].getTime() / 1000.0;
         epoch[1] = this.validity[1].getTime() / 1000.0;
@@ -649,7 +652,7 @@ export default {
               mrp: parseInt(this.mrp),
               offer_price: parseInt(this.offerPrice),
               bio: this.bio,
-              image_base64: this.dp,
+              image_base64: imgprod,
             },
           };
         } else {
@@ -675,15 +678,11 @@ export default {
             Authorization: `Bearer ${accessToken}`,
           },
         };
-        console.log("payload", payload);
-        console.log("prod", this.products);
-        console.log("prodarr", arrprod);
         axios
           .post(url, payload, options)
           .then((response) => {
             if (response.status === 200) {
               alert("Coupon added Sucessfully");
-              console.log(response);
             }
           })
           .catch((error) => {
@@ -729,14 +728,17 @@ export default {
     crop() {
       const { coordinates, canvas } = this.$refs.cropper.getResult();
       this.coordinates = coordinates;
-      this.dp = canvas.toDataURL("image/jpeg");
+      this.dp.push(canvas.toDataURL("image/jpeg"));
+      this.tempimg = canvas.toDataURL("image/jpeg");
       console.log(this.dp);
     },
 
     loadFile(event) {
-      this.dp = URL.createObjectURL(event.target.files[0]);
+      this.dp.push(URL.createObjectURL(event.target.files[0]));
       console.log(this.dp);
       document.getElementById("no_btn").style.display = "block";
+      this.imgno = this.imgno + 1;
+      this.tempimg = URL.createObjectURL(event.target.files[0]);
     },
     //repeat expired offer
     addrepeat(offer_text) {
@@ -783,11 +785,7 @@ export default {
 
           axios
             .put(url, payload, options)
-            .then(
-              (response) => console.log(response),
-              console.log(payload),
-              this.$router.go()
-            )
+            .then((response) => console.log(response), this.$router.go())
             .catch((error) => {
               this.errorMessage = error.message;
               console.error("There was an error!", error);
@@ -903,7 +901,6 @@ export default {
           axios
             .post(url, payload, options)
             .then((response) => {
-              console.log(response.data);
               if (response.data.status === 200) {
                 alert("Coupon Sucessfully Reedemed.");
               } else {
@@ -953,7 +950,6 @@ export default {
         .get(offersurl, { headers: { Authorization: `Bearer ${JWTToken}` } })
         .then((response) => {
           this.getoffers = response.data;
-          console.log(response.data);
         })
         .catch((err) => {
           console.log(err);

@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     repeat() {
-      document.getElementById("repeatmodal").style.display = "block";
+      document.getElementById("repeatmodal1").style.display = "block";
     },
 
     removeOffer(offer_text) {

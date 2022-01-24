@@ -110,6 +110,12 @@ const routes = [
     name: "verifycoupon",
     component: () => import("../components/Seller/verifycoupon.vue"),
   },
+  {
+    beforeEnter: guardMyroute,
+    path: "/seller/dashboard",
+    name: "sellerdashboard",
+    component: () => import("../components/Seller/dashboard.vue"),
+  },
 
   {
     path: "/",

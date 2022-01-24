@@ -4,7 +4,7 @@
       link1='<i class="fa fa-cubes"></i> Dashboard'
       link2='<i class="fa fa-money"></i> Customer Bill'
       link3='<i class="fa fa-user"></i> Account'
-      url1="/verifycoupon"
+      url1="/seller/dashboard"
       url2="/customerbill"
       url3="/account"
       link4=""

@@ -4,7 +4,7 @@
       link1='<i class="fa fa-cubes"></i> Dashboard'
       link2='<i class="fa fa-money"></i> Customer Bill'
       link3='<i class="fa fa-user"></i> Account'
-      url1="/verifycoupon"
+      url1="/seller/dashboard"
       url2="/customerbill"
       url3="/account"
       link4=""
@@ -184,7 +184,7 @@ export default {
     },
     addNewProduct() {
       this.loading = true;
-      console.log(this.addProduct)
+      console.log(this.addProduct);
       if (this.addproduct !== null) {
         this.prod.push(this.addproduct);
         const payload = {

@@ -124,7 +124,7 @@ export default {
 }
 .l-footer {
   position: relative;
-  z-index: 100;
+  z-index: 99;
   width: 100%;
   background: #08041f;
   padding: 40px;
