@@ -22,13 +22,13 @@ export default {};
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-left: -60px;
-  margin-top: -60px;
+  margin-left: -40px;
+  margin-top: -40px;
   border: 8px solid #474747;
   border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 120px;
-  height: 120px;
+  border-top: 8px solid #3498db;
+  width: 80px;
+  height: 80px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }

@@ -260,7 +260,7 @@ export default {
                   logged_in: "true",
                 };
                 localStorage.setItem("profile", JSON.stringify(storedata));
-                this.$router.push("/verifycoupon");
+                this.$router.push("/seller/dashboard");
               } else if (res.data.status === 403) {
                 this.$router.push("/waiting_for_admin_approval");
               } else {

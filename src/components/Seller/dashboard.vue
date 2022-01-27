@@ -1,5 +1,9 @@
 <template>
   <div class="s_dashboard">
+    <div class="loader_wrapper_1" v-if="wait">
+      <div class="loader_1"></div>
+      This might take few seconds...
+    </div>
     <topnav
       link1='<i class="fa fa-cubes"></i> Dashboard'
       link2='<i class="fa fa-money"></i> Customer Bill'
@@ -293,7 +297,7 @@
       </b-container>
     </div>
     <div v-else-if="mtno === 2" class="padding20">
-      <b-card style="background: white">
+      <b-card style="background: white" class="addcard">
         <div class="cd_tab_nav">
           <div class="cd_link_a cd_color" id="tab6" @click="subtab(6)">
             Product
@@ -311,12 +315,11 @@
                 <input class="of_name" type="number" v-model="mrp" />
               </div>
               <div class="of_label">Add new product name</div>
-              <div>
+              <div class="addrow">
                 <input
-                  class="of_name"
+                  class="of_name proinput"
                   type="text"
                   v-model="addproduct"
-                  style="width: 80%"
                 />
                 <div
                   class="sd_btn"
@@ -387,8 +390,8 @@
               <input
                 type="file"
                 accept="image/*"
-                name="image"
-                id="filer"
+                name="image1"
+                id="filer1"
                 @change="loadFile1"
               />
             </b-col>
@@ -418,14 +421,14 @@
               <input
                 type="file"
                 accept="image/*"
-                name="image"
-                id="filer"
+                name="image2"
+                id="filer2"
                 @change="loadFile2"
               /> </b-col
             ><b-col sm="3" cols="12">
               <div class="of_label">Select Image 3</div>
 
-              <div class="selimg" v-if="im1 === ''"></div>
+              <div class="selimg" v-if="im3 === ''"></div>
               <cropper
                 :src="im3"
                 class="cropper3"
@@ -448,14 +451,14 @@
               <input
                 type="file"
                 accept="image/*"
-                name="image"
-                id="filer"
+                name="image3"
+                id="filer3"
                 @change="loadFile3"
               /> </b-col
             ><b-col sm="3" cols="12">
               <div class="of_label">Select Image 4</div>
 
-              <div class="selimg" v-if="im1 === ''"></div>
+              <div class="selimg" v-if="im4 === ''"></div>
               <cropper
                 :src="im4"
                 class="cropper4"
@@ -477,8 +480,8 @@
               <input
                 type="file"
                 accept="image/*"
-                name="image"
-                id="filer"
+                name="image4"
+                id="filer4"
                 @change="loadFile4"
               />
             </b-col>
@@ -488,27 +491,17 @@
         </div>
         <div v-else-if="mtno3 === 7">
           <br />
-          <b-row>
+          <b-row class="addwrap">
             <b-col sm="6" cols="12">
-              <div style="columns: 2">
-                <div class="of_label">
-                  <sup>*</sup>No. Of Coupons (&#8377; )
-                </div>
-                <input class="of_name" type="number" v-model="no_of_coupons" />
+              <div>
                 <div class="of_label">
                   <sup>*</sup>Minimum Purchase(&#8377; )
                 </div>
                 <input class="of_name" type="number" v-model="minval" />
               </div>
+              <div class="of_label"><sup>*</sup>Discount on Total Bill (%)</div>
+              <input class="of_name" type="number" v-model="discount_percent" />
               <div style="columns: 2">
-                <div class="of_label">
-                  <sup>*</sup>Discount on Total Bill (%)
-                </div>
-                <input
-                  class="of_name"
-                  type="number"
-                  v-model="discount_percent"
-                />
                 <div class="of_label"><sup>*</sup>Validity</div>
                 <date-picker
                   v-model="validity"
@@ -516,9 +509,9 @@
                   style="width: 100%; margin-top: 8px"
                   range
                 ></date-picker>
+                <div class="of_label"><sup>*</sup>Coupon Code</div>
+                <input class="of_name" type="text" v-model="offer_text" />
               </div>
-              <div class="of_label"><sup>*</sup>Coupon Code</div>
-              <input class="of_name" type="text" v-model="offer_text" />
             </b-col>
             <b-col sm="6" cols="12">
               <div class="of_label">Coupon Description</div>
@@ -569,6 +562,7 @@ export default {
   },
   data() {
     return {
+      wait: false,
       getoffers: {},
       mtno: 1,
       mtno3: 6,
@@ -599,6 +593,30 @@ export default {
       rmin_val: "",
       addproduct: null,
       prod: [],
+      coordinates1: {
+        width: 0,
+        height: 0,
+        left: 0,
+        top: 0,
+      },
+      coordinates2: {
+        width: 0,
+        height: 0,
+        left: 0,
+        top: 0,
+      },
+      coordinates3: {
+        width: 0,
+        height: 0,
+        left: 0,
+        top: 0,
+      },
+      coordinates4: {
+        width: 0,
+        height: 0,
+        left: 0,
+        top: 0,
+      },
     };
   },
 
@@ -708,7 +726,7 @@ export default {
               type: this.discountType,
               discount_percent: parseInt(this.discount_percent),
               offer_text: this.offer_text,
-              quantity: parseInt(this.no_of_coupons),
+              quantity: parseInt(10000),
               min_val: parseInt(this.minval),
               products: this.products,
               mrp: parseInt(this.mrp),
@@ -724,12 +742,12 @@ export default {
             Authorization: `Bearer ${accessToken}`,
           },
         };
+        this.wait = true;
+
         axios
           .post(url, payload, options)
           .then((response) => {
             console.log(response);
-            console.log(payload);
-
             if (response.status === 200) {
               alert("Coupon added Sucessfully");
             }
@@ -738,6 +756,9 @@ export default {
             this.errorMessage = error.message;
             error("There was an error!", error);
             alert(error);
+          })
+          .finally(() => {
+            this.wait = false;
           });
       } else {
         alert("Please fill all the fields");
@@ -745,7 +766,7 @@ export default {
     },
     crop1() {
       const { coordinates, canvas } = this.$refs.cropper1.getResult();
-      this.coordinates = coordinates;
+      this.coordinates1 = coordinates;
       this.im1 = canvas.toDataURL("image/jpeg");
     },
 
@@ -755,7 +776,7 @@ export default {
     },
     crop2() {
       const { coordinates, canvas } = this.$refs.cropper2.getResult();
-      this.coordinates = coordinates;
+      this.coordinates2 = coordinates;
       this.im2 = canvas.toDataURL("image/jpeg");
     },
 
@@ -765,7 +786,7 @@ export default {
     },
     crop3() {
       const { coordinates, canvas } = this.$refs.cropper3.getResult();
-      this.coordinates = coordinates;
+      this.coordinates3 = coordinates;
       this.im3 = canvas.toDataURL("image/jpeg");
     },
 
@@ -775,7 +796,7 @@ export default {
     },
     crop4() {
       const { coordinates, canvas } = this.$refs.cropper4.getResult();
-      this.coordinates = coordinates;
+      this.coordinates4 = coordinates;
       this.im4 = canvas.toDataURL("image/jpeg");
     },
 
@@ -908,6 +929,51 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
+.loader_wrapper_1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgb(255, 255, 255);
+  width: 100%;
+  height: 100%;
+  z-index: 90900000000;
+  text-align: center;
+  line-height: 130vh;
+  vertical-align: middle;
+}
+.loader_1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -40px;
+  margin-top: -40px;
+  border: 8px solid #474747;
+  border-radius: 50%;
+  border-top: 8px solid #3498db;
+  width: 80px;
+  height: 80px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .dropbtn {
   cursor: pointer;
 }
@@ -1069,5 +1135,20 @@ export default {
   margin: 10px auto;
   border: 1px dashed black;
   border-radius: 6px;
+}
+.addrow {
+  display: flex;
+  justify-content: space-around;
+}
+.proinput {
+  height: 38px;
+}
+@media screen and (max-width: 767px) {
+  .card-body {
+    padding: 0 !important;
+  }
+  .of_name_area {
+    min-height: 200px !important;
+  }
 }
 </style>
