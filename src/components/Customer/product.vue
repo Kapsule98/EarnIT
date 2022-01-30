@@ -42,7 +42,7 @@
                   <div class="product_card">
                     <div>
                       <img
-                        :src="list.active_offers[offer.index].image_url"
+                        :src="list.active_offers[offer.index].image_url[0]"
                         alt=""
                         class="product_img"
                       />
@@ -88,7 +88,7 @@
                         )
                       "
                     >
-                      <b-icon-cart3 mb-2></b-icon-cart3>
+                      <b-icon-heart mb-2></b-icon-heart>
                     </div>
                   </div>
                 </router-link>
@@ -134,13 +134,13 @@
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import Allapi from "./allapi.vue";
-import { BIconCart3, BIconArrowRight } from "bootstrap-vue";
+import { BIconArrowRight, BIconHeart } from "bootstrap-vue";
 import Topoffers from "./topoffers.vue";
 // import Imgstore from "./imgstore.vue";
 
 export default {
   components: {
-    BIconCart3,
+    BIconHeart,
     BIconArrowRight,
     Allapi,
     Topoffers,
@@ -336,20 +336,22 @@ export default {
 <style scoped>
 a {
   text-decoration: none;
-  color: white;
+  color: #1a1a1a;
 }
 .viewall {
-  width: 200px;
-  margin: 10px auto;
-  background: #008cff;
-  color: white;
-  padding: 8px;
+  width: fit-content;
+  margin: 0px 10px;
+  float: right;
+  color: #003cff;
   text-align: center;
   border-radius: 28px;
   cursor: pointer;
+  transition: 0.4s ease;
+  font-weight: 900 !important;
 }
 .viewall:hover {
-  opacity: 0.5;
+  transform: scale(1.1);
+  color: #008cff;
 }
 .bbot {
   width: 100%;

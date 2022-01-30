@@ -1,16 +1,6 @@
 <template>
   <div>
-    <topnav
-      link1='<i class="fa fa-cubes"></i> Dashboard'
-      link2='<i class="fa fa-money"></i> Customer Bill'
-      link3='<i class="fa fa-user"></i> Account'
-      url1="/seller/dashboard"
-      url2="/customerbill"
-      url3="/account"
-      link4=""
-      link5=""
-      active3="active_nav"
-    ></topnav>
+    <topnav active1="active_nav"></topnav>
     <spinner v-if="loading"></spinner>
     <div class="w3-card c-m" style="background: white; margin-top: -30px">
       <div class="showfilter">

@@ -63,7 +63,7 @@
             <div class="nofitems">{{ cartitems }}</div>
           </center>
 
-          Cart
+          Wishlist
         </div>
       </router-link>
       <router-link to="/search?alloffers=true">

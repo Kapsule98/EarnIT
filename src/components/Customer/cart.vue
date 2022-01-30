@@ -1,20 +1,6 @@
 <template>
   <div>
-    <topnav
-      link3="Account"
-      link4='<i class="fa fa-shopping-cart"></i> Cart '
-      link5='<i class="fa fa-user"></i> Login'
-      link1=""
-      link2=""
-      url1="/"
-      url2="/"
-      url3="/dashboard"
-      url4="/cart"
-      url5="/login"
-      url6="/"
-      :searchbar="true"
-      :display_categories="true"
-    ></topnav>
+    <topnav :searchbar="true" :display_categories="true"></topnav>
     <spinner v-if="loading"></spinner>
     <div class="greyback"></div>
     <div class="w3-container">
@@ -22,11 +8,11 @@
         <div class="w3-threequarter">
           <b-card>
             <h2 style="border-bottom: 1px solid #bababa; padding: 20px">
-              Coupons Cart
+              Your Wishlist
             </h2>
             <div v-if="empty === true">
               <br /><br />
-              <center><h1>Your cart is empty!</h1></center>
+              <center><h1>Your wishlist is empty!</h1></center>
               <br /><br /><br /><br /><br /><br />
             </div>
             <div
@@ -55,7 +41,7 @@
                     {{ offer.seller_display_name }}
                   </div>
                   <div class="w3-col m3" v-if="offer.type === 'FIXED'">
-                    <img :src="offer.image_url" class="product_img" />
+                    <img :src="offer.image_url[0]" class="product_img" />
                   </div>
                   <div class="w3-col m3" v-else>
                     <imgstore
@@ -131,7 +117,7 @@
                   </div>
                 </div>
                 <div class="w3-col m3">
-                  <button
+                  <!-- <button
                     v-on:click="
                       redeemOffer(offer.offer_text, offer.seller_email)
                     "
@@ -145,7 +131,7 @@
                     "
                   >
                     Reedem coupon
-                  </button>
+                  </button> -->
                   <button
                     v-on:click="
                       removeItem(offer.offer_text, offer.seller_email)
@@ -457,7 +443,7 @@ export default {
 }
 @media screen and (max-width: 600px) {
   .card_validity {
-    padding: 0px 22px;
+    padding: 0px 0px;
   }
   .w3-container {
     padding: 0px 10px 10px 10px !important;
@@ -470,7 +456,7 @@ export default {
     color: rgb(51, 51, 51);
     display: block;
     width: 100%;
-    padding: 10px 20px;
+    padding: 10px 0px;
     margin-left: 0px;
   }
 }

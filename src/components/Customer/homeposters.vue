@@ -1,5 +1,38 @@
 <template>
   <div class="heroback">
+    <carousel
+      :autoplayTimeout="5000"
+      :responsive="{
+        0: { items: 1, stagePadding: 10 },
+        600: { items: 1, stagePadding: 0 },
+        1200: { items: 1, stagePadding: 0 },
+      }"
+      :loop="true"
+      :autoplay="true"
+      :nav="false"
+      :dots="false"
+      video:true
+      style="margin-top: 30px"
+    >
+      <img
+        src="../../assets/new1.jpg"
+        width="100%"
+        alt="poster"
+        class="homeposters"
+      />
+      <img
+        src="../../assets/new2.jpg"
+        width="100%"
+        alt="poster"
+        class="homeposters"
+      />
+      <img
+        src="../../assets/new3.jpg"
+        width="100%"
+        alt="poster"
+        class="homeposters"
+      />
+    </carousel>
     <div class="cat_tab">
       <router-link :to="{ path: '/search', query: { category: 'Fashion' } }">
         <img class="cat_cir_img" src="../../assets/fashion.jpg" alt=".." />
@@ -28,38 +61,6 @@
         <div class="caption">electronics</div>
       </router-link>
     </div>
-    <carousel
-      :autoplayTimeout="5000"
-      :responsive="{
-        0: { items: 1, stagePadding: 10 },
-        600: { items: 1, stagePadding: 0 },
-        1200: { items: 1, stagePadding: 0 },
-      }"
-      :loop="true"
-      :autoplay="true"
-      :nav="false"
-      :dots="false"
-      video:true
-    >
-      <img
-        src="../../assets/new1.jpg"
-        width="100%"
-        alt="poster"
-        class="homeposters"
-      />
-      <img
-        src="../../assets/new2.jpg"
-        width="100%"
-        alt="poster"
-        class="homeposters"
-      />
-      <img
-        src="../../assets/new3.jpg"
-        width="100%"
-        alt="poster"
-        class="homeposters"
-      />
-    </carousel>
   </div>
 </template>
 
@@ -101,11 +102,12 @@ a:hover {
   text-decoration: none;
 }
 .homeposters {
-  width: 100%;
+  width: 98%;
+  margin: 0px 1%;
+  border-radius: 12px;
 }
 
 .cat_tab {
-  display: block;
   width: fit-content;
   height: 110px;
   overflow-y: hidden;
@@ -115,6 +117,9 @@ a:hover {
   padding: 0px 5px;
   text-align: center;
   margin: 2px auto;
+  position: absolute;
+  top: 0;
+  display: none;
 }
 .cat_tab::-webkit-scrollbar {
   display: none;
@@ -142,9 +147,11 @@ a:hover {
     border-radius: 10px;
   }
   .cat_tab {
+    margin-top: 10px;
+    position: relative;
     display: block;
     width: 100%;
-    height: 110px;
+    height: fit-content;
     overflow-y: hidden;
     overflow-x: auto;
     display: flex;

@@ -2,33 +2,11 @@
   <div>
     <topnav
       v-if="this.$session.get('user_type') !== 'seller'"
-      link3="Account"
-      link4='<i class="fa fa-shopping-cart"></i> Cart '
-      link5='<i class="fa fa-user"></i> Login'
-      url1="/"
-      url2="/"
-      url3="/dashboard"
-      url4="/cart"
-      url5="/login"
-      url6="/"
-      link1=""
-      link2=""
       :display_categories="true"
       :productsearch="true"
     ></topnav>
     <topnav
       v-if="this.$session.get('user_type') === 'seller'"
-      link3="Account"
-      link4="Dashboard"
-      link5='<i class="fa fa-user"></i> Login'
-      url1="/"
-      url2="/"
-      url3="/account"
-      url4="/seller/dashboard"
-      url5="/login"
-      url6="/"
-      link1=""
-      link2=""
       :searchbar="true"
       :display_categories="true"
       :landing="true"
@@ -248,7 +226,9 @@
                         <div class="product_card">
                           <div>
                             <img
-                              :src="list.active_offers[offer.index].image_url"
+                              :src="
+                                list.active_offers[offer.index].image_url[0]
+                              "
                               alt=""
                               class="product_img"
                             />
@@ -362,10 +342,10 @@
                               "
                             ></imgstore>
                           </div>
-                          <div class="c2-left">
+                          <!-- <div class="c2-left">
                             {{ list.active_offers[offer.index].quantity }}
                             coupons left
-                          </div>
+                          </div> -->
                           <div class="c2-off"></div>
 
                           <div class="c2-shop"><!--{{ shop_name }}--></div>

@@ -1,533 +1,540 @@
 <template>
-  <div class="s_dashboard">
-    <div class="loader_wrapper_1" v-if="wait">
-      <div class="loader_1"></div>
-      This might take few seconds...
-    </div>
-    <topnav
-      link1='<i class="fa fa-cubes"></i> Dashboard'
-      link2='<i class="fa fa-money"></i> Customer Bill'
-      link3='<i class="fa fa-user"></i> Account'
-      url1="/seller/dashboard"
-      url2="/customerbill"
-      url3="/account"
-      link4=""
-      link5=""
-      active1="active_nav"
-    ></topnav>
-    <b-row style="margin-top: -50px">
-      <b-col sm="8" cols="12">
-        <div class="sd_title">View or add offers</div>
-      </b-col>
-      <b-col sm="4" cols="12">
-        <div class="sd_btn" style="cursor: not-allowed">
-          <router-link to="/seller/dashboard" style="cursor: not-allowed"
-            >Open Documentation</router-link
-          >
-        </div>
-      </b-col>
-    </b-row>
-    <p class="cd_title_desc">
-      Hi {{ this.$session.get("user_data").display_name }}! Welcome to your
-      dashboard.
-      <b-icon-question-circle></b-icon-question-circle>
-    </p>
-    <div class="cd_tab_nav">
-      <div class="cd_link_a cd_color" id="tab1">
-        <div class="dropdown">
-          View Offers <b-icon-caret-down></b-icon-caret-down>
-          <div class="dropdown-content">
-            <div @click="tab(1)">Live Prducts</div>
-            <div @click="pSubTab(3)">Planned Products</div>
-            <div @click="pSubTab(4)">Live Coupons</div>
-            <div @click="pSubTab(5)">Planned Coupons</div>
-            <div @click="pSubTab(8)">Expired Coupons</div>
-          </div>
-        </div>
+  <div>
+    <topnav active2="active_nav"></topnav>
+
+    <div class="s_dashboard">
+      <div class="loader_wrapper_1" v-if="wait">
+        <div class="loader_1"></div>
+        This might take few seconds...
       </div>
-      <div class="cd_link_a" id="tab2" @click="tab(2)">
-        <b-icon-plus-circle></b-icon-plus-circle> Add Offer
-      </div>
-      <div class="cd_active" id="tab_active"></div>
-    </div>
-    <div v-if="mtno === 1 && special">
-      <div class="padding20">
-        <b-card>
-          <div class="sd_title" style="font-size: 20px">Live Products!</div>
-        </b-card>
-      </div>
-      <b-row>
-        <b-col
-          sm="12"
-          cols="12"
-          v-for="offer in getoffers.active_offers"
-          :key="offer.length"
-        >
-          <div
-            v-if="
-              Math.floor(new Date().getTime() / 1000.0) < offer.validity[1] &&
-              Math.floor(new Date().getTime() / 1000.0) > offer.validity[0] &&
-              offer.quantity > 0
-            "
-          >
-            <liveoffers
-              v-if="offer.type === 'FIXED'"
-              :name="offer.products.toString()"
-              :imgsrc="offer.image_url"
-              :discount="Math.round(offer.discount_percent) + '%'"
-              :left="offer.quantity + ' coupons'"
-              :validity="
-                ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
-              "
-              :validfrom="
-                ' ' + moment(offer.validity[0] * 1000).format('DD-MM-YYYY')
-              "
-              :offer_text="offer.offer_text"
-              :mrp="'Rs ' + offer.mrp"
-              :offer_price="'Rs ' + offer.offer_price"
-              :description="offer.bio"
-              :imglength="offer.image_url.length"
-            ></liveoffers>
-          </div>
+      <b-row style="margin-top: 0px">
+        <b-col sm="8" cols="12">
+          <div class="sd_title">View or add offers</div>
+        </b-col>
+        <b-col sm="4" cols="12">
+          <!-- <div class="sd_btn" style="cursor: not-allowed">
+            <router-link to="/seller/dashboard" style="cursor: not-allowed"
+              >Open Documentation</router-link
+            >
+          </div> -->
         </b-col>
       </b-row>
-    </div>
-    <div v-if="smtno === 3">
-      <div class="padding20">
-        <b-card>
-          <div class="sd_title" style="font-size: 20px">Planned Products!</div>
-        </b-card>
-      </div>
-      <b-row>
-        <b-col
-          sm="12"
-          cols="12"
-          v-for="offer in getoffers.active_offers"
-          :key="offer.length"
-        >
-          <div
-            v-if="
-              Math.floor(new Date().getTime() / 1000.0) < offer.validity[1] &&
-              Math.floor(new Date().getTime() / 1000.0) < offer.validity[0] &&
-              offer.quantity > 0
-            "
-          >
-            <liveoffers
-              v-if="offer.type === 'FIXED'"
-              :name="offer.products.toString()"
-              :imgsrc="offer.image_url"
-              :discount="Math.round(offer.discount_percent) + '%'"
-              :left="offer.quantity + ' coupons'"
-              :validity="
-                ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
-              "
-              :validfrom="
-                ' ' + moment(offer.validity[0] * 1000).format('DD-MM-YYYY')
-              "
-              :offer_text="offer.offer_text"
-              :mrp="'Rs ' + offer.mrp"
-              :offer_price="'Rs ' + offer.offer_price"
-              :description="offer.bio"
-              :imglength="offer.image_url.length"
-            ></liveoffers>
+      <p class="cd_title_desc">
+        Hi {{ this.$session.get("user_data").display_name }}! Welcome to your
+        dashboard.
+        <b-icon-question-circle></b-icon-question-circle>
+      </p>
+      <div class="cd_tab_nav">
+        <div class="cd_link_a cd_color" id="tab1">
+          <div class="dropdown">
+            View Offers <b-icon-caret-down></b-icon-caret-down>
+            <div class="dropdown-content">
+              <div @click="tab(1)">Live Prducts</div>
+              <div @click="pSubTab(3)">Planned Products</div>
+              <div @click="pSubTab(4)">Live Coupons</div>
+              <div @click="pSubTab(5)">Planned Coupons</div>
+              <div @click="pSubTab(8)">Expired Coupons</div>
+            </div>
           </div>
-        </b-col>
-      </b-row>
-    </div>
-    <div v-if="smtno === 4">
-      <div class="padding20">
-        <b-card>
-          <div class="sd_title" style="font-size: 20px">Live Coupons!</div>
-        </b-card>
+        </div>
+        <div class="cd_link_a" id="tab2" @click="tab(2)">
+          <b-icon-plus-circle></b-icon-plus-circle> Add Offer
+        </div>
+        <div class="cd_active" id="tab_active"></div>
       </div>
-      <b-container>
+      <div v-if="mtno === 1 && special">
+        <div class="padding20">
+          <b-card>
+            <div class="sd_title" style="font-size: 20px">Live Products!</div>
+          </b-card>
+        </div>
         <b-row>
-          <template v-for="offer in getoffers.active_offers">
-            <b-col
-              sm="3"
-              cols="12"
-              :key="offer.length"
+          <b-col
+            sm="12"
+            cols="12"
+            v-for="offer in getoffers.active_offers"
+            :key="offer.length"
+          >
+            <div
               v-if="
                 Math.floor(new Date().getTime() / 1000.0) < offer.validity[1] &&
                 Math.floor(new Date().getTime() / 1000.0) > offer.validity[0] &&
-                offer.quantity > 0 &&
-                offer.type === 'BILL_DISCOUNT'
+                offer.quantity > 0
               "
             >
-              <couponcard
-                v-b-tooltip.hover
-                title="Total Bill"
-                name="Total Bill"
-                v-bind:discount="offer.discount_percent + '%'"
-                v-bind:left="offer.quantity + ' coupons'"
-                v-bind:validity="
-                  ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
-                "
-                v-bind:offer_text="offer.offer_text"
-              ></couponcard>
-            </b-col>
-          </template>
-        </b-row>
-      </b-container>
-    </div>
-    <div v-if="smtno === 5">
-      <div class="padding20">
-        <b-card>
-          <div class="sd_title" style="font-size: 20px">Planned Coupons!</div>
-        </b-card>
-      </div>
-      <b-container>
-        <b-row>
-          <template v-for="offer in getoffers.active_offers">
-            <b-col
-              sm="3"
-              cols="12"
-              :key="offer.length"
-              v-if="
-                Math.floor(new Date().getTime() / 1000.0) < offer.validity[1] &&
-                Math.floor(new Date().getTime() / 1000.0) < offer.validity[0] &&
-                offer.quantity > 0 &&
-                offer.type === 'BILL_DISCOUNT'
-              "
-            >
-              <couponcard
-                v-b-tooltip.hover
-                title="Total Bill"
-                :planned="true"
-                :validfrom="
-                  moment(offer.validity[0] * 1000).format('DD-MM-YYYY')
-                "
-                name="Total Bill"
-                :discount="offer.discount_percent + '%'"
+              <liveoffers
+                v-if="offer.type === 'FIXED'"
+                :name="offer.products.toString()"
+                :imgsrc="offer.image_url"
+                :discount="Math.round(offer.discount_percent) + '%'"
                 :left="offer.quantity + ' coupons'"
                 :validity="
                   ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
                 "
+                :validfrom="
+                  ' ' + moment(offer.validity[0] * 1000).format('DD-MM-YYYY')
+                "
                 :offer_text="offer.offer_text"
-              ></couponcard>
-            </b-col>
-          </template>
+                :mrp="'Rs ' + offer.mrp"
+                :offer_price="'Rs ' + offer.offer_price"
+                :description="offer.bio"
+                :imglength="offer.image_url.length"
+              ></liveoffers>
+            </div>
+          </b-col>
         </b-row>
-      </b-container>
-    </div>
-    <div v-if="smtno === 8">
-      <div class="padding20">
-        <b-card>
-          <div class="sd_title" style="font-size: 20px">Expired Coupons!</div>
-        </b-card>
       </div>
-      <b-container>
+      <div v-if="smtno === 3">
+        <div class="padding20">
+          <b-card>
+            <div class="sd_title" style="font-size: 20px">
+              Planned Products!
+            </div>
+          </b-card>
+        </div>
         <b-row>
-          <template v-for="offer in getoffers.active_offers">
-            <b-col
-              sm="3"
-              cols="12"
+          <b-col
+            sm="12"
+            cols="12"
+            v-for="offer in getoffers.active_offers"
+            :key="offer.length"
+          >
+            <div
               v-if="
-                Math.floor(new Date().getTime() / 1000.0) > offer.validity[1] &&
-                Math.floor(new Date().getTime() / 1000.0) > offer.validity[0] &&
-                offer.quantity > 0 &&
-                offer.type === 'BILL_DISCOUNT'
+                Math.floor(new Date().getTime() / 1000.0) < offer.validity[1] &&
+                Math.floor(new Date().getTime() / 1000.0) < offer.validity[0] &&
+                offer.quantity > 0
               "
-              :key="offer.length"
             >
-              <couponcard
-                v-if="offer.type === 'BILL_DISCOUNT'"
-                v-b-tooltip.hover
-                title="Total Bill"
-                :expired="true"
-                name="Total Bill"
-                v-bind:discount="offer.discount_percent + '%'"
-                v-bind:left="offer.quantity + ' coupons'"
+              <liveoffers
+                v-if="offer.type === 'FIXED'"
+                :name="offer.products.toString()"
+                :imgsrc="offer.image_url"
+                :discount="Math.round(offer.discount_percent) + '%'"
+                :left="offer.quantity + ' coupons'"
                 :validity="
                   ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
                 "
+                :validfrom="
+                  ' ' + moment(offer.validity[0] * 1000).format('DD-MM-YYYY')
+                "
                 :offer_text="offer.offer_text"
-              ></couponcard>
-              <div id="repeatmodal1" class="w3-modal">
-                <div class="w3-modal-content w3-animate-zoom w3-card-4">
-                  <header
-                    class="w3-container"
-                    style="background-color: #36cdff"
-                  >
-                    <span
-                      onclick="document.getElementById('repeatmodal1').style.display='none'"
-                      class="w3-button w3-display-topright"
-                      >&times;</span
-                    >
-                    <h2 style="padding: 10px" class="sd_title">
-                      Repeat Coupon
-                    </h2>
-                  </header>
-                  <div style="padding: 20px">
-                    <br />
-                    <div style="columns: 2">
-                      <div class="of_label">
-                        <sup>*</sup>No. Of Coupons (&#8377; )
-                      </div>
-                      <input
-                        class="of_name"
-                        type="number"
-                        v-model="rquantity"
-                      />
-                      <div class="of_label"><sup>*</sup>Validity</div>
-                      <date-picker
-                        v-model="rvalidity"
-                        type="date"
-                        style="width: 100%; margin-top: 8px"
-                        range
-                      ></date-picker>
-                    </div>
-                  </div>
-                  <footer class="w3-container w3-tblue">
-                    <center>
-                      <button
-                        class="sd_btn"
-                        style="max-width: 300px"
-                        @click="addrepeat(offer.offer_text)"
-                      >
-                        repeat offer
-                      </button>
-                    </center>
-                  </footer>
-                </div>
-              </div>
-            </b-col>
-          </template>
+                :mrp="'Rs ' + offer.mrp"
+                :offer_price="'Rs ' + offer.offer_price"
+                :description="offer.bio"
+                :imglength="offer.image_url.length"
+              ></liveoffers>
+            </div>
+          </b-col>
         </b-row>
-      </b-container>
-    </div>
-    <div v-else-if="mtno === 2" class="padding20">
-      <b-card style="background: white" class="addcard">
-        <div class="cd_tab_nav">
-          <div class="cd_link_a cd_color" id="tab6" @click="subtab(6)">
-            Product
+      </div>
+      <div v-if="smtno === 4">
+        <div class="padding20">
+          <b-card>
+            <div class="sd_title" style="font-size: 20px">Live Coupons!</div>
+          </b-card>
+        </div>
+        <b-container>
+          <b-row>
+            <template v-for="offer in getoffers.active_offers">
+              <b-col
+                sm="3"
+                cols="12"
+                :key="offer.length"
+                v-if="
+                  Math.floor(new Date().getTime() / 1000.0) <
+                    offer.validity[1] &&
+                  Math.floor(new Date().getTime() / 1000.0) >
+                    offer.validity[0] &&
+                  offer.quantity > 0 &&
+                  offer.type === 'BILL_DISCOUNT'
+                "
+              >
+                <couponcard
+                  v-b-tooltip.hover
+                  title="Total Bill"
+                  name="Total Bill"
+                  v-bind:discount="offer.discount_percent + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  v-bind:validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  v-bind:offer_text="offer.offer_text"
+                ></couponcard>
+              </b-col>
+            </template>
+          </b-row>
+        </b-container>
+      </div>
+      <div v-if="smtno === 5">
+        <div class="padding20">
+          <b-card>
+            <div class="sd_title" style="font-size: 20px">Planned Coupons!</div>
+          </b-card>
+        </div>
+        <b-container>
+          <b-row>
+            <template v-for="offer in getoffers.active_offers">
+              <b-col
+                sm="3"
+                cols="12"
+                :key="offer.length"
+                v-if="
+                  Math.floor(new Date().getTime() / 1000.0) <
+                    offer.validity[1] &&
+                  Math.floor(new Date().getTime() / 1000.0) <
+                    offer.validity[0] &&
+                  offer.quantity > 0 &&
+                  offer.type === 'BILL_DISCOUNT'
+                "
+              >
+                <couponcard
+                  v-b-tooltip.hover
+                  title="Total Bill"
+                  :planned="true"
+                  :validfrom="
+                    moment(offer.validity[0] * 1000).format('DD-MM-YYYY')
+                  "
+                  name="Total Bill"
+                  :discount="offer.discount_percent + '%'"
+                  :left="offer.quantity + ' coupons'"
+                  :validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  :offer_text="offer.offer_text"
+                ></couponcard>
+              </b-col>
+            </template>
+          </b-row>
+        </b-container>
+      </div>
+      <div v-if="smtno === 8">
+        <div class="padding20">
+          <b-card>
+            <div class="sd_title" style="font-size: 20px">Expired Coupons!</div>
+          </b-card>
+        </div>
+        <b-container>
+          <b-row>
+            <template v-for="offer in getoffers.active_offers">
+              <b-col
+                sm="3"
+                cols="12"
+                v-if="
+                  Math.floor(new Date().getTime() / 1000.0) >
+                    offer.validity[1] &&
+                  Math.floor(new Date().getTime() / 1000.0) >
+                    offer.validity[0] &&
+                  offer.quantity > 0 &&
+                  offer.type === 'BILL_DISCOUNT'
+                "
+                :key="offer.length"
+              >
+                <couponcard
+                  v-if="offer.type === 'BILL_DISCOUNT'"
+                  v-b-tooltip.hover
+                  title="Total Bill"
+                  :expired="true"
+                  name="Total Bill"
+                  v-bind:discount="offer.discount_percent + '%'"
+                  v-bind:left="offer.quantity + ' coupons'"
+                  :validity="
+                    ' ' + moment(offer.validity[1] * 1000).format('DD-MM-YYYY')
+                  "
+                  :offer_text="offer.offer_text"
+                ></couponcard>
+                <div id="repeatmodal1" class="w3-modal">
+                  <div class="w3-modal-content w3-animate-zoom w3-card-4">
+                    <header
+                      class="w3-container"
+                      style="background-color: #36cdff"
+                    >
+                      <span
+                        onclick="document.getElementById('repeatmodal1').style.display='none'"
+                        class="w3-button w3-display-topright"
+                        >&times;</span
+                      >
+                      <h2 style="padding: 10px" class="sd_title">
+                        Repeat Coupon
+                      </h2>
+                    </header>
+                    <div style="padding: 20px">
+                      <br />
+                      <div style="columns: 2">
+                        <div class="of_label">
+                          <sup>*</sup>No. Of Coupons (&#8377; )
+                        </div>
+                        <input
+                          class="of_name"
+                          type="number"
+                          v-model="rquantity"
+                        />
+                        <div class="of_label"><sup>*</sup>Validity</div>
+                        <date-picker
+                          v-model="rvalidity"
+                          type="date"
+                          style="width: 100%; margin-top: 8px"
+                          range
+                        ></date-picker>
+                      </div>
+                    </div>
+                    <footer class="w3-container w3-tblue">
+                      <center>
+                        <button
+                          class="sd_btn"
+                          style="max-width: 300px"
+                          @click="addrepeat(offer.offer_text)"
+                        >
+                          repeat offer
+                        </button>
+                      </center>
+                    </footer>
+                  </div>
+                </div>
+              </b-col>
+            </template>
+          </b-row>
+        </b-container>
+      </div>
+      <div v-else-if="mtno === 2" class="padding20">
+        <b-card style="background: white" class="addcard">
+          <div class="cd_tab_nav">
+            <div class="cd_link_a cd_color" id="tab6" @click="subtab(6)">
+              Product
+            </div>
+            <div class="cd_link_a" id="tab7" @click="subtab(7)">Total Bill</div>
+            <div class="cd_active" id="tab_active3"></div>
           </div>
-          <div class="cd_link_a" id="tab7" @click="subtab(7)">Total Bill</div>
-          <div class="cd_active" id="tab_active3"></div>
-        </div>
-        <div v-if="mtno3 === 6" class="addwrap">
-          <b-row>
-            <b-col sm="6" cols="12">
-              <div style="columns: 2">
-                <div class="of_label"><sup>*</sup>Offer Price (&#8377; )</div>
-                <input class="of_name" type="number" v-model="offerPrice" />
-                <div class="of_label"><sup>*</sup>MRP (&#8377; )</div>
-                <input class="of_name" type="number" v-model="mrp" />
-              </div>
-              <div class="of_label">Add new product name</div>
-              <div class="addrow">
-                <input
-                  class="of_name proinput"
-                  type="text"
-                  v-model="addproduct"
-                />
-                <div
-                  class="sd_btn"
-                  @click="addNewProduct()"
-                  style="margin-top: 6px"
-                >
-                  Add
+          <div v-if="mtno3 === 6" class="addwrap">
+            <b-row>
+              <b-col sm="6" cols="12">
+                <div style="columns: 2">
+                  <div class="of_label"><sup>*</sup>Offer Price (&#8377; )</div>
+                  <input class="of_name" type="number" v-model="offerPrice" />
+                  <div class="of_label"><sup>*</sup>MRP (&#8377; )</div>
+                  <input class="of_name" type="number" v-model="mrp" />
                 </div>
-              </div>
-              <div class="of_label">
-                <sup>*</sup>Or select an existing product
-              </div>
-              <multiselect
-                placeholder="Select Product/s"
-                v-model="products"
-                :options="getproducts"
-                :multiple="false"
-                style="z-index: 101; margin-top: 6px"
-              />
-              <div style="columns: 2">
-                <div class="of_label"><sup>*</sup>Validity</div>
-                <date-picker
-                  v-model="validity"
-                  type="date"
-                  style="width: 100%; margin-top: 8px"
-                  range
-                ></date-picker>
-                <div class="of_label"><sup>*</sup>Offer Code</div>
-                <div>
-                  <input class="of_name" v-model="offer_text" type="text" />
+                <div class="of_label">Add new product name</div>
+                <div class="addrow">
+                  <input
+                    class="of_name proinput"
+                    type="text"
+                    v-model="addproduct"
+                  />
+                  <div
+                    class="sd_btn"
+                    @click="addNewProduct()"
+                    style="margin-top: 6px"
+                  >
+                    Add
+                  </div>
                 </div>
-              </div>
-            </b-col>
-            <b-col sm="6" cols="12">
-              <div class="of_label">Product Description</div>
-              <textarea
-                class="of_name_area"
-                v-model="description"
-                type="text"
-              ></textarea>
-            </b-col>
-          </b-row>
-          <br />
-          <b-row>
-            <b-col sm="3" cols="12">
-              <div class="of_label"><sup>*</sup>Select Image 1</div>
-
-              <div class="selimg" v-if="im1 === ''"></div>
-              <cropper
-                :src="im1"
-                class="cropper1"
-                :stencil-props="{
-                  aspectRatio: 12 / 16,
-                }"
-                ref="cropper1"
-              ></cropper>
-              <div class="no_btn" id="no_btn1">
-                <div
-                  class="sd_btn"
-                  variant="primary"
-                  @click="crop1"
-                  id="crop1"
-                  style="margin: 10px auto"
-                >
-                  Crop
-                </div>
-              </div>
-              <input
-                type="file"
-                accept="image/*"
-                name="image1"
-                id="filer1"
-                @change="loadFile1"
-              />
-            </b-col>
-            <b-col sm="3" cols="12">
-              <div class="of_label">Select Image 2</div>
-
-              <div class="selimg" v-if="im2 === ''"></div>
-              <cropper
-                :src="im2"
-                class="cropper2"
-                :stencil-props="{
-                  aspectRatio: 12 / 16,
-                }"
-                ref="cropper2"
-              ></cropper>
-              <div class="no_btn" id="no_btn2">
-                <div
-                  class="sd_btn"
-                  variant="primary"
-                  @click="crop2"
-                  id="crop2"
-                  style="margin: 10px"
-                >
-                  Crop
-                </div>
-              </div>
-              <input
-                type="file"
-                accept="image/*"
-                name="image2"
-                id="filer2"
-                @change="loadFile2"
-              /> </b-col
-            ><b-col sm="3" cols="12">
-              <div class="of_label">Select Image 3</div>
-
-              <div class="selimg" v-if="im3 === ''"></div>
-              <cropper
-                :src="im3"
-                class="cropper3"
-                :stencil-props="{
-                  aspectRatio: 12 / 16,
-                }"
-                ref="cropper3"
-              ></cropper>
-              <div class="no_btn" id="no_btn3">
-                <div
-                  class="sd_btn"
-                  variant="primary"
-                  @click="crop3"
-                  id="crop3"
-                  style="margin: 10px"
-                >
-                  Crop
-                </div>
-              </div>
-              <input
-                type="file"
-                accept="image/*"
-                name="image3"
-                id="filer3"
-                @change="loadFile3"
-              /> </b-col
-            ><b-col sm="3" cols="12">
-              <div class="of_label">Select Image 4</div>
-
-              <div class="selimg" v-if="im4 === ''"></div>
-              <cropper
-                :src="im4"
-                class="cropper4"
-                :stencil-props="{
-                  aspectRatio: 12 / 16,
-                }"
-                ref="cropper4"
-              ></cropper>
-              <div class="no_btn" id="no_btn4">
-                <div
-                  class="sd_btn"
-                  @click="crop4"
-                  id="crop4"
-                  style="margin: 10px"
-                >
-                  Crop
-                </div>
-              </div>
-              <input
-                type="file"
-                accept="image/*"
-                name="image4"
-                id="filer4"
-                @change="loadFile4"
-              />
-            </b-col>
-          </b-row>
-          <br />
-          <div class="sd_btn" @click="addCouponDetails()">Add Product</div>
-        </div>
-        <div v-else-if="mtno3 === 7">
-          <br />
-          <b-row class="addwrap">
-            <b-col sm="6" cols="12">
-              <div>
                 <div class="of_label">
-                  <sup>*</sup>Minimum Purchase(&#8377; )
+                  <sup>*</sup>Or select an existing product
                 </div>
-                <input class="of_name" type="number" v-model="minval" />
-              </div>
-              <div class="of_label"><sup>*</sup>Discount on Total Bill (%)</div>
-              <input class="of_name" type="number" v-model="discount_percent" />
-              <div style="columns: 2">
-                <div class="of_label"><sup>*</sup>Validity</div>
-                <date-picker
-                  v-model="validity"
-                  type="date"
-                  style="width: 100%; margin-top: 8px"
-                  range
-                ></date-picker>
-                <div class="of_label"><sup>*</sup>Coupon Code</div>
-                <input class="of_name" type="text" v-model="offer_text" />
-              </div>
-            </b-col>
-            <b-col sm="6" cols="12">
-              <div class="of_label">Coupon Description</div>
-              <textarea
-                class="of_name_area_2"
-                v-model="description"
-                type="text"
-              ></textarea>
-            </b-col>
-          </b-row>
-          <br />
-          <div class="sd_btn" @click="addCouponDetails()">Add Coupon</div>
-        </div>
-      </b-card>
+                <multiselect
+                  placeholder="Select Product/s"
+                  v-model="products"
+                  :options="getproducts"
+                  :multiple="false"
+                  style="z-index: 101; margin-top: 6px"
+                />
+                <div style="columns: 2">
+                  <div class="of_label"><sup>*</sup>Validity</div>
+                  <date-picker
+                    v-model="validity"
+                    type="date"
+                    style="width: 100%; margin-top: 8px"
+                    range
+                  ></date-picker>
+                  <div class="of_label"><sup>*</sup>Offer Code</div>
+                  <div>
+                    <input class="of_name" v-model="offer_text" type="text" />
+                  </div>
+                </div>
+              </b-col>
+              <b-col sm="6" cols="12">
+                <div class="of_label">Product Description</div>
+                <textarea
+                  class="of_name_area"
+                  v-model="description"
+                  type="text"
+                ></textarea>
+              </b-col>
+            </b-row>
+            <br />
+            <b-row>
+              <b-col sm="3" cols="12">
+                <div class="of_label"><sup>*</sup>Select Image 1</div>
+
+                <div class="selimg" v-if="im1 === ''"></div>
+                <cropper
+                  :src="im1"
+                  class="cropper1"
+                  :stencil-props="{
+                    aspectRatio: 12 / 16,
+                  }"
+                  ref="cropper1"
+                ></cropper>
+                <div class="no_btn" id="no_btn1">
+                  <div
+                    class="sd_btn"
+                    variant="primary"
+                    @click="crop1"
+                    id="crop1"
+                    style="margin: 10px auto"
+                  >
+                    Crop
+                  </div>
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="image1"
+                  id="filer1"
+                  @change="loadFile1"
+                />
+              </b-col>
+              <b-col sm="3" cols="12">
+                <div class="of_label">Select Image 2</div>
+
+                <div class="selimg" v-if="im2 === ''"></div>
+                <cropper
+                  :src="im2"
+                  class="cropper2"
+                  :stencil-props="{
+                    aspectRatio: 12 / 16,
+                  }"
+                  ref="cropper2"
+                ></cropper>
+                <div class="no_btn" id="no_btn2">
+                  <div
+                    class="sd_btn"
+                    variant="primary"
+                    @click="crop2"
+                    id="crop2"
+                    style="margin: 10px"
+                  >
+                    Crop
+                  </div>
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="image2"
+                  id="filer2"
+                  @change="loadFile2"
+                /> </b-col
+              ><b-col sm="3" cols="12">
+                <div class="of_label">Select Image 3</div>
+
+                <div class="selimg" v-if="im3 === ''"></div>
+                <cropper
+                  :src="im3"
+                  class="cropper3"
+                  :stencil-props="{
+                    aspectRatio: 12 / 16,
+                  }"
+                  ref="cropper3"
+                ></cropper>
+                <div class="no_btn" id="no_btn3">
+                  <div
+                    class="sd_btn"
+                    variant="primary"
+                    @click="crop3"
+                    id="crop3"
+                    style="margin: 10px"
+                  >
+                    Crop
+                  </div>
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="image3"
+                  id="filer3"
+                  @change="loadFile3"
+                /> </b-col
+              ><b-col sm="3" cols="12">
+                <div class="of_label">Select Image 4</div>
+
+                <div class="selimg" v-if="im4 === ''"></div>
+                <cropper
+                  :src="im4"
+                  class="cropper4"
+                  :stencil-props="{
+                    aspectRatio: 12 / 16,
+                  }"
+                  ref="cropper4"
+                ></cropper>
+                <div class="no_btn" id="no_btn4">
+                  <div
+                    class="sd_btn"
+                    @click="crop4"
+                    id="crop4"
+                    style="margin: 10px"
+                  >
+                    Crop
+                  </div>
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="image4"
+                  id="filer4"
+                  @change="loadFile4"
+                />
+              </b-col>
+            </b-row>
+            <br />
+            <div class="sd_btn" @click="addCouponDetails()">Add Product</div>
+          </div>
+          <div v-else-if="mtno3 === 7">
+            <br />
+            <b-row class="addwrap">
+              <b-col sm="6" cols="12">
+                <div>
+                  <div class="of_label">
+                    <sup>*</sup>Minimum Purchase(&#8377; )
+                  </div>
+                  <input class="of_name" type="number" v-model="minval" />
+                </div>
+                <div class="of_label">
+                  <sup>*</sup>Discount on Total Bill (%)
+                </div>
+                <input
+                  class="of_name"
+                  type="number"
+                  v-model="discount_percent"
+                />
+                <div style="columns: 2">
+                  <div class="of_label"><sup>*</sup>Validity</div>
+                  <date-picker
+                    v-model="validity"
+                    type="date"
+                    style="width: 100%; margin-top: 8px"
+                    range
+                  ></date-picker>
+                  <div class="of_label"><sup>*</sup>Coupon Code</div>
+                  <input class="of_name" type="text" v-model="offer_text" />
+                </div>
+              </b-col>
+              <b-col sm="6" cols="12">
+                <div class="of_label">Coupon Description</div>
+                <textarea
+                  class="of_name_area_2"
+                  v-model="description"
+                  type="text"
+                ></textarea>
+              </b-col>
+            </b-row>
+            <br />
+            <div class="sd_btn" @click="addCouponDetails()">Add Coupon</div>
+          </div>
+        </b-card>
+      </div>
+      <sitefooter></sitefooter>
     </div>
-    <sitefooter></sitefooter>
   </div>
 </template>
 
@@ -621,10 +628,11 @@ export default {
   },
 
   mounted() {
+    if (this.$session.get("user_type") === "seller") {
+      document.getElementsByClassName("topnav")[0].style.height = "70px";
+    }
     this.getSellerOffers();
     this.getProducts();
-    document.getElementById("nav").style.top = "-30px";
-    document.getElementById("nav").style.height = "70px";
   },
   watch: {
     getproducts: function () {

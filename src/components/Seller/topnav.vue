@@ -1,7 +1,7 @@
 <template>
   <div>
     <localstore :key="componentKey"></localstore>
-    <div class="strip" id="strip">
+    <div class="strip" id="strip" v-if="type !== 'seller'">
       <i class="fa fa-map-marker"></i> Select Location
 
       <select name="location" class="droplo" id="local" @change="setlocation">
@@ -9,6 +9,25 @@
         <option value="Bhilai">Bhilai</option>
         <option value="Raipur">Raipur</option>
       </select>
+      <div style="float: right">
+        <div
+          v-if="
+            this.$session.get('logged_in') === 'true' &&
+            this.$session.get('user_type') === 'customer'
+          "
+        >
+          Hi {{ user.display_name }}!
+        </div>
+        <div
+          v-else-if="
+            this.$session.get('logged_in') === 'true' &&
+            this.$session.get('user_type') === 'seller'
+          "
+        >
+          Hi {{ user.shop_name }}!
+        </div>
+        <div class="restxt" v-else>Please Signin!</div>
+      </div>
     </div>
     <div id="nav" class="topnav">
       <i class="fa fa-bars menubtn" v-on:click="openmenu"></i>
@@ -59,49 +78,17 @@
         <i class="fa fa-times closebtn" v-on:click="closemenu"></i>
         <div
           class="resp hiwel"
-          style="font-weight: 500; color: black; padding-right: 20px"
-        >
-          <div
-            v-if="
-              this.$session.get('logged_in') === 'true' &&
-              this.$session.get('user_type') === 'customer'
-            "
-            class="wlcm"
-          >
-            Hi {{ user.display_name }}!
-          </div>
-          <div
-            v-else-if="
-              this.$session.get('logged_in') === 'true' &&
-              this.$session.get('user_type') === 'seller'
-            "
-            class="wlcm"
-          >
-            Hi {{ user.shop_name }}!
-          </div>
-          <div class="restxt" v-else>Please Signin!</div>
-
-          <div v-bind:class="'topnavlink ' + active6">
-            <div :to="url6"><span v-html="link6"></span></div>
-          </div>
-        </div>
+          style="
+            font-weight: 500;
+            color: black;
+            padding-right: 20px;
+            height: 60px;
+          "
+        ></div>
         <div class="indate">
-          <div class="resp" v-if="link1 !== ''">
-            <div v-bind:class="'topnavlink ' + active1">
-              <router-link :to="url1"><span v-html="link1"></span></router-link>
-            </div>
-          </div>
-          <div class="resp" v-if="link2 !== ''">
-            <div v-bind:class="'topnavlink ' + active2">
-              <router-link :to="url2"><span v-html="link2"></span></router-link>
-            </div>
-          </div>
           <div
             class="resp"
-            v-if="
-              this.$session.get('user_type') !== 'seller' &&
-              display_categories === true
-            "
+            v-if="user !== 'seller' && display_categories === true"
           >
             <div class="dropdown">
               <button class="dropbtn">
@@ -121,25 +108,39 @@
               </div>
             </div>
           </div>
-          <div
-            class="resp"
-            v-if="this.$session.get('logged_in') === 'true' && link3 !== ''"
-          >
-            <div v-bind:class="'topnavlink ' + active3">
-              <router-link :to="url3"><span v-html="link3"></span></router-link>
+          <div class="resp">
+            <div v-bind:class="'topnavlink ' + active1">
+              <div v-if="type !== 'seller'">
+                <router-link to="/profile"
+                  ><b-icon-person></b-icon-person> Account
+                </router-link>
+              </div>
+              <div v-if="type === 'seller'">
+                <router-link to="/account"
+                  ><b-icon-person></b-icon-person> Account
+                </router-link>
+              </div>
             </div>
           </div>
-          <div class="resp" v-if="link4 !== ''">
-            <div v-bind:class="'topnavlink ' + active4">
-              <router-link :to="url4"><span v-html="link4"></span></router-link>
+          <div class="resp">
+            <div v-bind:class="'topnavlink ' + active2">
+              <div v-if="type !== 'seller'">
+                <router-link to="/cart"
+                  ><b-icon-heart></b-icon-heart> Wishlist
+                </router-link>
+              </div>
+              <div v-if="type === 'seller'">
+                <router-link to="/seller/dashboard"
+                  ><b-icon-layers></b-icon-layers> Dashboard
+                </router-link>
+              </div>
             </div>
           </div>
-          <div class="resp" v-if="link5 !== ''">
-            <div
-              v-bind:class="'topnavlink ' + active5"
-              v-if="this.$session.get('logged_in') !== 'true'"
-            >
-              <router-link :to="url5"><span v-html="link5"></span></router-link>
+          <div class="resp">
+            <div class="topnavlink">
+              <div v-if="this.$session.get('logged_in') !== 'true'">
+                <router-link to="/login">Login </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -151,6 +152,7 @@
         <div id="result"></div>
       </div>
     </div>
+    <div class="idle"></div>
 
     <router-view />
     <div class="reduce"></div>
@@ -160,17 +162,30 @@
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import Localstore from "../localstore.vue";
-import { BIconArrowReturnLeft } from "bootstrap-vue";
+import {
+  BIconArrowReturnLeft,
+  BIconPerson,
+  BIconHeart,
+  BIconLayers,
+} from "bootstrap-vue";
 export default {
-  components: { Localstore, BIconArrowReturnLeft },
+  components: {
+    Localstore,
+    BIconArrowReturnLeft,
+    BIconPerson,
+    BIconHeart,
+    BIconLayers,
+  },
   data() {
     return {
+      type: "",
       user: {},
       status: undefined,
       allcategories: [],
       searchvalue: "",
       input: "",
       componentKey: 0,
+      searchon: false,
     };
   },
 
@@ -199,7 +214,14 @@ export default {
     "focus",
     "landing",
   ],
+  created() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
   mounted() {
+    this.type = this.$session.get("user_type");
     if ("get_location" in sessionStorage) {
       document.getElementById("local").value =
         sessionStorage.getItem("get_location");
@@ -221,8 +243,9 @@ export default {
     input: function () {
       document.getElementById("searchtab").style.display = "block";
 
-      document.getElementById("nav").style.position = "fixed";
-      document.getElementById("nav").style.top = "0";
+      document.getElementById("nav").style.position = "fixed !important";
+      document.getElementById("nav").style.top = "0 !important";
+      this.searchon = true;
       var count = 0;
       document.getElementById("result").innerHTML = "";
       var filter = this.input.toUpperCase();
@@ -281,6 +304,23 @@ export default {
     },
   },
   methods: {
+    handleScroll() {
+      if (!this.searchon) {
+        var navbar = document.getElementById("nav");
+        var sticky = navbar.offsetTop;
+        navbar.classList.remove("smsticky");
+
+        if (window.pageYOffset > sticky) {
+          navbar.classList.add("sticky");
+          // alert(sticky);
+        } else {
+          navbar.classList.remove("sticky");
+        }
+      } else {
+        navbar.classList.remove("sticky");
+        navbar.classList.add("smsticky");
+      }
+    },
     setlocation() {
       sessionStorage.setItem(
         "get_location",
@@ -298,11 +338,14 @@ export default {
       document.getElementById("searchtab").style.display = "none";
       document.getElementById("nav").style.position = "relative";
       this.$router.push("/get_result?value=" + this.input);
+      this.searchon = false;
+
       // this.$router.go("/");
     },
     closeSearch() {
       document.getElementById("searchtab").style.display = "none";
       document.getElementById("nav").style.position = "relative";
+      this.searchon = false;
     },
     proSearch() {},
     productSearch() {
@@ -350,6 +393,12 @@ export default {
 body {
   font-family: "Assistant", sans-serif;
 }
+.idle {
+  display: none;
+  height: 100px;
+  padding-top: 60px;
+}
+
 .fa-map-marker {
   padding: 0px 5px;
   padding-bottom: 4px;
@@ -365,11 +414,9 @@ body {
   outline-color: rgb(0, 98, 209);
 }
 .strip {
-  position: absolute;
+  position: relative;
   top: 0;
-  float: right;
   width: 100%;
-  margin-top: 0px;
   padding: 0px 6px;
   font-size: 14px;
   height: 30px;
@@ -377,7 +424,7 @@ body {
   color: white;
   line-height: 30px;
   vertical-align: middle;
-  z-index: 500;
+  z-index: 499;
   /* border-bottom: 2px solid rgb(255, 255, 255); */
 }
 .backbtn {
@@ -397,6 +444,13 @@ body {
     padding-left: 20px;
     white-space: nowrap;
   }
+  .sticky {
+    position: fixed !important;
+    top: 0;
+    width: 100%;
+    margin-top: 0px !important;
+    margin-bottom: 70px !important;
+  }
 }
 .seresw {
   position: relative;
@@ -415,7 +469,7 @@ body {
 .searchtab {
   display: none;
   position: fixed;
-  top: 100px;
+  top: 70px;
   left: 0;
   width: 100%;
   height: 110%;
@@ -464,7 +518,7 @@ body {
   background-color: #f9f9f9;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 3;
+  z-index: 100;
 }
 
 .dropdown-content a {
@@ -527,9 +581,8 @@ form.example::after {
   display: table;
 }
 .topnav {
-  margin-top: 30px;
-  margin-bottom: 40px;
   position: relative;
+  margin-bottom: 40px;
   width: 100%;
   padding: 14px 20px;
   height: 70px;
@@ -593,10 +646,11 @@ form.example::after {
 .indate {
   display: inline-flex;
 }
+
 @media screen and (max-width: 1050px) {
   .searchtab {
     position: fixed;
-    top: 150px;
+    top: 120px;
     left: 0;
     width: 100%;
     height: 110%;
@@ -628,7 +682,7 @@ form.example::after {
   }
   .topnav {
     height: 120px;
-    margin: 30px 0 30px 0px;
+    margin: 0px 0 10px 0px;
   }
   .right {
     position: fixed;
@@ -718,6 +772,10 @@ form.example::after {
     text-decoration: none;
     display: block;
     margin: 0px !important;
+  }
+  .smsticky {
+    position: fixed !important;
+    top: 0;
   }
 }
 </style>

@@ -1,15 +1,6 @@
 <template>
   <div>
-    <topnav
-      link1='<i class="fa fa-cubes"></i> Dashboard'
-      link2='<i class="fa fa-money"></i> Customer Bill'
-      link3='<i class="fa fa-user"></i> Account'
-      url1="/seller/dashboard"
-      url2="/customerbill"
-      url3="/account"
-      link4=""
-      link5=""
-    ></topnav>
+    <topnav></topnav>
 
     <div class="w3-row">
       <div class="w3-col m2" style="padding: 1px"></div>

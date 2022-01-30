@@ -50,9 +50,9 @@
                       :category="list.active_offers[offer.index].category"
                     ></imgstore>
                   </div>
-                  <div class="c2-left">
+                  <!-- <div class="c2-left">
                     {{ list.active_offers[offer.index].quantity }} coupons left
-                  </div>
+                  </div> -->
                 </div>
                 <div
                   class="l-offer"

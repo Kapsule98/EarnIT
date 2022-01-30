@@ -43,9 +43,9 @@
                   :category="list.offers[offer.index].category"
                 ></imgstore>
               </div>
-              <div class="c2-left">
+              <!-- <div class="c2-left">
                 {{ list.offers[offer.index].quantity }} coupons left
-              </div>
+              </div> -->
               <div class="c2-off"></div>
 
               <div class="c2-shop"><!--{{ shop_name }}--></div>

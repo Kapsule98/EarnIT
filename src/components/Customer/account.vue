@@ -1,19 +1,6 @@
 <template>
   <div>
-    <topnav
-      link4='<i class="fa fa-shopping-cart"></i> Cart'
-      url1="/"
-      url2="/"
-      url3="/"
-      url5="/"
-      url4="/cart"
-      url6="/"
-      link1=""
-      link2=""
-      link3=""
-      link5=""
-      :searchbar="true"
-    ></topnav>
+    <topnav :searchbar="true"></topnav>
     <spinner v-if="loading"></spinner>
     <div class="greyback"></div>
     <div class="w3-container" style="margin-bottom: 10px; margin-top: -20px">
