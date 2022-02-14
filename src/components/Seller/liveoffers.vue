@@ -4,6 +4,10 @@
       <b-row>
         <b-col sm="3" cols="12">
           <div class="of_img_wrap">
+            <div class="views">
+              <b-icon-eye></b-icon-eye>
+              {{ count }}
+            </div>
             <carousel
               :autoplayTimeout="3000"
               :responsive="{
@@ -81,9 +85,10 @@
 import { BASE_URL } from "../../utils/constants";
 import axios from "axios";
 import carousel from "vue-owl-carousel";
+import { BIconEye } from "bootstrap-vue";
 
 export default {
-  components: { carousel },
+  components: { carousel, BIconEye },
 
   props: [
     "name",
@@ -99,6 +104,7 @@ export default {
     "imgsrc",
     "description",
     "imglength",
+    "count",
   ],
 
   //components: { DatePicker },
@@ -147,6 +153,18 @@ export default {
 </script>
 
 <style scoped>
+.views {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: rgb(255, 255, 255);
+  background: rgba(0, 153, 255, 0.74);
+  backdrop-filter: blur(10px);
+  border-radius: 6px;
+  padding: 0px 4px;
+  font-weight: 500;
+  z-index: 50;
+}
 .of_pro_img {
   width: 80%;
   border-radius: 6px;

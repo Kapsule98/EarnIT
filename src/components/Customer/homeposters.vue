@@ -102,7 +102,7 @@ a:hover {
   text-decoration: none;
 }
 .homeposters {
-  width: 98%;
+  width: 108%;
   margin: 0px 1%;
   border-radius: 12px;
 }

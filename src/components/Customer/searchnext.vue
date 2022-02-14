@@ -223,6 +223,7 @@
                       >
                         <div class="product_card">
                           <div>
+                            <productviews :count="offer.count"></productviews>
                             <img
                               :src="offer.image_url[0]"
                               alt=""
@@ -254,9 +255,7 @@
                             >
                           </div>
 
-                          <div class="addtocart">
-                            <b-icon-cart3 mb-2></b-icon-cart3>
-                          </div>
+                          <div class="addtocart"></div>
                         </div>
                       </router-link>
                     </div>
@@ -447,6 +446,7 @@ import Bottomnav from "./bottomnav.vue";
 import Imgstore from "./imgstore.vue";
 import Spinner from "./spinner.vue";
 import { BIconSearch } from "bootstrap-vue";
+import productviews from "./productviews.vue";
 
 export default {
   components: {
@@ -456,6 +456,7 @@ export default {
     Imgstore,
     Spinner,
     BIconSearch,
+    productviews,
   },
   props: {
     category: {
@@ -509,6 +510,7 @@ export default {
       var type = "";
       if (nsdata.active_offers[i].type === "FIXED") {
         name = nsdata.active_offers[i].products[0];
+        console.log(nsdata.active_offers[i].products);
         url =
           "/product_description?seller=" +
           nsdata.active_offers[i].seller_email +
@@ -529,6 +531,7 @@ export default {
           discount_percent: nsdata.active_offers[i].discount_percent,
           image_url: nsdata.active_offers[i].image_url,
           quantity: nsdata.active_offers[i].quantity,
+          count: nsdata.active_offers[i].count,
         });
         document.getElementById("result").innerHTML +=
           "<div class='seresw'><a href='" +
@@ -544,6 +547,8 @@ export default {
           "<br>";
       }
     }
+    console.log(this.productSearch);
+
     for (var k = 0; k < sndata.sellers.length; k++) {
       var sname = sndata.sellers[k].shop_name;
 
@@ -576,6 +581,7 @@ export default {
           }
         }
       }
+
       if (sname.toUpperCase().indexOf(filter) > -1) {
         this.sellerSearch.push({
           email: sndata.sellers[k].email,

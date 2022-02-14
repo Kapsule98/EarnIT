@@ -78,6 +78,7 @@
                 :mrp="'Rs ' + offer.mrp"
                 :offer_price="'Rs ' + offer.offer_price"
                 :description="offer.bio"
+                :count="offer.count"
                 :imglength="offer.image_url.length"
               ></liveoffers>
             </div>
@@ -675,7 +676,8 @@ export default {
           this.im1 !== "" &&
           this.offer_text !== "" &&
           this.mrp !== "" &&
-          this.offerPrice !== "") ||
+          this.offerPrice !== "" &&
+          this.description !== "") ||
         (this.mtno3 === 7 && this.offer_text !== "")
       ) {
         proceed = true;
@@ -692,7 +694,8 @@ export default {
           document.getElementById("crop3").click();
           document.getElementById("crop4").click();
         }
-        var arrprod = [this.products];
+        var arrprod = [];
+        arrprod.push(this.products);
 
         var imgprod = [];
         if (this.im1 !== "") {

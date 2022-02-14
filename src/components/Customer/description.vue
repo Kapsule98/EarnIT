@@ -92,7 +92,7 @@
                 </div></b-col
               >
               <b-col sm="6" cols="12">
-                <div class="sharewrap">
+                <div class="sharewrap" @click="sharePage()">
                   <i
                     @click="sharePage()"
                     class="fa fa-instagram"
@@ -156,6 +156,9 @@
                 >
                   <div class="product_card">
                     <div>
+                      <productviews
+                        :count="list.offers[offer.index].count"
+                      ></productviews>
                       <img
                         :src="list.offers[offer.index].image_url[0]"
                         alt=""
@@ -200,9 +203,7 @@
                           list.seller_email
                         )
                       "
-                    >
-                      <b-icon-cart3 mb-2></b-icon-cart3>
-                    </div>
+                    ></div>
                   </div>
                 </router-link>
               </b-col>
@@ -223,9 +224,10 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import Spinner from "./spinner.vue";
 import { BIconHeart } from "bootstrap-vue";
+import productviews from "./productviews.vue";
 
 export default {
-  components: { topnav, Sitefooter, Spinner, BIconHeart },
+  components: { topnav, Sitefooter, Spinner, BIconHeart, productviews },
   props: {
     seller: {
       type: String,
@@ -259,7 +261,6 @@ export default {
       .get(url)
       .then((response) => {
         this.list = response.data;
-        console.log(this.list);
         var ele = this.list.offers;
         for (var i = 0; i < ele.length; i++) {
           if (ele[i].offer_text === this.offer_text) {
@@ -292,7 +293,6 @@ export default {
         });
         this.result = result;
         this.mapped = mapped;
-        console.log(mapped);
       })
       .catch((err) => {
         console.log(err);
@@ -306,6 +306,7 @@ export default {
             document.getElementsByClassName("countno")[i].remove();
           }
       });
+    this.increaseCount();
   },
   watch: {
     offer_text: function () {
@@ -313,6 +314,27 @@ export default {
     },
   },
   methods: {
+    increaseCount() {
+      const config = {
+        offer_text: this.offer_text,
+        email: this.seller,
+      };
+      axios.post(BASE_URL + "/offerstat", config).then((res) => {
+        console.log(config, res);
+      });
+    },
+    sharePage() {
+      if (navigator.share) {
+        navigator
+          .share({
+            title: "Shop Coupons from Lemmmebuy.in",
+            text: "Hey I found this amazing offer on Lemmebuy.in! You will love it.",
+            url: window.location.href,
+          })
+          .then(() => console.log("Successful share"))
+          .catch((error) => console.log("Error sharing", error));
+      }
+    },
     showImg(index) {
       this.imgindex = index;
       var ele = document.getElementsByClassName("productnav");
@@ -339,7 +361,6 @@ export default {
         axios
           .post(url, payload, options)
           .then((response) => {
-            console.log(response);
             if (response.data.status === 200) {
               alert(response.data.msg);
               this.$router.push("/cart");
@@ -361,6 +382,17 @@ export default {
 </script>
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
+.views {
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  color: rgb(255, 255, 255);
+  background: rgba(0, 153, 255, 0.74);
+  backdrop-filter: blur(10px);
+  border-radius: 6px;
+  padding: 0px 4px;
+  font-weight: 500;
+}
 .sharewrap {
   width: 100%;
   text-align: center;

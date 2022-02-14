@@ -225,6 +225,9 @@
                       >
                         <div class="product_card">
                           <div>
+                            <productviews
+                              :count="list.active_offers[offer.index].count"
+                            ></productviews>
                             <img
                               :src="
                                 list.active_offers[offer.index].image_url[0]
@@ -494,8 +497,18 @@ import Bottomnav from "./bottomnav.vue";
 import Imgstore from "./imgstore.vue";
 import Spinner from "./spinner.vue";
 import Shops from "./shops.vue";
+import productviews from "./productviews.vue";
+
 export default {
-  components: { topnav, Sitefooter, Bottomnav, Imgstore, Spinner, Shops },
+  components: {
+    topnav,
+    Sitefooter,
+    Bottomnav,
+    Imgstore,
+    Spinner,
+    Shops,
+    productviews,
+  },
   props: {
     category: {
       type: String,

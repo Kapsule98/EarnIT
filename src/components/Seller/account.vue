@@ -3,7 +3,7 @@
     <topnav active1="active_nav"></topnav>
     <spinner v-if="loading"></spinner>
     <div class="w3-card c-m" style="background: white; margin-top: -30px">
-      <div class="showfilter">
+      <div class="showfilter" style="margin-top: 10px">
         <button class="showbtn" v-on:click="showFilter()">
           Add Product <i class="fa fa-angle-down"></i>
         </button>
@@ -11,6 +11,11 @@
       <div class="w3-row">
         <div class="w3-twothird" style="padding: 10px">
           <b-card>
+            <div class="views">
+              <b-icon-eye></b-icon-eye>
+              {{ user.view_count }}
+            </div>
+
             <p class="c-domain">{{ category.category }}</p>
             <p class="c-shopname">{{ user.display_name }}</p>
             <p class="c-shoplocation">{{ user.address }}</p>
@@ -105,11 +110,14 @@ import topnav from "./topnav.vue";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import Spinner from "../Customer/spinner.vue";
+import { BIconEye } from "bootstrap-vue";
+
 export default {
   components: {
     topnav,
     Sitefooter,
     Spinner,
+    BIconEye,
   },
   data() {
     return {
@@ -130,7 +138,7 @@ export default {
     if (this.$session.get("user_type") === "seller") {
       document.getElementsByClassName("topnav")[0].style.height = "70px";
     }
-    console.log(this.$session.get("userdata".location));
+    console.log(this.$session.get("userdata"));
     this.user = this.$session.get("user_data");
     console.log(this.user);
     const offersurl = BASE_URL + "/seller/category";
@@ -249,6 +257,18 @@ export default {
 };
 </script>
 <style scoped>
+.views {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: rgb(255, 255, 255);
+  background: rgba(0, 153, 255, 0.74);
+  backdrop-filter: blur(10px);
+  border-radius: 6px;
+  padding: 0px 4px;
+  font-weight: 500;
+  z-index: 50;
+}
 .topnav {
   height: 70px !important;
 }

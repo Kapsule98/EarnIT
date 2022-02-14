@@ -24,7 +24,7 @@
                 <p class="shoplocation">
                   <b-icon-geo-alt></b-icon-geo-alt> {{ list.address }}
                 </p>
-                <a :href="gmapLink"> Show on map</a>
+                <a :href="gmapLink" style="color: blue"> Show on map</a>
                 <p>
                   {{ Shopbio }}
                 </p>
@@ -106,6 +106,7 @@
                         >
                           <div class="product_card">
                             <div>
+                              <productviews :count="offer.count"></productviews>
                               <img
                                 :src="offer.image_url[0]"
                                 alt=""
@@ -159,12 +160,8 @@
 
                   <h3 class="typehead">Coupons</h3>
 
-                  <b-row
-                    v-for="offers in list.offers"
-                    :key="offers.length"
-                    style="padding: 10px"
-                  >
-                    <template>
+                  <b-row style="padding: 10px">
+                    <template v-for="offers in list.offers">
                       <b-col
                         sm="4"
                         cols="6"
@@ -176,6 +173,7 @@
                           offers.quantity > 0 &&
                           offers.type !== 'FIXED'
                         "
+                        :key="offers.length"
                       >
                         <div class="couponhome">
                           <imgstore
@@ -272,6 +270,7 @@ import Bottomnav from "./bottomnav.vue";
 import Spinner from "./spinner.vue";
 import { BIconGeoAlt, BIconPhone } from "bootstrap-vue";
 import Imgstore from "./imgstore.vue";
+import productviews from "./productviews.vue";
 
 export default {
   components: {
@@ -282,6 +281,7 @@ export default {
     BIconGeoAlt,
     BIconPhone,
     Imgstore,
+    productviews,
   },
   props: {
     seller: {
@@ -322,6 +322,7 @@ export default {
         console.log(err);
       })
       .finally(() => (this.loading = false));
+    this.increaseCount();
   },
   methods: {
     getShopBio() {

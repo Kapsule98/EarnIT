@@ -41,6 +41,11 @@
                 >
                   <div class="product_card">
                     <div>
+                      <div class="views">
+                        <b-icon-eye></b-icon-eye>
+                        {{ list.active_offers[offer.index].count }}
+                      </div>
+
                       <img
                         :src="list.active_offers[offer.index].image_url[0]"
                         alt=""
@@ -134,7 +139,7 @@
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import Allapi from "./allapi.vue";
-import { BIconArrowRight, BIconHeart } from "bootstrap-vue";
+import { BIconArrowRight, BIconHeart, BIconEye } from "bootstrap-vue";
 import Topoffers from "./topoffers.vue";
 // import Imgstore from "./imgstore.vue";
 
@@ -142,6 +147,7 @@ export default {
   components: {
     BIconHeart,
     BIconArrowRight,
+    BIconEye,
     Allapi,
     Topoffers,
   },
@@ -334,6 +340,17 @@ export default {
 </script>
 
 <style scoped>
+.views {
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  color: rgb(255, 255, 255);
+  background: rgba(0, 153, 255, 0.74);
+  backdrop-filter: blur(10px);
+  border-radius: 6px;
+  padding: 0px 4px;
+  font-weight: 500;
+}
 a {
   text-decoration: none;
   color: #1a1a1a;
