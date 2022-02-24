@@ -635,11 +635,11 @@ export default {
     this.getSellerOffers();
     this.getProducts();
   },
-  watch: {
-    getproducts: function () {
-      this.getProducts();
-    },
-  },
+  // watch: {
+  //   getproducts: function () {
+  //     this.getProducts();
+  //   },
+  // },
   methods: {
     //add a new product to seller product list
     addNewProduct() {
@@ -664,6 +664,7 @@ export default {
           })
           .finally(() => {
             this.products = this.prod;
+            this.getProducts();
           });
       }
     },
